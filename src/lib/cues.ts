@@ -1,0 +1,70 @@
+"use client";
+
+/**
+ * Call sound cues, synthesized with the Web Audio API. Ported from the
+ * portfolio's voice call (components/chat/voice/cues.ts), which generates
+ * these in code rather than loading audio files: connected is a warm two-note
+ * pulse, mute/unmute step down/up, hang-up is a lower, slower pair. Transfer
+ * is new here: two attention beeps, then a second of US ringback (440+480 Hz).
+ * The Call button primes the context inside a tap so later cues can sound.
+ */
+export type Cue = "connected" | "mute" | "unmute" | "hangup" | "transfer";
+
+type Shape = { notes: number[][]; length: number; gap: number; gain: number };
+
+const SHAPES: Record<Exclude<Cue, "transfer">, Shape> = {
+  connected: { notes: [[220], [330]], length: 0.18, gap: 0.22, gain: 0.12 },
+  mute: { notes: [[622], [440]], length: 0.08, gap: 0.095, gain: 0.07 },
+  unmute: { notes: [[440], [622]], length: 0.08, gap: 0.095, gain: 0.07 },
+  hangup: { notes: [[392], [262]], length: 0.15, gap: 0.18, gain: 0.09 },
+};
+
+let shared: AudioContext | null = null;
+
+function context(): AudioContext | null {
+  if (typeof window === "undefined") return null;
+  try {
+    shared ??= new AudioContext();
+    if (shared.state === "suspended") void shared.resume().catch(() => {});
+    return shared;
+  } catch {
+    return null;
+  }
+}
+
+/** Create the audio context inside a tap so a cue that follows later can still sound. */
+export function primeCues(): void {
+  context();
+}
+
+function tone(audio: AudioContext, freqs: number[], at: number, length: number, gain: number) {
+  const envelope = audio.createGain();
+  envelope.gain.setValueAtTime(0, at);
+  envelope.gain.linearRampToValueAtTime(gain, at + 0.006);
+  envelope.gain.exponentialRampToValueAtTime(0.0001, at + length);
+  envelope.connect(audio.destination);
+  for (const frequency of freqs) {
+    const oscillator = audio.createOscillator();
+    oscillator.type = "sine";
+    oscillator.frequency.value = frequency;
+    oscillator.connect(envelope);
+    oscillator.start(at);
+    oscillator.stop(at + length + 0.02);
+  }
+}
+
+/** Plays a cue; resolves when it has finished sounding. */
+export function playCue(cue: Cue): Promise<void> {
+  const audio = context();
+  if (!audio) return Promise.resolve();
+  const start = audio.currentTime + 0.01;
+  if (cue === "transfer") {
+    tone(audio, [1000], start, 0.14, 0.12);
+    tone(audio, [1000], start + 0.24, 0.14, 0.12);
+    tone(audio, [440, 480], start + 0.7, 1.2, 0.08);
+    return new Promise((r) => setTimeout(r, 2000));
+  }
+  const { notes, length, gap, gain } = SHAPES[cue];
+  notes.forEach((freqs, index) => tone(audio, freqs, start + index * gap, length, gain));
+  return new Promise((r) => setTimeout(r, (notes.length * gap + length) * 1000));
+}

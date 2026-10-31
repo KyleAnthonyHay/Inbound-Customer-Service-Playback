@@ -64,7 +64,7 @@ goodbye does not end the call, so the `endCall` tool is attached.
 ## Handoff and transfer sound, per channel
 
 - **Browser**: when `initiate_handoff` succeeds, the page plays a short transfer
-  tone locally (Web Audio: two beeps, then US ringback) and shows
+  tone locally (Web Audio, `src/lib/cues.ts`: two beeps, then US ringback) and shows
   "Transferring…" on the phone screen. The assistant then says goodbye and
   calls `endCall`; if it has not ended the call 12 s after the handoff, the
   page ends it. Verified with the dev simulation at `/call?demo=1`.
@@ -72,6 +72,17 @@ goodbye does not end the call, so the `endCall` tool is attached.
   transfers are blind-only on Twilio/Vapi SIP, which this demo does not use.
   The handoff is therefore spoken only, then `endCall`. This limitation is
   stated rather than worked around.
+
+## Call sounds and idle handling
+
+Button cues (connected, mute, unmute, hang-up) are synthesized with the Web
+Audio API in `src/lib/cues.ts`, ported from the portfolio's voice call; no
+audio files or third-party sounds are used. The transfer cue is new.
+
+Idle handling uses Vapi assistant hooks on `customer.speech.timeout`, timed
+from the caller's last speech: a nudge at 120 s ("Hey, are you still there?")
+and, at 150 s, a spoken goodbye followed by `endCall`. Both reset when the
+caller speaks.
 
 ## Simulation boundaries
 

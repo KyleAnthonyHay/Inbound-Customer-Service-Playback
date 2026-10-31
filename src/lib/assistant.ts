@@ -89,6 +89,25 @@ export function buildAssistant(opts: { toolServerUrl: string; toolSecret?: strin
     },
     voice: { provider: "openai", voiceId: "marin" },
     maxDurationSeconds: 600,
+    // Idle handling (Vapi assistant hooks, timed from the caller's last speech):
+    // nudge after 2 minutes of silence, then say goodbye and end the call 30 s later.
+    hooks: [
+      {
+        name: "idle_nudge",
+        on: "customer.speech.timeout",
+        options: { timeoutSeconds: 120, triggerMaxCount: 1, triggerResetMode: "onUserSpeech" },
+        do: [{ type: "say", exact: "Hey, are you still there?" }],
+      },
+      {
+        name: "idle_goodbye",
+        on: "customer.speech.timeout",
+        options: { timeoutSeconds: 150, triggerMaxCount: 1, triggerResetMode: "onUserSpeech" },
+        do: [
+          { type: "say", exact: "Since there's no response, I'm going to hang up. Feel free to call us back anytime." },
+          { type: "tool", tool: { type: "endCall" } },
+        ],
+      },
+    ],
     clientMessages: ["transcript", "tool-calls", "tool-calls-result", "status-update", "speech-update", "conversation-update"],
   };
 }

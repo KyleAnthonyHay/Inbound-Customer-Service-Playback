@@ -57,11 +57,11 @@ function MuteIcon({ dark }: { dark?: boolean }) {
 }
 
 function KeypadIcon() {
-  // 26 x 25: 3x3 dots plus one below
+  // 26 x 25, measured: 10.3 pt column pitch, 6.6 pt row pitch, 5 pt dots, one dot below
   return (
     <svg width="26" height="25" viewBox="0 0 26 25" fill="#fff" aria-hidden>
-      {[0, 1, 2].map((r) => [0, 1, 2].map((c) => <circle key={`${r}${c}`} cx={3.5 + c * 9.5} cy={3.5 + r * 7} r="3" />))}
-      <circle cx="13" cy="21.5" r="3" />
+      {[0, 1, 2].map((r) => [0, 1, 2].map((c) => <circle key={`${r}${c}`} cx={2.6 + c * 10.3} cy={2.6 + r * 6.6} r="2.5" />))}
+      <circle cx="12.9" cy="22.4" r="2.5" />
     </svg>
   );
 }
@@ -88,17 +88,11 @@ function CallIcon() {
 function StatusBar({ inCall }: { inCall: boolean }) {
   return (
     <div className="absolute inset-x-0 top-0 h-[54px]">
-      <span className="absolute left-[38px] top-[22px] flex items-center gap-[4px] text-[17px] font-semibold leading-[20px] text-white">
-        11:41
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="#fff" aria-hidden><path d="M9.5 1.2a6 6 0 1 0 3.3 8.3A5 5 0 0 1 9.5 1.2z" /></svg>
-      </span>
+      <span className="absolute left-[38px] top-[22px] text-[17px] font-semibold leading-[20px] text-white">11:41</span>
 
       {/* Dynamic Island, expanded for an active call */}
       <span className="absolute left-1/2 top-[14px] flex h-[36px] w-[169px] -translate-x-1/2 items-center justify-between rounded-full bg-black px-[13px]" aria-hidden>
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
-          <path d="M8.5 11.5a3.5 3.5 0 0 1 0-5l2-2a3.5 3.5 0 0 1 5 5l-1 1" stroke="#30d158" strokeWidth="2.2" strokeLinecap="round" />
-          <path d="M11.5 8.5a3.5 3.5 0 0 1 0 5l-2 2a3.5 3.5 0 0 1-5-5l1-1" stroke="#30d158" strokeWidth="2.2" strokeLinecap="round" />
-        </svg>
+        <span />
         <span className={cn("h-[5px] w-[5px] rounded-full", inCall ? "bg-[#ff9500]" : "bg-transparent")} />
       </span>
 

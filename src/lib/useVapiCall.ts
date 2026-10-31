@@ -5,7 +5,7 @@ import type Vapi from "@vapi-ai/web";
 import { config, isVapiConfigured, toolServerUrl } from "./config";
 import { buildAssistant } from "./assistant";
 import { toolMeta, type ToolSource } from "./tools/meta";
-import { createTonePlayer, type TonePlayer } from "./transferTone";
+import { playCue, primeCues } from "./cues";
 import { parseHandoffResult } from "./handoff";
 
 export type CallStatus = "idle" | "connecting" | "active" | "ended" | "error";
@@ -68,7 +68,6 @@ export function useVapiCall() {
   const vapiRef = useRef<Vapi | null>(null);
   const toolStartTimes = useRef<Map<string, number>>(new Map());
   const toolNames = useRef<Map<string, string>>(new Map());
-  const toneRef = useRef<TonePlayer | null>(null);
   const backstopRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [handoff, setHandoff] = useState<Handoff | null>(null);
   const [status, setStatus] = useState<CallStatus>("idle");
@@ -153,7 +152,7 @@ export function useVapiCall() {
             if (parsed?.ok) {
               setHandoff({ team: parsed.team, at: Date.now() });
               pushEvent({ kind: "transfer", label: "Transfer sound (browser)", status: "succeeded" });
-              void toneRef.current?.playTransfer();
+              void playCue("transfer");
               if (backstopRef.current) clearTimeout(backstopRef.current);
               backstopRef.current = setTimeout(() => {
                 pushEvent({ kind: "call", label: "Ending demo call after handoff", status: "succeeded" });
@@ -199,8 +198,7 @@ export function useVapiCall() {
     setEvents([]);
     setCallId(null);
     setHandoff(null);
-    if (!toneRef.current) toneRef.current = createTonePlayer();
-    toneRef.current.unlock();
+    primeCues();
     setStatus("connecting");
     pushEvent({ kind: "call", label: "Connecting", status: "running" });
 
@@ -212,12 +210,14 @@ export function useVapiCall() {
       vapi.on("call-start", () => {
         setStatus("active");
         setStartedAt(Date.now());
+        void playCue("connected");
         settleRunning("succeeded");
         pushEvent({ kind: "call", label: "Connected", status: "succeeded" });
       });
       vapi.on("call-end", () => {
         if (backstopRef.current) clearTimeout(backstopRef.current);
         settleThinking();
+        void playCue("hangup");
         setStatus("ended");
         setAssistantSpeaking(false);
         pushEvent({ kind: "call", label: "Call ended" });
@@ -270,13 +270,13 @@ export function useVapiCall() {
     const next = !v.isMuted();
     v.setMuted(next);
     setMuted(next);
+    void playCue(next ? "mute" : "unmute");
   }, []);
 
   useEffect(() => {
     return () => {
       if (backstopRef.current) clearTimeout(backstopRef.current);
       vapiRef.current?.stop();
-      toneRef.current?.dispose();
     };
   }, []);
 
