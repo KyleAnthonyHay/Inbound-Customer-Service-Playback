@@ -109,6 +109,7 @@ test("classifyStep flags disruptive steps with a caution and leaves safe ones al
   assert.ok(upd.caution && upd.caution.length > 10);
   assert.equal(classifyStep("As a last resort, tap Delete All Setlists from Device.").kind, "delete-content");
   assert.equal(classifyStep("Fully close and reopen Playback, then try again.").kind, "restart");
+  assert.equal(classifyStep("Quick fix 1 - remove and re-add the song: tap Edit, tap the red minus icon.").kind, "delete-content");
 });
 
 test("searchDocs results carry per-step disruption tags", () => {
