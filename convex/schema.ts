@@ -32,11 +32,12 @@ export default defineSchema({
     description: v.string(),
     /** Simulated staffing state, toggled for test scenarios. */
     status: v.union(v.literal("available"), v.literal("busy"), v.literal("offline")),
-    /** Weekday hours in UTC, used to compute availability text. */
-    hoursUtc: v.object({ start: v.number(), end: v.number() }),
+    /** Legacy field from older seeds; hours now come from src/lib/tools/schedule.ts. */
+    hoursUtc: v.optional(v.object({ start: v.number(), end: v.number() })),
     simulated: v.literal(true),
   }).index("by_teamId", ["teamId"]),
 
+  /** Legacy: slots are now generated from support hours. Kept so older data still validates. */
   callbackSlots: defineTable({
     teamId: v.string(),
     startAt: v.string(), // ISO 8601 UTC
@@ -47,8 +48,11 @@ export default defineSchema({
     .index("by_startAt", ["startAt"]),
 
   callbacks: defineTable({
-    slotId: v.id("callbackSlots"),
+    /** Legacy pre-seeded slot reference; new bookings use startAt instead. */
+    slotId: v.optional(v.id("callbackSlots")),
     teamId: v.string(),
+    startAt: v.optional(v.string()), // ISO 8601 UTC slot start
+    endAt: v.optional(v.string()),
     customerId: v.optional(v.string()),
     callerName: v.string(),
     callbackNumber: v.string(),
@@ -61,6 +65,7 @@ export default defineSchema({
     simulated: v.literal(true),
   })
     .index("by_slot", ["slotId"])
+    .index("by_team_start", ["teamId", "startAt"])
     .index("by_callId", ["callId"]),
 
   /** Activity log for the demo UI. Written by the tool webhook; read live by the call page. */

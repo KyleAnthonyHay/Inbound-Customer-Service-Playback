@@ -1,6 +1,5 @@
 import type { ActionCtx } from "./_generated/server";
 import { api } from "./_generated/api";
-import type { Id } from "./_generated/dataModel";
 import { searchDocs } from "../src/lib/tools/kb";
 import { getCurrentPlaybackAppInfo } from "../src/lib/tools/apple";
 import { getRelevantChangesSinceVersion } from "../src/lib/tools/releases";
@@ -15,8 +14,14 @@ export type ToolSource = "live" | "simulated" | "internal";
 export type ToolDef = {
   source: ToolSource;
   label: string;
-  run: (args: Record<string, unknown>, ctx: ActionCtx, callId: string) => Promise<unknown>;
+  run: (args: Record<string, unknown>, ctx: ActionCtx, call: CallInfo) => Promise<unknown>;
 };
+
+/** What the webhook knows about the live call. callerNumber is set on phone calls only. */
+export type CallInfo = { callId: string; callerNumber?: string };
+
+/** Values the model may pass to mean "call me back on the number I'm calling from". */
+const CALLER_ID_WORDS = /^(caller[- ]?id|same( number)?|this number|current number|the number i'?m calling from)$/i;
 
 const str = (v: unknown) => (typeof v === "string" ? v : undefined);
 
@@ -49,23 +54,32 @@ export const tools: Record<string, ToolDef> = {
   get_callback_slots: {
     source: "simulated",
     label: TOOL_META.get_callback_slots.label,
-    run: async (a, ctx) =>
-      ctx.runQuery(api.callbacks.availableSlots, { teamId: str(a.teamId) ?? "playback-support", fromIso: str(a.fromIso), limit: 4 }),
+    run: async (a, ctx, call) => {
+      const out = await ctx.runQuery(api.callbacks.availableSlots, { teamId: str(a.teamId) ?? "playback-support", fromIso: str(a.fromIso), limit: 4 });
+      return call.callerNumber
+        ? { ...out, callerIdNumber: call.callerNumber, callerIdNote: "The caller is on the phone from this number. Offer to call them back on it instead of asking them to read a number out." }
+        : out;
+    },
   },
   reserve_callback: {
     source: "simulated",
     label: TOOL_META.reserve_callback.label,
-    run: async (a, ctx, callId) => {
+    run: async (a, ctx, call) => {
       const slotId = str(a.slotId);
       if (!slotId) return { ok: false, reason: "missing-slotId", source: "simulated" };
+      const given = str(a.callbackNumber)?.trim() ?? "";
+      const useCallerId = !given || CALLER_ID_WORDS.test(given);
+      if (useCallerId && !call.callerNumber)
+        return { ok: false, reason: "missing-number", source: "simulated", next: "Ask the caller for the best number to call them back on." };
       return ctx.runMutation(api.callbacks.reserve, {
-        slotId: slotId as Id<"callbackSlots">,
+        slotId,
+        teamId: str(a.teamId),
         callerName: str(a.callerName) ?? "Caller",
-        callbackNumber: str(a.callbackNumber) ?? "",
+        callbackNumber: useCallerId ? call.callerNumber! : given,
         timeZone: str(a.timeZone) ?? "unknown",
         reason: str(a.reason) ?? "Playback support follow-up",
         customerId: str(a.customerId),
-        callId,
+        callId: call.callId,
       });
     },
   },

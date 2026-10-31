@@ -36,10 +36,12 @@ http.route({
     const secret = process.env.VAPI_TOOL_SECRET;
     if (secret && request.headers.get("x-demo-secret") !== secret) return json({ error: "unauthorized" }, 401);
 
-    const body = (await request.json().catch(() => ({}))) as { message?: { type?: string; toolCallList?: ToolCall[]; call?: { id?: string } } };
+    const body = (await request.json().catch(() => ({}))) as { message?: { type?: string; toolCallList?: ToolCall[]; call?: { id?: string; customer?: { number?: string } } } };
     const msg = body.message;
     if (!msg || msg.type !== "tool-calls" || !Array.isArray(msg.toolCallList)) return json({ results: [] });
     const callId = msg.call?.id ?? "unknown";
+    // Phone calls carry the caller's number (caller ID); browser calls do not.
+    const callerNumber = msg.call?.customer?.number || undefined;
 
     const results = await Promise.all(
       msg.toolCallList.map(async (tc) => {
@@ -53,7 +55,7 @@ http.route({
         const started = Date.now();
         await ctx.runMutation(api.callEvents.log, { callId, kind: "tool-start", tool: name, toolCallId: tc.id, label: def.label, status: "running", source: def.source });
         try {
-          const out = await def.run(args, ctx, callId);
+          const out = await def.run(args, ctx, { callId, callerNumber });
           const durationMs = Date.now() - started;
           const ok = !(out && typeof out === "object" && "ok" in out && (out as { ok: unknown }).ok === false);
           await ctx.runMutation(api.callEvents.log, {

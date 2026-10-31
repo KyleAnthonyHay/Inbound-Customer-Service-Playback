@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "sync:assistant": "tsx --env-file=.env.local scripts/sync-assistant.ts",
+    "provision:number": "tsx --env-file=.env.local scripts/provision-number.ts",
     "typecheck": "tsc --noEmit",
     "test": "tsx --test scripts/test-tools.ts",
     "voice:test": "tsx --env-file=.env.local scripts/voice-test.ts"
