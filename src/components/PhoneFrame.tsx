@@ -38,13 +38,17 @@ function FitScreen({ className, children }: { className: string; children: React
  * radius ~13% of the opening width, and exactly the 440x956 screen ratio.
  * The screen renders on top of the frame, clipped to that opening, so the
  * app's own Dynamic Island shows instead of the one baked into the image.
- * On narrow viewports the frame is dropped and the screen fills the window.
+ * On narrow viewports the frame is dropped and the screen fills the window
+ * inside the device safe areas; the `.bare` class lets the screen hide its
+ * drawn status bar, since the real phone shows its own.
  */
 export function PhoneFrame({ children }: { children: React.ReactNode }) {
   return (
     <>
       {/* Phone-size viewports: no frame */}
-      <FitScreen className="relative h-[100dvh] w-full overflow-hidden bg-[#242424] sm:hidden">{children}</FitScreen>
+      <div className="bare h-[100dvh] w-full bg-[#242424] sm:hidden" style={{ paddingTop: "env(safe-area-inset-top)", paddingBottom: "env(safe-area-inset-bottom)" }}>
+        <FitScreen className="relative h-full w-full overflow-hidden">{children}</FitScreen>
+      </div>
 
       {/* Larger viewports: framed */}
       <div className="hidden min-h-[100dvh] items-center justify-center bg-[#0b0b0c] py-6 sm:flex">

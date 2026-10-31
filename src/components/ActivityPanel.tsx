@@ -536,8 +536,8 @@ function View({ open, onToggle, callId, status, startedAt, assistantSpeaking, ha
             type="button"
             onClick={onToggle}
             aria-expanded={false}
-            className="fixed right-4 top-4 z-20 flex items-center gap-2 rounded-full border border-white/10 bg-[#111113]/95 px-4 py-2 text-[13px] font-medium text-white/85 shadow-[0_8px_30px_rgba(0,0,0,0.35)] backdrop-blur-xl transition-colors hover:text-white"
-            style={{ fontFamily: "var(--font-geist-sans), -apple-system, system-ui, sans-serif" }}
+            className="fixed right-4 z-20 flex min-h-[44px] items-center gap-2 rounded-full border border-white/10 bg-[#111113]/95 px-4 py-2 text-[14px] font-medium text-white/85 shadow-[0_8px_30px_rgba(0,0,0,0.35)] backdrop-blur-xl transition-colors hover:text-white sm:top-4 sm:min-h-0 sm:text-[13px]"
+            style={{ fontFamily: "var(--font-geist-sans), -apple-system, system-ui, sans-serif", top: "calc(env(safe-area-inset-top) + 8px)" }}
             initial={reduce ? false : BLUR_IN}
             animate={{ ...SHARP, transition: { duration: reduce ? 0 : SWAP_IN, ease: EASE, delay: reduce ? 0 : 0.15 } }}
             exit={{ ...BLUR_IN, transition: { duration: reduce ? 0 : SWAP_OUT, ease: "easeIn" } }}
@@ -548,15 +548,24 @@ function View({ open, onToggle, callId, status, startedAt, assistantSpeaking, ha
         )}
       </AnimatePresence>
 
+      {/* Phones: scrim behind the bottom sheet; tap to dismiss */}
+      {open && <div className="fixed inset-0 z-10 bg-black/55 sm:hidden" onClick={onToggle} aria-hidden />}
+
       <aside
         className={cn(
-          "fixed inset-y-0 right-0 z-20 flex w-[400px] max-w-[94vw] flex-col border-l border-white/10 bg-[#111113]/95 text-white shadow-[-20px_0_60px_rgba(0,0,0,0.45)] backdrop-blur-xl transition-transform duration-300",
-          open ? "translate-x-0" : "translate-x-full"
+          // phones: modal bottom sheet; tablets and up: right-hand drawer
+          "fixed inset-x-0 bottom-0 z-20 flex h-[80dvh] w-full flex-col rounded-t-[28px] border-t border-white/10 bg-[#111113]/95 text-white shadow-[0_-20px_60px_rgba(0,0,0,0.45)] backdrop-blur-xl transition-transform duration-300",
+          "sm:inset-x-auto sm:inset-y-0 sm:right-0 sm:h-auto sm:w-[400px] sm:max-w-[94vw] sm:rounded-none sm:border-l sm:border-t-0 sm:shadow-[-20px_0_60px_rgba(0,0,0,0.45)]",
+          open ? "translate-y-0 sm:translate-x-0" : "translate-y-full sm:translate-x-full sm:translate-y-0"
         )}
         style={{ fontFamily: "var(--font-geist-sans), -apple-system, system-ui, sans-serif" }}
         aria-label="Agent activity"
+        role="dialog"
+        aria-modal={open ? "true" : undefined}
       >
-        <div className="flex-1 overflow-y-auto px-5 pb-5 pt-6">
+        {/* grabber, phones only */}
+        <div className="mx-auto mt-2.5 h-1 w-9 shrink-0 rounded-full bg-white/25 sm:hidden" aria-hidden />
+        <div className="flex-1 overflow-y-auto overscroll-contain px-4 pb-5 pt-4 sm:px-5 sm:pt-6">
           <div className="flex items-center justify-between gap-3">
             {/* "Thinking 2s" header */}
             <motion.button
@@ -584,7 +593,7 @@ function View({ open, onToggle, callId, status, startedAt, assistantSpeaking, ha
               aria-expanded={open}
               aria-label="Hide agent activity"
               tabIndex={open ? 0 : -1}
-              className="-mr-1.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-white/50 transition-colors hover:bg-white/[0.06] hover:text-white/90"
+              className="-mr-2 flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-white/50 transition-colors hover:bg-white/[0.06] hover:text-white/90 sm:-mr-1.5 sm:h-7 sm:w-7"
             >
               <X size={15} aria-hidden />
             </button>
@@ -696,7 +705,7 @@ function View({ open, onToggle, callId, status, startedAt, assistantSpeaking, ha
 
         </div>
 
-        <footer className="border-t border-white/[0.08] px-5 py-2 text-[11px] leading-snug text-white/40">
+        <footer className="border-t border-white/[0.08] px-4 py-2 text-[11px] leading-snug text-white/40 sm:px-5" style={{ paddingBottom: "max(8px, env(safe-area-inset-bottom))" }}>
           Apple = live App Store lookup. Simulated = demo customers, teams, callbacks; not MultiTracks systems. Docs = bounded help-center snapshot. Model = GPT-Live reasoning.
         </footer>
       </aside>

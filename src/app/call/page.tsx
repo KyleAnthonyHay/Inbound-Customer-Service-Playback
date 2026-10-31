@@ -33,7 +33,8 @@ export default function CallPage() {
     <main className="relative min-h-[100dvh] bg-background">
       <Link
         href="/"
-        className="fixed bottom-4 left-4 z-10 flex items-center gap-1 rounded-full bg-white/10 px-3 py-1.5 text-sm text-white/80 backdrop-blur hover:bg-white/15 sm:bottom-auto sm:top-4"
+        className="fixed left-4 z-10 flex min-h-[44px] items-center gap-1.5 rounded-full bg-white/10 px-4 text-[15px] text-white/85 backdrop-blur hover:bg-white/15 sm:min-h-0 sm:py-1.5 sm:text-sm"
+        style={{ top: "calc(env(safe-area-inset-top) + 8px)" }}
       >
         <ArrowLeft size={16} /> Home
       </Link>

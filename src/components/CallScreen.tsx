@@ -87,7 +87,7 @@ function CallIcon() {
 
 function StatusBar({ inCall }: { inCall: boolean }) {
   return (
-    <div className="absolute inset-x-0 top-0 h-[54px]">
+    <div className="absolute inset-x-0 top-0 h-[54px] [.bare_&]:invisible">
       <span className="absolute left-[38px] top-[22px] text-[17px] font-semibold leading-[20px] text-white">11:41</span>
 
       {/* Dynamic Island, expanded for an active call */}
