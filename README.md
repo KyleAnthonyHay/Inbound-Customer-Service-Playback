@@ -120,7 +120,7 @@ Data comes from Vapi's assistant-level server messages, not the browser, so phon
 | Convex deployment | `ceaseless-rhinoceros-106` (`npx convex dev`) | `earnest-alpaca-725` (`npx convex deploy`) |
 | Vapi assistant | "Playback Support (dev)" | "Playback Support (prod)" |
 | Env file | `.env.local` | `.env.production.local` (never committed) |
-| Web app | `npm run dev` on localhost | https://playback-support-agent.vercel.app (Vercel project `playback-support-agent`) |
+| Web app | `npm run dev` on localhost | https://playback-support.vercel.app (Vercel project `playback-support` (haykyle917 scope)) |
 | Tool secret | dev Convex env `VAPI_TOOL_SECRET` | prod Convex env `VAPI_TOOL_SECRET` (different value) |
 
 Both assistants are built from the same `buildAssistant()`; only the webhook URLs, the secret and the name differ. The phone number, when claimed, attaches to the prod assistant. Local testing (browser calls, `npm run voice:test`, `npm run sync:assistant`) touches only the dev pair, so the demo's call history and prompts stay untouched while you work.
