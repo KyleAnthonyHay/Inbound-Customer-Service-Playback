@@ -159,6 +159,18 @@ export const transcriptByCall = query({
   handler: async (ctx, a) => (a.callId ? ctx.db.query("transcripts").withIndex("by_call", (q) => q.eq("callId", a.callId)).order("asc").take(500) : []),
 });
 
+/** Remove one call and everything logged for it (cleanup of smoke-test rows). */
+export const remove = mutation({
+  args: { callId: v.string() },
+  handler: async (ctx, a) => {
+    const c = await ctx.db.query("calls").withIndex("by_callId", (q) => q.eq("callId", a.callId)).unique();
+    for (const t of await ctx.db.query("transcripts").withIndex("by_call", (q) => q.eq("callId", a.callId)).collect()) await ctx.db.delete(t._id);
+    for (const e of await ctx.db.query("callEvents").withIndex("by_call", (q) => q.eq("callId", a.callId)).collect()) await ctx.db.delete(e._id);
+    if (c) await ctx.db.delete(c._id);
+    return { ok: true, removed: !!c };
+  },
+});
+
 /** "Clear past calls": removes finished calls, their transcripts and their tool events. A call in progress is kept. */
 export const clearAll = mutation({
   args: {},
