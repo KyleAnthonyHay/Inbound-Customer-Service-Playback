@@ -26,11 +26,17 @@ export function buildToolDefinitions(opts: { serverUrl: string; secret?: string 
   return [
     fn(
       "search_playback_docs",
-      "Search MultiTracks' official Playback support documentation for troubleshooting steps. Use before giving any troubleshooting instruction. Returns documented steps with source URLs; only give steps that appear in the results.",
+      "Search MultiTracks' Playback help-center documentation, plus Apple Support's device-level articles (storage, Wi-Fi, USB accessories, Bluetooth, Mac sound output), for troubleshooting steps. Call before giving any troubleshooting instruction, and again after each failed step with alreadyTried. Returns nextSteps: an ordered plan of untried, documented steps with stepIds and source URLs. Only give steps that appear in the results.",
       {
-        query: { type: "string", description: "Symptom or topic in the caller's words, e.g. 'song stuck downloading' or 'no sound from USB interface'." },
+        query: { type: "string", description: "The symptom and the exact on-screen message in the caller's words, e.g. 'download error when loading a song' or 'no sound from USB interface'." },
         category: { type: "string", enum: ["song-loading", "audio-output", "requirements", "subscription", "general"], description: "Optional category filter." },
         platform: { type: "string", description: "Caller's platform if known: iOS, iPadOS, macOS, Windows." },
+        alreadyTried: {
+          type: "array",
+          items: { type: "string" },
+          description: "stepIds from earlier results that the caller has already tried (including things they said they did before calling). They are left out of nextSteps.",
+        },
+        callerTiming: { type: "string", enum: ["live", "has-time", "unknown"], description: "'live' if the caller is mid-service or about to start; disruptive steps then come last." },
       },
       ["query"],
       "Let me check the documentation on that."
@@ -44,10 +50,12 @@ export function buildToolDefinitions(opts: { serverUrl: string; secret?: string 
     ),
     fn(
       "get_relevant_changes_since_version",
-      "Given the caller's installed Playback version and symptom, find documented fixes released between their version and the current version. Tells you whether updating is a targeted fix. Use after learning the caller's version.",
+      "Given the caller's installed Playback version and symptom, compare against the live App Store version (Apple iTunes Lookup API) and find fixes released since, from the documented release history and the live App Store release notes. Also checks the device OS against the app's minimum. Tells you whether updating is a targeted fix. Call once, as soon as you learn the caller's version, for any symptom.",
       {
         installedVersion: { type: "string", description: "Caller's installed Playback version, e.g. 8.6.2." },
         symptom: { type: "string", description: "Short symptom description, e.g. 'Cloud Pro expired message'." },
+        deviceOsVersion: { type: "string", description: "Caller's iOS/iPadOS version if known, e.g. 17.5. Checked against the App Store's live minimum OS version." },
+        platform: { type: "string", description: "Caller's platform if known: iOS, iPadOS, macOS." },
       },
       ["installedVersion"],
       "Let me compare your version against recent releases."
