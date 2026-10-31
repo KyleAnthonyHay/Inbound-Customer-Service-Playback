@@ -200,7 +200,7 @@ function Keypad({ onDigit }: { onDigit: (d: string) => void }) {
 /* ---------- Screen ---------- */
 
 export function CallScreen({
-  status, label, subtitle, startedAt, muted, assistantSpeaking, onStart, onEnd, onToggleMute, onKeypadDigit, handoff,
+  status, label, subtitle, startedAt, muted, onStart, onEnd, onToggleMute, onKeypadDigit, handoff,
 }: Props) {
   const elapsed = useElapsed(startedAt, status === "active");
   const inCall = status === "active" || status === "connecting";
@@ -254,11 +254,6 @@ export function CallScreen({
           )}
         </>
       )}
-
-      <span
-        className={cn("absolute left-1/2 top-[230px] h-[6px] w-[6px] -translate-x-1/2 rounded-full bg-[#30d158] transition-opacity", assistantSpeaking && !showTyped ? "opacity-100" : "opacity-0")}
-        aria-hidden
-      />
 
       {keypadOpen ? (
         <>
