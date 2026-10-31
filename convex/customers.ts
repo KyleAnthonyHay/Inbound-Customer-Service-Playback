@@ -44,7 +44,9 @@ function notFound() {
   return { ok: false as const, reason: "not-found" as const, source: "simulated" as const };
 }
 
-function strip<T extends { _id: unknown; _creationTime: unknown }>(c: T) {
-  const { _id: _ignoredId, _creationTime: _ignoredTime, ...rest } = c;
-  return rest;
+function strip<T extends { _id: unknown; _creationTime: unknown }>(c: T): Omit<T, "_id" | "_creationTime"> {
+  const copy: Record<string, unknown> = { ...c };
+  delete copy._id;
+  delete copy._creationTime;
+  return copy as Omit<T, "_id" | "_creationTime">;
 }

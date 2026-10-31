@@ -30,7 +30,6 @@ function useElapsed(startedAt: number | null, running: boolean) {
   const [now, setNow] = useState<number | null>(null);
   useEffect(() => {
     if (!running) return;
-    setNow(Date.now());
     const t = setInterval(() => setNow(Date.now()), 500);
     return () => clearInterval(t);
   }, [running]);
