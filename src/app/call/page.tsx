@@ -15,8 +15,11 @@ export default function CallPage() {
   const [panelOpen, setPanelOpen] = useState(false);
   // Dev aid: /call?callId=<id> shows the logged events of a past call in the panel.
   const [callIdOverride, setCallIdOverride] = useState<string | null>(null);
+  const [demo, setDemo] = useState(false);
   useEffect(() => {
-    const id = new URLSearchParams(window.location.search).get("callId");
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("demo")) setTimeout(() => setDemo(true), 0);
+    const id = params.get("callId");
     if (!id) return;
     // Deferred so the first client render matches the server-rendered HTML.
     const t = setTimeout(() => {
@@ -46,6 +49,7 @@ export default function CallPage() {
         onStart={call.start}
         onEnd={call.stop}
         onToggleMute={call.toggleMute}
+        handoff={call.handoff}
       />
       </PhoneFrame>
 
@@ -56,9 +60,45 @@ export default function CallPage() {
         status={call.status}
         startedAt={call.startedAt}
         assistantSpeaking={call.assistantSpeaking}
+        handoff={call.handoff}
         clientEvents={call.events}
         transcript={call.transcript}
       />
+
+      {demo && (
+        <div className="fixed bottom-4 right-4 z-30 flex flex-col gap-2 rounded-xl border border-white/10 bg-[#111113]/95 p-3 text-xs text-white/80">
+          <span className="text-white/50">Dev simulation (synthetic client messages)</span>
+          <button
+            type="button"
+            className="rounded-md bg-white/10 px-3 py-1.5 text-left hover:bg-white/15"
+            onClick={() => {
+              const id = `sim-${Date.now()}`;
+              call.debugInject({ type: "tool-calls", toolCallList: [{ id, type: "function", function: { name: "initiate_handoff", arguments: { teamId: "playback-support" } } }] });
+              setTimeout(
+                () =>
+                  call.debugInject({
+                    type: "tool-calls-result",
+                    toolCallResult: { toolCallId: id, name: "initiate_handoff", result: JSON.stringify({ ok: true, simulated: true, team: "Playback Technical Support", source: "simulated" }) },
+                  }),
+                900
+              );
+            }}
+          >
+            Simulate successful handoff
+          </button>
+          <button
+            type="button"
+            className="rounded-md bg-white/10 px-3 py-1.5 text-left hover:bg-white/15"
+            onClick={() => {
+              const id = `sim-${Date.now()}`;
+              call.debugInject({ type: "tool-calls", toolCallList: [{ id, type: "function", function: { name: "search_playback_docs", arguments: { query: "download error" } } }] });
+              setTimeout(() => call.debugInject({ type: "tool-calls-result", toolCallResult: { toolCallId: id, name: "search_playback_docs", result: "{\"ok\":true,\"found\":3}" } }), 1200);
+            }}
+          >
+            Simulate docs search
+          </button>
+        </div>
+      )}
 
       {(call.error || !configured) && (
         <div

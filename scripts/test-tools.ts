@@ -87,3 +87,14 @@ test("invalid version asks for the version instead of guessing", async () => {
   const r = await getRelevantChangesSinceVersion({ installedVersion: "latest" });
   assert.equal(r.ok, false);
 });
+
+import { parseHandoffResult } from "../src/lib/handoff";
+
+test("parseHandoffResult reads the relayed tool result string", () => {
+  const ok = parseHandoffResult(JSON.stringify({ ok: true, team: "Playback Technical Support", simulated: true }));
+  assert.deepEqual(ok, { ok: true, team: "Playback Technical Support" });
+  const no = parseHandoffResult(JSON.stringify({ ok: false, reason: "team-unavailable", team: "Billing & Accounts" }));
+  assert.deepEqual(no, { ok: false, reason: "team-unavailable", team: "Billing & Accounts" });
+  assert.equal(parseHandoffResult("not json"), null);
+  assert.equal(parseHandoffResult({ hello: 1 }), null);
+});

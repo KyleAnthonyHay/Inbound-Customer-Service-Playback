@@ -5,6 +5,8 @@ import type Vapi from "@vapi-ai/web";
 import { config, isVapiConfigured, toolServerUrl } from "./config";
 import { buildAssistant } from "./assistant";
 import { toolMeta, type ToolSource } from "./tools/meta";
+import { createTonePlayer, type TonePlayer } from "./transferTone";
+import { parseHandoffResult } from "./handoff";
 
 export type CallStatus = "idle" | "connecting" | "active" | "ended" | "error";
 
@@ -49,9 +51,18 @@ type VapiMessage = {
 let idCounter = 0;
 const nextId = () => `${Date.now()}-${idCounter++}`;
 
+/** After a successful simulated handoff, end the demo call if the model has not. */
+const HANDOFF_END_BACKSTOP_MS = 12_000;
+
+export type Handoff = { team: string; at: number };
+
 export function useVapiCall() {
   const vapiRef = useRef<Vapi | null>(null);
   const toolStartTimes = useRef<Map<string, number>>(new Map());
+  const toolNames = useRef<Map<string, string>>(new Map());
+  const toneRef = useRef<TonePlayer | null>(null);
+  const backstopRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [handoff, setHandoff] = useState<Handoff | null>(null);
   const [status, setStatus] = useState<CallStatus>("idle");
   const [error, setError] = useState<string | null>(null);
   const [assistantSpeaking, setAssistantSpeaking] = useState(false);
@@ -103,6 +114,7 @@ export function useVapiCall() {
             const meta = toolMeta(name);
             const id = call.id ?? nextId();
             toolStartTimes.current.set(id, Date.now());
+            toolNames.current.set(id, name);
             setEvents((prev) =>
               prev.some((e) => e.toolCallId === id)
                 ? prev
@@ -115,6 +127,20 @@ export function useVapiCall() {
           const r = m.toolCallResult;
           if (!r?.toolCallId) return;
           const started = toolStartTimes.current.get(r.toolCallId);
+          const name = r.name ?? toolNames.current.get(r.toolCallId);
+          if (name === "initiate_handoff") {
+            const parsed = parseHandoffResult(r.result);
+            if (parsed?.ok) {
+              setHandoff({ team: parsed.team, at: Date.now() });
+              pushEvent({ kind: "transfer", label: "Transfer sound (browser)", status: "succeeded" });
+              void toneRef.current?.playTransfer();
+              if (backstopRef.current) clearTimeout(backstopRef.current);
+              backstopRef.current = setTimeout(() => {
+                pushEvent({ kind: "call", label: "Ending demo call after handoff", status: "succeeded" });
+                vapiRef.current?.stop();
+              }, HANDOFF_END_BACKSTOP_MS);
+            }
+          }
           setEvents((prev) =>
             prev.map((e) =>
               e.toolCallId === r.toolCallId
@@ -152,6 +178,9 @@ export function useVapiCall() {
     setTranscript([]);
     setEvents([]);
     setCallId(null);
+    setHandoff(null);
+    if (!toneRef.current) toneRef.current = createTonePlayer();
+    toneRef.current.unlock();
     setStatus("connecting");
     pushEvent({ kind: "call", label: "Connecting", status: "running" });
 
@@ -167,6 +196,7 @@ export function useVapiCall() {
         pushEvent({ kind: "call", label: "Connected", status: "succeeded" });
       });
       vapi.on("call-end", () => {
+        if (backstopRef.current) clearTimeout(backstopRef.current);
         setStatus("ended");
         setAssistantSpeaking(false);
         pushEvent({ kind: "call", label: "Call ended" });
@@ -222,9 +252,14 @@ export function useVapiCall() {
 
   useEffect(() => {
     return () => {
+      if (backstopRef.current) clearTimeout(backstopRef.current);
       vapiRef.current?.stop();
+      toneRef.current?.dispose();
     };
   }, []);
+
+  /** Dev-only: feed a synthetic server message through the same handler. */
+  const debugInject = useCallback((message: unknown) => handleMessage(message), [handleMessage]);
 
   return {
     status,
@@ -234,10 +269,12 @@ export function useVapiCall() {
     muted,
     startedAt,
     callId,
+    handoff,
     transcript,
     events,
     start,
     stop,
     toggleMute,
+    debugInject,
   };
 }

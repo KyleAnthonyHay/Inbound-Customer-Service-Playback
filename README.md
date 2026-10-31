@@ -57,6 +57,18 @@ Verified against Vapi docs (2026-10-30): GPT-Live does not support knowledge
 bases or the Query tool; transfers are unsupported on browser calls; a spoken
 goodbye does not end the call, so the `endCall` tool is attached.
 
+## Handoff and transfer sound, per channel
+
+- **Browser**: when `initiate_handoff` succeeds, the page plays a short transfer
+  tone locally (Web Audio: two beeps, then US ringback) and shows
+  "Transferring…" on the phone screen. The assistant then says goodbye and
+  calls `endCall`; if it has not ended the call 12 s after the handoff, the
+  page ends it. Verified with the dev simulation at `/call?demo=1`.
+- **Phone**: Vapi cannot play an audio file into a GPT-Live call and real
+  transfers are blind-only on Twilio/Vapi SIP, which this demo does not use.
+  The handoff is therefore spoken only, then `endCall`. This limitation is
+  stated rather than worked around.
+
 ## Simulation boundaries
 
 Transfers, support-team availability, callback slots, and customer records

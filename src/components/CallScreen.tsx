@@ -20,6 +20,8 @@ type Props = {
   onEnd: () => void;
   onToggleMute: () => void;
   onKeypadDigit?: (digit: string) => void;
+  /** Set after a successful simulated handoff; shows the transferring state. */
+  handoff?: { team: string; at: number } | null;
 };
 
 export const SCREEN_W = 440;
@@ -198,7 +200,7 @@ function Keypad({ onDigit }: { onDigit: (d: string) => void }) {
 /* ---------- Screen ---------- */
 
 export function CallScreen({
-  status, label, subtitle, startedAt, muted, assistantSpeaking, onStart, onEnd, onToggleMute, onKeypadDigit,
+  status, label, subtitle, startedAt, muted, assistantSpeaking, onStart, onEnd, onToggleMute, onKeypadDigit, handoff,
 }: Props) {
   const elapsed = useElapsed(startedAt, status === "active");
   const inCall = status === "active" || status === "connecting";
@@ -218,8 +220,13 @@ export function CallScreen({
     onKeypadDigit?.(d);
   };
 
+  const transferring = !!handoff && status === "active";
   const topLine =
-    status === "connecting" ? "Calling…" : status === "ended" ? "Call Ended" : status === "error" ? "Call Failed" : elapsed;
+    status === "connecting" ? "Calling…"
+    : status === "ended" ? "Call Ended"
+    : status === "error" ? "Call Failed"
+    : transferring ? "Transferring…"
+    : elapsed;
   const showTyped = keypadOpen && typed.length > 0;
 
   return (
@@ -241,6 +248,9 @@ export function CallScreen({
           </h1>
           {status === "connecting" && subtitle && (
             <p className="absolute inset-x-0 top-[192px] text-center text-[22px] leading-[27px] text-[#8b8b8f]">{subtitle}</p>
+          )}
+          {transferring && (
+            <p className="absolute inset-x-0 top-[192px] text-center text-[22px] leading-[27px] text-[#8b8b8f]">{handoff.team}</p>
           )}
         </>
       )}
