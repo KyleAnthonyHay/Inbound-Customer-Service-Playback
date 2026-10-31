@@ -63,6 +63,9 @@ async function main() {
   ws.binaryType = "arraybuffer";
   let lastAssistantAudioAt = 0;
   let assistantEverSpoke = false;
+  let lastAssistantTranscriptAt = 0;
+  let lastToolCallAt = 0;
+  let assistantTextSinceSend = "";
   const events: string[] = [];
   const transcript: string[] = [];
   let ended = false;
@@ -90,11 +93,20 @@ async function main() {
     try {
       const m = JSON.parse(data.toString()) as Record<string, unknown>;
       const type = String(m.type);
-      if (type === "transcript" && m.transcriptType === "final") {
-        transcript.push(`${stamp()} ${String(m.role).toUpperCase()}: ${m.transcript}`);
-        console.log(`  ${String(m.role).toUpperCase()}: ${m.transcript}`);
+      if (type === "transcript") {
+        if (m.role === "assistant") {
+          lastAssistantTranscriptAt = Date.now();
+          assistantEverSpoke = true;
+        }
+        if (m.transcriptType === "final") {
+          if (m.role === "assistant") assistantTextSinceSend += " " + String(m.transcript);
+          transcript.push(`${stamp()} ${String(m.role).toUpperCase()}: ${m.transcript}`);
+          console.log(`  ${String(m.role).toUpperCase()}: ${m.transcript}`);
+        }
       } else if (type === "tool-calls") {
-        const names = ((m.toolCallList as Array<{ function?: { name?: string; arguments?: unknown } }>) ?? []).map((t) => `${t.function?.name}(${JSON.stringify(t.function?.arguments ?? {})})`);
+        lastToolCallAt = Date.now();
+        const list = (m.toolCallList as Array<{ function?: { name?: string; arguments?: unknown } }>) ?? [];
+        const names = list.map((t) => `${t.function?.name}(${JSON.stringify(t.function?.arguments ?? {})})`);
         events.push(`${stamp()} TOOL-CALLS ${names.join(", ")}`);
         console.log(`  >> tool-calls: ${names.join(", ")}`);
       } else if (type === "tool-calls-result") {
@@ -103,7 +115,7 @@ async function main() {
       } else if (type === "status-update") {
         events.push(`${stamp()} STATUS ${m.status} ${m.endedReason ?? ""}`);
         if (m.status === "ended") ended = true;
-      } else if (type !== "speech-update" && type !== "conversation-update") {
+      } else if (type !== "conversation-update" && type !== "speech-update") {
         events.push(`${stamp()} ${type}`);
       }
     } catch {
@@ -120,9 +132,20 @@ async function main() {
 
   const waitForAssistantToFinish = async (maxMs: number) => {
     const start = Date.now();
-    // wait until the assistant has spoken and then been silent for 1.6 s
+    // The transport only sends transcript partials, tool-calls, status and hangup.
+    // Done when the assistant has spoken since our last line and both its audio and
+    // transcript partials have been quiet for 2.5 s, unless a tool call happened after
+    // its last words (GPT-Live pauses mid-turn while a tool runs): then wait up to 15 s
+    // for it to resume.
     while (Date.now() - start < maxMs && !ended) {
-      if (assistantEverSpoke && Date.now() - lastAssistantAudioAt > 1800) return;
+      const now = Date.now();
+      const quietFor = now - Math.max(lastAssistantAudioAt, lastAssistantTranscriptAt);
+      // A tool call (incl. GPT-Live's delegate) means the real answer is still coming: hold up to 15 s
+      // unless the assistant has since asked us something.
+      const askedSinceTool = lastToolCallAt < lastAssistantTranscriptAt && /\?/.test(assistantTextSinceSend);
+      const toolPending = now - lastToolCallAt < 15000 && !askedSinceTool;
+      const turnLooksComplete = /\?/.test(assistantTextSinceSend) || quietFor > 7000;
+      if (assistantEverSpoke && quietFor > 2500 && turnLooksComplete && !toolPending) return;
       await sleep(100);
     }
   };
@@ -142,6 +165,7 @@ async function main() {
   for (let i = 0; i < clips.length && !ended; i++) {
     console.log(`  CALLER (sent): ${scenario.lines[i]}`);
     assistantEverSpoke = false;
+    assistantTextSinceSend = "";
     await sendClip(clips[i]);
     await waitForAssistantToFinish(scenario.maxTurnWaitMs ?? 45000);
   }
