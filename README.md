@@ -94,3 +94,15 @@ event as **Live API**, **Docs**, or **Simulated**.
 ## Testing
 
 See `docs/test-matrix.md` for the scenario matrix, metrics definitions, and results.
+
+## Scheduling and time zones
+
+Callback scheduling is deliberately strict so the agent cannot substitute a time the caller did not ask for:
+
+- `get_callback_slots` takes the caller's words (`preferredDate` "Monday", `preferredTime` "5 PM", `timeZone` "EST") and resolves them server-side in `convex/time.ts`. The result says whether **that exact time** is open (`requested.available`), why not if it isn't (`in-the-past`, `weekend`, `outside-hours`, `taken`, `no-slot`), the team's hours in the caller's zone, and the nearest open alternatives. Every slot carries a pre-formatted `local` string; the prompts tell the model to speak those and never convert zones itself (US DST ends 2026-11-01, so Monday callbacks in the demo window are EST while today is EDT).
+- Team hours are defined in the team's own zone (`hours: { timeZone, start, end }` in `convex/seed.ts`); slots are generated from those, 30 minutes apart, weekdays only, with a few pre-reserved so "slot taken" is testable. Re-seed with `npx convex run seed:run`.
+- The reasoner prompt requires: no "that works" before the tool confirms; if the requested time is unavailable, say so and why *before* offering alternatives.
+
+## Tool visibility in the activity panel
+
+Every tool row in the agent-activity panel can be expanded (click) to show the exact function name, the arguments Vapi sent, and the JSON the webhook returned (both truncated server-side, logged in `callEvents.args` / `callEvents.output`). Tool calls also appear inline in the live transcript at the moment they happened, so a transcript like "Agent: the next available slot is…" shows which tool produced it.

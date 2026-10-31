@@ -1,5 +1,6 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { partsIn, WEEKEND, weekdayIn } from "./time";
 
 /** Simulated routing/availability check. */
 export const availability = query({
@@ -8,11 +9,13 @@ export const availability = query({
     const teams = args.teamId
       ? await ctx.db.query("teams").withIndex("by_teamId", (q) => q.eq("teamId", args.teamId!)).collect()
       : await ctx.db.query("teams").collect();
-    const hourUtc = new Date().getUTCHours();
+    const nowMs = Date.now();
     return {
       source: "simulated" as const,
       teams: teams.map((t) => {
-        const withinHours = hourUtc >= t.hoursUtc.start && hourUtc < t.hoursUtc.end;
+        const hours = t.hours ?? { timeZone: "America/Chicago", start: 9, end: 18 };
+        const localHour = partsIn(nowMs, hours.timeZone).h;
+        const withinHours = !WEEKEND.has(weekdayIn(nowMs, hours.timeZone)) && localHour >= hours.start && localHour < hours.end;
         return {
           teamId: t.teamId,
           label: t.label,

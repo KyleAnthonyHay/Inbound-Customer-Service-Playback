@@ -1,4 +1,5 @@
 import { internalMutation } from "./_generated/server";
+import { localToUtcMs, partsIn, WEEKEND, weekdayIn } from "./time";
 
 /**
  * Seeds clearly synthetic demo data. Safe to re-run: it wipes and re-inserts.
@@ -59,7 +60,7 @@ const teams = [
     label: "Playback Technical Support",
     description: "Song loading, audio output, device and version issues.",
     status: "available" as const,
-    hoursUtc: { start: 14, end: 23 }, // 9am-6pm US Central (approx.)
+    hours: { timeZone: "America/Chicago", start: 9, end: 18 }, // 9am-6pm US Central
     simulated: true as const,
   },
   {
@@ -67,25 +68,30 @@ const teams = [
     label: "Billing & Accounts",
     description: "Subscriptions, refunds, and account administration.",
     status: "busy" as const,
-    hoursUtc: { start: 14, end: 22 },
+    hours: { timeZone: "America/Chicago", start: 9, end: 17 },
     simulated: true as const,
   },
 ];
 
+/** 30-minute slots on weekdays within each team's local hours for the next 30 days. */
 function buildSlots(now: Date) {
   const slots: { teamId: string; startAt: string; endAt: string; reserved: boolean }[] = [];
-  for (let day = 1; day <= 30; day++) {
-    const d = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + day));
-    const weekday = d.getUTCDay();
-    if (weekday === 0 || weekday === 6) continue; // weekdays only
-    for (const team of teams) {
-      for (let hour = team.hoursUtc.start; hour < team.hoursUtc.end; hour++) {
+  for (const team of teams) {
+    const tz = team.hours.timeZone;
+    const today = partsIn(now.getTime(), tz);
+    const todayUtc = Date.UTC(today.y, today.mo - 1, today.d);
+    for (let day = 1; day <= 30; day++) {
+      const dayMs = todayUtc + day * 86400000;
+      if (WEEKEND.has(weekdayIn(dayMs + 12 * 3600000, "UTC"))) continue; // weekdays only
+      const date = new Date(dayMs).toISOString().slice(0, 10);
+      for (let hour = team.hours.start; hour < team.hours.end; hour++) {
         for (const minute of [0, 30]) {
-          const start = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), hour, minute));
-          const end = new Date(start.getTime() + 30 * 60 * 1000);
+          const startMs = localToUtcMs(date, `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`, tz);
+          if (startMs === null) continue;
+          const end = new Date(startMs + 30 * 60 * 1000);
           // Pre-reserve a few slots so "slot unavailable" scenarios are testable.
           const reserved = (day * 7 + hour + minute / 30) % 11 === 0;
-          slots.push({ teamId: team.teamId, startAt: start.toISOString(), endAt: end.toISOString(), reserved });
+          slots.push({ teamId: team.teamId, startAt: new Date(startMs).toISOString(), endAt: end.toISOString(), reserved });
         }
       }
     }

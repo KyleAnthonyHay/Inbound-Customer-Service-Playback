@@ -14,6 +14,7 @@ import type * as customers from "../customers.js";
 import type * as http from "../http.js";
 import type * as seed from "../seed.js";
 import type * as teams from "../teams.js";
+import type * as time from "../time.js";
 import type * as vapiTools from "../vapiTools.js";
 
 import type {
@@ -29,6 +30,7 @@ declare const fullApi: ApiFromModules<{
   http: typeof http;
   seed: typeof seed;
   teams: typeof teams;
+  time: typeof time;
   vapiTools: typeof vapiTools;
 }>;
 

@@ -72,17 +72,20 @@ export function buildToolDefinitions(opts: { serverUrl: string; secret?: string 
     ),
     fn(
       "get_callback_slots",
-      "Get the next open callback slots for a team (simulated scheduling). Times are ISO 8601 UTC; convert to the caller's time zone when speaking.",
+      "Check callback availability for a team (simulated scheduling). When the caller names a day and time, pass preferredDate, preferredTime and timeZone: the result says whether THAT exact time is open (requested.available), why not if it isn't (requested.reason + detail), and lists the nearest open alternatives. Without a preferred time it returns the next open slots. Every slot has a 'local' string already in the caller's zone; speak those, never convert times yourself. If requested.available is false you must say so to the caller before offering anything else.",
       {
         teamId: { type: "string", enum: ["playback-support", "billing"] },
-        fromIso: { type: "string", description: "Optional earliest time, ISO 8601." },
+        preferredDate: { type: "string", description: "The day the caller asked for: YYYY-MM-DD, or exactly what they said ('Monday', 'tomorrow', 'Nov 2'); the tool resolves it from today's date in their zone." },
+        preferredTime: { type: "string", description: "The time the caller asked for, in their zone: HH:MM 24-hour or as said ('5 PM', '9:30am')." },
+        timeZone: { type: "string", description: "Caller's zone: IANA (America/New_York) or spoken (EST, Eastern, Central)." },
+        fromIso: { type: "string", description: "Optional earliest time, ISO 8601, when the caller has no specific time in mind." },
       },
       ["teamId"],
-      "Let me check available callback times."
+      "Let me check that time."
     ),
     fn(
       "reserve_callback",
-      "Reserve a callback slot after the caller has explicitly confirmed the time, time zone, and callback number. Only say the callback is confirmed if this returns ok=true. If it fails or the slot was taken, explain and offer another slot.",
+      "Reserve a callback slot after the caller has explicitly confirmed the time, time zone, and callback number. Use the slotId that get_callback_slots returned for the time the caller agreed to. Only say the callback is confirmed if this returns ok=true; read back its 'local' time. If it fails or the slot was taken, explain and offer another slot.",
       {
         slotId: { type: "string", description: "slotId from get_callback_slots." },
         callerName: { type: "string" },

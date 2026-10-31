@@ -48,7 +48,7 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useQuery } from "convex/react";
 import { AnimatePresence, MotionConfig, motion, useReducedMotion } from "motion/react";
-import { ChevronRight, Activity, AlertTriangle, X } from "lucide-react";
+import { ChevronRight, Activity, AlertTriangle, Wrench, X } from "lucide-react";
 import { api } from "../../convex/_generated/api";
 import type { Doc } from "../../convex/_generated/dataModel";
 import { useConvexReady } from "./ConvexClientProvider";
@@ -77,6 +77,11 @@ type Step = {
   durationMs?: number;
   source: ToolSource | "call";
   detail?: string;
+  /** Raw function name, e.g. get_callback_slots. */
+  tool?: string;
+  /** JSON (truncated) from the server log. */
+  args?: string;
+  output?: string;
 };
 
 /** Source name + dot color: blue / amber / teal / gray, tuned for the dark panel. */
@@ -144,8 +149,9 @@ function buildSteps(serverEvents: Doc<"callEvents">[], clientEvents: ActivityEve
   for (const c of clientEvents) {
     if (c.kind === "speech") continue;
     const key = c.toolCallId ?? c.id;
-    upsert(key, () => ({ id: key, at: c.at, label: c.label, status: c.status ?? "info", source: c.source ?? "call", detail: c.detail, durationMs: c.durationMs }), (s) => {
+    upsert(key, () => ({ id: key, at: c.at, label: c.label, status: c.status ?? "info", source: c.source ?? "call", detail: c.detail, durationMs: c.durationMs, tool: c.tool }), (s) => {
       s.status = c.status ?? s.status;
+      s.tool = s.tool ?? c.tool;
       s.durationMs = c.durationMs ?? s.durationMs;
       s.detail = c.detail ?? s.detail;
     });
@@ -153,16 +159,21 @@ function buildSteps(serverEvents: Doc<"callEvents">[], clientEvents: ActivityEve
   for (const e of serverEvents) {
     const key = e.toolCallId ?? e._id;
     if (e.kind === "tool-start") {
-      upsert(key, () => ({ id: key, at: e.at, label: e.label, status: "running", source: e.source }), (s) => {
+      upsert(key, () => ({ id: key, at: e.at, label: e.label, status: "running", source: e.source, tool: e.tool, args: e.args }), (s) => {
         s.source = e.source;
         s.label = e.label;
+        s.tool = e.tool ?? s.tool;
+        s.args = e.args ?? s.args;
       });
     } else if (e.kind === "tool-end") {
-      upsert(key, () => ({ id: key, at: e.at, label: e.label, status: e.status ?? "succeeded", source: e.source }), (s) => {
+      upsert(key, () => ({ id: key, at: e.at, label: e.label, status: e.status ?? "succeeded", source: e.source, tool: e.tool, args: e.args, output: e.output }), (s) => {
         s.status = e.status ?? "succeeded";
         s.durationMs = e.durationMs ?? s.durationMs;
         s.detail = e.detail ?? s.detail;
         s.source = e.source;
+        s.tool = e.tool ?? s.tool;
+        s.args = e.args ?? s.args;
+        s.output = e.output ?? s.output;
       });
     } else {
       upsert(e._id, () => ({ id: e._id, at: e.at, label: e.label, status: e.status ?? "info", source: e.source, detail: e.detail }));
@@ -353,10 +364,11 @@ function StepDot({ step }: { step: Step }) {
   );
 }
 
-function StepRow({ step, entrance, first, last }: { step: Step; entrance: Entrance; first: boolean; last: boolean }) {
+function StepRow({ step, entrance, first, last, expanded, onToggle }: { step: Step; entrance: Entrance; first: boolean; last: boolean; expanded: boolean; onToggle: () => void }) {
   const reduce = useReducedMotion();
   const meta = SOURCE[step.source];
   const running = step.status === "running";
+  const expandable = !!step.tool && step.tool !== "delegate";
   const insert = entrance.mode === "insert";
   const d = entrance.delay;
   // Insert: the gap opens first, content sharpens in once it has settled. Intro: straight blur reveal.
@@ -365,15 +377,18 @@ function StepRow({ step, entrance, first, last }: { step: Step; entrance: Entran
   return (
     <motion.li
       layout="position"
-      initial={reduce ? false : insert ? { height: 0 } : { opacity: 0 }}
-      animate={insert ? { height: ROW_H } : { opacity: 1 }}
+      initial={reduce ? false : insert ? { height: 0 } : { opacity: 0, height: ROW_H }}
+      animate={insert ? { height: expanded ? "auto" : ROW_H } : { opacity: 1, height: expanded ? "auto" : ROW_H }}
       exit={reduce ? { opacity: 0, transition: { duration: 0 } } : { height: 0, opacity: 0, transition: { duration: 0.2, ease: EASE } }}
       transition={{
         height: { duration: reduce ? 0 : GAP, ease: EASE, delay: d },
         opacity: { duration: reduce ? 0 : 0.15, ease: EASE, delay: d },
         layout: { duration: reduce ? 0 : GAP, ease: EASE },
       }}
-      className="relative -mx-4 h-7 overflow-hidden px-4"
+      className={cn("relative -mx-4 overflow-hidden px-4", expandable && "cursor-pointer")}
+      style={{ height: ROW_H }}
+      onClick={expandable ? onToggle : undefined}
+      title={expandable ? (expanded ? "Hide tool call" : "Show tool call") : undefined}
     >
       {/* new-row wash: in with the content, hold ~700 ms, out over ~300 ms */}
       {insert && !reduce && (
@@ -390,7 +405,7 @@ function StepRow({ step, entrance, first, last }: { step: Step; entrance: Entran
       {!last && <span aria-hidden className="absolute bottom-0 left-[22.5px] h-[9px] w-px bg-white/[0.18]" />}
 
       <motion.div
-        className="relative flex h-full items-center gap-3"
+        className="relative flex h-7 items-center gap-3"
         initial={reduce ? false : ROW_IN}
         animate={SHARP}
         transition={{ duration: reduce ? 0 : insert ? REVEAL : 0.15, ease: EASE, delay: revealAt }}
@@ -413,8 +428,54 @@ function StepRow({ step, entrance, first, last }: { step: Step; entrance: Entran
             {running ? "running" : typeof step.durationMs === "number" ? `${step.durationMs} ms` : ""}
           </Swap>
         </span>
+        {expandable && (
+          <ChevronRight
+            size={12}
+            aria-hidden
+            className={cn("-mr-1 shrink-0 text-white/30 transition-transform duration-200", expanded && "rotate-90")}
+          />
+        )}
       </motion.div>
+      {expandable && expanded && <ToolDetail step={step} />}
     </motion.li>
+  );
+}
+
+/** Exact call: function name, arguments, and the result the webhook returned (both truncated server-side). */
+function ToolDetail({ step }: { step: Step }) {
+  const pretty = (raw?: string) => {
+    if (!raw) return undefined;
+    try {
+      return JSON.stringify(JSON.parse(raw), null, 1).replace(/\n\s*/g, " ");
+    } catch {
+      return raw;
+    }
+  };
+  const args = pretty(step.args);
+  const output = pretty(step.output);
+  return (
+    <div className="mb-2 ml-[26px] rounded-lg border border-white/[0.07] bg-black/30 px-2.5 py-2 font-mono text-[11px] leading-[16px] text-white/60" onClick={(e) => e.stopPropagation()}>
+      <div className="text-white/85">
+        {step.tool}
+        <span className="text-white/40">(</span>
+        {args ? <span className="break-all text-[#f7cb72]/90">{args}</span> : <span className="text-white/30">no arguments</span>}
+        <span className="text-white/40">)</span>
+      </div>
+      {step.status === "running" && <div className="mt-1 text-white/35">waiting for result…</div>}
+      {output && (
+        <div className="mt-1 max-h-[140px] overflow-y-auto break-all text-white/55 [scrollbar-width:thin]">
+          <span className="text-white/35">→ </span>
+          {output}
+        </div>
+      )}
+      {!output && step.status !== "running" && step.detail && (
+        <div className="mt-1 break-all text-white/55">
+          <span className="text-white/35">→ </span>
+          {step.detail}
+        </div>
+      )}
+      {!output && step.status !== "running" && !step.detail && step.source === "model" && <div className="mt-1 text-white/35">handled by the model, no server result</div>}
+    </div>
   );
 }
 
@@ -428,6 +489,14 @@ function Rail({ steps }: { steps: Step[] }) {
     intro: new Set(steps.length >= 2 ? steps.map((s) => s.id) : []),
     stagger: new Map<string, number>(),
   }));
+  const [openIds, setOpenIds] = useState<ReadonlySet<string>>(() => new Set());
+  const toggle = (id: string) =>
+    setOpenIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
   const fresh = steps.filter((s) => !seen.ids.has(s.id));
   if (fresh.length) {
     const ids = new Set(seen.ids);
@@ -449,7 +518,7 @@ function Rail({ steps }: { steps: Step[] }) {
           const entrance: Entrance = seen.intro.has(s.id)
             ? { mode: "intro", delay: 0.06 + (n - 1 - i) * INTRO_STAGGER }
             : { mode: "insert", delay: seen.stagger.get(s.id) ?? 0 };
-          return <StepRow key={s.id} step={s} entrance={entrance} first={i === 0} last={i === n - 1} />;
+          return <StepRow key={s.id} step={s} entrance={entrance} first={i === 0} last={i === n - 1} expanded={openIds.has(s.id)} onToggle={() => toggle(s.id)} />;
         })}
       </AnimatePresence>
     </ol>
@@ -458,21 +527,43 @@ function Rail({ steps }: { steps: Step[] }) {
 
 /* ------------------------------------------------------------------ live transcript */
 
-function LiveTranscript({ transcript, reduce }: { transcript: TranscriptLine[]; reduce: boolean }) {
+type Marker = { id: string; at: number; tool: string; status: Step["status"]; detail?: string };
+
+/** Transcript lines with the tool calls the agent made, interleaved where they happened. */
+function LiveTranscript({ transcript, markers, reduce }: { transcript: TranscriptLine[]; markers: Marker[]; reduce: boolean }) {
   const boxRef = useRef<HTMLDivElement>(null);
   const last = transcript[transcript.length - 1];
+  const rows = useMemo(() => {
+    const merged: Array<{ kind: "line"; t: TranscriptLine; at: number } | { kind: "tool"; m: Marker; at: number }> = [
+      ...transcript.map((t) => ({ kind: "line" as const, t, at: t.at })),
+      ...markers.map((m) => ({ kind: "tool" as const, m, at: m.at })),
+    ];
+    return merged.sort((a, b) => a.at - b.at);
+  }, [transcript, markers]);
   useEffect(() => {
     const el = boxRef.current;
     if (!el) return;
     el.scrollTo({ top: el.scrollHeight, behavior: reduce ? "auto" : "smooth" });
-  }, [transcript.length, last?.text, reduce]);
+  }, [rows.length, last?.text, reduce]);
   return (
     <div className="mt-4">
       <p className="mb-1.5 text-[11px] font-medium uppercase tracking-wide text-white/35">Live transcript</p>
       <div ref={boxRef} className="max-h-[240px] overflow-y-auto overscroll-contain rounded-xl border border-white/[0.07] bg-white/[0.02] px-3.5 py-3 [scrollbar-width:thin]">
         <ul className="space-y-2">
-          {transcript.map((t, i) => {
-            const isLast = i === transcript.length - 1;
+          {rows.map((r) => {
+            if (r.kind === "tool") {
+              const m = r.m;
+              const color = m.status === "failed" ? "text-[#ff8a8f]" : m.status === "running" ? "text-white/55" : "text-[#6edcb8]/80";
+              return (
+                <motion.li key={`tool-${m.id}`} initial={reduce ? false : BLUR_IN} animate={SHARP} transition={{ duration: reduce ? 0 : REVEAL, ease: EASE }} className="flex items-center gap-1.5 font-mono text-[11px]">
+                  <Wrench size={10} aria-hidden className={cn("shrink-0", color)} />
+                  <span className={color}>{m.tool}</span>
+                  {m.status === "running" ? <Spinner size={10} className="text-white/40" /> : m.detail ? <span className="truncate text-white/35">· {m.detail}</span> : null}
+                </motion.li>
+              );
+            }
+            const t = r.t;
+            const isLast = t === last;
             return (
               <motion.li
                 key={t.id}
@@ -503,6 +594,7 @@ function View({ open, onToggle, callId, status, startedAt, assistantSpeaking, ha
   const running = steps.filter((s) => s.status === "running");
   const failed = steps.filter((s) => s.status === "failed");
   const tools = steps.filter((s) => s.source !== "call" && s.source !== "model");
+  const markers: Marker[] = steps.flatMap((s) => (s.tool && s.tool !== "delegate" ? [{ id: s.id, at: s.at, tool: s.tool, status: s.status, detail: s.detail }] : []));
   const liveCount = tools.filter((s) => s.source === "live").length;
   const simCount = tools.filter((s) => s.source === "simulated").length;
 
@@ -686,7 +778,7 @@ function View({ open, onToggle, callId, status, startedAt, assistantSpeaking, ha
           </AnimatePresence>
 
           {/* Live transcript: scrolls, follows the newest line */}
-          {transcript.length > 0 && <LiveTranscript transcript={transcript} reduce={!!reduce} />}
+          {transcript.length > 0 && <LiveTranscript transcript={transcript} markers={markers} reduce={!!reduce} />}
 
           {/* Chips */}
           <motion.div layout="position" transition={{ layout: { duration: reduce ? 0 : 0.26, ease: EASE } }} className="mt-4 flex flex-wrap items-center gap-2 text-[12px] text-white/60">

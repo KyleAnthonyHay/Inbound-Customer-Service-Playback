@@ -26,6 +26,11 @@ function parseArgs(raw: unknown): Record<string, unknown> {
   return {};
 }
 
+const clip = (v: unknown, max: number) => {
+  const s = typeof v === "string" ? v : JSON.stringify(v);
+  return s.length > max ? s.slice(0, max) + "…" : s;
+};
+
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json" } });
 
@@ -51,19 +56,19 @@ http.route({
           return { toolCallId: tc.id, error: `Unknown tool ${name}` };
         }
         const started = Date.now();
-        await ctx.runMutation(api.callEvents.log, { callId, kind: "tool-start", tool: name, toolCallId: tc.id, label: def.label, status: "running", source: def.source });
+        await ctx.runMutation(api.callEvents.log, { callId, kind: "tool-start", tool: name, toolCallId: tc.id, label: def.label, status: "running", source: def.source, args: clip(args, 800) });
         try {
           const out = await def.run(args, ctx, callId);
           const durationMs = Date.now() - started;
           const ok = !(out && typeof out === "object" && "ok" in out && (out as { ok: unknown }).ok === false);
           await ctx.runMutation(api.callEvents.log, {
             callId, kind: "tool-end", tool: name, toolCallId: tc.id, label: def.label,
-            status: ok ? "succeeded" : "failed", durationMs, source: def.source, detail: summarize(out),
+            status: ok ? "succeeded" : "failed", durationMs, source: def.source, detail: summarize(out), args: clip(args, 800), output: clip(out, 2000),
           });
           return { toolCallId: tc.id, result: JSON.stringify(out) };
         } catch (e) {
           const message = e instanceof Error ? e.message : "tool failed";
-          await ctx.runMutation(api.callEvents.log, { callId, kind: "tool-end", tool: name, toolCallId: tc.id, label: def.label, status: "failed", durationMs: Date.now() - started, source: def.source, detail: message });
+          await ctx.runMutation(api.callEvents.log, { callId, kind: "tool-end", tool: name, toolCallId: tc.id, label: def.label, status: "failed", durationMs: Date.now() - started, source: def.source, detail: message, args: clip(args, 800) });
           return { toolCallId: tc.id, error: message };
         }
       })

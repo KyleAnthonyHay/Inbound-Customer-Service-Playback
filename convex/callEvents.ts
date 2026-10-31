@@ -15,6 +15,8 @@ export const log = mutation({
     durationMs: v.optional(v.number()),
     source,
     detail: v.optional(v.string()),
+    args: v.optional(v.string()),
+    output: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     return ctx.db.insert("callEvents", { ...args, at: Date.now() });

@@ -1,0 +1,11 @@
+{
+  "name": "callback-unavailable-time",
+  "expectedIntent": "callback",
+  "lines": [
+    "I'd rather just talk to someone from the team, can they call me back?",
+    "Monday at 8 PM works for me, I'm in Eastern time.",
+    "Oh okay. Then the latest slot you have that day is fine. My number is 555 010 0177 and my name is Priya Natarajan.",
+    "Yes, book it. Thanks, bye."
+  ],
+  "expect": "The agent says plainly that Monday 8 PM Eastern is outside the team's callback hours, states the hours, then offers the nearest open times; it never presents a different time as if it were the requested one, and confirms only after reserve_callback returns ok."
+}

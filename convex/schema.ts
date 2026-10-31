@@ -32,8 +32,8 @@ export default defineSchema({
     description: v.string(),
     /** Simulated staffing state, toggled for test scenarios. */
     status: v.union(v.literal("available"), v.literal("busy"), v.literal("offline")),
-    /** Weekday hours in UTC, used to compute availability text. */
-    hoursUtc: v.object({ start: v.number(), end: v.number() }),
+    /** Weekday hours in the team's own zone (24h start/end), e.g. 9-18 America/Chicago. */
+    hours: v.object({ timeZone: v.string(), start: v.number(), end: v.number() }),
     simulated: v.literal(true),
   }).index("by_teamId", ["teamId"]),
 
@@ -80,5 +80,9 @@ export default defineSchema({
     /** Where the data came from: live external API, simulated company data, or app-internal. */
     source: v.union(v.literal("live"), v.literal("simulated"), v.literal("internal")),
     detail: v.optional(v.string()),
+    /** Tool arguments as JSON (truncated), logged on tool-start so the UI can show the exact call. */
+    args: v.optional(v.string()),
+    /** Tool result as JSON (truncated), logged on tool-end. */
+    output: v.optional(v.string()),
   }).index("by_call", ["callId", "at"]),
 });

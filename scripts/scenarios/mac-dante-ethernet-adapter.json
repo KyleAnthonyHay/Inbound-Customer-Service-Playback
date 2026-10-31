@@ -1,0 +1,11 @@
+{
+  "name": "mac-dante-ethernet-adapter",
+  "expectedIntent": "audio-output",
+  "lines": [
+    "I'm trying to send audio out but no audio device is showing up, I can only pick my Mac speaker.",
+    "It's a Mac. I'm connecting it to our network with a USB to Cat 6 dongle, we use Dante.",
+    "Hmm, I don't think the Dante Virtual Soundcard app is actually running right now.",
+    "Okay yeah, it shows up now after I pressed Start. Thanks, bye."
+  ],
+  "expect": "The agent establishes the platform (Mac), searches the docs with Mac + Dante + Ethernet adapter, and gives the documented Dante Virtual Soundcard steps (DVS running with the right network interface, Settings > General > Audio Device > Dante Virtual Soundcard) instead of declaring the setup undocumented."
+}

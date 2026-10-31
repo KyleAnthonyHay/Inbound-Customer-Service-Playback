@@ -50,7 +50,14 @@ export const tools: Record<string, ToolDef> = {
     source: "simulated",
     label: TOOL_META.get_callback_slots.label,
     run: async (a, ctx) =>
-      ctx.runQuery(api.callbacks.availableSlots, { teamId: str(a.teamId) ?? "playback-support", fromIso: str(a.fromIso), limit: 4 }),
+      ctx.runQuery(api.callbacks.availableSlots, {
+        teamId: str(a.teamId) ?? "playback-support",
+        fromIso: str(a.fromIso),
+        preferredDate: str(a.preferredDate),
+        preferredTime: str(a.preferredTime),
+        timeZone: str(a.timeZone),
+        limit: 4,
+      }),
   },
   reserve_callback: {
     source: "simulated",
@@ -101,7 +108,12 @@ export function summarize(out: unknown): string | undefined {
   if (Array.isArray(o.documentedReleasesBetween)) return `${(o.relevantChanges as unknown[])?.length ?? 0} relevant change(s)`;
   if (o.customer && typeof o.customer === "object") return String((o.customer as { subscriptionStatus?: string }).subscriptionStatus ?? "found");
   if (Array.isArray(o.teams)) return (o.teams as { label: string; canTransferNow: boolean }[]).map((t) => `${t.label}: ${t.canTransferNow ? "available" : "unavailable"}`).join("; ");
-  if (Array.isArray(o.slots)) return `${(o.slots as unknown[]).length} open slot(s)`;
+  if (Array.isArray(o.slots)) {
+    const req = o.requested as { available?: boolean; local?: string; reason?: string } | undefined;
+    if (req && req.available === true) return `${req.local} is open`;
+    if (req && req.available === false) return `${req.local ?? "requested time"} not available (${req.reason})`;
+    return `${(o.slots as unknown[]).length} open slot(s)`;
+  }
   if (o.bookingId) return o.duplicate ? "already booked (duplicate)" : "confirmed";
   if (o.team) return String(o.team);
   return undefined;

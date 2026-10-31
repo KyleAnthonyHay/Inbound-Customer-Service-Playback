@@ -9,7 +9,7 @@
     "lint": "eslint",
     "sync:assistant": "tsx --env-file=.env.local scripts/sync-assistant.ts",
     "typecheck": "tsc --noEmit",
-    "test": "tsx --test scripts/test-tools.ts",
+    "test": "tsx --test scripts/test-tools.ts scripts/test-callbacks.ts",
     "voice:test": "tsx --env-file=.env.local scripts/voice-test.ts"
   },
   "dependencies": {

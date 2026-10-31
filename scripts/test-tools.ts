@@ -119,3 +119,21 @@ test("searchDocs results carry per-step disruption tags", () => {
   assert.ok("disruptive" in first.steps[0]);
   assert.equal(typeof first.hasDisruptiveSteps, "boolean");
 });
+
+test("searchDocs: a Mac on a USB-to-Ethernet (Cat 6) adapter finds the Dante Virtual Soundcard article first", () => {
+  const r = searchDocs("Mac no audio device showing up USB to ethernet Cat 6 adapter dongle");
+  assert.ok(r.found > 0);
+  assert.equal(r.results[0].id, "connect-playback-to-a-dante-network");
+  assert.ok(r.results[0].steps.some((s) => /Settings > General.*Audio Device/.test(s.text)));
+  assert.ok(r.results[0].steps.some((s) => /Dante Via/.test(s.text)));
+});
+
+test("searchDocs: FAQ questions are answerable from documented sources", () => {
+  const devices = searchDocs("how many devices can I log into Playback on");
+  assert.ok(devices.results.some((a) => a.id === "playback-product-page-faq"));
+  const lyrics = searchDocs("does Playback show lyrics or chords");
+  assert.equal(lyrics.results[0].id, "playback-faqs");
+  const ram = searchDocs("RAM memory warning");
+  assert.equal(ram.results[0].id, "ram-memory-warning");
+  assert.ok(ram.results[0].hasDisruptiveSteps);
+});
