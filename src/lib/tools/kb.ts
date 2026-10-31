@@ -1,4 +1,5 @@
 import kbJson from "../../knowledge/playback-kb.json";
+import { classifyStep } from "./disruption";
 
 export type KbArticle = {
   id: string;
@@ -68,20 +69,24 @@ export function searchDocs(query: string, opts?: { category?: string; limit?: nu
     snapshotRetrievedAt: kb.retrievedAt,
     query,
     found: scored.length,
-    results: scored.map(({ a, score }) => ({
-      id: a.id,
-      title: a.title,
-      category: a.category,
-      url: a.url,
-      retrievedAt: a.retrievedAt,
-      appliesTo: a.appliesTo ?? [],
-      summary: a.summary,
-      steps: a.steps,
-      relevance: score,
-    })),
+    results: scored.map(({ a, score }) => {
+      const steps = a.steps.map((text, i) => ({ n: i + 1, text, ...classifyStep(text) }));
+      return {
+        id: a.id,
+        title: a.title,
+        category: a.category,
+        url: a.url,
+        retrievedAt: a.retrievedAt,
+        appliesTo: a.appliesTo ?? [],
+        summary: a.summary,
+        steps,
+        hasDisruptiveSteps: steps.some((s) => s.disruptive),
+        relevance: score,
+      };
+    }),
     note:
       scored.length === 0
         ? "No documented article matched. Do not invent steps; offer a handoff or ask a clarifying question."
-        : "Only give steps that appear in these results.",
+        : "Only give steps that appear in these results. Give non-disruptive steps first. Before a step marked disruptive, say its caution in one short sentence (e.g. 'heads up, this one closes the app, so not mid-service'); do not ask whether they are in a service unless the caution changes which step you give.",
   };
 }

@@ -98,3 +98,23 @@ test("parseHandoffResult reads the relayed tool result string", () => {
   assert.equal(parseHandoffResult("not json"), null);
   assert.equal(parseHandoffResult({ hello: 1 }), null);
 });
+
+import { classifyStep } from "../src/lib/tools/disruption";
+
+test("classifyStep flags disruptive steps with a caution and leaves safe ones alone", () => {
+  assert.equal(classifyStep("Check that the device has a stable internet connection.").disruptive, false);
+  const upd = classifyStep("Update Playback to the latest version from the App Store.");
+  assert.equal(upd.disruptive, true);
+  assert.equal(upd.kind, "update");
+  assert.ok(upd.caution && upd.caution.length > 10);
+  assert.equal(classifyStep("As a last resort, tap Delete All Setlists from Device.").kind, "delete-content");
+  assert.equal(classifyStep("Fully close and reopen Playback, then try again.").kind, "restart");
+});
+
+test("searchDocs results carry per-step disruption tags", () => {
+  const r = searchDocs("download error");
+  const first = r.results[0];
+  assert.ok(first.steps.length > 0);
+  assert.ok("disruptive" in first.steps[0]);
+  assert.equal(typeof first.hasDisruptiveSteps, "boolean");
+});

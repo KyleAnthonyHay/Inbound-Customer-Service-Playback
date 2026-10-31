@@ -68,11 +68,13 @@ export async function getRelevantChangesSinceVersion(args: { installedVersion: s
     relevantChanges: relevant,
     history: { source: "documentation" as const, provider: "MultiTracks Help Center release notes", snapshotRetrievedAt: kb.retrievedAt, coverage: documented.map((r) => r.version) },
     gaps,
+    updateIsDisruptive: true,
+    updateCaution: "Updating closes Playback and takes a few minutes, so it should wait until after a service or rehearsal.",
     guidance:
       upToDate === true
         ? "Caller is already on the current version. Do not recommend updating as a fix; continue with documented troubleshooting."
         : relevant.length
-          ? "A documented fix exists in a newer version. Mention it with the version number, but respect urgency: do not push an update right before or during a live service."
+          ? "A documented fix exists in a newer version. Say which version fixed it, then give the caution in one sentence before suggesting the update; offer a non-disruptive step first if the caller is mid-service."
           : "No documented fix for this symptom between the installed and current versions. Updating is not a targeted fix here.",
   };
 }
