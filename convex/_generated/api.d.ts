@@ -8,6 +8,7 @@
  * @module
  */
 
+import type * as callEvents from "../callEvents.js";
 import type * as callbacks from "../callbacks.js";
 import type * as customers from "../customers.js";
 import type * as seed from "../seed.js";
@@ -20,6 +21,7 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  callEvents: typeof callEvents;
   callbacks: typeof callbacks;
   customers: typeof customers;
   seed: typeof seed;

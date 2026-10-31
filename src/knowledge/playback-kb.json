@@ -1,0 +1,588 @@
+{
+  "retrievedAt": "2026-10-30",
+  "sources": [
+    "https://helpcenter.multitracks.com",
+    "https://www.multitracks.com"
+  ],
+  "articles": [
+    {
+      "id": "troubleshooting-playback-download-errors",
+      "category": "song-loading",
+      "title": "Troubleshooting Playback Download Errors",
+      "url": "https://helpcenter.multitracks.com/en/articles/13452943-troubleshooting-playback-download-errors",
+      "retrievedAt": "2026-10-30",
+      "summary": "Covers four named download error messages in Playback (Error Authorizing, Audio Files Missing, Insufficient Storage, generic Download Error) plus a catch-all. MultiTracks says download errors are rare and asks users who see the same error repeatedly to report it through the website chat. The article does not name a platform; it refers only to 'the device' and 'the Playback app'.",
+      "steps": [
+        "'Error Authorizing': the download failed a security check (your network may be blocking Playback from verifying the device). Follow the separate article 'Playback Download Error (Download Unauthorized)'.",
+        "'Audio Files Missing': tap Try Again at least three times. On the third attempt Playback runs a different recovery routine automatically.",
+        "'Audio Files Missing' (if three attempts fail on a song you recently downloaded in past setlists): open the setlist menu, scroll to the bottom, and select 'Delete All Setlists from Device'. Last resort only: it removes all local downloads and every current setlist must be downloaded again.",
+        "'Insufficient Storage': remove past setlists with 'Delete all setlists from device' at the bottom of the setlist menu. If the error persists, check the device's storage; it may be too full. A typical song is roughly 40 MB to 1 GB, so a full setlist can be several GB.",
+        "'Download Error' (generic): tap Try Again at least two times. If it continues and you are short on time, use Contact Support in the About tab of Playback Settings, then try the quick fixes.",
+        "Quick fix 1 - remove and re-add the song: tap Edit, tap the red minus icon on the song, tap '+ Add Song', find the song again, and load it.",
+        "Quick fix 2 - download in another key and transpose locally: before loading, change the song's key in song settings to a key close to the one you need; after the download, open song settings in edit mode and change the key back.",
+        "Quick fix 3 - clear local data (last resort): contact support first from the About tab, then open the setlist menu (top-right) and select 'Delete All Setlists from Device' at the bottom. All setlists must be redownloaded afterward.",
+        "Any other error: contact MultiTracks.com through the website messenger or 'Contact Support' in the About tab of the Playback app."
+      ],
+      "appliesTo": [],
+      "keywords": ["download error", "audio files missing", "insufficient storage", "error authorizing", "try again", "delete all setlists from device", "stuck", "song not downloading", "storage", "contact support", "about tab"]
+    },
+    {
+      "id": "playback-download-error-download-unauthorized",
+      "category": "song-loading",
+      "title": "Playback Download Error (Download Unauthorized)",
+      "url": "https://helpcenter.multitracks.com/en/articles/8295507-playback-download-error-download-unauthorized",
+      "retrievedAt": "2026-10-30",
+      "summary": "Explains the message 'There was an error while authorizing the download of [song]', which means the download URL has expired or is unauthorized on the current network. Listed causes are a VPN on the Playback device, network administrator settings (multiple WAN uplinks, blocked domains or ports), or the network/IP address changing mid-download. The fix is to retry on a different connection or change the network's settings, ideally with a network admin or ISP.",
+      "steps": [
+        "iCloud Private Relay (Apple): set the 'IP Address Location' option to 'Use Country & Time Zone'. The article warns that 'Maintain General Location' can cause this error.",
+        "Turn off any VPN or VPN software on the device. Examples named in the article: Accountable2You, CovenantEyes, NordVPN, Surfshark.",
+        "Try downloading on a different internet network from a different provider.",
+        "Advanced (IT/network admin) - multiple WAN uplinks: the download request may leave through one uplink while the content download tries another. Pin requests to a specific WAN uplink in the advanced traffic network preferences, or adjust the WAN uplink settings. Contact support for help pinning requests.",
+        "Advanced - other network settings: MultiTracks.com sends all traffic over port 443 (SSL); make sure it is not blocked. A static IP is not required, but if a download request uses a specific IP address, the same IP must complete the download.",
+        "Still stuck: use the messenger in the bottom right of MultiTracks.com or email Support@MultiTracks.com."
+      ],
+      "appliesTo": [],
+      "keywords": ["download unauthorized", "error authorizing", "VPN", "iCloud Private Relay", "port 443", "WAN uplink", "network", "CovenantEyes", "download failed"]
+    },
+    {
+      "id": "playback-setlists-menu",
+      "category": "song-loading",
+      "title": "Playback Setlists & Setlists Menu",
+      "url": "https://helpcenter.multitracks.com/en/articles/5189112-playback-setlists-setlists-menu",
+      "retrievedAt": "2026-10-30",
+      "summary": "Describes the Setlists menu (music note icon, top-right of the main screen): creating/opening setlists, Planning Center import, Save To Cloud, Restore From Cloud, Save As New, and Delete All Setlists From Device. Also explains how to download a setlist or a single song from the Open Setlist menu without opening it, and that cloud changes sync manually via an 'Update Available' prompt. The article does not address offline behavior or what happens when a different user signs in.",
+      "steps": [
+        "Download a whole setlist without opening it: in the Open Setlist menu, tap the cloud download icon next to the setlist name.",
+        "Download a single song: tap the cloud download icon next to that song.",
+        "Save local changes: choose 'Save To Cloud' in the Setlists menu; a blue check confirms success. Saving overwrites the setlist data on that device and in the cloud.",
+        "Revert local changes to the saved cloud version: choose 'Restore From Cloud' in the Setlists menu (can be used at any point).",
+        "Free local space or troubleshoot: 'Delete all setlists from the device' at the bottom of the Setlists menu removes every setlist from the device.",
+        "Remove one setlist's audio from the device: open the setlist details menu (from the setlist menu) and choose the option to remove the Setlist audio files. The setlist details menu also lets you edit name/date or delete the setlist from your account.",
+        "Another device not showing your changes: look for an 'Update Available' option in the setlist details inside the setlist menu. Devices with push notifications show a red icon above the setlist menu when an update is available; tapping it shows who saved, when, and their comment."
+      ],
+      "appliesTo": [],
+      "keywords": ["setlist", "save to cloud", "restore from cloud", "delete all setlists", "download icon", "update available", "sync", "cloud", "storage"]
+    },
+    {
+      "id": "playback-user-guide",
+      "category": "general",
+      "title": "Playback User Guide",
+      "url": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide",
+      "retrievedAt": "2026-10-30",
+      "summary": "The master user guide. Relevant documented points: the Audio Device setting (Settings > General > Audio Device) chooses the device Playback uses for all audio output; Auto Pan sends click/guide left and tracks right on the headphone output; MultiOuts (Premium) allow up to 32 outputs; track routing lives in Settings > Tracks and bus routing in Settings > Buses; purchased tracks download free; downloaded setlists stay on the device until removed or until a different user signs in; Settings > About has Manage Subscription and Restore Purchases.",
+      "steps": [
+        "Select the output device: tap the stack icon (top-right) > Settings > General > Audio Device.",
+        "Auto Pan: Settings > General > Auto-Pan. Sends click and guide to the left output and all tracks to the right output of the device's stereo output, so you can run tracks from the headphone port without an interface.",
+        "Track routing: Settings > Tracks, tap an instrument part and choose a bus. Routing is device-specific and applies to that track across all songs and setlists on that device.",
+        "Bus routing: Settings > Buses, tap a bus cell, choose an output, tap Done. Swipe left on a bus to edit its name/abbreviation. Bus routing is saved per audio device.",
+        "If an output is greyed out it may be in use by SMPTE: change the SMPTE routing or disable SMPTE output in General settings.",
+        "Download a song: when adding a song, tap Add in the top-right corner. In the Setlists menu, tap Open Setlist, select a setlist, and tap the download icons to download tracks without loading the setlist, or load it to download every song automatically. Songs already on the device from another setlist show no download icon.",
+        "Remove one setlist from the device: open it in the Setlists menu and choose Remove Setlist From Device. Remove all: Setlists menu > Delete All Setlists From Device. This does not delete setlists from your MultiTracks.com account; re-download from the setlist menu to recover.",
+        "Subscription not recognized: Settings > About > Restore Purchases. The guide says: if an iTunes subscription is expired or not being confirmed by Playback, reconcile any payment issues in the App Store and tap Restore Purchases to reconnect your In-App Subscription.",
+        "Side menu (stack icon) shows user name, organization name and ID, Switch Organizations, and Log Out."
+      ],
+      "appliesTo": ["iOS", "iPadOS", "macOS"],
+      "keywords": ["user guide", "audio device", "auto pan", "multiouts", "buses", "tracks", "download", "remove setlist from device", "restore purchases", "manage subscription", "about tab", "switch organizations"]
+    },
+    {
+      "id": "managing-chartbuilder-and-playback-devices",
+      "category": "subscription",
+      "title": "Managing ChartBuilder and Playback Devices",
+      "url": "https://helpcenter.multitracks.com/en/articles/10602113-managing-chartbuilder-and-playback-devices",
+      "retrievedAt": "2026-10-30",
+      "summary": "Each Playback user may be signed in on two devices; a user with a Playback Premium seat gets three. Devices are viewed and removed from the Playback Devices section of the user's account page on MultiTracks.com. TestFlight/beta builds register as separate devices.",
+      "steps": [
+        "View or manage Playback devices: 'Playback Devices' section of your user-account page, or https://www.multitracks.com/premium/playback/devices.aspx",
+        "Remove a device: on the Devices page under your username account page, click the 'X' next to the device. This signs that user out of the device and frees a slot.",
+        "Add a device: confirm an 'Available device' is listed, then sign in to Playback with the user's credentials.",
+        "Beta/TestFlight builds typically register as separate devices even on the same hardware, so running both can reach the limit faster.",
+        "To give more people access, add them as users and grant seats and setlist access; the per-user limit itself cannot be raised except via the Premium seat."
+      ],
+      "appliesTo": [],
+      "keywords": ["device limit", "two devices", "three devices", "premium seat", "remove device", "sign out", "TestFlight", "account"]
+    },
+    {
+      "id": "troubleshooting-playback-audio-issues",
+      "category": "audio-output",
+      "title": "Troubleshooting Playback Audio Issues",
+      "url": "https://helpcenter.multitracks.com/en/articles/4873511-troubleshooting-playback-audio-issues",
+      "retrievedAt": "2026-10-30",
+      "summary": "Focuses on dropouts and disconnections in live setups. Four checks: device/OS/app up to date, iOS performance (RAM, background apps), the USB connection (named as the most common cause in MultiOut setups), and the audio connection (Auto Pan splitter cable, class-compliant interfaces). The article does not cover no-sound, output selection, Bluetooth, sample rate, or mono/stereo settings.",
+      "steps": [
+        "Check the device is supported (supported devices list for iOS, iPadOS, macOS). On the oldest supported iOS generation, Multi-Outs and MIDI Cue editing are limited.",
+        "Confirm the OS is up to date and that Playback support for it is confirmed (see the OS compatibility article). Update Playback from the iOS or Mac App Store.",
+        "iOS performance: clear RAM, force-close all background apps before opening Playback, and do not multitask during a live performance.",
+        "USB adapter: an official Apple adapter is required (Lightning to USB3 or USB-C to USB3; both allow simultaneous charging).",
+        "USB cable length: max 16 feet for USB 2.0, 3 meters (9 feet) for USB 3.0. Keep the digital USB run short and use longer analog runs (XLR, 1/4\") from the interface to DI boxes and the console.",
+        "Powered USB extension cables: base cable must respect the limits above; the active repeater needs external power; max extender length 25 m (USB 2.0) or 15 m (USB 3.0).",
+        "Powered USB hub: must be powered, no more than 7 USB accessory ports, and only one audio interface connected at a time so Playback sends audio to the correct device.",
+        "Auto Pan splitter cable: use a high-quality cable with as few adaptors as possible.",
+        "Audio interface: Playback is generally compatible with class-compliant USB interfaces; check the tested supported devices list on multitracks.com.",
+        "If issues persist, contact MultiTracks support."
+      ],
+      "appliesTo": ["iOS", "iPadOS", "macOS"],
+      "keywords": ["audio dropouts", "disconnect", "USB", "powered hub", "cable length", "adapter", "class compliant", "auto pan", "interface", "no sound"]
+    },
+    {
+      "id": "how-to-use-playback-with-your-sound-system",
+      "category": "audio-output",
+      "title": "How to Use Playback with Your Sound System",
+      "url": "https://helpcenter.multitracks.com/en/articles/4649709-how-to-use-playback-with-your-sound-system",
+      "retrievedAt": "2026-10-30",
+      "summary": "Three documented ways to get audio out of Playback: the built-in headphone port with Auto-Pan (2 channels: click/guide left, tracks right), a USB audio interface (up to 32 outputs, grouped into mono or stereo buses), and networked audio such as Dante or SoundGrid (iPad/iPhone limited to two channels; macOS can route up to 32 via Dante Virtual Soundcard). Bluetooth, subscription tiers, and menu paths are not covered here.",
+      "steps": [
+        "Option 1 - headphone port: Auto-Pan is on by default. Use a 1/8\" TRS to dual 1/4\" TS cable, a stereo DI (or two mono DIs) to convert to XLR, then XLR to the stage box. Devices without a headphone jack can use a Lightning-to-3.5mm or USB-C-to-3.5mm adapter. Left channel feeds in-ears (click/guide); right feeds the house mix.",
+        "Option 2 - USB audio interface: up to 32 outputs via a supported class-compliant interface. Lightning devices need an Apple Lightning Digital AV Adapter; USB-C devices need an Apple USB-C Digital AV Multiport Adapter. Add a powered USB hub if the interface is bus-powered. Outputs are grouped into custom buses, mono or stereo.",
+        "Option 3 - networked audio (Dante, SoundGrid): connect the Playback device to a network running that protocol. iPad and iPhone support only two channels over networked audio; macOS apps like Dante Virtual Soundcard can route up to 32 channels.",
+        "Use an in-ear monitoring solution so click and guide are not heard by the congregation. Accompaniment tracks do not include click and guide."
+      ],
+      "appliesTo": ["iOS", "iPadOS", "macOS"],
+      "keywords": ["sound system", "headphone", "auto pan", "USB interface", "32 outputs", "Dante", "SoundGrid", "networked audio", "in-ear", "DI box", "splitter"]
+    },
+    {
+      "id": "connect-usb-audio-interface-to-playback",
+      "category": "audio-output",
+      "title": "How do I connect my USB audio interface to Playback?",
+      "url": "https://helpcenter.multitracks.com/en/articles/4466444-how-do-i-connect-my-usb-audio-interface-to-playback",
+      "retrievedAt": "2026-10-30",
+      "summary": "iOS-focused guide for connecting a USB audio interface, directly via an official Apple adapter or through a powered USB hub (required when also using a MIDI controller or Ethernet MIDI). Playback recognizes the interface as its audio device once connected. The article states Playback sends up to 10 individual outputs with instrument tracks routed to 10 buses; note that other articles (Track & Bus Routing, Sound System) cite 16 buses and up to 32 outputs, so this figure may be dated.",
+      "steps": [
+        "Direct: connect the iOS device to an approved interface with an official Apple adapter (Lightning: Apple USB 3 to Lightning camera adapter; USB-C: Apple USB-C AV adapter). These allow charging while connected.",
+        "Via powered hub: connect the hub to the device with the Apple adapter, then connect the interface to the hub. Playback recognizes the interface as its audio device. Hubs the article confirms: 7-port Anker (1 charge port), 7-port Plugable (2 charge ports), 7-port StarTech.",
+        "Keep USB runs short: 16 ft max (USB 2.0), 3 m / 9 ft max (USB 3.0). Powered extenders: repeater needs external power; 25 m (USB 2.0) / 15 m (USB 3.0) max.",
+        "Hub must be powered and have no more than 7 accessory ports.",
+        "Further problems: see Troubleshooting Playback Audio Issues."
+      ],
+      "appliesTo": ["iOS", "iPadOS"],
+      "keywords": ["USB interface", "camera adapter", "powered hub", "Anker", "Plugable", "StarTech", "MIDI controller", "audio device"]
+    },
+    {
+      "id": "track-and-bus-routing-in-playback",
+      "category": "audio-output",
+      "title": "How To | Track & Bus Routing in Playback",
+      "url": "https://helpcenter.multitracks.com/en/articles/4439220-how-to-track-bus-routing-in-playback",
+      "retrievedAt": "2026-10-30",
+      "summary": "Bus routing and MultiOuts require a Playback Premium subscription. Playback groups 150+ instruments into 16 buses plus a dedicated SMPTE bus; each bus can go to any available output on the selected audio device, mono or stereo. The Pad bus cannot be re-routed. Track routing is saved per device and applies globally to that track; it is not saved with setlists or named arrangements.",
+      "steps": [
+        "Route tracks to buses: Settings > Tracks tab, assign each track to a bus (defaults are preset and can be overwritten).",
+        "Route buses to outputs: Settings > Buses tab, tap a bus row and choose an available output.",
+        "Route several buses at once: tap 'Assign Multiple Busses' in the bottom-right, select buses, assign one output.",
+        "Rename a bus: drag its row to the left to reveal Edit.",
+        "Greyed-out output: the SMPTE bus is probably using it. Disable SMPTE in the General tab or set the SMPTE bus to 'None'.",
+        "Alternative from the main interface: open the 'Busses' layer (bottom right next to the master fader, or cycle layers with the button beside it), tap Edit (top right) to enter Setlist/Song Map edit mode, tap a bus name and select the output.",
+        "Bus mixes are song-specific by default; disable Song Specific Buses in Settings for a global mix. Solo/mute on a bus affects all tracks routed to it."
+      ],
+      "appliesTo": [],
+      "keywords": ["bus routing", "track routing", "16 buses", "mono", "stereo", "output assignment", "SMPTE bus", "assign multiple busses", "premium", "multiouts", "click to one output"]
+    },
+    {
+      "id": "playback-general-settings-overview",
+      "category": "audio-output",
+      "title": "Playback General Settings Overview",
+      "url": "https://helpcenter.multitracks.com/en/articles/12549860-playback-general-settings-overview",
+      "retrievedAt": "2026-10-30",
+      "summary": "Lists every setting in the General tab (three-line menu icon top-right > General). Audio-relevant items: Auto-Pan, Click Sound, Song Specific Buses (Premium), Audio Device (shows and sets which connected device Playback uses for all audio output), Power Saver, MIDI Out, and SMPTE Timecode. The page gives no detail on Audio Device choices and does not mention sample rate, Bluetooth, storage, or subscription display.",
+      "steps": [
+        "Open settings: tap the three-line menu icon in the top-right corner of Playback and make sure the General tab is selected.",
+        "Audio Device: shows and sets which connected audio device Playback uses for all audio output.",
+        "Auto-Pan: routes click and guide to the left mono output and all tracks to the right mono output of the device's stereo output.",
+        "Song Specific Buses (Premium): on gives each song its own bus fader mix; off uses one global bus mix.",
+        "Power Saver: improves performance on older devices; disables fader VU meters and fader multi-touch and reduces waveform scrolling feedback.",
+        "MIDI Out: enabled by default; disable if unused to improve performance and battery life.",
+        "SMPTE Timecode: toggles SMPTE output and selects frame rate.",
+        "Fader Default Level at 80%: on presets faders to 80% for headroom; off loads tracks at 100%."
+      ],
+      "appliesTo": ["iOS"],
+      "keywords": ["settings", "general tab", "audio device", "auto pan", "song specific buses", "power saver", "midi out", "SMPTE", "fader default"]
+    },
+    {
+      "id": "connect-playback-to-a-dante-network",
+      "category": "audio-output",
+      "title": "HOW TO | Connect Playback to a Dante Network",
+      "url": "https://helpcenter.multitracks.com/en/articles/5482254-how-to-connect-playback-to-a-dante-network",
+      "retrievedAt": "2026-10-30",
+      "summary": "Two options: Dante Virtual Soundcard on Mac (up to 32 outputs, one-time DVS license, wired Cat-6 connection) selected via Settings > General > Audio Device, or a Dante AVIO adapter on iOS or Mac (2 outputs: output 1 click/guide, output 2 tracks). SoundGrid is not mentioned in this article.",
+      "steps": [
+        "DVS (Mac): download DVS and buy the license from Audinate; connect the Mac to the Dante network by Cat-6 to a shared switch/router (Ethernet adapter if needed).",
+        "Configure DVS: choose channel count (16x16 or 32x32 recommended), select the network interface used by the Dante network (a valid choice shows an IP address), press Start.",
+        "In Playback go to Settings > General, click the Audio Device cell, choose Dante Virtual Soundcard. This also makes Dante the computer's audio device; turn on Do Not Disturb to keep system sounds out of the outputs.",
+        "Route Playback buses to the outputs you want (count matches the DVS configuration), then patch Playback outputs to destination devices in Dante Controller.",
+        "AVIO adapter (iOS and Mac): a single adapter that connects a USB audio device to a Dante network; limited to 2 outputs. The article gives no detailed steps for this option."
+      ],
+      "appliesTo": ["iOS", "macOS"],
+      "keywords": ["Dante", "Dante Virtual Soundcard", "DVS", "AVIO", "networked audio", "32 outputs", "audio device", "Dante Controller"]
+    },
+    {
+      "id": "click-in-both-channels-with-autopan",
+      "category": "audio-output",
+      "title": "Why do I hear the click track in both left and right channels while Playback has AutoPan enabled?",
+      "url": "https://helpcenter.multitracks.com/en/articles/4502692-why-do-i-hear-the-click-track-in-both-left-and-right-channels-while-playback-has-autopan-enabled",
+      "retrievedAt": "2026-10-30",
+      "summary": "With AutoPan on, click and guide go left and tracks go right. Bleed into the wrong channel is most often caused by audio routing on the device or cabling rather than Playback. The most common cause named is iOS Mono Audio being enabled.",
+      "steps": [
+        "Disable Mono Audio on iOS: Settings > Accessibility > Audio & Visual > turn off 'Mono Audio'.",
+        "Test the splitter cable: connect only the Right (tracks) channel to the sound system, solo the Click Track in Playback, and listen. If you hear click, the cable may have a grounding problem; reseat or move it.",
+        "Check DI box grounding and that the Ground switch is enabled.",
+        "Plug headphones directly into the device's headphone jack with AutoPan on and listen for bleed.",
+        "Play a stereo audio test video (e.g. on YouTube) with the same headphones. If bleed persists, the headphone port hardware may be faulty; the article recommends a USB audio interface in that case.",
+        "If using an interface, move output cables to different outputs to see if the crosstalk follows the cable or the channel. If it persists, contact technical support via the chat button in the bottom-right of the website."
+      ],
+      "appliesTo": ["iOS", "iPadOS"],
+      "keywords": ["auto pan", "click bleed", "mono audio", "accessibility", "left right", "splitter cable", "DI ground", "headphone jack"]
+    },
+    {
+      "id": "route-click-guide-to-separate-busses",
+      "category": "audio-output",
+      "title": "How To | Route Click & Guide to Separate Busses in Playback (legacy, pre-7.6)",
+      "url": "https://helpcenter.multitracks.com/en/articles/5224107-how-to-route-click-guide-to-separate-busses-in-playback",
+      "retrievedAt": "2026-10-30",
+      "summary": "The article itself states these steps are no longer relevant for Playback 7.6 and newer, where Click and Guide are separated by default. Kept for the routing pattern: rename a spare bus, move Guide tracks to it in Settings > Tracks, then assign each bus to an interface output in Settings > Buses. Buses require a Playback Pro (Premium) subscription and an interface with more than 2 outputs.",
+      "steps": [
+        "Free up a bus: swipe left on the Aux bus, tap Edit, rename it to 'Guide'. Then in Settings > Tracks move any instrument parts still routed to it to another bus (tap the cell, choose a bus, tap Done).",
+        "In the Tracks tab, move Guide (Dynamic) and Guide (Non-Dynamic) out of the Click & Guide bus into the Guide bus.",
+        "In Settings > Buses, tap the Click and Guide bus cells and select an output for each (example: Click to output 1, Guide to output 2)."
+      ],
+      "appliesTo": [],
+      "keywords": ["click", "guide", "separate outputs", "buses", "legacy", "7.6", "tracks tab", "buses tab"]
+    },
+    {
+      "id": "behringer-u-phoria-no-audio",
+      "category": "audio-output",
+      "title": "Why is Playback not sending audio out of my Behringer U-Phoria Audio Interface?",
+      "url": "https://helpcenter.multitracks.com/en/articles/5653679-why-is-playback-not-sending-audio-out-of-my-behringer-u-phoria-audio-interface",
+      "retrievedAt": "2026-10-30",
+      "summary": "Covers the UMC404HD and UMC1820. Multi-output through an interface requires a Pro/Premium subscription. The UMC404HD needs a powered USB hub to be powered properly, and on iPhone/iPad the device's master volume controls the level Playback sends to the interface.",
+      "steps": [
+        "Confirm you have the right cables, adapters, and hardware to connect Playback to the interface (see the USB interface connection article).",
+        "UMC404HD only: connect through a powered USB hub; the hub powers the interface.",
+        "iPhone/iPad: after connecting, turn the iOS device's master volume to maximum, since it directly controls the volume out of Playback into the interface."
+      ],
+      "appliesTo": ["iOS", "iPadOS"],
+      "keywords": ["Behringer", "UMC404HD", "UMC1820", "no sound", "no audio", "powered hub", "device volume", "interface"]
+    },
+    {
+      "id": "playback-sync-troubleshooting",
+      "category": "general",
+      "title": "Playback Sync | Troubleshooting",
+      "url": "https://helpcenter.multitracks.com/en/articles/8908891-playback-sync-troubleshooting",
+      "retrievedAt": "2026-10-30",
+      "summary": "Playback Sync sends data from a Playback device to ChartBuilder over the local network so charts auto-scroll (this is not cloud sync of setlists). Troubleshooting is network-focused: same LAN/VLAN, manual IP, client/guest isolation, port isolation, subnets, firewalls. With Dante or SoundGrid networks, pick the network in the 'Network' menu before enabling Playback Sync. Only macOS has a specific error step.",
+      "steps": [
+        "Confirm all devices are on the same network (LAN or VLAN).",
+        "Try a manual IP connection: find the Playback device's IP below the Playback Sync settings and enter it in ChartBuilder's 'Enter IP Address' option.",
+        "Disable Client Isolation / Guest Isolation on the network.",
+        "On a switch, confirm port isolation is off for the ports in use.",
+        "With multiple subnets, allow cross-subnet traffic or put all devices on one subnet.",
+        "Check firewall rules blocking local device communication.",
+        "If using static IP or VLAN, confirm the device is still on it.",
+        "Multiple networks / Dante / SoundGrid: open the 'Network' menu before enabling Playback Sync and select the network to broadcast on.",
+        "macOS error 'Server Connection Error. Couldn't create the required context.': Playback could not use Port 80 or lacks a valid IPv4 address. Run `sudo lsof -nP -i4TCP:$PORT | grep LISTEN`, find the app using Port 80, quit it, and re-initiate Playback Sync.",
+        "Still failing: contact support via the website messenger (bottom-right of MultiTracks.com)."
+      ],
+      "appliesTo": ["macOS"],
+      "keywords": ["playback sync", "chartbuilder", "network", "client isolation", "port 80", "manual IP", "Dante", "SoundGrid", "VLAN"]
+    },
+    {
+      "id": "playback-minimum-system-requirements",
+      "category": "requirements",
+      "title": "Playback | Minimum System Requirements",
+      "url": "https://helpcenter.multitracks.com/en/articles/5351200-playback-minimum-system-requirements",
+      "retrievedAt": "2026-10-30",
+      "summary": "Official minimums. macOS: Monterey 12.4 or later, 4 GB RAM (8 GB recommended), 1280x800, listed Mac models from 2013-2016 onward; tested fully compatible with M1 and newer. iOS/iPadOS: 15 or later, 1 GB RAM (2 GB recommended), iPhone 6s/SE 1st gen or newer, iPad 5th gen, iPad Air 2, iPad mini 4, iPad Pro 1st gen, iPod touch 7th gen. No Windows requirements are listed. Article shows 'Written by Trevor, August 4, 2026'.",
+      "steps": [],
+      "appliesTo": ["iOS", "iPadOS", "macOS"],
+      "keywords": ["system requirements", "minimum", "macOS Monterey 12.4", "iOS 15", "RAM", "supported devices", "iPhone 6s", "iPad", "M1"]
+    },
+    {
+      "id": "should-i-update-my-playback-device-to-the-latest-os",
+      "category": "requirements",
+      "title": "Should I update my Playback device to the latest OS?",
+      "url": "https://helpcenter.multitracks.com/en/articles/4626407-should-i-update-my-playback-device-to-the-latest-os",
+      "retrievedAt": "2026-10-30",
+      "summary": "A regularly updated compatibility list of OS releases MultiTracks has tested with Playback and ChartBuilder. As fetched: iOS/iPadOS 26 fully compatible; iOS/iPadOS 17 and 18 currently supported; macOS 26 (Tahoe) fully compatible; macOS 14 and 15 currently supported. No versions are explicitly listed as unsupported and Windows is not mentioned. Article dated October 14, 2025.",
+      "steps": [],
+      "appliesTo": ["iOS", "iPadOS", "macOS"],
+      "keywords": ["OS update", "iOS 26", "iPadOS 26", "macOS 26", "Tahoe", "iOS 17", "iOS 18", "macOS 14", "macOS 15", "compatibility"]
+    },
+    {
+      "id": "playback-product-page",
+      "category": "requirements",
+      "title": "Playback product page (multitracks.com)",
+      "url": "https://www.multitracks.com/products/playback/",
+      "retrievedAt": "2026-10-30",
+      "summary": "Marketing page. States the latest version runs on any device supporting iOS/iPadOS 12.4 or above (iPhone 5s+, iPad Gen 5+, iPad Air 1+, iPad Mini 2+, iPad Pro 1+) and macOS Monterey 12 or later; this conflicts with the help center minimum requirements article (iOS 15, macOS 12.4) and with the 8.5.5 release notes that raised the minimum to iOS 15, so treat the help center as authoritative. Tiers: Intro (free, no MultiOuts) and Premium ($9.99/mo paid annually: Remote, up to 32 MultiOuts with buses, Playback for Mac, SMPTE/LTC). Two device logins, a third with Premium. Windows is not mentioned.",
+      "steps": [],
+      "appliesTo": ["iOS", "iPadOS", "macOS"],
+      "keywords": ["product page", "intro", "premium", "32 multiouts", "pricing", "device slots", "iOS 12.4", "macOS Monterey"]
+    },
+    {
+      "id": "playback-subscriptions-explained",
+      "category": "subscription",
+      "title": "Playback Subscriptions | Explained",
+      "url": "https://helpcenter.multitracks.com/en/articles/8106819-playback-subscriptions-explained",
+      "retrievedAt": "2026-10-30",
+      "summary": "Separates Playback Features (Intro, Premium, Cloud Pro, Live Bundle), Playback Content (Rentals, purchased tracks, Sounds, uploaded Cloud Songs, click and guide), and Playback Access (Team Sharing seats). Playback Intro is free on iOS, iPadOS, and macOS but limited to a single stereo output and excludes Premium features (editing arrangements, Playback Remote, Playback Sync). Cloud Pro adds click and guide for every song, Team Sharing seats, and saved custom-named arrangements; uploading Cloud Songs requires Cloud Pro. Rentals are device-specific and not shared. The article does not explain how to check or manage the subscription in-app.",
+      "steps": [],
+      "appliesTo": ["iOS", "iPadOS", "macOS"],
+      "keywords": ["subscription", "intro", "premium", "cloud pro", "live bundle", "rentals", "team sharing", "single stereo output", "click and guide", "cloud songs"]
+    },
+    {
+      "id": "get-started-cloud-pro-subscription",
+      "category": "subscription",
+      "title": "GET STARTED | Cloud Pro Subscription",
+      "url": "https://helpcenter.multitracks.com/en/articles/5242856-get-started-cloud-pro-subscription",
+      "retrievedAt": "2026-10-30",
+      "summary": "What Cloud Pro gates for Playback: click and guide tracks for every catalog song in setlists (with key/tempo/arrangement edits persisting when tracks are later purchased or rented), saved Custom Arrangements (fader mix, key/tempo, sections), Cloud Songs with uploaded stems/charts/MIDI, custom click and guide cues, cloud-saved MIDI Cues, editing cloud sections, and 10 Playback Team Sharing licenses. Storage 'starts at 50GB' per this article (the pricing page lists other tiers). Cloud Pro also removes the 48-hour download expiration on purchased downloads. No activation or sign-in steps are given.",
+      "steps": [],
+      "appliesTo": [],
+      "keywords": ["cloud pro", "click and guide", "custom arrangements", "cloud songs", "MIDI cues", "team sharing", "50GB", "download expiration", "upload stems"]
+    },
+    {
+      "id": "contact-us-helpcenter",
+      "category": "general",
+      "title": "Contact Us | MultiTracks.com (Help Center)",
+      "url": "https://helpcenter.multitracks.com/en/articles/10227795-contact-us-multitracks-com",
+      "retrievedAt": "2026-10-30",
+      "summary": "The help center names one contact method: the Messenger chat in the bottom-right corner of the Help Center and any MultiTracks.com page. Signing in saves conversations for later. This page lists no email, phone, or hours. (A support email, Support@MultiTracks.com, appears in the Download Unauthorized article; the Playback app also has Contact Support under Settings > About.)",
+      "steps": [
+        "Open the Messenger in the bottom-right of the Help Center or any MultiTracks.com webpage.",
+        "Sign in to your account so the conversation history is saved.",
+        "From the Playback app: Settings > About > Contact Support (per the download errors article)."
+      ],
+      "appliesTo": [],
+      "keywords": ["contact", "support", "messenger", "chat", "help center", "Support@MultiTracks.com"]
+    },
+    {
+      "id": "contact-page-multitracks-com",
+      "category": "general",
+      "title": "Contact Us (multitracks.com)",
+      "url": "https://www.multitracks.com/contact/",
+      "retrievedAt": "2026-10-30",
+      "summary": "Contact form (categories: sales, billing, technical support, general) is described as the fastest route. Regular support hours are 8:00 AM to 5:00 PM Central, Monday through Friday, with weekday responses expected within 90 minutes. Phone support is only available after email support has not resolved the issue; emergency numbers are (512) 535-1172 direct and (866) 774-7993 toll-free. Include first and last name, username, and account email in any message. No support email address is printed on this page.",
+      "steps": [
+        "Fill out the contact form at https://www.multitracks.com/contact/ (Name, Church/Org, Email, Phone, Subject, Message).",
+        "State your first and last name, username, and account email in any message to the support team.",
+        "Phone (only after email support has not resolved the issue, via 'View Support Number'): (512) 535-1172 direct, (866) 774-7993 toll free.",
+        "Mailing address: MultiTracks, LLC, 1500 Arrow Point Dr., Building VII Ste. 701, Cedar Park, TX 78613."
+      ],
+      "appliesTo": [],
+      "keywords": ["contact", "support hours", "8am-5pm central", "90 minutes", "phone", "contact form", "escalation"]
+    }
+  ],
+  "releases": [
+    {
+      "version": "8.6.3",
+      "date": null,
+      "url": "https://helpcenter.multitracks.com/en/articles/17617217-playback-8-6-3-release-notes",
+      "notes": [
+        "Quality and stability release.",
+        "Subscriptions: fixed a false 'Cloud Pro expired' message that appeared for some active subscribers.",
+        "Improvements: removed the 'New' badge from MT Complete in the Add Song menu; reworded the low memory alert.",
+        "Rentals & MT Complete: fixed three issues involving custom arrangements, interrupted MT Complete previews, and 'Song Data Error' messages after using Restore From Cloud.",
+        "Setlists: fixed the waveform and mixer not loading after adding the first song; fixed a search display issue in the Open Setlists menu.",
+        "Mac & Keyboard Shortcuts: fixed a Cmd+, conflict so it consistently opens Playback Settings.",
+        "Audio & MIDI: improved MIDI Out stability during playback."
+      ],
+      "keywords": ["cloud pro expired", "false expired message", "subscription", "MT Complete", "song data error", "restore from cloud", "MIDI out", "cmd comma", "low memory alert"]
+    },
+    {
+      "version": "8.5.6",
+      "date": "2026-07-07",
+      "url": "https://helpcenter.multitracks.com/en/articles/15862944-playback-8-5-6-release-notes",
+      "notes": [
+        "Mac: arrow keys navigate the Setlist Menu and Song Menu; Esc closes all menus.",
+        "Keyboard shortcuts now respect subscription level.",
+        "Menu bar items disabled when no setlist is loaded; Toggle Settings appears correctly in the Mac menu.",
+        "Fixed Trim shortcut wrongly exiting Setlist/Song Map edit mode; Add a Song shortcut disabled when the New Setlist tile is shown.",
+        "MIDI Note Off cue events now fire at the correct time instead of all at once when transport stops.",
+        "A Click Track added to an Ambient Pad now appears on remote devices after saving to the cloud.",
+        "Fixed a crash when logging out and back in with a different account.",
+        "Fixed 'Tap to Rent' and rental preview prompts wrongly appearing on songs already previewed via MT Complete.",
+        "Fixed a login issue affecting users in Indonesia, the Philippines, and Africa."
+      ],
+      "keywords": ["mac", "keyboard shortcuts", "MIDI note off", "login", "crash", "rental preview"]
+    },
+    {
+      "version": "8.5.5",
+      "date": "2026-05-27",
+      "url": "https://helpcenter.multitracks.com/en/articles/15262227-playback-8-5-5-release-notes",
+      "notes": [
+        "Raised the minimum iOS version from iOS 12 to iOS 15.",
+        "New: Service Type filtering; keyboard shortcuts for controlling performance (see 'Playback Keyboard Shortcuts & Mapping').",
+        "MT Complete search results paginate better; Song Menu errors appear inline.",
+        "Fixed an iOS crash on 8.5.3 and the most-reported Mac Catalyst crash from 8.5.4.",
+        "Corrected an incorrect default playhead offset; fixed a Core Data error causing unexpected song failures.",
+        "Fixed Playback Rental preview edits not saving; fixed a POTW song loading as a preview when added from the Song Menu.",
+        "Fixed error text overlaying the Default arrangement cell.",
+        "Fixed 'Restore From Cloud' not working.",
+        "Fixed an issue with the Downloaded Song Menu."
+      ],
+      "keywords": ["iOS 15 minimum", "service type", "keyboard shortcuts", "restore from cloud", "crash", "downloaded song menu"]
+    },
+    {
+      "version": "8.5.4",
+      "date": "2026-04-13",
+      "url": "https://helpcenter.multitracks.com/en/articles/14603871-playback-8-5-4-release-notes",
+      "notes": [
+        "MIDI output moved to MIDIKit (replacing MIKMIDI): MIDI clock, MIDI out, control mapping, and Playback as a virtual MIDI source.",
+        "Accompaniment Track products now include Click & Guide at no extra cost.",
+        "Download menu more prominent; clearer error messages; service time/type menus respond to online/offline status.",
+        "Fixed '5 Second Fade' erasing song section edits; original track muted after download so it does not play alongside stems.",
+        "Fixed crashes: loading multi-song setlists, audio properties access, iRig Blueboard, macOS Tahoe, and a crash in 8.5.2.",
+        "Downloads & Library: songs still downloading no longer appear in the Downloaded list; fixed duplicate 'All Tracks' entries; fixed offline Preview affecting rentals downloaded after returning online; fixed false missing click data reports for Pad Song waveforms.",
+        "Offline: fixed several 'Add a Song' menu issues offline including a non-working Cancel; 'Add' button consistent for C&G songs offline; downloaded MTC song no longer stops working after a rental transfer; 'Delete Setlist From Account' no longer stays disabled after returning online.",
+        "Playback Remote now connects even when the API is unreachable.",
+        "UI/localization fixes for French, Spanish, Portuguese, Korean; Mac users can map song titles for songs added from the Downloaded menu."
+      ],
+      "keywords": ["MIDIKit", "offline", "downloads", "crash", "macOS Tahoe", "playback remote", "accompaniment click guide"]
+    },
+    {
+      "version": "8.5.3",
+      "date": "2026-03-02",
+      "url": "https://helpcenter.multitracks.com/en/articles/13875866-playback-8-5-3-release-notes",
+      "notes": [
+        "New: 'Open in ChartBuilder' option on the setlist menu.",
+        "Better click track performance with time signature changes; enhanced Rental Preview, MT Complete, and offline mode.",
+        "Fixed the 'Audio files missing' error during song downloads.",
+        "Fixed a download issue that loaded a song with only one track (previously requiring deletion of all past setlists to add the others).",
+        "Fixed a crash when selecting 'Restoring from cloud' on a song.",
+        "Rental Previews no longer fail on the first two attempts.",
+        "MT Complete fixes: genres no longer removed after ChartBuilder arrangements; key no longer reverts; can be rented after preview; default pad changes correctly; Save As New duplicates vamps.",
+        "Improved guide count-off when starting at the second measure; Edit song menu shows correct tracks for accompaniment tracks."
+      ],
+      "keywords": ["audio files missing", "download", "restore from cloud crash", "rental preview", "MT Complete", "chartbuilder"]
+    },
+    {
+      "version": "8.5.2",
+      "date": "2026-02-02",
+      "url": "https://helpcenter.multitracks.com/en/articles/13602790-playback-8-5-2-release-notes",
+      "notes": [
+        "Stability build fixing rare crashes.",
+        "New: SMPTE bus configuration available in Playback Rental Previews.",
+        "Rental renewal modal gains a Cancel option; default selection changed from Rent to Click & Guide.",
+        "Improved download handling, including cases where the download bar could appear stuck at completion.",
+        "Fixed tracks playing no audio after certain overlap or auto-link transitions; fixed sections looping unexpectedly after automatic transitions.",
+        "Fixed crashes with automations/custom transitions, keyboard-mapped loop functions, and deleting/loading many songs.",
+        "ProPresenter Playlist Item and Playlist # settings now carry over from website setlists.",
+        "Playback Remote syncing keeps setlists aligned after custom end points are updated."
+      ],
+      "keywords": ["download stuck", "stuck download bar", "no audio transitions", "crash", "SMPTE", "rental preview"]
+    },
+    {
+      "version": "8.5.0",
+      "date": "2025-12-02",
+      "url": "https://helpcenter.multitracks.com/en/articles/12986877-playback-8-5-0-release-notes",
+      "notes": [
+        "New: Playback Rental Preview feature.",
+        "New: a 'Redownload' option when an 'Audio Files Missing' error appears in certain isolated download scenarios.",
+        "New: warning when logging out while offline or not connected to servers.",
+        "More reliable offline access; offline support in Edit Song menus for downloaded MT Complete songs; clearer messages when an action needs internet.",
+        "Improvements for iOS 26; better translations.",
+        "Fixed a 'Song Data Error' when adding a purchased song as a rental.",
+        "Downloaded section in Edit Song menus now shows correct items (fixes duplicate tracks, missing artwork, rentals wrongly shown as downloaded).",
+        "Fixed Song Tiles distorting in Keyboard Mapping edit mode."
+      ],
+      "keywords": ["redownload", "audio files missing", "offline", "rental preview", "song data error", "iOS 26"]
+    },
+    {
+      "version": "8.4.6",
+      "date": "2025-11-19",
+      "url": "https://helpcenter.multitracks.com/en/articles/12880699-playback-8-4-6-release-notes",
+      "notes": [
+        "Emergency hot-fix build to address Playback Remote configuration issues."
+      ],
+      "keywords": ["hotfix", "playback remote"]
+    },
+    {
+      "version": "8.4.4",
+      "date": "2025-10-29",
+      "url": "https://helpcenter.multitracks.com/en/articles/12638708-playback-8-4-4-release-notes",
+      "notes": [
+        "New: Indonesian Guide Cues.",
+        "Refreshed translations; interface supports the newest iPhone models.",
+        "Fixed incorrect track count under 'tracks' in the song menu.",
+        "Fixed Loop button not working during a song's last measure.",
+        "Fixed MT Complete songs sometimes reverting to Click and Guides.",
+        "Fixed buses with no routed tracks having an immovable fader."
+      ],
+      "keywords": ["indonesian", "track count", "loop", "MT Complete", "bus fader"]
+    },
+    {
+      "version": "8.4.3",
+      "date": "2025-10-21",
+      "url": "https://helpcenter.multitracks.com/en/articles/12630351-playback-8-4-3-release-notes",
+      "notes": [
+        "Support for iOS, iPadOS, and macOS 26; better translations.",
+        "Fixed song changes reverting to defaults after Planning Center sync in isolated cases.",
+        "Fixed audio error / misread when multiple MIDI cues arrived rapidly (e.g. ProPresenter Macros).",
+        "Fixed inaccurate track count/selected tracks in the song edit menu.",
+        "Fixed Named Arrangements from the website not carrying their label into Playback.",
+        "Fixed several MIDI Clock output crashes and other less-common crashes."
+      ],
+      "keywords": ["macOS 26", "iOS 26", "planning center", "MIDI clock", "named arrangements", "crash"]
+    },
+    {
+      "version": "8.4.1",
+      "date": "2025-10-21",
+      "url": "https://helpcenter.multitracks.com/en/articles/12630093-playback-8-4-1-release-notes",
+      "notes": [
+        "New: redundancy support through the iConnectivity 1U interface.",
+        "Refined Portuguese guide cues; optimized for iOS 26; improved translations.",
+        "Fixed multiple non-dynamic guide tracks being blocked in cloud songs.",
+        "Fixed multiple songs highlighted at once in large setlists.",
+        "SMPTE shows as disabled for 'Click and Pad' when turned off in settings.",
+        "Infinite loop toggle works in the Edit menu for songs without tracks.",
+        "Custom arrangements made in website setlists are kept after opening in Playback.",
+        "Fixed a download error after transferring rentals between devices.",
+        "Reduced rare unnecessary re-authentication prompts at launch.",
+        "Fixed the song key filter failing on artist pages when adding songs."
+      ],
+      "keywords": ["redundancy", "iConnectivity", "download error rental transfer", "re-authentication", "iOS 26"]
+    }
+  ],
+  "requirements": {
+    "url": "https://helpcenter.multitracks.com/en/articles/5351200-playback-minimum-system-requirements",
+    "summary": "Playback is published for iOS, iPadOS, and macOS via the Apple App Store. The help center minimum requirements article (dated August 4, 2026) lists iOS/iPadOS 15 or later and macOS Monterey 12.4 or later. No Windows version or Windows requirements are documented on helpcenter.multitracks.com or multitracks.com. The product page's older '12.4 or above' iOS figure conflicts with the help center and with the 8.5.5 release notes (minimum raised to iOS 15); the current App Store listing reports minimumOsVersion 15.6.",
+    "details": [
+      "macOS: Monterey 12.4 or later; 4 GB RAM minimum (8 GB recommended); 1280x800 minimum resolution; headphone output, Core Audio-compatible interface recommended for expanded outputs; tested fully compatible with Apple M1 and newer.",
+      "Supported Macs: MacBook early 2016+, MacBook Air early 2015+, MacBook Pro early 2015+, iMac Pro 2017, iMac late 2015+, Mac mini late 2014+, Mac Pro late 2013+, Mac Studio all models.",
+      "iOS/iPadOS: 15 or later; 1 GB RAM minimum (2 GB recommended).",
+      "Supported iOS devices: iPod touch 7th gen; iPhone 6s or newer and iPhone SE (1st gen and later); iPad Air 2nd gen+; iPad mini 4th gen+; iPad 5th gen+; iPad Pro 1st gen+.",
+      "OS compatibility (as of the Oct 14, 2025 article): iOS/iPadOS 26 and macOS 26 Tahoe fully compatible; iOS/iPadOS 17-18 and macOS 14-15 currently supported.",
+      "Oldest supported iOS generation has limited Multi-Outs and MIDI Cue editing (per Troubleshooting Playback Audio Issues).",
+      "App Store listing (2026-10-30): minimumOsVersion 15.6.",
+      "Device sign-in limit: 2 devices per user, 3 with a Playback Premium seat.",
+      "Windows: not documented anywhere on the official sources checked."
+    ]
+  },
+  "appleLookupSnapshot": {
+    "url": "https://itunes.apple.com/lookup?id=751755884&country=us",
+    "retrievedAt": "2026-10-30",
+    "trackName": "Playback",
+    "sellerName": "MULTITRACKS.COM, LLC",
+    "version": "8.6.4",
+    "currentVersionReleaseDate": "2026-10-26T14:26:55Z",
+    "minimumOsVersion": "15.6",
+    "releaseNotesFirstLine": "Summary",
+    "releaseNotesFirstBullet": "Playback 8.6.3 is a quality and stability release. It fixes a false \"Cloud Pro expired\" message for active subscribers, resolves several issues with MT Complete previews and custom arrangements, and improves MIDI Out reliability and keyboard shortcuts on Mac.",
+    "inconsistency": "The App Store version field is 8.6.4 (released 2026-10-26) but the App Store release notes text still describes Playback 8.6.3. The help center release notes collection has no 8.6.4 article (and none for 8.6.0-8.6.2), so what changed in 8.6.4 beyond 8.6.3 is undocumented."
+  },
+  "gaps": [
+    "No help center article documents the 'Cloud Pro expired' message itself or how to troubleshoot it; the only official reference is the 8.6.3 release note saying a false message for active subscribers was fixed. The closest documented remedy is the User Guide's Settings > About > Restore Purchases step for subscriptions not recognized, and the general advice to confirm the signed-in organization holds the active subscription.",
+    "No Windows version of Playback is documented on helpcenter.multitracks.com or multitracks.com; requirements and OS compatibility pages cover only iOS, iPadOS, and macOS.",
+    "Bluetooth headphones/speakers as an output are not mentioned in any Playback article found.",
+    "No article explains the choices inside the Audio Device setting or how to switch between built-in output and an interface beyond 'Settings > General > Audio Device'.",
+    "Sample rate / buffer settings are not documented.",
+    "Mono vs stereo is documented only as a per-bus output option (Track & Bus Routing) and as the iOS Accessibility 'Mono Audio' cause of AutoPan bleed; there is no general mono/stereo troubleshooting article.",
+    "SoundGrid is mentioned only in passing (networked audio option limited to 2 channels on iOS; pick the network in the 'Network' menu for Remote/Sync). No SoundGrid setup article exists.",
+    "No dedicated 'no sound at all' article; nearest are Troubleshooting Playback Audio Issues (dropouts), the Behringer U-Phoria article (device volume, powered hub), and the AutoPan bleed article.",
+    "Release notes for 8.6.0, 8.6.1, 8.6.2, and 8.6.4 are not in the help center collection; 8.4.5 and 8.5.1 are also absent. The 8.6.3 article shows no release date.",
+    "Help center contact article lists only Messenger chat; Support@MultiTracks.com appears in the Download Unauthorized article, and hours/phone appear only on multitracks.com/contact (8am-5pm Central Mon-Fri; search results also reported differing structured-data hours of 10:30-20:00, unverified).",
+    "Cloud Pro storage conflicts between sources: 'starts at 50GB' (help center Get Started article) vs other tiers/amounts on the pricing page; team seats stated as 10 in the help center.",
+    "iOS minimum conflicts: product page says 12.4+, help center says 15+, App Store says 15.6; help center treated as authoritative.",
+    "Bus/output counts conflict between older and newer articles: USB interface article says 10 outputs/10 buses; Track & Bus Routing and Sound System articles say 16 buses and up to 32 outputs.",
+    "The Setlists Menu article has no option literally named 'Remove Setlist From Device' (it describes removing a setlist's audio files from the details menu), while the User Guide uses that name.",
+    "Offline behavior is described only indirectly (release notes, user guide note that downloaded setlists persist until removed or another user signs in); there is no dedicated offline-mode article.",
+    "No documented in-app path to view the current subscription tier beyond Settings > About > Manage Subscription / Restore Purchases."
+  ]
+}

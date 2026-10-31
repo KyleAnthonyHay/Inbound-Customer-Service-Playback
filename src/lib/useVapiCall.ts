@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import type Vapi from "@vapi-ai/web";
-import { config, isVapiConfigured } from "./config";
-import { inlineAssistant } from "./assistant";
+import { config, isVapiConfigured, toolServerUrl } from "./config";
+import { buildAssistant } from "./assistant";
 
 export type CallStatus = "idle" | "connecting" | "active" | "ended" | "error";
 
@@ -59,6 +59,7 @@ export function useVapiCall() {
   const [volume, setVolume] = useState(0);
   const [muted, setMuted] = useState(false);
   const [startedAt, setStartedAt] = useState<number | null>(null);
+  const [callId, setCallId] = useState<string | null>(null);
   const [transcript, setTranscript] = useState<TranscriptLine[]>([]);
   const [events, setEvents] = useState<ActivityEvent[]>([]);
 
@@ -137,6 +138,7 @@ export function useVapiCall() {
     setError(null);
     setTranscript([]);
     setEvents([]);
+    setCallId(null);
     setStatus("connecting");
     pushEvent({ kind: "call", label: "Connecting", status: "running" });
 
@@ -171,13 +173,16 @@ export function useVapiCall() {
         pushEvent({ kind: "error", label: "Error", detail: msg, status: "failed" });
       });
 
+      let call: { id?: string } | null = null;
       if (config.vapiAssistantId) {
-        await vapi.start(config.vapiAssistantId);
+        call = await vapi.start(config.vapiAssistantId);
       } else {
         // Inline assistant; types are loosened because GPT-Live fields
         // (reasoner, speaker) are newer than the SDK's bundled DTO types.
-        await vapi.start(inlineAssistant as unknown as Parameters<Vapi["start"]>[0]);
+        const assistant = buildAssistant({ toolServerUrl: toolServerUrl() });
+        call = await vapi.start(assistant as unknown as Parameters<Vapi["start"]>[0]);
       }
+      if (call?.id) setCallId(call.id);
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Failed to start call";
       setError(msg);
@@ -212,6 +217,7 @@ export function useVapiCall() {
     volume,
     muted,
     startedAt,
+    callId,
     transcript,
     events,
     start,

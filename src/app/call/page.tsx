@@ -1,14 +1,17 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { CallScreen } from "@/components/CallScreen";
+import { ActivityPanel } from "@/components/ActivityPanel";
 import { config, isVapiConfigured } from "@/lib/config";
 import { useVapiCall } from "@/lib/useVapiCall";
 
 export default function CallPage() {
   const call = useVapiCall();
   const configured = isVapiConfigured();
+  const [panelOpen, setPanelOpen] = useState(false);
 
   return (
     <main className="relative min-h-[100dvh] bg-background">
@@ -31,13 +34,20 @@ export default function CallPage() {
         onToggleMute={call.toggleMute}
       />
 
+      <ActivityPanel
+        open={panelOpen}
+        onToggle={() => setPanelOpen((o) => !o)}
+        callId={call.callId}
+        clientEvents={call.events}
+        transcript={call.transcript}
+      />
+
       {(call.error || !configured) && (
         <div
           role="alert"
           className="fixed inset-x-0 top-16 z-10 mx-auto w-[calc(100%-2rem)] max-w-[400px] rounded-xl bg-danger/90 px-4 py-2.5 text-center text-sm text-white shadow-lg"
         >
-          {call.error ??
-            "Add NEXT_PUBLIC_VAPI_PUBLIC_KEY to .env.local to place a real call."}
+          {call.error ?? "Add NEXT_PUBLIC_VAPI_PUBLIC_KEY to .env.local to place a real call."}
         </div>
       )}
     </main>

@@ -62,4 +62,23 @@ export default defineSchema({
   })
     .index("by_slot", ["slotId"])
     .index("by_callId", ["callId"]),
+
+  /** Activity log for the demo UI. Written by the tool webhook; read live by the call page. */
+  callEvents: defineTable({
+    callId: v.string(),
+    at: v.number(), // epoch ms
+    kind: v.union(
+      v.literal("tool-start"),
+      v.literal("tool-end"),
+      v.literal("note")
+    ),
+    tool: v.optional(v.string()),
+    toolCallId: v.optional(v.string()),
+    label: v.string(),
+    status: v.optional(v.union(v.literal("running"), v.literal("succeeded"), v.literal("failed"))),
+    durationMs: v.optional(v.number()),
+    /** Where the data came from: live external API, simulated company data, or app-internal. */
+    source: v.union(v.literal("live"), v.literal("simulated"), v.literal("internal")),
+    detail: v.optional(v.string()),
+  }).index("by_call", ["callId", "at"]),
 });

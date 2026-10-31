@@ -6,10 +6,14 @@
 export const config = {
   vapiPublicKey: process.env.NEXT_PUBLIC_VAPI_PUBLIC_KEY ?? "",
   vapiAssistantId: process.env.NEXT_PUBLIC_VAPI_ASSISTANT_ID ?? "",
+  /** Public base URL of this app, used to build the tool webhook URL. */
+  appUrl: process.env.NEXT_PUBLIC_APP_URL ?? "",
   /** Inbound test number shown on the landing page; display only. */
   inboundNumber: process.env.NEXT_PUBLIC_INBOUND_NUMBER ?? "",
+  convexUrl: process.env.NEXT_PUBLIC_CONVEX_URL ?? "",
   /** Caller-ID style label shown on the call screen. */
   callerLabel: "Playback Support",
 } as const;
 
 export const isVapiConfigured = () => config.vapiPublicKey.length > 0;
+export const toolServerUrl = () => (config.appUrl ? `${config.appUrl.replace(/\/$/, "")}/api/vapi/tools` : "");
