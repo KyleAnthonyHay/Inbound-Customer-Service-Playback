@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 const LOGICAL_W = 440;
@@ -32,9 +33,12 @@ function FitScreen({ className, children }: { className: string; children: React
 }
 
 /**
- * iPhone-style device frame drawn in CSS, proportioned to a 974x2000 reference
- * (bezel ~2.4% of width, screen corner radius ~11% of width). On narrow
- * viewports the frame is dropped and the screen fills the window.
+ * iPhone frame from /public/iphone-frame.webp (980x2000, transparent screen
+ * opening). Measured opening: 5.1% inset left/right, 2.2% top/bottom, corner
+ * radius ~13% of the opening width, and exactly the 440x956 screen ratio.
+ * The screen renders on top of the frame, clipped to that opening, so the
+ * app's own Dynamic Island shows instead of the one baked into the image.
+ * On narrow viewports the frame is dropped and the screen fills the window.
  */
 export function PhoneFrame({ children }: { children: React.ReactNode }) {
   return (
@@ -44,24 +48,9 @@ export function PhoneFrame({ children }: { children: React.ReactNode }) {
 
       {/* Larger viewports: framed */}
       <div className="hidden min-h-[100dvh] items-center justify-center bg-[#0b0b0c] py-6 sm:flex">
-        <div className="relative" style={{ height: "min(92dvh, 980px)", aspectRatio: "974 / 2000" }}>
-          {/* Side buttons */}
-          <span aria-hidden className="absolute -left-[0.5%] top-[18.6%] h-[2.6%] w-[0.8%] rounded-l-[2px] bg-[#2a2a2c] shadow-[inset_1px_0_0_rgba(255,255,255,0.15)]" />
-          <span aria-hidden className="absolute -left-[0.5%] top-[25.4%] h-[5.2%] w-[0.8%] rounded-l-[2px] bg-[#2a2a2c] shadow-[inset_1px_0_0_rgba(255,255,255,0.15)]" />
-          <span aria-hidden className="absolute -left-[0.5%] top-[32.6%] h-[5.2%] w-[0.8%] rounded-l-[2px] bg-[#2a2a2c] shadow-[inset_1px_0_0_rgba(255,255,255,0.15)]" />
-          <span aria-hidden className="absolute -right-[0.5%] top-[27.8%] h-[8.4%] w-[0.8%] rounded-r-[2px] bg-[#2a2a2c] shadow-[inset_-1px_0_0_rgba(255,255,255,0.15)]" />
-
-          {/* Body / bezel */}
-          <div
-            className="absolute inset-0 rounded-[11.5%/5.6%] bg-[#151516]"
-            style={{
-              backgroundImage: "linear-gradient(180deg, #3a3a3c 0%, #1c1c1e 8%, #1c1c1e 92%, #3a3a3c 100%)",
-              boxShadow: "inset 0 0 0 2px #4a4a4d, inset 0 0 0 4px #0e0e0f, 0 30px 80px rgba(0,0,0,0.6)",
-            }}
-          />
-
-          {/* Screen opening */}
-          <FitScreen className="absolute inset-[1.1%_2.6%] overflow-hidden rounded-[10%/5%] bg-[#242424]">{children}</FitScreen>
+        <div className="relative" style={{ height: "min(92dvh, 1000px)", aspectRatio: "980 / 2000" }}>
+          <Image src="/iphone-frame.webp" alt="" fill priority sizes="500px" className="pointer-events-none select-none object-contain" />
+          <FitScreen className="absolute inset-[2.2%_5.1%] overflow-hidden rounded-[13%/6%] bg-[#242424]">{children}</FitScreen>
         </div>
       </div>
     </>
