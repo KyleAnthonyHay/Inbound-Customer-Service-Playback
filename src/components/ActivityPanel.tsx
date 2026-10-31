@@ -1,41 +1,48 @@
 "use client";
 
 /*
- * Motion spec, measured from the reference recording (562x592, sampled at 15 fps, 1 frame = 67 ms).
+ * Motion spec, measured from the reference reel (Instagram, 1440x2560 @ 30 fps; the agent card is a
+ * screen recording of a "generative UI" coding-agent panel). Stepped frame by frame at 30 fps, so
+ * 1 frame = 33 ms. Distances are in the recording's pixels; one row pitch there = 41 px (28 px here).
  *
- * Overall feel: everything is ease-out (fast start, long settle), no bounce except the completion dot.
- *   Curve used: cubic-bezier(0.22, 1, 0.36, 1). Nothing slides more than ~6 px; most changes are
- *   opacity + a 3-4 px blur that clears, not a translate.
+ * Overall feel: fast, crisp, no springs and no overshoot anywhere. Movement only happens when layout
+ *   changes (rows pushed down); everything else is opacity + blur clearing in place, no translate.
+ *   Layout curve fits ease-out-quart, cubic-bezier(0.25, 1, 0.5, 1).
  *
- * Card intro (frames 19-25, ~400 ms): header "Thinking 0s" fades in first, then the title, then the
- *   rows cascade from the BOTTOM (oldest) up to the top (newest), ~1 row every 40-45 ms. Each row:
- *   opacity 0 -> 1, blur 4px -> 0, y +6px -> 0, ~280 ms.
+ * Row insertion (newest on top; also mid-list), frames 113-136:
+ *   1. Gap opens first. Rows below are pushed down by one row height. Measured gap: 0 / 40% / 66% / 78% /
+ *      88% / 95% / 100% at 0 / 33 / 67 / 100 / 133 / 167 / ~230 ms -> 280 ms ease-out-quart, no bounce.
+ *   2. The gap stays empty until it has (nearly) settled; content appears ~230 ms after the gap began
+ *      (f113 -> f121). Content reveal: opacity 0 -> 1 with blur ~8px -> 0 (f121 heavy blur, f122 half,
+ *      f123 slight, f124 sharp) = ~130 ms, ease-out. No vertical offset. Right-hand meta reveals with it.
+ *   3. New-row wash: a warm tint behind the new row fades in with the content, holds ~700 ms, then
+ *      fades out over ~300 ms (gone ~1.1 s after it appeared). Not shown on the initial cascade.
+ *   4. Label decodes: the resolved prefix grows left -> right (linear), ~26 ms/char (19 chars ~470 ms,
+ *      25 chars ~800 ms), followed by a tail of ~8 random [a-z0-9] glyphs in the SAME color, re-rolled
+ *      every frame (33 ms): "Rox18o rgh" -> "Rotate 6a316gh" -> "Rotate sess4nh" -> "Rotate session keys".
+ *      A label that changes in place decodes the same way, with no gap step.
+ *   5. Two rows arriving together go one after another, the lower (older) first, ~250 ms apart
+ *      (second gap f120-127, second content f129).
+ *   Initial build (frames 14-23): rows cascade bottom-up, ~50 ms apart, each a ~150 ms blur reveal.
  *
- * List order: newest step on top (git-log style). A new step is inserted at the top or mid-list:
- *   1. Gap opens first: rows below slide down one row height (19 px in the video, 28 px here) over
- *      3-4 frames (~240 ms, ease-out).
- *   2. Then the row content fades in with blur (frame 58 faint/blurred, 59 sharp) starting ~120 ms in.
- *   3. Its label "decodes": resolved prefix grows left -> right with a ~6-char random-glyph tail in a
- *      lighter color ("Add o5tfa1a" -> "Add session 6fcmfj" -> "Add session refresh tests"),
- *      9 frames for 25 chars (~600 ms, ~24 ms/char). A label that changes in place decodes the same way.
- *   4. Right-hand mono metadata ("checking") fades in ~2 frames after the row.
- *   Two rows inserted together stagger by 3 frames (~200 ms), lower (older) one first.
+ * Running -> done (frames 162-168): the spinner is cut in <= 1 frame; the new icon blur-fades in
+ *   (blur ~4px -> 0, opacity 0 -> 1) over ~100-130 ms after a 1-frame gap, same size, no scale pop.
+ *   Label color tweens in ~120 ms. Right-hand meta ("checking" -> "3 conflicts") does the same blur swap.
  *
- * Running row: dot is replaced by a thin 3/4-arc spinner (~0.8 s/rev) and the whole row gets a soft
- *   tinted band. Completion (frames 95-98): band fades out (~150 ms), spinner blurs out, the colored
- *   dot scales up from ~0.4 with a slight spring (~200 ms); label color tweens over ~2 frames.
+ * Status line ("Fetching main" -> "Checking it merges cleanly", frames 129-133 and 48-52):
+ *   old text blurs/fades out in ~1 frame (50 ms), one empty frame, new text sharpens from blur ~6px over
+ *   ~3 frames (120 ms). No slide. While busy the text shimmers: a lower-contrast band ~1/3 of the text
+ *   wide sweeps left -> right in ~500 ms, then ~700 ms of rest (period ~1.2 s, linear). The busy
+ *   spinner turns continuously (~0.8 s/rev). "Thinking" in the header carries the same shimmer.
  *
- * Status line (bottom of card): busy text has a shimmer, a light band sweeping left -> right
- *   (~1.4 s loop, linear). Text change = blur crossfade: old text blurs out in 1 frame (~80 ms),
- *   new text sharpens in over ~2 frames (~160 ms). No vertical slide. Spinner stays put.
+ * Header counter ("Thinking 1s" -> "2s", frames 64-65): a hard cut, no tween. Only the label word
+ *   ("Thinking" -> "Worked for") gets the blur swap.
  *
- * Header counter ("Thinking 1s" -> "2s", "Thinking 5s" -> "Worked for 5s"): in-place blur crossfade,
- *   same timing as the status line; number in a muted tone.
- * Title badges ("#128", "Open") and the warning row/button: fade + blur in over ~2 frames.
- * Message paragraph (frames 103-111): streams in word by word, ~25 words/s (~40 ms/word), each
- *   word fading from blur over ~200 ms, so the leading edge looks soft.
- * Card collapse is not shown in the clip; it uses the same curve: height + opacity, ~280 ms,
- *   chevron rotates 90deg.
+ * Streamed text (the agent's paragraph, frames 177-211): words arrive ~26/s (~38 ms/word); each word
+ *   sharpens from blur ~6px and low opacity over ~180 ms, so the leading 2-3 words are always soft.
+ *   Used here for transcript lines: a new line blur-reveals in ~130 ms, the newest agent line streams.
+ *
+ * Reduced motion: no movement, no blur, no decode, no shimmer; final states render immediately.
  */
 
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
@@ -81,10 +88,22 @@ const SOURCE = {
   call: { name: "Call", dot: "bg-[#8e8e93]", text: "text-[#a1a1a6]", tag: "bg-white/[0.08] text-white/60" },
 } as const;
 
-const EASE = [0.22, 1, 0.36, 1] as const;
-const BLUR_IN = { opacity: 0, filter: "blur(4px)" };
+/** ease-out-quart: fits the measured gap curve (40% at 33 ms, 95% at 167 ms of a 280 ms move). */
+const EASE = [0.25, 1, 0.5, 1] as const;
+const BLUR_IN = { opacity: 0, filter: "blur(6px)" };
+const ROW_IN = { opacity: 0, filter: "blur(8px)" };
+const ICON_IN = { opacity: 0, filter: "blur(4px)" };
 const SHARP = { opacity: 1, filter: "blur(0px)" };
 const ROW_H = 28;
+/** Seconds. */
+const GAP = 0.28; // gap opens / rows pushed down
+const REVEAL_DELAY = 0.23; // content waits for the gap
+const REVEAL = 0.13; // content blur -> sharp
+const SWAP_OUT = 0.05; // old text/icon cut
+const SWAP_IN = 0.12; // new text/icon sharpens
+const INSERT_STAGGER = 0.25; // rows arriving together, lower first
+const INTRO_STAGGER = 0.05; // initial bottom-up cascade
+const MS_PER_CHAR = 26;
 
 export function ActivityPanel(props: Props) {
   const ready = useConvexReady();
@@ -173,8 +192,8 @@ function Swap({ k, children, className }: { k: string; children: ReactNode; clas
         key={k}
         className={cn("inline-block", className)}
         initial={reduce ? false : BLUR_IN}
-        animate={{ ...SHARP, transition: { duration: reduce ? 0 : 0.16, ease: EASE } }}
-        exit={{ ...BLUR_IN, transition: { duration: reduce ? 0 : 0.08, ease: "easeIn" } }}
+        animate={{ ...SHARP, transition: { duration: reduce ? 0 : SWAP_IN, ease: EASE } }}
+        exit={{ ...BLUR_IN, transition: { duration: reduce ? 0 : SWAP_OUT, ease: "easeIn" } }}
       >
         {children}
       </motion.span>
@@ -182,22 +201,25 @@ function Swap({ k, children, className }: { k: string; children: ReactNode; clas
   );
 }
 
-/** Light band sweeping left to right across busy text. */
-function Shimmer({ children, active }: { children: string; active: boolean }) {
+/**
+ * Busy text: a lower-contrast band (~1/3 of the text wide) sweeps left -> right in ~500 ms, then rests
+ * ~700 ms. With a 300%-wide gradient the band is only on the text for the middle half of each pass.
+ */
+function Shimmer({ children, active, base = 0.8, idle = 0.6 }: { children: string; active: boolean; base?: number; idle?: number }) {
   const reduce = useReducedMotion();
-  if (!active || reduce) return <span className={active ? "text-white/80" : "text-white/60"}>{children}</span>;
+  if (!active || reduce) return <span style={{ color: `rgba(255,255,255,${active ? base : idle})` }}>{children}</span>;
+  const b = `rgba(255,255,255,${base})`;
   return (
     <motion.span
       className="bg-clip-text text-transparent"
       style={{
-        backgroundImage:
-          "linear-gradient(90deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.5) 38%, rgba(255,255,255,0.98) 50%, rgba(255,255,255,0.5) 62%, rgba(255,255,255,0.5) 100%)",
-        backgroundSize: "250% 100%",
+        backgroundImage: `linear-gradient(90deg, ${b} 0%, ${b} 41%, rgba(255,255,255,${base * 0.4}) 50%, ${b} 59%, ${b} 100%)`,
+        backgroundSize: "300% 100%",
         WebkitBackgroundClip: "text",
       }}
       initial={{ backgroundPosition: "100% 0%" }}
       animate={{ backgroundPosition: "0% 0%" }}
-      transition={{ duration: 1.4, ease: "linear", repeat: Infinity }}
+      transition={{ duration: 1, ease: "linear", repeat: Infinity, repeatDelay: 0.2 }}
     >
       {children}
     </motion.span>
@@ -205,7 +227,8 @@ function Shimmer({ children, active }: { children: string; active: boolean }) {
 }
 
 const GLYPHS = "abcdefghijklmnopqrstuvwxyz0123456789";
-const TAIL = 6;
+const TAIL = 8;
+const TICK_MS = 33; // glyphs re-roll every recorded frame
 
 /** Deterministic glyph for (tick, index) so render stays pure. */
 function glyph(tick: number, i: number) {
@@ -217,33 +240,35 @@ function glyph(tick: number, i: number) {
 }
 
 /**
- * "Decode" reveal: the resolved prefix grows left to right with a short random tail.
- * Plays on mount when `animateMount`, and again whenever `text` changes.
+ * "Decode" reveal: the resolved prefix grows left to right (~26 ms/char) with an 8-glyph random tail
+ * in the same color. Plays on mount when `animateMount` (after `delayMs`, so it starts as the row's
+ * content appears), and again, without delay, whenever `text` changes.
  */
-function ScrambleText({ text, animateMount }: { text: string; animateMount: boolean }) {
+function ScrambleText({ text, animateMount, delayMs = 0 }: { text: string; animateMount: boolean; delayMs?: number }) {
   const reduce = useReducedMotion();
   const [done, setDone] = useState<string | null>(animateMount ? null : text);
   const [frame, setFrame] = useState<{ text: string; p: number; tick: number } | null>(null);
 
   useEffect(() => {
     if (reduce || done === text) return;
-    const dur = Math.min(700, Math.max(360, text.length * 24));
+    const dur = Math.min(900, Math.max(300, text.length * MS_PER_CHAR));
+    const wait = done === null ? delayMs : 0;
     let raf = 0;
     let start = 0;
     const step = (now: number) => {
       if (!start) start = now;
-      const p = Math.min(1, (now - start) / dur);
+      const p = Math.min(1, Math.max(0, (now - start - wait) / dur));
       if (p >= 1) {
         setDone(text);
         setFrame(null);
         return;
       }
-      setFrame({ text, p, tick: Math.floor((now - start) / 55) });
+      setFrame({ text, p, tick: Math.floor((now - start) / TICK_MS) });
       raf = requestAnimationFrame(step);
     };
     raf = requestAnimationFrame(step);
     return () => cancelAnimationFrame(raf);
-  }, [text, done, reduce]);
+  }, [text, done, reduce, delayMs]);
 
   if (reduce || done === text) return <>{text}</>;
   const p = frame?.text === text ? frame.p : 0;
@@ -258,7 +283,7 @@ function ScrambleText({ text, animateMount }: { text: string; animateMount: bool
   return (
     <>
       {text.slice(0, resolved)}
-      <span className="text-white/35">{tail}</span>
+      {tail}
     </>
   );
 }
@@ -280,7 +305,7 @@ function StreamText({ text }: { text: string }) {
             className="inline-block"
             initial={reduce ? false : BLUR_IN}
             animate={SHARP}
-            transition={{ duration: 0.22, ease: EASE, delay: idx < initialCount ? idx * 0.04 : 0 }}
+            transition={{ duration: 0.18, ease: EASE, delay: idx < initialCount ? idx * 0.038 : 0 }}
           >
             {part}
           </motion.span>
@@ -305,10 +330,10 @@ function StepDot({ step }: { step: Step }) {
           <motion.span
             key="spin"
             className="absolute inset-0 flex items-center justify-center text-white/85"
-            initial={reduce ? false : { opacity: 0, scale: 0.6 }}
-            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-            exit={{ opacity: 0, scale: 0.7, filter: "blur(2px)", transition: { duration: reduce ? 0 : 0.12 } }}
-            transition={{ duration: reduce ? 0 : 0.16, ease: EASE }}
+            initial={reduce ? false : ICON_IN}
+            animate={SHARP}
+            exit={{ ...ICON_IN, transition: { duration: reduce ? 0 : SWAP_OUT, ease: "easeIn" } }}
+            transition={{ duration: reduce ? 0 : SWAP_IN, ease: EASE, delay: reduce ? 0 : SWAP_OUT }}
           >
             <Spinner size={12} />
           </motion.span>
@@ -316,11 +341,11 @@ function StepDot({ step }: { step: Step }) {
           <motion.span
             key="dot"
             className="absolute inset-0 flex items-center justify-center"
-            initial={reduce ? false : { opacity: 0, scale: 0.4 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={reduce ? { duration: 0 } : { type: "spring", duration: 0.3, bounce: 0.35, delay: 0.05 }}
+            initial={reduce ? false : ICON_IN}
+            animate={SHARP}
+            transition={{ duration: reduce ? 0 : SWAP_IN, ease: EASE, delay: reduce ? 0 : SWAP_OUT }}
           >
-            <span className={cn("h-2 w-2 rounded-full transition-colors duration-200", color)} />
+            <span className={cn("h-2 w-2 rounded-full transition-colors duration-[120ms]", color)} />
           </motion.span>
         )}
       </AnimatePresence>
@@ -334,63 +359,60 @@ function StepRow({ step, entrance, first, last }: { step: Step; entrance: Entran
   const running = step.status === "running";
   const insert = entrance.mode === "insert";
   const d = entrance.delay;
-
-  const initial = reduce ? false : insert ? { height: 0, opacity: 0 } : { opacity: 0, y: 6 };
-  const animate = insert ? { height: ROW_H, opacity: 1 } : { opacity: 1, y: 0 };
-  const transition = insert
-    ? { height: { duration: 0.24, ease: EASE, delay: d }, opacity: { duration: 0.2, ease: EASE, delay: d + 0.12 }, layout: { duration: 0.26, ease: EASE } }
-    : { duration: 0.28, ease: EASE, delay: d, layout: { duration: 0.26, ease: EASE } };
+  // Insert: the gap opens first, content sharpens in once it has settled. Intro: straight blur reveal.
+  const revealAt = insert ? d + REVEAL_DELAY : d;
 
   return (
     <motion.li
       layout="position"
-      initial={initial}
-      animate={animate}
+      initial={reduce ? false : insert ? { height: 0 } : { opacity: 0 }}
+      animate={insert ? { height: ROW_H } : { opacity: 1 }}
       exit={reduce ? { opacity: 0, transition: { duration: 0 } } : { height: 0, opacity: 0, transition: { duration: 0.2, ease: EASE } }}
-      transition={transition}
+      transition={{
+        height: { duration: reduce ? 0 : GAP, ease: EASE, delay: d },
+        opacity: { duration: reduce ? 0 : 0.15, ease: EASE, delay: d },
+        layout: { duration: reduce ? 0 : GAP, ease: EASE },
+      }}
       className="relative -mx-4 h-7 overflow-hidden px-4"
     >
-      {/* running band */}
-      <motion.span
-        aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[#ffb35c]/[0.07]"
-        initial={false}
-        animate={{ opacity: running ? 1 : 0 }}
-        transition={{ duration: reduce ? 0 : running ? 0.2 : 0.16, ease: EASE }}
-      />
+      {/* new-row wash: in with the content, hold ~700 ms, out over ~300 ms */}
+      {insert && !reduce && (
+        <motion.span
+          aria-hidden
+          className="pointer-events-none absolute inset-0 bg-[#ffb35c]/[0.08]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: [0, 1, 1, 0] }}
+          transition={{ duration: 1.13, times: [0, 0.115, 0.735, 1], ease: "easeOut", delay: revealAt }}
+        />
+      )}
       {/* rail segments above / below the dot */}
       {!first && <span aria-hidden className="absolute left-[22.5px] top-0 h-[9px] w-px bg-white/[0.18]" />}
       {!last && <span aria-hidden className="absolute bottom-0 left-[22.5px] h-[9px] w-px bg-white/[0.18]" />}
 
       <motion.div
         className="relative flex h-full items-center gap-3"
-        initial={reduce ? false : { filter: "blur(4px)" }}
-        animate={{ filter: "blur(0px)" }}
-        transition={{ duration: reduce ? 0 : 0.24, ease: EASE, delay: insert ? d + 0.12 : d }}
+        initial={reduce ? false : ROW_IN}
+        animate={SHARP}
+        transition={{ duration: reduce ? 0 : insert ? REVEAL : 0.15, ease: EASE, delay: revealAt }}
       >
         <StepDot step={step} />
         <span className="flex min-w-0 flex-1 items-center gap-2">
           <span
             className={cn(
-              "truncate text-[13px] transition-colors duration-200",
+              "truncate text-[13px] transition-colors duration-[120ms]",
               running ? "text-white" : step.status === "failed" ? "text-[#ff8a8f]" : "text-white/75"
             )}
           >
-            <ScrambleText text={step.label} animateMount={insert && !reduce} />
+            <ScrambleText text={step.label} animateMount={insert && !reduce} delayMs={revealAt * 1000} />
           </span>
           <span className={cn("shrink-0 rounded px-1.5 py-px font-mono text-[10.5px] leading-[16px]", meta.tag)}>{meta.name}</span>
           {step.detail && step.status === "failed" && <span className="truncate text-[12px] text-[#f5c45e]">{step.detail}</span>}
         </span>
-        <motion.span
-          className="shrink-0 font-mono text-[11px] text-white/40"
-          initial={reduce || !insert ? false : { opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.2, delay: d + 0.26 }}
-        >
+        <span className="shrink-0 font-mono text-[11px] text-white/40">
           <Swap k={running ? "running" : typeof step.durationMs === "number" ? `ms${step.durationMs}` : "none"}>
             {running ? "running" : typeof step.durationMs === "number" ? `${step.durationMs} ms` : ""}
           </Swap>
-        </motion.span>
+        </span>
       </motion.div>
     </motion.li>
   );
@@ -412,7 +434,7 @@ function Rail({ steps }: { steps: Step[] }) {
     const stagger = new Map(seen.stagger);
     fresh.forEach((s, i) => {
       ids.add(s.id);
-      stagger.set(s.id, i * 0.2);
+      stagger.set(s.id, i * INSERT_STAGGER);
     });
     setSeen({ ids, intro: seen.intro, stagger });
   }
@@ -425,7 +447,7 @@ function Rail({ steps }: { steps: Step[] }) {
       <AnimatePresence initial={false}>
         {display.map((s, i) => {
           const entrance: Entrance = seen.intro.has(s.id)
-            ? { mode: "intro", delay: 0.06 + (n - 1 - i) * 0.045 }
+            ? { mode: "intro", delay: 0.06 + (n - 1 - i) * INTRO_STAGGER }
             : { mode: "insert", delay: seen.stagger.get(s.id) ?? 0 };
           return <StepRow key={s.id} step={s} entrance={entrance} first={i === 0} last={i === n - 1} />;
         })}
@@ -454,9 +476,9 @@ function LiveTranscript({ transcript, reduce }: { transcript: TranscriptLine[]; 
             return (
               <motion.li
                 key={t.id}
-                initial={reduce ? false : { opacity: 0, filter: "blur(3px)" }}
-                animate={{ opacity: 1, filter: "blur(0px)" }}
-                transition={{ duration: reduce ? 0 : 0.2, ease: EASE }}
+                initial={reduce ? false : BLUR_IN}
+                animate={SHARP}
+                transition={{ duration: reduce ? 0 : REVEAL, ease: EASE }}
                 className={cn("text-[13px] leading-snug", t.role === "assistant" ? "text-white/90" : "text-white/50")}
               >
                 <span className="mr-1.5 text-[10px] uppercase tracking-wide text-white/35">{t.role === "assistant" ? "Agent" : "Caller"}</span>
@@ -504,15 +526,28 @@ function View({ open, onToggle, callId, status, startedAt, assistantSpeaking, ha
     error: ["Failed", "bg-[#ff6369]"],
   }[status];
 
-  const fadeBlur = {
-    initial: reduce ? false : BLUR_IN,
-    animate: SHARP,
-    exit: { ...BLUR_IN, transition: { duration: reduce ? 0 : 0.12 } },
-    transition: { duration: reduce ? 0 : 0.22, ease: EASE },
-  } as const;
-
   return (
     <MotionConfig reducedMotion="user">
+      {/* Closed: a labeled pill top-right of the viewport (outside the transformed aside so `fixed` is viewport-relative). */}
+      <AnimatePresence initial={false}>
+        {!open && (
+          <motion.button
+            key="open-pill"
+            type="button"
+            onClick={onToggle}
+            aria-expanded={false}
+            className="fixed right-4 top-4 z-20 flex items-center gap-2 rounded-full border border-white/10 bg-[#111113]/95 px-4 py-2 text-[13px] font-medium text-white/85 shadow-[0_8px_30px_rgba(0,0,0,0.35)] backdrop-blur-xl transition-colors hover:text-white"
+            style={{ fontFamily: "var(--font-geist-sans), -apple-system, system-ui, sans-serif" }}
+            initial={reduce ? false : BLUR_IN}
+            animate={{ ...SHARP, transition: { duration: reduce ? 0 : SWAP_IN, ease: EASE, delay: reduce ? 0 : 0.15 } }}
+            exit={{ ...BLUR_IN, transition: { duration: reduce ? 0 : SWAP_OUT, ease: "easeIn" } }}
+          >
+            <Activity size={15} aria-hidden />
+            View agent activity
+          </motion.button>
+        )}
+      </AnimatePresence>
+
       <aside
         className={cn(
           "fixed inset-y-0 right-0 z-20 flex w-[400px] max-w-[94vw] flex-col border-l border-white/10 bg-[#111113]/95 text-white shadow-[-20px_0_60px_rgba(0,0,0,0.45)] backdrop-blur-xl transition-transform duration-300",
@@ -521,33 +556,39 @@ function View({ open, onToggle, callId, status, startedAt, assistantSpeaking, ha
         style={{ fontFamily: "var(--font-geist-sans), -apple-system, system-ui, sans-serif" }}
         aria-label="Agent activity"
       >
-        <button
-          type="button"
-          onClick={onToggle}
-          aria-expanded={open}
-          aria-label={open ? "Hide agent activity" : "Show agent activity"}
-          className="absolute -left-11 top-4 flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-[#111113]/95 text-sm text-white/80 backdrop-blur-xl hover:text-white"
-        >
-          {open ? <X size={18} /> : <Activity size={18} />}
-        </button>
-
         <div className="flex-1 overflow-y-auto px-5 pb-5 pt-6">
-          {/* "Thinking 2s" header */}
-          <motion.button
-            type="button"
-            onClick={() => setCardOpen((o) => !o)}
-            aria-expanded={cardOpen}
-            className="flex items-center gap-1.5 text-[13px] text-white/55 transition-colors hover:text-white/85"
-            initial={reduce ? false : BLUR_IN}
-            animate={SHARP}
-            transition={{ duration: 0.22, ease: EASE }}
-          >
-            <motion.span initial={false} animate={{ rotate: cardOpen ? 90 : 0 }} transition={{ duration: reduce ? 0 : 0.2, ease: EASE }} className="flex">
-              <ChevronRight size={14} />
-            </motion.span>
-            <Swap k={elapsed.prefix} className="text-white/75">{elapsed.prefix}</Swap>
-            {elapsed.value && <Swap k={elapsed.value} className="tabular-nums text-white/40">{elapsed.value}</Swap>}
-          </motion.button>
+          <div className="flex items-center justify-between gap-3">
+            {/* "Thinking 2s" header */}
+            <motion.button
+              type="button"
+              onClick={() => setCardOpen((o) => !o)}
+              aria-expanded={cardOpen}
+              className="flex items-center gap-1.5 text-[13px] text-white/55 transition-colors hover:text-white/85"
+              initial={reduce ? false : BLUR_IN}
+              animate={SHARP}
+              transition={{ duration: 0.22, ease: EASE }}
+            >
+              <motion.span initial={false} animate={{ rotate: cardOpen ? 90 : 0 }} transition={{ duration: reduce ? 0 : 0.2, ease: EASE }} className="flex">
+                <ChevronRight size={14} />
+              </motion.span>
+              <Swap k={elapsed.prefix}>
+                <Shimmer active={status === "active"} base={0.75} idle={0.75}>{elapsed.prefix}</Shimmer>
+              </Swap>
+              {/* counter ticks as a hard cut, like the reference */}
+              {elapsed.value && <span className="tabular-nums text-white/40">{elapsed.value}</span>}
+            </motion.button>
+            {/* Open: compact close control in the header row */}
+            <button
+              type="button"
+              onClick={onToggle}
+              aria-expanded={open}
+              aria-label="Hide agent activity"
+              tabIndex={open ? 0 : -1}
+              className="-mr-1.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-white/50 transition-colors hover:bg-white/[0.06] hover:text-white/90"
+            >
+              <X size={15} aria-hidden />
+            </button>
+          </div>
 
           <AnimatePresence initial={false}>
             {cardOpen && (
@@ -601,10 +642,10 @@ function View({ open, onToggle, callId, status, startedAt, assistantSpeaking, ha
                             <motion.span
                               key={busy ? "busy" : warn ? "warn" : "idle"}
                               className="flex items-center justify-center"
-                              initial={reduce ? false : { opacity: 0, scale: 0.6 }}
-                              animate={{ opacity: 1, scale: 1 }}
-                              exit={{ opacity: 0, scale: 0.6, transition: { duration: reduce ? 0 : 0.08 } }}
-                              transition={{ duration: reduce ? 0 : 0.16, ease: EASE }}
+                              initial={reduce ? false : ICON_IN}
+                              animate={SHARP}
+                              exit={{ ...ICON_IN, transition: { duration: reduce ? 0 : SWAP_OUT, ease: "easeIn" } }}
+                              transition={{ duration: reduce ? 0 : SWAP_IN, ease: EASE }}
                             >
                               {busy ? (
                                 <Spinner size={13} className="text-white/70" />
