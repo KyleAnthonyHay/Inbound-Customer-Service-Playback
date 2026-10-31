@@ -77,4 +77,58 @@ http.route({
   }),
 });
 
+/**
+ * Assistant-level server messages (status-update, final transcript lines, end-of-call-report),
+ * configured in buildAssistant() via server.url + serverMessages. Feeds the "Past calls" history.
+ */
+type ServerMessage = {
+  type?: string;
+  status?: string;
+  endedReason?: string;
+  role?: "user" | "assistant" | "system";
+  transcriptType?: string;
+  transcript?: string;
+  call?: { id?: string; type?: string; startedAt?: string };
+  analysis?: { summary?: string };
+  summary?: string;
+  artifact?: { messages?: Array<{ role?: string; message?: string; time?: number; secondsFromStart?: number }> };
+  durationSeconds?: number;
+  startedAt?: string;
+  endedAt?: string;
+};
+
+http.route({
+  path: "/vapi/events",
+  method: "POST",
+  handler: httpAction(async (ctx, request) => {
+    const secret = process.env.VAPI_TOOL_SECRET;
+    if (secret && request.headers.get("x-demo-secret") !== secret) return json({ error: "unauthorized" }, 401);
+    const body = (await request.json().catch(() => ({}))) as { message?: ServerMessage };
+    const m = body.message;
+    const callId = m?.call?.id;
+    if (!m || !callId) return json({ ok: true });
+    console.log(`vapi event ${m.type} call=${callId}` + (m.type === "end-of-call-report" ? ` keys=${Object.keys(m).join(",")} msgs=${m.artifact?.messages?.length ?? 0}` : ""));
+    switch (m.type) {
+      case "status-update":
+        await ctx.runMutation(api.calls.statusUpdate, { callId, status: m.status ?? "", callType: m.call?.type, endedReason: m.endedReason, startedAt: m.call?.startedAt });
+        break;
+      case "transcript":
+        if (m.transcriptType === "final" && (m.role === "user" || m.role === "assistant") && m.transcript)
+          await ctx.runMutation(api.calls.appendTranscript, { callId, role: m.role, text: m.transcript, callType: m.call?.type });
+        break;
+      case "end-of-call-report":
+        await ctx.runMutation(api.calls.endOfCallReport, {
+          callId, callType: m.call?.type, endedReason: m.endedReason, summary: m.analysis?.summary ?? m.summary,
+          durationSeconds: m.durationSeconds, startedAt: m.startedAt, endedAt: m.endedAt,
+          // Fallback transcript from the report's artifact, used only if no live transcript lines were stored.
+          messages: (m.artifact?.messages ?? [])
+            .filter((x) => (x.role === "user" || x.role === "bot" || x.role === "assistant") && x.message)
+            .map((x) => ({ role: x.role === "user" ? ("user" as const) : ("assistant" as const), text: x.message!, at: x.time ?? 0 })),
+        });
+        break;
+    }
+    return json({ ok: true });
+  }),
+});
+
 export default http;

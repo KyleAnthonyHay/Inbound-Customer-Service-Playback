@@ -106,3 +106,9 @@ Callback scheduling is deliberately strict so the agent cannot substitute a time
 ## Tool visibility in the activity panel
 
 Every tool row in the agent-activity panel can be expanded (click) to show the exact function name, the arguments Vapi sent, and the JSON the webhook returned (both truncated server-side, logged in `callEvents.args` / `callEvents.output`). Tool calls also appear inline in the live transcript at the moment they happened, so a transcript like "Agent: the next available slot is…" shows which tool produced it.
+
+## Call history (Past calls)
+
+The activity panel ends with a collapsed **Past calls** section, modeled on a chat app's conversation list: newest first, grouped by day, six rows before "Show all", a capped scroll area, and a two-step **Clear past calls** (confirm, then delete) that removes the calls, their transcripts and their tool events. Opening a row replays that call in the panel: its tool rail, stored transcript, and the end-of-call summary when Vapi produced one. Rows are disabled while a call is in progress.
+
+Data comes from Vapi's assistant-level server messages, not the browser, so phone and harness calls are listed too. `buildAssistant()` sets `server.url` to `{CONVEX_SITE_URL}/vapi/events` with `serverMessages: ["status-update", "transcript[transcriptType=\"final\"]", "end-of-call-report"]`; `convex/http.ts` writes them to the `calls` and `transcripts` tables (`convex/calls.ts`). The tool webhook bumps each call's `toolCount`. A call row's title is the first thing the caller said.

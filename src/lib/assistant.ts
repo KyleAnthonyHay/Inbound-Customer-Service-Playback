@@ -73,7 +73,8 @@ ENDING
 export const FIRST_MESSAGE =
   "Hi, thanks for calling MultiTracks Playback support. I'm an AI assistant. Are you having trouble with a song loading, or with audio output?";
 
-export function buildAssistant(opts: { toolServerUrl: string; toolSecret?: string }) {
+export function buildAssistant(opts: { toolServerUrl: string; toolSecret?: string; eventsUrl?: string }) {
+  const eventsUrl = opts.eventsUrl ?? (opts.toolServerUrl ? opts.toolServerUrl.replace(/\/tools$/, "/events") : "");
   return {
     name: "Playback Support (demo)",
     firstMessageMode: "assistant-speaks-first",
@@ -111,5 +112,14 @@ export function buildAssistant(opts: { toolServerUrl: string; toolSecret?: strin
       },
     ],
     clientMessages: ["transcript", "tool-calls", "tool-calls-result", "status-update", "speech-update", "conversation-update"],
+    // Call history (convex/http.ts /vapi/events): call status, final transcript lines, end-of-call summary.
+    ...(eventsUrl
+      ? {
+          server: { url: eventsUrl, timeoutSeconds: 20, ...(opts.toolSecret ? { headers: { "x-demo-secret": opts.toolSecret } } : {}) },
+          // Plain "transcript" (finals filtered server-side): the [transcriptType="final"] filter
+          // produced no server messages on a GPT-Live call.
+          serverMessages: ["status-update", "transcript", "end-of-call-report"],
+        }
+      : {}),
   };
 }

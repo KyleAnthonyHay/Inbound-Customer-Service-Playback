@@ -1,0 +1,24 @@
+{
+  "scenario": "off-topic",
+  "expectedIntent": "off-topic",
+  "callId": "01a191fd-16f6-7cc2-8eb9-8b35c0e93321",
+  "endedReason": "customer-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "delegate"
+  ],
+  "convexToolEvents": [],
+  "liveEvents": [
+    "21.2s TOOL-CALLS delegate({})",
+    "43.2s TOOL-CALLS delegate({})"
+  ],
+  "transcript": [
+    "AGENT: Hi, thanks for calling MultiTracks Playback support. I'm an AI assistant. Are you having trouble with a song loading or with audio output?",
+    "CALLER: Hey, can you give me a good recipe for lasagna",
+    "AGENT: Hmm, okay, let me check on that",
+    "AGENT: . I'm I'm here to help with Playback song-loading or audio-output issues. What can I help you with in the app?",
+    "CALLER: Ha, okay, fine. Actually, my song won't download. iPad, 8, 6, 4, and I have time. All right, I'll try that. Thanks. Bye",
+    "AGENT: Alright, let's sort this out.",
+    "AGENT: I haven't given you a step yet, but I've noted the issue. Bye"
+  ]
+}

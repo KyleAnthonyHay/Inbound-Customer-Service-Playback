@@ -29,6 +29,14 @@ export default function CallPage() {
     return () => clearTimeout(t);
   }, []);
 
+  const openPastCall = (id: string) => {
+    setCallIdOverride(id);
+    setPanelOpen(true);
+    const url = new URL(window.location.href);
+    url.searchParams.set("callId", id);
+    window.history.replaceState(null, "", url);
+  };
+
   return (
     <main className="relative min-h-[100dvh] bg-background">
       <Link
@@ -64,6 +72,7 @@ export default function CallPage() {
         handoff={call.handoff}
         clientEvents={call.events}
         transcript={call.transcript}
+        onOpenPastCall={openPastCall}
       />
 
       {demo && (

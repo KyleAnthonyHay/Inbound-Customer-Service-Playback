@@ -46,9 +46,9 @@
  */
 
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { useQuery } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { AnimatePresence, MotionConfig, motion, useReducedMotion } from "motion/react";
-import { ChevronRight, Activity, AlertTriangle, Wrench, X } from "lucide-react";
+import { ChevronRight, Activity, AlertTriangle, History, Trash2, Wrench, X } from "lucide-react";
 import { api } from "../../convex/_generated/api";
 import type { Doc } from "../../convex/_generated/dataModel";
 import { useConvexReady } from "./ConvexClientProvider";
@@ -67,6 +67,16 @@ type Props = {
   handoff?: { team: string; at: number } | null;
   clientEvents: ActivityEvent[];
   transcript: TranscriptLine[];
+  /** Open a past call (from the history list) in the panel. */
+  onOpenPastCall?: (callId: string) => void;
+};
+
+type ViewData = {
+  serverEvents: Doc<"callEvents">[];
+  pastCalls: Doc<"calls">[];
+  callRow: Doc<"calls"> | null;
+  storedTranscript: Doc<"transcripts">[];
+  onClearHistory?: () => Promise<unknown>;
 };
 
 type Step = {
@@ -112,12 +122,18 @@ const MS_PER_CHAR = 26;
 
 export function ActivityPanel(props: Props) {
   const ready = useConvexReady();
-  return ready ? <Live {...props} /> : <View {...props} serverEvents={[]} />;
+  return ready ? <Live {...props} /> : <View {...props} serverEvents={[]} pastCalls={[]} callRow={null} storedTranscript={[]} />;
 }
 
 function Live(props: Props) {
-  const serverEvents = useQuery(api.callEvents.byCall, config.convexUrl ? { callId: props.callId ?? "" } : "skip") ?? [];
-  return <View {...props} serverEvents={serverEvents} />;
+  const skip = !config.convexUrl;
+  const callArgs = skip ? "skip" : { callId: props.callId ?? "" };
+  const serverEvents = useQuery(api.callEvents.byCall, callArgs) ?? [];
+  const pastCalls = useQuery(api.calls.list, skip ? "skip" : { limit: 50 }) ?? [];
+  const callRow = useQuery(api.calls.get, callArgs) ?? null;
+  const storedTranscript = useQuery(api.calls.transcriptByCall, callArgs) ?? [];
+  const clearAll = useMutation(api.calls.clearAll);
+  return <View {...props} serverEvents={serverEvents} pastCalls={pastCalls} callRow={callRow} storedTranscript={storedTranscript} onClearHistory={() => clearAll({})} />;
 }
 
 function useElapsed(startedAt: number | null, status: CallStatus): { prefix: string; value: string | null } {
@@ -583,13 +599,202 @@ function LiveTranscript({ transcript, markers, reduce }: { transcript: Transcrip
   );
 }
 
+/* ------------------------------------------------------------------ past calls */
+
+/** Wall clock that ticks every 30 s, started in an effect so prerender stays pure. */
+function useNow(intervalMs = 30000): number | null {
+  const [now, setNow] = useState<number | null>(null);
+  useEffect(() => {
+    const tick = () => setNow(Date.now());
+    const first = setTimeout(tick, 0);
+    const t = setInterval(tick, intervalMs);
+    return () => {
+      clearTimeout(first);
+      clearInterval(t);
+    };
+  }, [intervalMs]);
+  return now;
+}
+
+function relativeTime(at: number, now: number): string {
+  const s = Math.max(0, Math.round((now - at) / 1000));
+  if (s < 60) return "just now";
+  const m = Math.round(s / 60);
+  if (m < 60) return `${m} min ago`;
+  const h = Math.round(m / 60);
+  if (h < 24) return `${h} hr ago`;
+  const d = Math.round(h / 24);
+  if (d < 7) return `${d} day${d === 1 ? "" : "s"} ago`;
+  return new Date(at).toLocaleDateString(undefined, { month: "short", day: "numeric" });
+}
+
+function dayBucket(at: number, now: number): "Today" | "Yesterday" | "Earlier" {
+  const a = new Date(at), n = new Date(now);
+  const startOf = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+  const diffDays = Math.round((startOf(n) - startOf(a)) / 86400000);
+  return diffDays <= 0 ? "Today" : diffDays === 1 ? "Yesterday" : "Earlier";
+}
+
+function durationText(c: Doc<"calls">, now: number): string {
+  const secs = Math.round(c.durationSeconds ?? ((c.endedAt ?? now) - c.startedAt) / 1000);
+  if (!Number.isFinite(secs) || secs < 0) return "";
+  return secs >= 60 ? `${Math.floor(secs / 60)}m ${secs % 60}s` : `${secs}s`;
+}
+
+const PAGE = 6;
+
+/**
+ * Call history, like a chat app's conversation list: collapsed by default, newest first,
+ * grouped by day, a short first page with "Show all", a capped scroll area, and a two-step clear.
+ */
+function PastCalls({ calls, currentId, busy, onOpen, onClear, reduce }: { calls: Doc<"calls">[]; currentId: string | null; busy: boolean; onOpen?: (id: string) => void; onClear?: () => Promise<unknown>; reduce: boolean }) {
+  const [open, setOpen] = useState(false);
+  const [showAll, setShowAll] = useState(false);
+  const [confirm, setConfirm] = useState(false);
+  const [clearing, setClearing] = useState(false);
+  const now = useNow();
+  const visible = showAll ? calls : calls.slice(0, PAGE);
+  const groups: { label: string; items: Doc<"calls">[] }[] = [];
+  for (const c of visible) {
+    const label = now ? dayBucket(c.startedAt, now) : "Recent";
+    const g = groups[groups.length - 1];
+    if (g && g.label === label) g.items.push(c);
+    else groups.push({ label, items: [c] });
+  }
+  const ended = calls.filter((c) => c.status === "ended" || c.callId !== currentId).length;
+
+  return (
+    <section className="mt-5 border-t border-white/[0.08] pt-3">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+        className="flex min-h-[44px] w-full items-center gap-2 text-left text-[13px] text-white/70 transition-colors hover:text-white sm:min-h-0 sm:py-1"
+      >
+        <History size={14} aria-hidden className="shrink-0 text-white/45" />
+        <span className="font-medium">Past calls</span>
+        <span className="rounded-full bg-white/[0.08] px-1.5 py-px font-mono text-[10.5px] tabular-nums text-white/55">{calls.length}</span>
+        <motion.span initial={false} animate={{ rotate: open ? 90 : 0 }} transition={{ duration: reduce ? 0 : 0.2, ease: EASE }} className="ml-auto flex text-white/40">
+          <ChevronRight size={14} aria-hidden />
+        </motion.span>
+      </button>
+
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            key="list"
+            initial={reduce ? false : { opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: reduce ? 0 : 0.24, ease: EASE }}
+            className="overflow-hidden"
+          >
+            {calls.length === 0 ? (
+              <p className="px-1 py-2 text-[13px] text-white/40">No past calls yet. Finished calls are listed here with their transcript and tool log.</p>
+            ) : (
+              <div className="mt-1 max-h-[260px] overflow-y-auto overscroll-contain rounded-xl border border-white/[0.07] bg-white/[0.02] [scrollbar-width:thin]">
+                {groups.map((g) => (
+                  <div key={g.label}>
+                    <p className="sticky top-0 z-[1] bg-[#111113]/95 px-3 pb-1 pt-2 text-[10.5px] font-medium uppercase tracking-wide text-white/35 backdrop-blur">{g.label}</p>
+                    <ul>
+                      {g.items.map((c) => {
+                        const current = c.callId === currentId;
+                        const live = c.status === "in-progress";
+                        return (
+                          <li key={c._id}>
+                            <button
+                              type="button"
+                              disabled={busy || !onOpen}
+                              onClick={() => onOpen?.(c.callId)}
+                              aria-current={current ? "true" : undefined}
+                              className={cn(
+                                "flex w-full items-start gap-2.5 px-3 py-2 text-left transition-colors",
+                                current ? "bg-white/[0.06]" : "hover:bg-white/[0.04]",
+                                (busy || !onOpen) && "cursor-default opacity-60"
+                              )}
+                            >
+                              <span className={cn("mt-[6px] h-1.5 w-1.5 shrink-0 rounded-full", live ? "bg-[#34c79a] motion-safe:animate-pulse" : "bg-white/25")} aria-hidden />
+                              <span className="min-w-0 flex-1">
+                                <span className={cn("block truncate text-[13px]", current ? "text-white" : "text-white/80")}>{c.title ?? "Playback support call"}</span>
+                                <span className="block truncate font-mono text-[10.5px] text-white/40">
+                                  {now ? relativeTime(c.startedAt, now) : ""}
+                                  {now && durationText(c, now) ? ` · ${durationText(c, now)}` : ""}
+                                  {` · ${c.toolCount} tool${c.toolCount === 1 ? "" : "s"}`}
+                                  {c.channel !== "unknown" ? ` · ${c.channel}` : ""}
+                                  {live ? " · live" : c.endedReason ? ` · ${c.endedReason.replace(/-/g, " ")}` : ""}
+                                </span>
+                              </span>
+                            </button>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                ))}
+                {calls.length > PAGE && (
+                  <button type="button" onClick={() => setShowAll((v) => !v)} className="w-full px-3 py-2 text-left text-[12px] text-white/50 hover:text-white/80">
+                    {showAll ? "Show fewer" : `Show all ${calls.length}`}
+                  </button>
+                )}
+              </div>
+            )}
+
+            {onClear && calls.length > 0 && (
+              <div className="mt-2 flex min-h-[32px] items-center gap-2 text-[12px]">
+                {confirm ? (
+                  <>
+                    <span className="text-white/60">Delete {ended} call{ended === 1 ? "" : "s"} and their logs?</span>
+                    <button
+                      type="button"
+                      disabled={clearing}
+                      onClick={async () => {
+                        setClearing(true);
+                        try {
+                          await onClear();
+                        } finally {
+                          setClearing(false);
+                          setConfirm(false);
+                        }
+                      }}
+                      className="rounded-md bg-[#ff5f66]/20 px-2.5 py-1 font-medium text-[#ff8a8f] hover:bg-[#ff5f66]/30 disabled:opacity-50"
+                    >
+                      {clearing ? "Deleting…" : "Delete"}
+                    </button>
+                    <button type="button" onClick={() => setConfirm(false)} className="rounded-md px-2 py-1 text-white/55 hover:text-white/85">
+                      Cancel
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    type="button"
+                    disabled={busy}
+                    onClick={() => setConfirm(true)}
+                    title={busy ? "Available when no call is in progress" : undefined}
+                    className="flex items-center gap-1.5 rounded-md px-1 py-1 text-white/45 transition-colors hover:text-[#ff8a8f] disabled:opacity-40 disabled:hover:text-white/45"
+                  >
+                    <Trash2 size={12} aria-hidden /> Clear past calls
+                  </button>
+                )}
+              </div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </section>
+  );
+}
+
 /* ------------------------------------------------------------------ view */
 
-function View({ open, onToggle, callId, status, startedAt, assistantSpeaking, handoff, clientEvents, transcript, serverEvents }: Props & { serverEvents: Doc<"callEvents">[] }) {
+function View({ open, onToggle, callId, status, startedAt, assistantSpeaking, handoff, clientEvents, transcript, onOpenPastCall, serverEvents, pastCalls, callRow, storedTranscript, onClearHistory }: Props & ViewData) {
   const reduce = useReducedMotion();
   const [cardOpen, setCardOpen] = useState(true);
   const elapsed = useElapsed(startedAt, status);
   const steps = useMemo(() => buildSteps(serverEvents, clientEvents), [serverEvents, clientEvents]);
+  // Live lines while a call runs; the stored transcript when replaying a past call.
+  const shownTranscript: TranscriptLine[] =
+    transcript.length > 0 ? transcript : storedTranscript.map((t) => ({ id: t._id, role: t.role, text: t.text, final: true, at: t.at }));
+  const viewingPast = !!callRow && callRow.status === "ended" && status !== "active" && status !== "connecting";
 
   const running = steps.filter((s) => s.status === "running");
   const failed = steps.filter((s) => s.status === "failed");
@@ -778,7 +983,14 @@ function View({ open, onToggle, callId, status, startedAt, assistantSpeaking, ha
           </AnimatePresence>
 
           {/* Live transcript: scrolls, follows the newest line */}
-          {transcript.length > 0 && <LiveTranscript transcript={transcript} markers={markers} reduce={!!reduce} />}
+          {shownTranscript.length > 0 && <LiveTranscript transcript={shownTranscript} markers={markers} reduce={!!reduce} />}
+
+          {viewingPast && callRow?.summary && (
+            <div className="mt-3 rounded-xl border border-white/[0.07] bg-white/[0.02] px-3.5 py-3">
+              <p className="mb-1 text-[11px] font-medium uppercase tracking-wide text-white/35">Call summary</p>
+              <p className="text-[13px] leading-snug text-white/75">{callRow.summary}</p>
+            </div>
+          )}
 
           {/* Chips */}
           <motion.div layout="position" transition={{ layout: { duration: reduce ? 0 : 0.26, ease: EASE } }} className="mt-4 flex flex-wrap items-center gap-2 text-[12px] text-white/60">
@@ -790,10 +1002,24 @@ function View({ open, onToggle, callId, status, startedAt, assistantSpeaking, ha
               {tools.length} tool{tools.length === 1 ? "" : "s"} · <span className={SOURCE.live.text}>{liveCount} live</span> ·{" "}
               <span className={SOURCE.simulated.text}>{simCount} simulated</span>
             </span>
-            {transcript.length > 0 && (
-              <span className="rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1 tabular-nums">Transcript {transcript.length}</span>
+            {shownTranscript.length > 0 && (
+              <span className="rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1 tabular-nums">Transcript {shownTranscript.length}</span>
+            )}
+            {viewingPast && (
+              <span className="rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1">
+                Past call{callRow?.endedReason ? ` · ${callRow.endedReason.replace(/-/g, " ")}` : ""}
+              </span>
             )}
           </motion.div>
+
+          <PastCalls
+            calls={pastCalls}
+            currentId={callId}
+            busy={status === "active" || status === "connecting"}
+            onOpen={onOpenPastCall}
+            onClear={onClearHistory}
+            reduce={!!reduce}
+          />
 
         </div>
 

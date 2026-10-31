@@ -43,7 +43,6 @@ export const availableSlots = query({
     // Team hours expressed in the caller's zone, on the relevant day.
     const resolvedDate = args.preferredDate ? resolveDate(args.preferredDate, tz, nowMs) : null;
     const refDay = resolvedDate ?? new Date(nowMs).toISOString().slice(0, 10);
-    const [ry, rm, rd] = refDay.split("-").map(Number);
     const hoursStartMs = localToUtcMs(refDay, `${String(hours.start).padStart(2, "0")}:00`, hours.timeZone) ?? nowMs;
     const hoursEndMs = localToUtcMs(refDay, `${String(hours.end).padStart(2, "0")}:00`, hours.timeZone) ?? nowMs;
     const zoneName = new Intl.DateTimeFormat("en-US", { timeZone: tz, timeZoneName: "short" }).formatToParts(new Date(hoursStartMs)).find((p) => p.type === "timeZoneName")?.value ?? "";

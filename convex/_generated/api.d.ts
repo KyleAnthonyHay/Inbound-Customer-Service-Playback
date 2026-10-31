@@ -10,6 +10,7 @@
 
 import type * as callEvents from "../callEvents.js";
 import type * as callbacks from "../callbacks.js";
+import type * as calls from "../calls.js";
 import type * as customers from "../customers.js";
 import type * as http from "../http.js";
 import type * as seed from "../seed.js";
@@ -26,6 +27,7 @@ import type {
 declare const fullApi: ApiFromModules<{
   callEvents: typeof callEvents;
   callbacks: typeof callbacks;
+  calls: typeof calls;
   customers: typeof customers;
   http: typeof http;
   seed: typeof seed;

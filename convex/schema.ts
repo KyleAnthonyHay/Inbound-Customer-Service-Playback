@@ -63,6 +63,33 @@ export default defineSchema({
     .index("by_slot", ["slotId"])
     .index("by_callId", ["callId"]),
 
+  /** One row per Vapi call, from assistant-level server messages. Feeds the "Past calls" list. */
+  calls: defineTable({
+    callId: v.string(),
+    channel: v.union(v.literal("browser"), v.literal("phone"), v.literal("harness"), v.literal("unknown")),
+    status: v.union(v.literal("in-progress"), v.literal("ended")),
+    startedAt: v.number(), // epoch ms
+    endedAt: v.optional(v.number()),
+    endedReason: v.optional(v.string()),
+    /** First thing the caller said, trimmed; the list's row title. */
+    title: v.optional(v.string()),
+    /** Vapi's end-of-call analysis summary, when present. */
+    summary: v.optional(v.string()),
+    durationSeconds: v.optional(v.number()),
+    toolCount: v.number(),
+    transcriptCount: v.number(),
+  })
+    .index("by_callId", ["callId"])
+    .index("by_startedAt", ["startedAt"]),
+
+  /** Final transcript lines, so a past call can be replayed with its conversation. */
+  transcripts: defineTable({
+    callId: v.string(),
+    at: v.number(),
+    role: v.union(v.literal("user"), v.literal("assistant")),
+    text: v.string(),
+  }).index("by_call", ["callId", "at"]),
+
   /** Activity log for the demo UI. Written by the tool webhook; read live by the call page. */
   callEvents: defineTable({
     callId: v.string(),
