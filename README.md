@@ -27,18 +27,21 @@ npm run dev
 ## Architecture
 
 ```
-Browser (/call) ──@vapi-ai/web──▶ Vapi (GPT-Live) ──tool-calls──▶ POST /api/vapi/tools
-      ▲                                                                 │
+Browser (/call) ──@vapi-ai/web──▶ Vapi (GPT-Live) ──tool-calls──▶ Convex HTTP action  {site}/vapi/tools
+      ▲                                                                 │ (convex/http.ts → convex/vapiTools.ts)
       │ live query callEvents.byCall                                    ├─ search_playback_docs            (bounded KB snapshot)
       └──────────────── Convex ◀── callEvents.log ◀─────────────────────┤─ get_current_playback_app_info   (LIVE Apple lookup)
                          │                                              ├─ get_relevant_changes_since_version (Apple + documented notes)
                          ├─ customers / teams / callbackSlots / callbacks (SIMULATED)
                          └─ lookup_demo_customer, check_team_availability, get_callback_slots, reserve_callback, initiate_handoff
+
+The webhook lives on the Convex deployment, which is public as soon as `npx convex dev`
+runs, so nothing needs deploying or tunnelling to test tools from a real call.
 ```
 
 - `src/lib/assistant.ts`: the single assistant definition (prompt, model, tools) shared by browser and phone.
 - `src/lib/vapiTools.ts`: function-tool schemas Vapi sends to the model.
-- `src/lib/tools/registry.ts`: server-side implementations, dispatched by name.
+- `convex/http.ts` + `convex/vapiTools.ts`: the webhook and tool implementations.
 - `src/knowledge/playback-kb.json`: source-backed knowledge snapshot with URLs and retrieval dates.
 - `convex/`: schema, seed, and functions. Every record is fictional and marked `simulated`.
 
@@ -48,8 +51,9 @@ Browser (/call) ──@vapi-ai/web──▶ Vapi (GPT-Live) ──tool-calls─�
 - `NEXT_PUBLIC_VAPI_ASSISTANT_ID`: optional saved assistant. When blank, `/call`
   starts an inline assistant with the same definition. Inline mode cannot carry
   the tool secret, so leave `VAPI_TOOL_SECRET` empty in that mode.
-- `NEXT_PUBLIC_APP_URL`: public base URL; Vapi must reach `/api/vapi/tools`
-  over HTTPS, so local dev needs a tunnel or a deployed preview.
+- `NEXT_PUBLIC_CONVEX_SITE_URL`: Convex HTTP base; the tool webhook is
+  `{site}/vapi/tools`. Set `VAPI_TOOL_SECRET` both locally and on the
+  deployment (`npx convex env set VAPI_TOOL_SECRET …`).
 - `npm run sync:assistant` creates/updates the saved assistant from code
   (needs `VAPI_PRIVATE_KEY`, server-only).
 

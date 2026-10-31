@@ -11,8 +11,10 @@
 import type * as callEvents from "../callEvents.js";
 import type * as callbacks from "../callbacks.js";
 import type * as customers from "../customers.js";
+import type * as http from "../http.js";
 import type * as seed from "../seed.js";
 import type * as teams from "../teams.js";
+import type * as vapiTools from "../vapiTools.js";
 
 import type {
   ApiFromModules,
@@ -24,8 +26,10 @@ declare const fullApi: ApiFromModules<{
   callEvents: typeof callEvents;
   callbacks: typeof callbacks;
   customers: typeof customers;
+  http: typeof http;
   seed: typeof seed;
   teams: typeof teams;
+  vapiTools: typeof vapiTools;
 }>;
 
 /**

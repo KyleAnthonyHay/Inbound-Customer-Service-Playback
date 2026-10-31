@@ -1,6 +1,6 @@
 /**
  * Vapi function-tool definitions attached to the assistant. Each one posts to
- * /api/vapi/tools, which dispatches by function name (see src/lib/tools/registry.ts).
+ * {CONVEX_SITE_URL}/vapi/tools (convex/http.ts), which dispatches by name (convex/vapiTools.ts).
  * Shared across the browser assistant and the phone assistant.
  */
 export function buildToolDefinitions(opts: { serverUrl: string; secret?: string }) {

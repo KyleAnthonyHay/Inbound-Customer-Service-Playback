@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
-# Posts fake Vapi tool-calls to the local webhook and prints results.
-# Usage: scripts/smoke-tools.sh [base_url]
+# Posts fake Vapi tool-calls to the Convex-hosted webhook and prints results.
+# Usage: scripts/smoke-tools.sh            (reads NEXT_PUBLIC_CONVEX_SITE_URL and VAPI_TOOL_SECRET from .env.local)
 set -euo pipefail
-BASE="${1:-http://localhost:3000}"
+cd "$(dirname "$0")/.."
+BASE="${1:-$(grep '^NEXT_PUBLIC_CONVEX_SITE_URL=' .env.local | cut -d= -f2-)}"
+SECRET="$(grep '^VAPI_TOOL_SECRET=' .env.local | cut -d= -f2- || true)"
 CALL_ID="smoke-$(date +%s)"
 post() {
   local name="$1" args="$2"
-  curl -s -X POST "$BASE/api/vapi/tools" -H 'content-type: application/json' \
+  curl -s -X POST "$BASE/vapi/tools" -H 'content-type: application/json' -H "x-demo-secret: $SECRET" \
     -d "{\"message\":{\"type\":\"tool-calls\",\"call\":{\"id\":\"$CALL_ID\"},\"toolCallList\":[{\"id\":\"tc-$name-$RANDOM\",\"type\":\"function\",\"function\":{\"name\":\"$name\",\"arguments\":$args}}]}}" \
     | python3 -I -c 'import sys,json; r=json.load(sys.stdin)["results"][0]; print(json.dumps(json.loads(r["result"]) if "result" in r else r, indent=1)[:900])'
   echo "-----"

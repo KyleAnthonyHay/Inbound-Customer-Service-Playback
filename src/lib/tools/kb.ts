@@ -1,4 +1,4 @@
-import kbJson from "@/knowledge/playback-kb.json";
+import kbJson from "../../knowledge/playback-kb.json";
 
 export type KbArticle = {
   id: string;
