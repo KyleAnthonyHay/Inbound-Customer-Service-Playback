@@ -48,6 +48,14 @@ type VapiMessage = {
   [key: string]: unknown;
 };
 
+/** Turns browser/SDK error strings into something a tester can act on. */
+export function friendlyCallError(raw: string): string {
+  if (/permission denied|notallowederror|not allowed/i.test(raw))
+    return "Microphone access was denied. Allow the mic for this site, or open the page in Chrome; embedded browser panes block it.";
+  if (/notfounderror|no microphone|device not found/i.test(raw)) return "No microphone was found. Connect one and try again.";
+  return raw;
+}
+
 let idCounter = 0;
 const nextId = () => `${Date.now()}-${idCounter++}`;
 
@@ -206,12 +214,13 @@ export function useVapiCall() {
       vapi.on("volume-level", (v: number) => setVolume(v));
       vapi.on("message", handleMessage);
       vapi.on("error", (e: unknown) => {
-        const msg =
+        const raw =
           typeof e === "string"
             ? e
             : (e as { message?: string; error?: { message?: string } })?.message ??
               (e as { error?: { message?: string } })?.error?.message ??
               "Call error";
+        const msg = friendlyCallError(raw);
         setError(msg);
         setStatus("error");
         settleRunning("failed");
@@ -229,7 +238,7 @@ export function useVapiCall() {
       }
       if (call?.id) setCallId(call.id);
     } catch (e) {
-      const msg = e instanceof Error ? e.message : "Failed to start call";
+      const msg = friendlyCallError(e instanceof Error ? e.message : "Failed to start call");
       setError(msg);
       setStatus("error");
       settleRunning("failed");
