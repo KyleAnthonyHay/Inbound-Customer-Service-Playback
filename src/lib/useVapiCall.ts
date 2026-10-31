@@ -129,16 +129,28 @@ export function useVapiCall() {
         case "tool-calls": {
           for (const call of m.toolCallList ?? []) {
             const name = call.name ?? call.function?.name ?? "tool";
-            if (name !== "delegate") settleThinking();
             const meta = toolMeta(name);
             const id = call.id ?? nextId();
             toolStartTimes.current.set(id, Date.now());
             toolNames.current.set(id, name);
-            setEvents((prev) =>
-              prev.some((e) => e.toolCallId === id)
-                ? prev
-                : [...prev, { id: nextId(), at: Date.now(), kind: "tool-call", label: meta.label, status: "running", toolCallId: id, tool: name, source: meta.source }]
-            );
+            setEvents((prev) => {
+              if (prev.some((e) => e.toolCallId === id)) return prev;
+              // GPT-Live work is sequential: a new tool call means any running "Thinking" is over.
+              const now = Date.now();
+              const settled = prev.map((e) =>
+                e.tool === "delegate" && e.status === "running"
+                  ? { ...e, status: "succeeded" as const, durationMs: e.durationMs ?? now - e.at }
+                  : e
+              );
+              // Back-to-back delegates within a couple of seconds are one thinking step, not two.
+              if (name === "delegate") {
+                const last = settled[settled.length - 1];
+                if (last && last.tool === "delegate" && now - last.at < 2500) {
+                  return settled.map((e) => (e === last ? { ...e, status: "running" as const, durationMs: undefined, toolCallId: id } : e));
+                }
+              }
+              return [...settled, { id: nextId(), at: now, kind: "tool-call", label: meta.label, status: "running", toolCallId: id, tool: name, source: meta.source }];
+            });
           }
           return;
         }

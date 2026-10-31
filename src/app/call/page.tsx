@@ -90,6 +90,22 @@ export default function CallPage() {
             type="button"
             className="rounded-md bg-white/10 px-3 py-1.5 text-left hover:bg-white/15"
             onClick={() => {
+              // A real GPT-Live turn: think -> tool -> think -> speak, strictly in sequence.
+              const t = Date.now();
+              const d1 = `sim-d1-${t}`, s1 = `sim-s1-${t}`, d2 = `sim-d2-${t}`;
+              call.debugInject({ type: "tool-calls", toolCallList: [{ id: d1, type: "function", function: { name: "delegate", arguments: {} } }] });
+              setTimeout(() => call.debugInject({ type: "tool-calls", toolCallList: [{ id: s1, type: "function", function: { name: "search_playback_docs", arguments: { query: "download error" } } }] }), 1200);
+              setTimeout(() => call.debugInject({ type: "tool-calls-result", toolCallResult: { toolCallId: s1, name: "search_playback_docs", result: "{\"ok\":true,\"found\":3}" } }), 1800);
+              setTimeout(() => call.debugInject({ type: "tool-calls", toolCallList: [{ id: d2, type: "function", function: { name: "delegate", arguments: {} } }] }), 3200);
+              setTimeout(() => call.debugInject({ type: "transcript", role: "assistant", transcriptType: "final", transcript: "Could you tap Try Again twice and tell me if it still fails?" }), 5200);
+            }}
+          >
+            Simulate think → tool → think → speak
+          </button>
+          <button
+            type="button"
+            className="rounded-md bg-white/10 px-3 py-1.5 text-left hover:bg-white/15"
+            onClick={() => {
               const id = `sim-${Date.now()}`;
               call.debugInject({ type: "tool-calls", toolCallList: [{ id, type: "function", function: { name: "search_playback_docs", arguments: { query: "download error" } } }] });
               setTimeout(() => call.debugInject({ type: "tool-calls-result", toolCallResult: { toolCallId: id, name: "search_playback_docs", result: "{\"ok\":true,\"found\":3}" } }), 1200);
