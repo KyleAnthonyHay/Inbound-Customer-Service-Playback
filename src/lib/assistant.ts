@@ -73,10 +73,10 @@ ENDING
 export const FIRST_MESSAGE =
   "Hi, thanks for calling MultiTracks Playback support. I'm an AI assistant. Are you having trouble with a song loading, or with audio output?";
 
-export function buildAssistant(opts: { toolServerUrl: string; toolSecret?: string; eventsUrl?: string }) {
+export function buildAssistant(opts: { toolServerUrl: string; toolSecret?: string; eventsUrl?: string; name?: string }) {
   const eventsUrl = opts.eventsUrl ?? (opts.toolServerUrl ? opts.toolServerUrl.replace(/\/tools$/, "/events") : "");
   return {
-    name: "Playback Support (demo)",
+    name: opts.name ?? "Playback Support (demo)",
     firstMessageMode: "assistant-speaks-first",
     firstMessage: FIRST_MESSAGE,
     model: {

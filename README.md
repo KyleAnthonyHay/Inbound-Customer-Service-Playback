@@ -113,6 +113,22 @@ The activity panel ends with a collapsed **Past calls** section, modeled on a ch
 
 Data comes from Vapi's assistant-level server messages, not the browser, so phone and harness calls are listed too. `buildAssistant()` sets `server.url` to `{CONVEX_SITE_URL}/vapi/events` with `serverMessages: ["status-update", "transcript[transcriptType=\"final\"]", "end-of-call-report"]`; `convex/http.ts` writes them to the `calls` and `transcripts` tables (`convex/calls.ts`). The tool webhook bumps each call's `toolCount`. A call row's title is the first thing the caller said.
 
-## Deployment
+## Environments: dev and prod are separate but identical
 
-Production: https://playback-support-agent.vercel.app (Vercel project `playback-support-agent`, deployed from the working tree with `npx vercel --prod`). The browser app only needs the four public variables (`NEXT_PUBLIC_VAPI_PUBLIC_KEY`, `NEXT_PUBLIC_VAPI_ASSISTANT_ID`, `NEXT_PUBLIC_CONVEX_URL`, `NEXT_PUBLIC_CONVEX_SITE_URL`), set on the Vercel project; the private Vapi key and tool secret stay local (scripts only) and in Convex env. Tool and event webhooks are served by the Convex deployment, so the Vercel app is static-plus-client and does not have to be redeployed for backend changes.
+| | dev (local work) | prod (the public demo) |
+|---|---|---|
+| Convex deployment | `ceaseless-rhinoceros-106` (`npx convex dev`) | `earnest-alpaca-725` (`npx convex deploy`) |
+| Vapi assistant | "Playback Support (dev)" | "Playback Support (prod)" |
+| Env file | `.env.local` | `.env.production.local` (never committed) |
+| Web app | `npm run dev` on localhost | https://playback-support-agent.vercel.app (Vercel project `playback-support-agent`) |
+| Tool secret | dev Convex env `VAPI_TOOL_SECRET` | prod Convex env `VAPI_TOOL_SECRET` (different value) |
+
+Both assistants are built from the same `buildAssistant()`; only the webhook URLs, the secret and the name differ. The phone number, when claimed, attaches to the prod assistant. Local testing (browser calls, `npm run voice:test`, `npm run sync:assistant`) touches only the dev pair, so the demo's call history and prompts stay untouched while you work.
+
+**Releasing to prod is one command and must always be used, so the three parts never drift:**
+
+```bash
+npm run release
+```
+
+It type-checks, runs the tests, pushes the Convex functions to prod (`npx convex deploy`), syncs the prod assistant (`npm run sync:assistant:prod`), and deploys the site (`npx vercel --prod`). Prod seed data: `npx convex run seed:run --prod`. Prod voice test: `npm run voice:test:prod`. Vercel holds the four `NEXT_PUBLIC_*` values for the prod pair; the private key and secrets stay local and in Convex env.

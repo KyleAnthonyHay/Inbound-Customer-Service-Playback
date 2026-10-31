@@ -2,9 +2,13 @@
  * Upserts the saved Vapi assistant from the shared definition so the browser
  * demo and the inbound phone number use identical instructions and tools.
  *
- * Usage: npx tsx --env-file=.env.local scripts/sync-assistant.ts
+ * Usage: npm run sync:assistant        (dev pair, .env.local)
+ *        npm run sync:assistant:prod   (prod pair, .env.production.local)
  * Requires: VAPI_PRIVATE_KEY, NEXT_PUBLIC_CONVEX_SITE_URL, optional VAPI_TOOL_SECRET,
- *           optional NEXT_PUBLIC_VAPI_ASSISTANT_ID (to update instead of create).
+ *           optional NEXT_PUBLIC_VAPI_ASSISTANT_ID (to update instead of create),
+ *           optional VAPI_ASSISTANT_NAME ("Playback Support (dev)" / "(prod)").
+ * Dev and prod assistants are built from the same definition; only the webhook URLs, secret
+ * and name differ, so `npm run release` keeps prod identical to what was tested on dev.
  */
 import { buildAssistant } from "../src/lib/assistant";
 
@@ -18,6 +22,7 @@ if (!siteUrl) console.warn("NEXT_PUBLIC_CONVEX_SITE_URL is empty: syncing with e
 const assistant = buildAssistant({
   toolServerUrl: siteUrl ? `${siteUrl.replace(/\/$/, "")}/vapi/tools` : "",
   toolSecret: process.env.VAPI_TOOL_SECRET,
+  name: process.env.VAPI_ASSISTANT_NAME,
 });
 const id = process.env.NEXT_PUBLIC_VAPI_ASSISTANT_ID;
 
@@ -32,8 +37,8 @@ if (!res.ok) {
   console.error("Vapi error", res.status, JSON.stringify(body, null, 2));
   process.exit(1);
 }
-console.log(`${id ? "Updated" : "Created"} assistant ${body.id}`);
-if (!id) console.log(`Add NEXT_PUBLIC_VAPI_ASSISTANT_ID=${body.id} to .env.local`);
+console.log(`${id ? "Updated" : "Created"} assistant ${body.id} (${body.name}) -> ${siteUrl || "no webhook"}`);
+if (!id) console.log(`Add NEXT_PUBLIC_VAPI_ASSISTANT_ID=${body.id} to the env file you synced with.`);
 }
 
 main().catch((e) => {
