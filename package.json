@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "sync:assistant": "tsx --env-file=.env.local scripts/sync-assistant.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test scripts/test-tools.ts"
   },
   "dependencies": {
     "@vapi-ai/web": "^3.1.0",
