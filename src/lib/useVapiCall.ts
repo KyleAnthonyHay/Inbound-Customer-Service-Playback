@@ -66,6 +66,10 @@ export function useVapiCall() {
   const pushEvent = useCallback((e: Omit<ActivityEvent, "id" | "at">) => {
     setEvents((prev) => [...prev, { ...e, id: nextId(), at: Date.now() }]);
   }, []);
+  /** Mark any still-running client rows (e.g. "Connecting") as finished. */
+  const settleRunning = useCallback((status: "succeeded" | "failed") => {
+    setEvents((prev) => prev.map((e) => (e.status === "running" ? { ...e, status } : e)));
+  }, []);
 
   const handleMessage = useCallback(
     (raw: unknown) => {
@@ -150,6 +154,7 @@ export function useVapiCall() {
       vapi.on("call-start", () => {
         setStatus("active");
         setStartedAt(Date.now());
+        settleRunning("succeeded");
         pushEvent({ kind: "call", label: "Connected", status: "succeeded" });
       });
       vapi.on("call-end", () => {
@@ -170,6 +175,7 @@ export function useVapiCall() {
               "Call error";
         setError(msg);
         setStatus("error");
+        settleRunning("failed");
         pushEvent({ kind: "error", label: "Error", detail: msg, status: "failed" });
       });
 
@@ -187,9 +193,10 @@ export function useVapiCall() {
       const msg = e instanceof Error ? e.message : "Failed to start call";
       setError(msg);
       setStatus("error");
+      settleRunning("failed");
       pushEvent({ kind: "error", label: "Start failed", detail: msg, status: "failed" });
     }
-  }, [handleMessage, pushEvent]);
+  }, [handleMessage, pushEvent, settleRunning]);
 
   const stop = useCallback(() => {
     vapiRef.current?.stop();

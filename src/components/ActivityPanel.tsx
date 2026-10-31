@@ -105,7 +105,7 @@ function ActivityPanelView({
   const lastCaller = [...transcript].reverse().find((t) => t.role === "user");
 
   const statusLine =
-    running.length > 0
+    running.length > 0 && status !== "error" && status !== "ended"
       ? running[running.length - 1].label
       : status === "connecting"
         ? "Connecting to the assistant"

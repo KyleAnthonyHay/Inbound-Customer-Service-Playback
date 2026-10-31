@@ -53,7 +53,11 @@ export function buildAssistant(opts: { toolServerUrl: string; toolSecret?: strin
       model: "gpt-live-1",
       messages: [{ role: "system", content: SYSTEM_PROMPT }],
       reasoner: { provider: "openai", model: "gpt-5.6-terra", reasoningEffort: "low" },
-      tools: buildToolDefinitions({ serverUrl: opts.toolServerUrl, secret: opts.toolSecret }),
+      // Without a public webhook URL (local dev, no tunnel) only endCall is attached,
+      // so the conversation still works but knowledge/actions are unavailable.
+      tools: opts.toolServerUrl
+        ? buildToolDefinitions({ serverUrl: opts.toolServerUrl, secret: opts.toolSecret })
+        : [{ type: "endCall" }],
     },
     voice: { provider: "openai", voiceId: "marin" },
     maxDurationSeconds: 600,
