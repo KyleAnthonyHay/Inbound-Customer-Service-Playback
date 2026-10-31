@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { CallScreen } from "@/components/CallScreen";
@@ -12,6 +12,18 @@ export default function CallPage() {
   const call = useVapiCall();
   const configured = isVapiConfigured();
   const [panelOpen, setPanelOpen] = useState(false);
+  // Dev aid: /call?callId=<id> shows the logged events of a past call in the panel.
+  const [callIdOverride, setCallIdOverride] = useState<string | null>(null);
+  useEffect(() => {
+    const id = new URLSearchParams(window.location.search).get("callId");
+    if (!id) return;
+    // Deferred so the first client render matches the server-rendered HTML.
+    const t = setTimeout(() => {
+      setCallIdOverride(id);
+      setPanelOpen(true);
+    }, 0);
+    return () => clearTimeout(t);
+  }, []);
 
   return (
     <main className="relative min-h-[100dvh] bg-background">
@@ -37,7 +49,9 @@ export default function CallPage() {
       <ActivityPanel
         open={panelOpen}
         onToggle={() => setPanelOpen((o) => !o)}
-        callId={call.callId}
+        callId={call.callId ?? callIdOverride}
+        status={call.status}
+        startedAt={call.startedAt}
         clientEvents={call.events}
         transcript={call.transcript}
       />

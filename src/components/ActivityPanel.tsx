@@ -1,90 +1,141 @@
 "use client";
 
+import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "convex/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { ChevronDown, ChevronRight, Activity, Loader2, AlertTriangle } from "lucide-react";
+import { api } from "../../convex/_generated/api";
 import type { Doc } from "../../convex/_generated/dataModel";
 import { useConvexReady } from "./ConvexClientProvider";
-import { api } from "../../convex/_generated/api";
-import { CheckCircle2, CircleDashed, XCircle, ChevronRight, Activity } from "lucide-react";
 import { cn } from "@/lib/cn";
-import type { ActivityEvent, TranscriptLine } from "@/lib/useVapiCall";
+import type { ActivityEvent, CallStatus, TranscriptLine } from "@/lib/useVapiCall";
 import { config } from "@/lib/config";
 
 type Props = {
   open: boolean;
   onToggle: () => void;
   callId: string | null;
+  status: CallStatus;
+  startedAt: number | null;
   clientEvents: ActivityEvent[];
   transcript: TranscriptLine[];
 };
 
-type Row = {
+type Step = {
   id: string;
   at: number;
   label: string;
-  status?: "running" | "succeeded" | "failed";
+  status: "running" | "succeeded" | "failed" | "info";
   durationMs?: number;
   source: "live" | "simulated" | "internal" | "client";
   detail?: string;
 };
 
-function StatusIcon({ status }: { status?: Row["status"] }) {
-  if (status === "succeeded") return <CheckCircle2 size={16} className="text-accent" />;
-  if (status === "failed") return <XCircle size={16} className="text-danger" />;
-  if (status === "running") return <CircleDashed size={16} className="animate-spin text-white/70" />;
-  return <span className="inline-block h-4 w-4 rounded-full border border-white/20" />;
-}
-
-function SourceTag({ source }: { source: Row["source"] }) {
-  const map = {
-    live: ["Live API", "border-sky-400/40 text-sky-300"],
-    simulated: ["Simulated", "border-amber-400/40 text-amber-300"],
-    internal: ["Docs", "border-white/20 text-white/60"],
-    client: ["Call", "border-white/20 text-white/60"],
-  } as const;
-  const [text, cls] = map[source];
-  return <span className={cn("rounded-full border px-1.5 py-px text-[10px] uppercase tracking-wide", cls)}>{text}</span>;
-}
+const SOURCE_META = {
+  live: { name: "Apple", dot: "bg-sky-400", text: "text-sky-300" },
+  simulated: { name: "Simulated", dot: "bg-amber-400", text: "text-amber-300" },
+  internal: { name: "Docs", dot: "bg-white/60", text: "text-white/60" },
+  client: { name: "Call", dot: "bg-white/40", text: "text-white/50" },
+} as const;
 
 export function ActivityPanel(props: Props) {
   const ready = useConvexReady();
-  return ready ? <ActivityPanelLive {...props} /> : <ActivityPanelRows {...props} serverEvents={[]} />;
+  return ready ? <ActivityPanelLive {...props} /> : <ActivityPanelView {...props} serverEvents={[]} />;
 }
 
 function ActivityPanelLive(props: Props) {
   const serverEvents = useQuery(api.callEvents.byCall, config.convexUrl ? { callId: props.callId ?? "" } : "skip") ?? [];
-  return <ActivityPanelRows {...props} serverEvents={serverEvents} />;
+  return <ActivityPanelView {...props} serverEvents={serverEvents} />;
 }
 
-function ActivityPanelRows({ open, onToggle, callId, clientEvents, transcript, serverEvents }: Props & { serverEvents: Doc<"callEvents">[] }) {
+function useElapsedLabel(startedAt: number | null, status: CallStatus) {
+  const [now, setNow] = useState<number | null>(null);
+  useEffect(() => {
+    if (status !== "active") return;
+    const t = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(t);
+  }, [status]);
+  if (!startedAt) return status === "connecting" ? "Connecting" : "Ready";
+  const end = now ?? startedAt;
+  const s = Math.max(0, Math.round((end - startedAt) / 1000));
+  const txt = s >= 60 ? `${Math.floor(s / 60)}m ${s % 60}s` : `${s}s`;
+  return status === "active" ? `Working for ${txt}` : `Worked for ${txt}`;
+}
 
-  // Collapse tool-start/tool-end pairs into one row keyed by toolCallId.
-  const byToolCall = new Map<string, Row>();
-  const rows: Row[] = [];
+function buildSteps(serverEvents: Doc<"callEvents">[], clientEvents: ActivityEvent[]): Step[] {
+  const byToolCall = new Map<string, Step>();
+  const steps: Step[] = [];
   for (const e of serverEvents) {
     const key = e.toolCallId ?? e._id;
     const existing = byToolCall.get(key);
     if (e.kind === "tool-start") {
-      const row: Row = { id: key, at: e.at, label: e.label, status: "running", source: e.source };
+      const row: Step = { id: key, at: e.at, label: e.label, status: "running", source: e.source };
       byToolCall.set(key, row);
-      rows.push(row);
+      steps.push(row);
     } else if (e.kind === "tool-end" && existing) {
-      existing.status = e.status;
+      existing.status = e.status ?? "succeeded";
       existing.durationMs = e.durationMs;
       existing.detail = e.detail;
     } else {
-      rows.push({ id: e._id, at: e.at, label: e.label, status: e.status, source: e.source, detail: e.detail });
+      steps.push({ id: e._id, at: e.at, label: e.label, status: e.status ?? "info", source: e.source, detail: e.detail });
     }
   }
   for (const c of clientEvents) {
-    if (c.kind === "tool-call" || c.kind === "tool-result") continue; // server rows are authoritative
-    rows.push({ id: c.id, at: c.at, label: c.label, status: c.status, source: "client", detail: c.detail });
+    if (c.kind === "tool-call" || c.kind === "tool-result" || c.kind === "speech") continue;
+    steps.push({ id: c.id, at: c.at, label: c.label, status: c.status ?? "info", source: "client", detail: c.detail });
   }
-  rows.sort((a, b) => a.at - b.at);
+  return steps.sort((a, b) => a.at - b.at);
+}
+
+function ActivityPanelView({
+  open, onToggle, callId, status, startedAt, clientEvents, transcript, serverEvents,
+}: Props & { serverEvents: Doc<"callEvents">[] }) {
+  const reduce = useReducedMotion();
+  const [cardOpen, setCardOpen] = useState(true);
+  const [showTranscript, setShowTranscript] = useState(false);
+  const elapsed = useElapsedLabel(startedAt, status);
+  const steps = useMemo(() => buildSteps(serverEvents, clientEvents), [serverEvents, clientEvents]);
+
+  const running = steps.filter((s) => s.status === "running");
+  const failed = steps.filter((s) => s.status === "failed");
+  const liveCount = steps.filter((s) => s.source === "live").length;
+  const simCount = steps.filter((s) => s.source === "simulated").length;
+  const toolCount = steps.filter((s) => s.source !== "client").length;
+  const lastAssistant = [...transcript].reverse().find((t) => t.role === "assistant");
+  const lastCaller = [...transcript].reverse().find((t) => t.role === "user");
+
+  const statusLine =
+    running.length > 0
+      ? running[running.length - 1].label
+      : status === "connecting"
+        ? "Connecting to the assistant"
+        : status === "active"
+          ? "Listening"
+          : status === "ended"
+            ? "Call ended"
+            : status === "error"
+              ? "Call failed"
+              : null;
+
+  const pill = {
+    idle: ["Ready", "bg-white/40"],
+    connecting: ["Connecting", "bg-amber-400"],
+    active: ["Live", "bg-accent"],
+    ended: ["Ended", "bg-white/40"],
+    error: ["Failed", "bg-danger"],
+  }[status];
+
+  const item = {
+    initial: reduce ? { opacity: 1 } : { opacity: 0, y: 6 },
+    animate: { opacity: 1, y: 0 },
+    exit: { opacity: 0 },
+    transition: { duration: 0.22, ease: "easeOut" as const },
+  };
 
   return (
     <aside
       className={cn(
-        "fixed inset-y-0 right-0 z-20 flex w-[340px] max-w-[90vw] flex-col border-l border-white/10 bg-surface/95 backdrop-blur transition-transform",
+        "fixed inset-y-0 right-0 z-20 flex w-[380px] max-w-[92vw] flex-col border-l border-white/10 bg-[#111113]/95 backdrop-blur transition-transform",
         open ? "translate-x-0" : "translate-x-full"
       )}
       aria-label="Agent activity"
@@ -93,55 +144,142 @@ function ActivityPanelRows({ open, onToggle, callId, clientEvents, transcript, s
         type="button"
         onClick={onToggle}
         aria-expanded={open}
-        className="absolute -left-10 top-4 flex h-10 w-10 items-center justify-center rounded-l-xl border border-r-0 border-white/10 bg-surface/95 text-white/80"
+        aria-label={open ? "Hide agent activity" : "Show agent activity"}
+        className="absolute -left-10 top-4 flex h-10 w-10 items-center justify-center rounded-l-xl border border-r-0 border-white/10 bg-[#111113]/95 text-white/80"
       >
         {open ? <ChevronRight size={18} /> : <Activity size={18} />}
       </button>
 
-      <header className="border-b border-white/10 px-4 py-3">
-        <h2 className="text-sm font-medium">Agent activity</h2>
-        <p className="text-xs text-muted">
-          {callId ? `Call ${callId.slice(0, 8)}…` : "No active call"} · events come from real tool calls
-        </p>
-      </header>
+      <div className="flex-1 overflow-y-auto px-4 pb-4 pt-5">
+        {/* "Thinking 2s" style header */}
+        <button
+          type="button"
+          onClick={() => setCardOpen((o) => !o)}
+          aria-expanded={cardOpen}
+          className="flex items-center gap-1.5 text-[13px] text-white/60 hover:text-white/80"
+        >
+          {cardOpen ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+          <span>{elapsed}</span>
+        </button>
 
-      <div className="flex-1 overflow-y-auto px-3 py-2">
-        {rows.length === 0 && <p className="px-1 py-6 text-center text-xs text-muted">Start a call to see activity.</p>}
-        <ul className="space-y-1.5">
-          {rows.map((r) => (
-            <li key={r.id} className="rounded-lg bg-surface-2 px-3 py-2">
-              <div className="flex items-center gap-2">
-                <StatusIcon status={r.status} />
-                <span className="flex-1 truncate text-sm">{r.label}</span>
-                {typeof r.durationMs === "number" && (
-                  <span className="font-mono text-[11px] text-muted">{r.durationMs} ms</span>
+        <AnimatePresence initial={false}>
+          {cardOpen && (
+            <motion.section
+              key="card"
+              initial={reduce ? false : { opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.2 }}
+              className="mt-3 overflow-hidden rounded-xl border border-white/10 bg-white/[0.03]"
+            >
+              <header className="flex items-center justify-between px-4 pt-3.5">
+                <h2 className="text-[14px] font-medium">Playback support call</h2>
+                <span className="flex items-center gap-1.5 text-[12px] text-white/70">
+                  <span className={cn("h-1.5 w-1.5 rounded-full", pill[1])} aria-hidden />
+                  {pill[0]}
+                </span>
+              </header>
+
+              {/* Step rail */}
+              <ol className="relative mt-2 px-4 pb-1">
+                {steps.length > 1 && <span aria-hidden className="absolute left-[23px] top-3 bottom-3 w-px bg-white/10" />}
+                <AnimatePresence initial={false}>
+                  {steps.map((s) => {
+                    const meta = SOURCE_META[s.source];
+                    const done = s.status === "succeeded" || s.status === "info";
+                    return (
+                      <motion.li key={s.id} layout="position" {...item} className="relative flex items-center gap-3 py-[7px] pl-1">
+                        <span className="relative flex h-3.5 w-3.5 items-center justify-center">
+                          {s.status === "running" ? (
+                            <Loader2 size={14} className="animate-spin text-white/80" aria-label="running" />
+                          ) : s.status === "failed" ? (
+                            <span className="h-2 w-2 rounded-full bg-danger" aria-label="failed" />
+                          ) : (
+                            <span className={cn("h-2 w-2 rounded-full", meta.dot)} aria-label={done ? "done" : s.status} />
+                          )}
+                        </span>
+                        <span className={cn("flex-1 truncate text-[13px]", done ? "text-white/85" : "text-white", s.status === "failed" && "text-white/85")}>
+                          {s.label}
+                          {s.detail && s.status === "failed" && <span className="ml-2 text-[12px] text-amber-300/90">{s.detail}</span>}
+                        </span>
+                        <span className="shrink-0 font-mono text-[11px] text-white/40">
+                          {typeof s.durationMs === "number" && <span className="mr-2 text-white/55">{s.durationMs} ms</span>}
+                          <span className={meta.text}>{meta.name}</span>
+                        </span>
+                      </motion.li>
+                    );
+                  })}
+                </AnimatePresence>
+                {steps.length === 0 && (
+                  <li className="py-2 pl-1 text-[13px] text-white/45">No steps yet. Start a call and tool activity will appear here.</li>
                 )}
-              </div>
-              <div className="mt-1 flex items-center gap-2 pl-6">
-                <SourceTag source={r.source} />
-                {r.detail && <span className="truncate text-[11px] text-muted">{r.detail}</span>}
-              </div>
-            </li>
-          ))}
-        </ul>
+              </ol>
 
-        {transcript.length > 0 && (
-          <section className="mt-4 border-t border-white/10 pt-3">
-            <h3 className="mb-2 text-xs font-medium text-muted">Transcript</h3>
-            <ul className="space-y-1.5">
-              {transcript.map((t) => (
-                <li key={t.id} className={cn("text-[13px] leading-snug", t.role === "assistant" ? "text-white/90" : "text-sky-200")}>
-                  <span className="mr-1 text-[10px] uppercase text-muted">{t.role === "assistant" ? "Agent" : "Caller"}</span>
-                  {t.text}
-                </li>
-              ))}
-            </ul>
-          </section>
+              {/* Status line, like "Pushing 3 commits to origin" */}
+              {statusLine && (
+                <div className="flex items-center gap-2 border-t border-white/[0.06] px-4 py-2.5 text-[13px] text-white/60">
+                  {running.length > 0 ? (
+                    <Loader2 size={13} className="animate-spin" aria-hidden />
+                  ) : failed.length > 0 && status !== "active" ? (
+                    <AlertTriangle size={13} className="text-amber-300" aria-hidden />
+                  ) : (
+                    <span className={cn("h-1.5 w-1.5 rounded-full", status === "active" ? "bg-accent" : "bg-white/30")} aria-hidden />
+                  )}
+                  <AnimatePresence mode="wait" initial={false}>
+                    <motion.span key={statusLine} {...item}>{statusLine}</motion.span>
+                  </AnimatePresence>
+                </div>
+              )}
+            </motion.section>
+          )}
+        </AnimatePresence>
+
+        {/* Natural-language message under the card */}
+        <AnimatePresence initial={false}>
+          {lastAssistant && (
+            <motion.p key={lastAssistant.id} {...item} className="mt-4 text-[14px] leading-relaxed text-white/90">
+              {lastAssistant.text}
+            </motion.p>
+          )}
+        </AnimatePresence>
+        {lastCaller && <p className="mt-2 text-[13px] leading-relaxed text-white/50">Caller: {lastCaller.text}</p>}
+
+        {/* Summary chip */}
+        <div className="mt-4 flex flex-wrap items-center gap-2 text-[12px] text-white/60">
+          <span className="flex items-center gap-1.5 rounded-full border border-white/10 px-2.5 py-1">
+            <span className={cn("h-1.5 w-1.5 rounded-full", pill[1])} aria-hidden />
+            {callId ? `Call ${callId.slice(0, 8)}` : "No call"}
+          </span>
+          <span className="rounded-full border border-white/10 px-2.5 py-1">
+            {toolCount} tool{toolCount === 1 ? "" : "s"} · <span className="text-sky-300">{liveCount} live</span> ·{" "}
+            <span className="text-amber-300">{simCount} simulated</span>
+          </span>
+          {transcript.length > 0 && (
+            <button
+              type="button"
+              onClick={() => setShowTranscript((v) => !v)}
+              aria-expanded={showTranscript}
+              className="rounded-full border border-white/10 px-2.5 py-1 hover:bg-white/5"
+            >
+              Transcript {transcript.length} {showTranscript ? "▾" : "▸"}
+            </button>
+          )}
+        </div>
+
+        {showTranscript && (
+          <ul className="mt-3 space-y-1.5 border-t border-white/10 pt-3">
+            {transcript.map((t) => (
+              <li key={t.id} className={cn("text-[13px] leading-snug", t.role === "assistant" ? "text-white/85" : "text-white/50")}>
+                <span className="mr-1 text-[10px] uppercase text-white/40">{t.role === "assistant" ? "Agent" : "Caller"}</span>
+                {t.text}
+              </li>
+            ))}
+          </ul>
         )}
       </div>
 
-      <footer className="border-t border-white/10 px-4 py-2 text-[11px] text-muted">
-        Live API = Apple App Store lookup. Simulated = demo customers, teams, callbacks. Not MultiTracks systems.
+      <footer className="border-t border-white/10 px-4 py-2 text-[11px] leading-snug text-white/40">
+        Apple = live App Store lookup. Simulated = demo customers, teams, callbacks; not MultiTracks systems. Docs = bounded help-center snapshot.
       </footer>
     </aside>
   );
