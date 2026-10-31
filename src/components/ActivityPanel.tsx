@@ -69,7 +69,7 @@ function buildSteps(serverEvents: Doc<"callEvents">[], clientEvents: ActivityEve
     const key = e.toolCallId ?? e._id;
     const existing = byToolCall.get(key);
     if (e.kind === "tool-start") {
-      const row: Step = { id: key, at: e.at, label: e.label, status: "running", source: e.source };
+      const row: Step = { id: e._id, at: e.at, label: e.label, status: "running", source: e.source };
       byToolCall.set(key, row);
       steps.push(row);
     } else if (e.kind === "tool-end" && existing) {

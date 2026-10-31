@@ -7,7 +7,7 @@ CALL_ID="smoke-$(date +%s)"
 post() {
   local name="$1" args="$2"
   curl -s -X POST "$BASE/api/vapi/tools" -H 'content-type: application/json' \
-    -d "{\"message\":{\"type\":\"tool-calls\",\"call\":{\"id\":\"$CALL_ID\"},\"toolCallList\":[{\"id\":\"tc-$name\",\"type\":\"function\",\"function\":{\"name\":\"$name\",\"arguments\":$args}}]}}" \
+    -d "{\"message\":{\"type\":\"tool-calls\",\"call\":{\"id\":\"$CALL_ID\"},\"toolCallList\":[{\"id\":\"tc-$name-$RANDOM\",\"type\":\"function\",\"function\":{\"name\":\"$name\",\"arguments\":$args}}]}}" \
     | python3 -I -c 'import sys,json; r=json.load(sys.stdin)["results"][0]; print(json.dumps(json.loads(r["result"]) if "result" in r else r, indent=1)[:900])'
   echo "-----"
 }
