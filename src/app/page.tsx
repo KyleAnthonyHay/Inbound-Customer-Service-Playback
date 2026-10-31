@@ -1,90 +1,136 @@
 import Link from "next/link";
-import { Phone, Headphones, Music2, Activity } from "lucide-react";
+import Image from "next/image";
+import { Phone } from "lucide-react";
 import { config } from "@/lib/config";
 
-const features = [
-  {
-    icon: <Music2 size={20} />,
-    title: "Song loading",
-    body: "Walks through documented download and loading errors so the set is ready before rehearsal.",
-  },
-  {
-    icon: <Headphones size={20} />,
-    title: "Audio output",
-    body: "Helps pick the right output device and routing when tracks are not coming through.",
-  },
-  {
-    icon: <Activity size={20} />,
-    title: "Version-aware",
-    body: "Checks the caller's Playback version against the live App Store listing and documented release notes.",
-  },
-];
+function Logo({ className = "" }: { className?: string }) {
+  return (
+    <span className={`flex items-center gap-2.5 ${className}`}>
+      <span className="flex h-[26px] w-[26px] items-center justify-center rounded-[6px] bg-current">
+        <span className="ml-[2px] block h-0 w-0 border-y-[5px] border-l-[8px] border-y-transparent border-l-white [.dark_&]:border-l-black" />
+      </span>
+      <span className="whitespace-nowrap text-[22px] font-medium tracking-tight">Playback Support</span>
+    </span>
+  );
+}
 
 export default function Home() {
+  const number = config.inboundNumber;
+  const tel = number ? `tel:${number.replace(/[^\d+]/g, "")}` : undefined;
+
   return (
-    <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col px-5 pb-16 pt-8 sm:px-8">
-      <header className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="flex h-8 w-8 items-center justify-center rounded-full border border-white/30">
-            <span className="ml-0.5 block h-0 w-0 border-y-[6px] border-l-[10px] border-y-transparent border-l-white" />
-          </span>
-          <span className="text-lg font-medium tracking-tight">Playback Support</span>
-        </div>
-        <span className="rounded-full border border-white/15 px-3 py-1 text-xs text-muted">
-          Demo · not affiliated with MultiTracks
-        </span>
-      </header>
-
-      <section className="mt-20 flex flex-col items-start gap-6 sm:mt-28">
-        <h1 className="max-w-3xl text-5xl font-semibold leading-[1.02] tracking-tight sm:text-7xl">
-          Inbound support,
-          <br />
-          answered by voice.
-        </h1>
-        <p className="max-w-xl text-lg text-muted">
-          An AI phone agent that helps Playback users fix song-loading and
-          audio-output problems before rehearsal or service. Built for a
-          Regal AI Product Specialist take-home.
-        </p>
-
-        <div className="mt-4 flex flex-wrap items-center gap-3">
-          <Link
-            href="/call"
-            className="flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-base font-medium text-black transition hover:brightness-110"
-          >
-            <Phone size={18} /> Start a browser call
+    <div className="flex min-h-[100dvh] flex-col bg-white text-[#1a1a1a]">
+      <main className="grid flex-1 grid-cols-1 lg:grid-cols-2">
+        {/* Left: entry form */}
+        <section className="relative flex flex-col px-8 pb-12 pt-8 sm:px-14 lg:px-[60px]">
+          <Link href="/" aria-label="Playback Support home" className="w-fit text-black">
+            <Logo />
           </Link>
-          {config.inboundNumber ? (
-            <a
-              href={`tel:${config.inboundNumber.replace(/[^\d+]/g, "")}`}
-              className="rounded-full border border-white/20 px-6 py-3 text-base text-white/90 transition hover:bg-white/5"
-            >
-              Or call {config.inboundNumber}
-            </a>
-          ) : (
-            <span className="rounded-full border border-dashed border-white/15 px-6 py-3 text-base text-muted">
-              Phone number coming soon
-            </span>
-          )}
-        </div>
-      </section>
 
-      <section className="mt-24 grid gap-4 sm:grid-cols-3">
-        {features.map((f) => (
-          <div key={f.title} className="rounded-2xl border border-white/10 bg-surface p-5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-surface-2 text-accent">
-              {f.icon}
+          <div className="mx-auto mt-24 w-full max-w-[780px] lg:mt-0 lg:flex lg:flex-1 lg:flex-col lg:justify-center lg:pl-[60px] lg:pr-[40px]">
+            <h1 className="text-[32px] font-bold leading-[1.15] tracking-tight">Start a call</h1>
+
+            <details className="group mt-3 text-[18px] text-[#1a1a1a]">
+              <summary className="cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+                New here?{" "}
+                <span className="font-medium underline decoration-[1.5px] underline-offset-[3px]">What this agent handles</span>
+              </summary>
+              <p className="mt-3 max-w-[640px] text-[16px] leading-relaxed text-[#444]">
+                An AI assistant for MultiTracks Playback. It helps when songs won&apos;t load or audio isn&apos;t coming
+                through, checks your Playback version against the live App Store listing, and hands you to a person or
+                books a callback when it should. Billing, refunds, and sales are out of scope.
+              </p>
+            </details>
+
+            <div className="mt-7 rounded-[8px] border border-[#cfcfcf] px-5 py-4">
+              <p className="text-[15px] font-semibold leading-tight">Inbound test number</p>
+              <p className={`mt-1.5 text-[18px] leading-tight ${number ? "" : "text-[#777]"}`}>
+                {number || "Not provisioned yet"}
+              </p>
             </div>
-            <h2 className="mt-4 text-base font-medium">{f.title}</h2>
-            <p className="mt-1 text-sm leading-relaxed text-muted">{f.body}</p>
-          </div>
-        ))}
-      </section>
 
-      <footer className="mt-auto pt-20 text-xs text-muted">
-        Transfers, staffing, and callbacks in this demo are simulated. Playback
-        is a product of MultiTracks.com.
+            <Link
+              href="/call"
+              className="mt-11 flex h-[60px] items-center justify-center rounded-full bg-black text-[18px] font-medium text-white transition hover:bg-[#222]"
+            >
+              Start a browser call
+            </Link>
+
+            <div className="my-9 flex items-center gap-4 text-[18px] text-[#444]">
+              <span className="h-px flex-1 bg-[#e5e5e5]" />
+              or
+              <span className="h-px flex-1 bg-[#e5e5e5]" />
+            </div>
+
+            {tel ? (
+              <a
+                href={tel}
+                className="flex h-[60px] items-center justify-center gap-2.5 rounded-full bg-[#f0f0f0] text-[18px] font-medium text-black transition hover:bg-[#e8e8e8]"
+              >
+                <Phone size={20} /> Call from your phone
+              </a>
+            ) : (
+              <span
+                aria-disabled
+                className="flex h-[60px] cursor-not-allowed items-center justify-center gap-2.5 rounded-full bg-[#f0f0f0] text-[18px] font-medium text-[#9a9a9a]"
+              >
+                <Phone size={20} /> Call from your phone (number coming soon)
+              </span>
+            )}
+          </div>
+        </section>
+
+        {/* Right: image panel */}
+        <section className="relative m-4 hidden overflow-hidden rounded-[18px] bg-[#111] lg:block lg:my-8 lg:mr-8">
+          <Image
+            src="/playback-hero.webp"
+            alt="Playback multitrack player on an iPad"
+            fill
+            priority
+            sizes="50vw"
+            className="object-cover object-[50%_0%]"
+          />
+          {/* Card, like the loyalty card in the reference */}
+          <div className="absolute bottom-10 left-1/2 w-[min(440px,86%)] -translate-x-1/2 rounded-[22px] bg-white p-[14px] text-[#1a1a1a] shadow-[0_24px_60px_rgba(0,0,0,0.35)]">
+            <div className="rounded-[14px] border border-black/[0.06] bg-white">
+              <div className="flex items-center justify-between px-5 pt-4 pb-3">
+                <span className="flex items-center gap-3">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#f3e9d6] text-[#1a1a1a]">
+                    <Phone size={18} />
+                  </span>
+                  <span className="text-[18px] font-semibold">Playback Support</span>
+                </span>
+                <span className="text-right">
+                  <span className="block text-[11px] font-semibold tracking-wide text-[#666]">AGENT</span>
+                  <span className="block text-[16px]">AI, says so first</span>
+                </span>
+              </div>
+              <div className="grid grid-cols-3 gap-px bg-[#f3e9d6] px-5 py-5 text-center text-[13px] font-medium">
+                <span>Song loading</span>
+                <span>Audio output</span>
+                <span>Version check</span>
+              </div>
+              <div className="grid grid-cols-2 px-5 pt-4 pb-5 text-center">
+                <span>
+                  <span className="block text-[11px] font-semibold tracking-wide text-[#666]">HANDOFF</span>
+                  <span className="block text-[16px]">Simulated</span>
+                </span>
+                <span>
+                  <span className="block text-[11px] font-semibold tracking-wide text-[#666]">VERSION DATA</span>
+                  <span className="block text-[16px]">Live App Store</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer className="flex h-[82px] items-center justify-between bg-[#1e1e1e] px-8 text-white sm:px-14 lg:px-[60px]">
+        <span className="dark">
+          <Logo />
+        </span>
+        <span className="ml-4 text-right text-[12px] leading-tight text-white/80 sm:text-[18px]">Demo, not affiliated with MultiTracks.com</span>
       </footer>
-    </main>
+    </div>
   );
 }
