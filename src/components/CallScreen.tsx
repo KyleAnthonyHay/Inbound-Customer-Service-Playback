@@ -1,15 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Moon } from "lucide-react";
 import { cn } from "@/lib/cn";
 import type { CallStatus } from "@/lib/useVapiCall";
 
+/**
+ * iOS Phone in-call screen, measured from a 1320x2868 (440x956 pt) recording.
+ * All sizes below are CSS px on a 440x956 logical screen (1 px = 1 pt).
+ */
+
 type Props = {
   status: CallStatus;
-  /** Big line under the timer: the number being called, or a label. */
   label: string;
-  /** Faint line under the number, like iOS's city/state. */
   subtitle?: string;
   startedAt: number | null;
   muted: boolean;
@@ -19,6 +21,11 @@ type Props = {
   onToggleMute: () => void;
   onKeypadDigit?: (digit: string) => void;
 };
+
+export const SCREEN_W = 440;
+export const SCREEN_H = 956;
+
+const FONT = '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Inter, system-ui, sans-serif';
 
 function useElapsed(startedAt: number | null, running: boolean) {
   const [now, setNow] = useState<number | null>(null);
@@ -32,92 +39,108 @@ function useElapsed(startedAt: number | null, running: boolean) {
   return `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
 }
 
-function statusText(status: CallStatus, elapsed: string) {
-  switch (status) {
-    case "idle":
-      return "00:00";
-    case "connecting":
-      return "calling…";
-    case "active":
-      return elapsed;
-    case "ended":
-      return "Call Ended";
-    case "error":
-      return "Call Failed";
-  }
-}
+/* ---------- Icons, sized to the recording ---------- */
 
-/* ---------- iOS-style icons (drawn to match the screenshot) ---------- */
-
-function SpeakerIcon() {
+function MuteIcon({ dark }: { dark?: boolean }) {
+  // 22 x 27, mic with slash
+  const c = dark ? "#1c1c1e" : "#ffffff";
   return (
-    <svg width="40" height="34" viewBox="0 0 40 34" fill="none" aria-hidden>
-      <path d="M4 12.5h6.5L19 5v24l-8.5-7.5H4z" fill="currentColor" />
-      <path d="M24 10.5c2 1.6 3.2 4 3.2 6.5s-1.2 4.9-3.2 6.5" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" />
-      <path d="M28.5 6c3.4 2.6 5.5 6.6 5.5 11s-2.1 8.4-5.5 11" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function EndIcon() {
-  return (
-    <svg width="42" height="42" viewBox="0 0 42 42" fill="none" aria-hidden>
-      <path
-        d="M6.5 25.2c-1.1-1.3-1-3.2.2-4.4C10.6 17 15.6 15 21 15s10.4 2 14.3 5.8c1.2 1.2 1.3 3.1.2 4.4l-2.2 2.6c-.9 1.1-2.5 1.4-3.8.7l-4-2.2c-1-.6-1.6-1.7-1.5-2.9l.1-1.6c-2-.6-4.2-.6-6.2 0l.1 1.6c.1 1.2-.5 2.3-1.5 2.9l-4 2.2c-1.3.7-2.9.4-3.8-.7z"
-        fill="currentColor"
-      />
+    <svg width="22" height="27" viewBox="0 0 22 27" fill="none" aria-hidden>
+      <rect x="7" y="1" width="8" height="14" rx="4" fill={c} />
+      <path d="M3.5 11.5a7.5 7.5 0 0 0 15 0" stroke={c} strokeWidth="2" strokeLinecap="round" />
+      <path d="M11 19v5M7 24.5h8" stroke={c} strokeWidth="2" strokeLinecap="round" />
+      <path d="M2.5 2.5l17 21" stroke={c} strokeWidth="2.2" strokeLinecap="round" />
     </svg>
   );
 }
 
 function KeypadIcon() {
+  // 26 x 25: 3x3 dots plus one below
   return (
-    <svg width="34" height="34" viewBox="0 0 34 34" fill="currentColor" aria-hidden>
-      {[0, 1, 2].map((r) =>
-        [0, 1, 2].map((c) => <circle key={`${r}${c}`} cx={7 + c * 10} cy={5 + r * 9} r="3.2" />)
-      )}
-      <circle cx="17" cy="32" r="3.2" />
+    <svg width="26" height="25" viewBox="0 0 26 25" fill="#fff" aria-hidden>
+      {[0, 1, 2].map((r) => [0, 1, 2].map((c) => <circle key={`${r}${c}`} cx={3.5 + c * 9.5} cy={3.5 + r * 7} r="3" />))}
+      <circle cx="13" cy="21.5" r="3" />
+    </svg>
+  );
+}
+
+function EndIcon() {
+  // 30 x 10 handset
+  return (
+    <svg width="30" height="11" viewBox="0 0 30 11" fill="#fff" aria-hidden>
+      <path d="M1.2 7.1C.5 6.4.6 5.3 1.4 4.6 5 1.6 9.9 0 15 0s10 1.6 13.6 4.6c.8.7.9 1.8.2 2.5l-1.8 1.9c-.6.6-1.6.8-2.4.4l-3.3-1.6c-.7-.3-1.1-1-1.1-1.8V5c-2.9-.9-5.9-.9-8.8 0v1c0 .8-.4 1.5-1.1 1.8L7 9.4c-.8.4-1.8.2-2.4-.4z" />
     </svg>
   );
 }
 
 function CallIcon() {
   return (
-    <svg width="40" height="40" viewBox="0 0 40 40" fill="currentColor" aria-hidden>
+    <svg width="30" height="30" viewBox="0 0 40 40" fill="#fff" aria-hidden>
       <path d="M12.6 6.3c1.2-.4 2.5.1 3.1 1.2l2.6 4.6c.6 1 .4 2.3-.4 3.1l-2 2c1.6 3.3 4.2 5.9 7.5 7.5l2-2c.8-.8 2.1-1 3.1-.4l4.6 2.6c1.1.6 1.6 1.9 1.2 3.1l-1 3.1c-.4 1.3-1.7 2.2-3 2-12.6-1.5-22.6-11.5-24.1-24.1-.2-1.3.7-2.6 2-3z" />
     </svg>
   );
 }
 
-/* ---------- Buttons ---------- */
+/* ---------- Status bar ---------- */
 
-function RoundButton({
-  icon, label, onClick, active, disabled, variant = "default",
+function StatusBar({ inCall }: { inCall: boolean }) {
+  return (
+    <div className="absolute inset-x-0 top-0 h-[54px]">
+      <span className="absolute left-[38px] top-[22px] flex items-center gap-[4px] text-[17px] font-semibold leading-[20px] text-white">
+        11:41
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="#fff" aria-hidden><path d="M9.5 1.2a6 6 0 1 0 3.3 8.3A5 5 0 0 1 9.5 1.2z" /></svg>
+      </span>
+
+      {/* Dynamic Island, expanded for an active call */}
+      <span className="absolute left-1/2 top-[14px] flex h-[36px] w-[169px] -translate-x-1/2 items-center justify-between rounded-full bg-black px-[13px]" aria-hidden>
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
+          <path d="M8.5 11.5a3.5 3.5 0 0 1 0-5l2-2a3.5 3.5 0 0 1 5 5l-1 1" stroke="#30d158" strokeWidth="2.2" strokeLinecap="round" />
+          <path d="M11.5 8.5a3.5 3.5 0 0 1 0 5l-2 2a3.5 3.5 0 0 1-5-5l1-1" stroke="#30d158" strokeWidth="2.2" strokeLinecap="round" />
+        </svg>
+        <span className={cn("h-[5px] w-[5px] rounded-full", inCall ? "bg-[#ff9500]" : "bg-transparent")} />
+      </span>
+
+      <span className="absolute right-[26px] top-[21px] flex items-center gap-[5px]">
+        <svg width="19" height="12" viewBox="0 0 19 12" fill="#fff" aria-hidden>
+          <rect x="0" y="8.5" width="3.3" height="3.5" rx="1" /><rect x="5.2" y="6" width="3.3" height="6" rx="1" />
+          <rect x="10.4" y="3" width="3.3" height="9" rx="1" /><rect x="15.6" y="0" width="3.3" height="12" rx="1" opacity="0.3" />
+        </svg>
+        <span className="text-[15px] font-semibold leading-none text-white">5G<span className="relative -top-[4px] text-[7px] font-bold leading-none">UW</span></span>
+        <span className="relative flex h-[13px] w-[27px] items-center justify-center rounded-[4px] bg-[#30d158] text-[11px] font-bold leading-none text-black" aria-label="Battery 44%, charging">
+          44
+          <svg className="absolute -right-[1px] top-[2px]" width="6" height="9" viewBox="0 0 6 9" fill="#fff" aria-hidden><path d="M3.6 0 0 5h2.4L2.2 9 6 3.8H3.4z" /></svg>
+          <span className="absolute -right-[3px] top-1/2 h-[4px] w-[1.5px] -translate-y-1/2 rounded-r bg-white/40" />
+        </span>
+      </span>
+    </div>
+  );
+}
+
+/* ---------- Round control ---------- */
+
+function Control({
+  x, y, label, icon, onClick, active, disabled, fill, ariaLabel,
 }: {
-  icon: React.ReactNode; label: string; onClick?: () => void; active?: boolean; disabled?: boolean;
-  variant?: "default" | "end" | "answer";
+  x: number; y: number; label?: string; icon: React.ReactNode; onClick?: () => void;
+  active?: boolean; disabled?: boolean; fill?: string; ariaLabel?: string;
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
       disabled={disabled}
-      aria-label={label}
+      aria-label={ariaLabel ?? label}
       aria-pressed={active}
-      className="flex flex-col items-center gap-[10px] select-none disabled:opacity-40"
+      className="absolute flex w-[110px] -translate-x-1/2 flex-col items-center disabled:opacity-40"
+      style={{ left: x, top: y - 43 }}
     >
       <span
-        className={cn(
-          "flex h-[84px] w-[84px] items-center justify-center rounded-full transition-colors",
-          variant === "default" &&
-            (active ? "bg-white text-black" : "bg-white/[0.17] text-white ring-1 ring-inset ring-white/20 active:bg-white/30"),
-          variant === "end" && "bg-[#ff3b30] text-white active:bg-[#d92b22]",
-          variant === "answer" && "bg-[#34c759] text-white active:bg-[#28a745]"
-        )}
+        className="flex h-[86px] w-[86px] items-center justify-center rounded-full transition-colors active:brightness-150"
+        style={{ background: fill ?? (active ? "#9a9a9a" : "#2c2c2c") }}
       >
         {icon}
       </span>
-      <span className="text-[17px] leading-none text-white">{label}</span>
+      {label && <span className="mt-[9px] text-[15px] leading-[18px] text-[#bfbfbf]">{label}</span>}
     </button>
   );
 }
@@ -130,22 +153,44 @@ const KEYS: Array<[string, string]> = [
   ["7", "PQRS"], ["8", "TUV"], ["9", "WXYZ"],
   ["*", ""], ["0", "+"], ["#", ""],
 ];
+const COLS = [88, 220, 352];
+const KEY_ROWS = [367, 473, 580, 687];
 
 function Keypad({ onDigit }: { onDigit: (d: string) => void }) {
   return (
-    <div className="grid grid-cols-3 gap-x-[22px] gap-y-[14px]" role="group" aria-label="Keypad">
-      {KEYS.map(([d, letters]) => (
-        <button
-          key={d}
-          type="button"
-          onClick={() => onDigit(d)}
-          aria-label={`Key ${d}${letters ? ` ${letters}` : ""}`}
-          className="flex h-[82px] w-[82px] flex-col items-center justify-center rounded-full bg-white/[0.17] text-white active:bg-white/35"
-        >
-          <span className={cn("leading-none", d === "*" ? "mt-3 text-[46px]" : "text-[36px] font-normal")}>{d}</span>
-          {letters && <span className={cn("mt-0.5 text-[10px] font-semibold tracking-[0.18em]", d === "0" && "text-[18px] tracking-normal")}>{letters}</span>}
-        </button>
-      ))}
+    <div role="group" aria-label="Keypad">
+      {KEYS.map(([d, sub], i) => {
+        const x = COLS[i % 3];
+        const y = KEY_ROWS[Math.floor(i / 3)];
+        const symbol = d === "*" || d === "#";
+        return (
+          <button
+            key={d}
+            type="button"
+            onClick={() => onDigit(d)}
+            aria-label={`Key ${d}${sub ? ` ${sub}` : ""}`}
+            className="absolute flex h-[86px] w-[86px] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full bg-[#3b383b] text-white active:bg-[#524e52]"
+            style={{ left: x, top: y }}
+          >
+            <span
+              className={cn("leading-none", symbol ? "text-[40px] font-normal" : "text-[40px] font-normal -mt-[14px]")}
+              style={{ marginTop: symbol ? (d === "*" ? 10 : 0) : undefined }}
+            >
+              {d}
+            </span>
+            {sub && (
+              <span
+                className={cn(
+                  "absolute left-1/2 -translate-x-1/2 leading-none",
+                  d === "0" ? "top-[59px] text-[18px] font-normal" : "top-[55px] text-[12px] font-bold tracking-[0.17em]"
+                )}
+              >
+                {sub}
+              </span>
+            )}
+          </button>
+        );
+      })}
     </div>
   );
 }
@@ -159,7 +204,6 @@ export function CallScreen({
   const inCall = status === "active" || status === "connecting";
   const [keypadOpen, setKeypadOpen] = useState(false);
   const [typed, setTyped] = useState("");
-  const [speaker, setSpeaker] = useState(false);
 
   useEffect(() => {
     if (status === "ended" || status === "error") {
@@ -169,81 +213,72 @@ export function CallScreen({
   }, [status]);
 
   const digit = (d: string) => {
-    setTyped((t) => (t + d).slice(-24));
+    setTyped((t) => (t + d).slice(-20));
     onKeypadDigit?.(d);
   };
 
+  const topLine =
+    status === "connecting" ? "Calling…" : status === "ended" ? "Call Ended" : status === "error" ? "Call Failed" : elapsed;
+  const showTyped = keypadOpen && typed.length > 0;
+
   return (
     <div
-      className="relative flex h-full w-full select-none flex-col overflow-hidden bg-[#1c1c1e] text-white"
-      style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", Inter, system-ui, sans-serif' }}
+      className="relative select-none overflow-hidden bg-[#242424] text-white"
+      style={{ width: SCREEN_W, height: SCREEN_H, fontFamily: FONT }}
     >
-      {/* Status bar */}
-      <div className="relative flex h-[54px] items-center justify-between px-[26px] pt-[6px] text-[17px] font-semibold">
-        <span className="flex items-center gap-1.5 tabular-nums">
-          10:00 <Moon size={15} fill="currentColor" aria-hidden />
-        </span>
-        {/* Dynamic Island */}
-        <span className="absolute left-1/2 top-[12px] flex h-[37px] w-[126px] -translate-x-1/2 items-center justify-end rounded-full bg-black pr-[26px]" aria-hidden>
-          <span className={cn("h-[7px] w-[7px] rounded-full", inCall ? "bg-[#ff9f0a]" : "bg-transparent")} />
-        </span>
-        <span className="flex items-center gap-[6px]">
-          <svg width="20" height="13" viewBox="0 0 20 13" fill="currentColor" aria-hidden>
-            <rect x="0" y="9" width="3.5" height="4" rx="1" /><rect x="5.5" y="6.5" width="3.5" height="6.5" rx="1" />
-            <rect x="11" y="3.5" width="3.5" height="9.5" rx="1" /><rect x="16.5" y="0" width="3.5" height="13" rx="1" opacity="0.35" />
-          </svg>
-          <span className="text-[15px] leading-none">5G<span className="align-top text-[8px] leading-none">UW</span></span>
-          <span className="relative flex h-[13px] w-[28px] items-center rounded-[4px] border border-white/35" aria-label="Battery 40%">
-            <span className="ml-[1.5px] h-[9px] w-[9.5px] rounded-[2px] bg-white" />
-            <span className="absolute -right-[4px] top-1/2 h-[5px] w-[2px] -translate-y-1/2 rounded-r bg-white/35" />
-            <span className="absolute inset-0 flex items-center justify-center text-[10px] font-semibold text-black mix-blend-difference">40</span>
-          </span>
-        </span>
-      </div>
+      <StatusBar inCall={inCall} />
 
-      {/* Timer, number, ghost location */}
-      <div className="mt-[58px] flex flex-col items-center">
-        <p className="text-[24px] font-medium tabular-nums text-white/55" aria-live="polite">{statusText(status, elapsed)}</p>
-        <h1 className="mt-[2px] text-center text-[44px] font-semibold leading-[1.1] tracking-[-0.01em]">
-          {keypadOpen && typed ? <span className="tabular-nums tracking-wide">{typed}</span> : label}
-        </h1>
-        <p className="mt-[4px] text-[22px] font-medium text-white/[0.07]" aria-hidden>{subtitle ?? " "}</p>
-        <span className={cn("mt-5 h-1.5 w-1.5 rounded-full bg-[#34c759] transition-opacity", assistantSpeaking ? "opacity-100" : "opacity-0")} aria-hidden />
-      </div>
-
-      <div className="flex-1" />
-
-      {/* Keypad overlay */}
-      {keypadOpen && (
-        <div className="mb-[26px] flex flex-col items-center">
-          <Keypad onDigit={digit} />
-        </div>
+      {showTyped ? (
+        <p className="absolute inset-x-0 top-[118px] text-center text-[34px] font-semibold leading-[44px] tracking-[0.01em] tabular-nums">{typed}</p>
+      ) : (
+        <>
+          <p className="absolute inset-x-0 top-[119px] text-center text-[22px] font-normal leading-[27px] tabular-nums text-[#8b8b8f]" aria-live="polite">
+            {topLine}
+          </p>
+          <h1 className="absolute inset-x-0 top-[146px] px-4 text-center text-[34px] font-semibold leading-[44px] tracking-[-0.005em] text-[#e5e5e5]">
+            {label}
+          </h1>
+          {status === "connecting" && subtitle && (
+            <p className="absolute inset-x-0 top-[192px] text-center text-[22px] leading-[27px] text-[#8b8b8f]">{subtitle}</p>
+          )}
+        </>
       )}
 
-      {/* Buttons */}
-      <div className="mx-auto mb-[26px] flex w-full max-w-[380px] items-start justify-between px-[42px]">
-        {keypadOpen ? (
-          <>
-            <span className="w-[84px]" />
-            {inCall ? <RoundButton icon={<EndIcon />} label="End" onClick={onEnd} variant="end" /> : <RoundButton icon={<CallIcon />} label="Call" onClick={onStart} variant="answer" />}
-            <button type="button" onClick={() => setKeypadOpen(false)} className="w-[84px] pt-[30px] text-[17px] text-white">Hide</button>
-          </>
-        ) : (
-          <>
-            <RoundButton icon={<SpeakerIcon />} label="Speaker" onClick={() => setSpeaker((s) => !s)} active={speaker} disabled={!inCall} />
-            {inCall ? <RoundButton icon={<EndIcon />} label="End" onClick={onEnd} variant="end" /> : <RoundButton icon={<CallIcon />} label="Call" onClick={onStart} variant="answer" />}
-            <RoundButton icon={<KeypadIcon />} label="Keypad" onClick={() => setKeypadOpen(true)} />
-          </>
-        )}
-      </div>
+      <span
+        className={cn("absolute left-1/2 top-[230px] h-[6px] w-[6px] -translate-x-1/2 rounded-full bg-[#30d158] transition-opacity", assistantSpeaking && !showTyped ? "opacity-100" : "opacity-0")}
+        aria-hidden
+      />
 
-      {/* Mute lives off-screen in iOS when the row is trimmed; keep it keyboard-accessible */}
-      <button type="button" onClick={onToggleMute} disabled={status !== "active"} className="sr-only" aria-pressed={muted}>
-        {muted ? "Unmute" : "Mute"}
-      </button>
-
-      {/* Home indicator */}
-      <div className="mx-auto mb-[9px] h-[5px] w-[139px] rounded-full bg-white/80" aria-hidden />
+      {keypadOpen ? (
+        <>
+          <Keypad onDigit={digit} />
+          {inCall ? (
+            <Control x={220} y={827} icon={<EndIcon />} onClick={onEnd} fill="#8a1114" ariaLabel="End" />
+          ) : (
+            <Control x={220} y={827} icon={<CallIcon />} onClick={onStart} fill="#30d158" ariaLabel="Call" />
+          )}
+          <button
+            type="button"
+            onClick={() => setKeypadOpen(false)}
+            className="absolute left-[352px] top-[827px] -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-[15px] leading-[18px] text-white"
+          >
+            Hide Keypad
+          </button>
+        </>
+      ) : (
+        <>
+          <Control
+            x={88} y={827} label="Mute" icon={<MuteIcon dark={muted} />}
+            onClick={onToggleMute} active={muted} disabled={status !== "active"}
+          />
+          {inCall ? (
+            <Control x={220} y={827} label="End" icon={<EndIcon />} onClick={onEnd} fill="#8a1114" />
+          ) : (
+            <Control x={220} y={827} label="Call" icon={<CallIcon />} onClick={onStart} fill="#30d158" />
+          )}
+          <Control x={352} y={827} label="Keypad" icon={<KeypadIcon />} onClick={() => setKeypadOpen(true)} />
+        </>
+      )}
     </div>
   );
 }

@@ -30,7 +30,7 @@ export default function CallPage() {
     <main className="relative min-h-[100dvh] bg-background">
       <Link
         href="/"
-        className="absolute left-4 top-4 z-10 flex items-center gap-1 rounded-full bg-white/10 px-3 py-1.5 text-sm text-white/80 backdrop-blur hover:bg-white/15"
+        className="fixed bottom-4 left-4 z-10 flex items-center gap-1 rounded-full bg-white/10 px-3 py-1.5 text-sm text-white/80 backdrop-blur hover:bg-white/15 sm:bottom-auto sm:top-4"
       >
         <ArrowLeft size={16} /> Home
       </Link>
@@ -39,7 +39,7 @@ export default function CallPage() {
       <CallScreen
         status={call.status}
         label={config.inboundNumber || config.callerLabel}
-        subtitle="MultiTracks, Playback"
+        subtitle="MultiTracks"
         startedAt={call.startedAt}
         muted={call.muted}
         assistantSpeaking={call.assistantSpeaking}
