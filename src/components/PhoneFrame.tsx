@@ -5,12 +5,12 @@ import { useEffect, useRef, useState } from "react";
 const LOGICAL_W = 440;
 const LOGICAL_H = 956;
 
-/** Scales a fixed 440x956 logical screen to fit its container. */
-function useFitScale() {
-  const ref = useRef<HTMLDivElement>(null);
+/** A box that scales a fixed 440x956 logical screen to fit itself. */
+function FitScreen({ className, children }: { className: string; children: React.ReactNode }) {
+  const boxRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
   useEffect(() => {
-    const el = ref.current;
+    const el = boxRef.current;
     if (!el) return;
     const ro = new ResizeObserver(([entry]) => {
       const { width, height } = entry.contentRect;
@@ -19,16 +19,14 @@ function useFitScale() {
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
-  return { ref, scale };
-}
-
-function ScaledScreen({ scale, children }: { scale: number; children: React.ReactNode }) {
   return (
-    <div
-      className="absolute left-1/2 top-0 origin-top"
-      style={{ width: LOGICAL_W, height: LOGICAL_H, transform: `translateX(-50%) scale(${scale})` }}
-    >
-      {children}
+    <div ref={boxRef} className={className}>
+      <div
+        className="absolute left-1/2 top-0 origin-top"
+        style={{ width: LOGICAL_W, height: LOGICAL_H, transform: `translateX(-50%) scale(${scale})` }}
+      >
+        {children}
+      </div>
     </div>
   );
 }
@@ -39,14 +37,10 @@ function ScaledScreen({ scale, children }: { scale: number; children: React.Reac
  * viewports the frame is dropped and the screen fills the window.
  */
 export function PhoneFrame({ children }: { children: React.ReactNode }) {
-  const framed = useFitScale();
-  const bare = useFitScale();
   return (
     <>
       {/* Phone-size viewports: no frame */}
-      <div ref={bare.ref} className="relative h-[100dvh] w-full overflow-hidden bg-[#242424] sm:hidden">
-        <ScaledScreen scale={bare.scale}>{children}</ScaledScreen>
-      </div>
+      <FitScreen className="relative h-[100dvh] w-full overflow-hidden bg-[#242424] sm:hidden">{children}</FitScreen>
 
       {/* Larger viewports: framed */}
       <div className="hidden min-h-[100dvh] items-center justify-center bg-[#0b0b0c] py-6 sm:flex">
@@ -67,9 +61,7 @@ export function PhoneFrame({ children }: { children: React.ReactNode }) {
           />
 
           {/* Screen opening */}
-          <div ref={framed.ref} className="absolute inset-[1.1%_2.6%] overflow-hidden rounded-[10%/5%] bg-[#242424]">
-            <ScaledScreen scale={framed.scale}>{children}</ScaledScreen>
-          </div>
+          <FitScreen className="absolute inset-[1.1%_2.6%] overflow-hidden rounded-[10%/5%] bg-[#242424]">{children}</FitScreen>
         </div>
       </div>
     </>

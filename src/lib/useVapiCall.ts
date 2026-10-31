@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type Vapi from "@vapi-ai/web";
 import { config, isVapiConfigured, toolServerUrl } from "./config";
 import { buildAssistant } from "./assistant";
+import { toolMeta, type ToolSource } from "./tools/meta";
 
 export type CallStatus = "idle" | "connecting" | "active" | "ended" | "error";
 
@@ -19,18 +20,15 @@ export type TranscriptLine = {
 export type ActivityEvent = {
   id: string;
   at: number;
-  kind:
-    | "call"
-    | "speech"
-    | "tool-call"
-    | "tool-result"
-    | "status"
-    | "error"
-    | "transfer";
+  kind: "call" | "speech" | "tool-call" | "status" | "error" | "transfer";
   label: string;
   detail?: string;
   status?: "running" | "succeeded" | "failed";
   durationMs?: number;
+  /** Set for tool rows; matches the server log's toolCallId. */
+  toolCallId?: string;
+  tool?: string;
+  source?: ToolSource;
 };
 
 type VapiMessage = {
@@ -42,6 +40,7 @@ type VapiMessage = {
   endedReason?: string;
   toolCallList?: Array<{ id?: string; name?: string; function?: { name?: string } }>;
   toolCallResult?: { name?: string; result?: unknown; error?: unknown; toolCallId?: string };
+  toolWithToolCallList?: unknown;
   functionCall?: { name?: string; parameters?: unknown };
   destination?: unknown;
   [key: string]: unknown;
@@ -90,35 +89,45 @@ export function useVapiCall() {
           return;
         }
         case "status-update": {
-          pushEvent({
-            kind: "status",
-            label: `Call ${m.status ?? "update"}`,
-            detail: m.endedReason ? String(m.endedReason) : undefined,
-          });
+          // call-start / call-end already produce rows; only surface an ended reason.
+          if (m.status === "ended" && m.endedReason) {
+            setEvents((prev) =>
+              prev.map((e) => (e.kind === "call" && e.label === "Call ended" ? { ...e, detail: String(m.endedReason) } : e))
+            );
+          }
           return;
         }
         case "tool-calls": {
           for (const call of m.toolCallList ?? []) {
             const name = call.name ?? call.function?.name ?? "tool";
-            if (call.id) toolStartTimes.current.set(call.id, Date.now());
-            pushEvent({ kind: "tool-call", label: name, status: "running" });
+            const meta = toolMeta(name);
+            const id = call.id ?? nextId();
+            toolStartTimes.current.set(id, Date.now());
+            setEvents((prev) =>
+              prev.some((e) => e.toolCallId === id)
+                ? prev
+                : [...prev, { id: nextId(), at: Date.now(), kind: "tool-call", label: meta.label, status: "running", toolCallId: id, tool: name, source: meta.source }]
+            );
           }
           return;
         }
         case "tool-calls-result": {
           const r = m.toolCallResult;
-          const started = r?.toolCallId ? toolStartTimes.current.get(r.toolCallId) : undefined;
-          pushEvent({
-            kind: "tool-result",
-            label: r?.name ?? "tool",
-            status: r?.error ? "failed" : "succeeded",
-            durationMs: started ? Date.now() - started : undefined,
-            detail: r?.error ? String(r.error) : undefined,
-          });
+          if (!r?.toolCallId) return;
+          const started = toolStartTimes.current.get(r.toolCallId);
+          setEvents((prev) =>
+            prev.map((e) =>
+              e.toolCallId === r.toolCallId
+                ? { ...e, status: r.error ? "failed" : "succeeded", durationMs: started ? Date.now() - started : e.durationMs, detail: r.error ? String(r.error) : e.detail }
+                : e
+            )
+          );
           return;
         }
         case "function-call": {
-          pushEvent({ kind: "tool-call", label: m.functionCall?.name ?? "function", status: "running" });
+          const name = m.functionCall?.name ?? "function";
+          const meta = toolMeta(name);
+          pushEvent({ kind: "tool-call", label: meta.label, status: "running", tool: name, source: meta.source });
           return;
         }
         case "transfer-update":

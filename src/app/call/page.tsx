@@ -55,6 +55,7 @@ export default function CallPage() {
         callId={call.callId ?? callIdOverride}
         status={call.status}
         startedAt={call.startedAt}
+        assistantSpeaking={call.assistantSpeaking}
         clientEvents={call.events}
         transcript={call.transcript}
       />

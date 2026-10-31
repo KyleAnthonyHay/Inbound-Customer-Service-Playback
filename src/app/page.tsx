@@ -80,8 +80,9 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Right: image panel */}
-        <section className="relative m-4 hidden overflow-hidden rounded-[18px] bg-[#111] lg:block lg:my-8 lg:mr-8">
+        {/* Right: image panel on MultiTracks' light gray */}
+        <section className="hidden bg-[#f1f2f3] p-8 lg:block">
+        <div className="relative h-full min-h-[560px] overflow-hidden rounded-[18px] border border-black/[0.06] bg-white shadow-[0_18px_50px_rgba(32,87,115,0.12)]">
           <Image
             src="/playback-hero.webp"
             alt="Playback multitrack player on an iPad"
@@ -95,7 +96,7 @@ export default function Home() {
             <div className="rounded-[14px] border border-black/[0.06] bg-white">
               <div className="flex items-center justify-between px-5 pt-4 pb-3">
                 <span className="flex items-center gap-3">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#f3e9d6] text-[#1a1a1a]">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#43b1e6] text-white">
                     <Phone size={18} />
                   </span>
                   <span className="text-[18px] font-semibold">Playback Support</span>
@@ -105,7 +106,7 @@ export default function Home() {
                   <span className="block text-[16px]">AI, says so first</span>
                 </span>
               </div>
-              <div className="grid grid-cols-3 gap-px bg-[#f3e9d6] px-5 py-5 text-center text-[13px] font-medium">
+              <div className="grid grid-cols-3 gap-px bg-[#e3f3fb] px-5 py-5 text-center text-[13px] font-medium text-[#205773]">
                 <span>Song loading</span>
                 <span>Audio output</span>
                 <span>Version check</span>
@@ -122,6 +123,7 @@ export default function Home() {
               </div>
             </div>
           </div>
+        </div>
         </section>
       </main>
 

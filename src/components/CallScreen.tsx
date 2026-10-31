@@ -205,12 +205,13 @@ export function CallScreen({
   const [keypadOpen, setKeypadOpen] = useState(false);
   const [typed, setTyped] = useState("");
 
-  useEffect(() => {
-    if (status === "ended" || status === "error") {
-      setKeypadOpen(false);
-      setTyped("");
-    }
-  }, [status]);
+  // Reset the keypad when a call ends. Keyed on status so it runs once per transition.
+  const [resetFor, setResetFor] = useState<CallStatus | null>(null);
+  if ((status === "ended" || status === "error") && resetFor !== status) {
+    setResetFor(status);
+    if (keypadOpen) setKeypadOpen(false);
+    if (typed) setTyped("");
+  }
 
   const digit = (d: string) => {
     setTyped((t) => (t + d).slice(-20));
