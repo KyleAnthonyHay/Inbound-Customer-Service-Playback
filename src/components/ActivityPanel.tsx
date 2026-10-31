@@ -38,7 +38,7 @@
  *   chevron rotates 90deg.
  */
 
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useQuery } from "convex/react";
 import { AnimatePresence, MotionConfig, motion, useReducedMotion } from "motion/react";
 import { ChevronRight, Activity, AlertTriangle, X } from "lucide-react";
@@ -421,7 +421,7 @@ function Rail({ steps }: { steps: Step[] }) {
   const display = [...steps].reverse();
   const n = display.length;
   return (
-    <ol className="relative mt-2 px-4 pb-1.5">
+    <ol className="relative mt-2 max-h-[266px] overflow-y-auto overscroll-contain px-4 pb-1.5 [scrollbar-width:thin]">
       <AnimatePresence initial={false}>
         {display.map((s, i) => {
           const entrance: Entrance = seen.intro.has(s.id)
@@ -434,12 +434,47 @@ function Rail({ steps }: { steps: Step[] }) {
   );
 }
 
+/* ------------------------------------------------------------------ live transcript */
+
+function LiveTranscript({ transcript, reduce }: { transcript: TranscriptLine[]; reduce: boolean }) {
+  const boxRef = useRef<HTMLDivElement>(null);
+  const last = transcript[transcript.length - 1];
+  useEffect(() => {
+    const el = boxRef.current;
+    if (!el) return;
+    el.scrollTo({ top: el.scrollHeight, behavior: reduce ? "auto" : "smooth" });
+  }, [transcript.length, last?.text, reduce]);
+  return (
+    <div className="mt-4">
+      <p className="mb-1.5 text-[11px] font-medium uppercase tracking-wide text-white/35">Live transcript</p>
+      <div ref={boxRef} className="max-h-[240px] overflow-y-auto overscroll-contain rounded-xl border border-white/[0.07] bg-white/[0.02] px-3.5 py-3 [scrollbar-width:thin]">
+        <ul className="space-y-2">
+          {transcript.map((t, i) => {
+            const isLast = i === transcript.length - 1;
+            return (
+              <motion.li
+                key={t.id}
+                initial={reduce ? false : { opacity: 0, filter: "blur(3px)" }}
+                animate={{ opacity: 1, filter: "blur(0px)" }}
+                transition={{ duration: reduce ? 0 : 0.2, ease: EASE }}
+                className={cn("text-[13px] leading-snug", t.role === "assistant" ? "text-white/90" : "text-white/50")}
+              >
+                <span className="mr-1.5 text-[10px] uppercase tracking-wide text-white/35">{t.role === "assistant" ? "Agent" : "Caller"}</span>
+                {isLast && t.role === "assistant" ? <StreamText text={t.text} /> : t.text}
+              </motion.li>
+            );
+          })}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
 /* ------------------------------------------------------------------ view */
 
 function View({ open, onToggle, callId, status, startedAt, assistantSpeaking, handoff, clientEvents, transcript, serverEvents }: Props & { serverEvents: Doc<"callEvents">[] }) {
   const reduce = useReducedMotion();
   const [cardOpen, setCardOpen] = useState(true);
-  const [showTranscript, setShowTranscript] = useState(false);
   const elapsed = useElapsed(startedAt, status);
   const steps = useMemo(() => buildSteps(serverEvents, clientEvents), [serverEvents, clientEvents]);
 
@@ -448,8 +483,6 @@ function View({ open, onToggle, callId, status, startedAt, assistantSpeaking, ha
   const tools = steps.filter((s) => s.source !== "call" && s.source !== "model");
   const liveCount = tools.filter((s) => s.source === "live").length;
   const simCount = tools.filter((s) => s.source === "simulated").length;
-  const lastAssistant = [...transcript].reverse().find((t) => t.role === "assistant");
-  const lastCaller = [...transcript].reverse().find((t) => t.role === "user");
 
   const statusLine =
     status === "connecting" ? "Connecting to the assistant"
@@ -602,27 +635,8 @@ function View({ open, onToggle, callId, status, startedAt, assistantSpeaking, ha
             )}
           </AnimatePresence>
 
-          {/* Message under the card */}
-          <AnimatePresence mode="wait" initial={false}>
-            {lastAssistant && (
-              <motion.p
-                key={lastAssistant.id}
-                layout="position"
-                initial={false}
-                exit={{ opacity: 0, filter: "blur(4px)", transition: { duration: reduce ? 0 : 0.12 } }}
-                className="mt-4 text-[14px] leading-relaxed text-white/90"
-              >
-                <StreamText text={lastAssistant.text} />
-              </motion.p>
-            )}
-          </AnimatePresence>
-          <AnimatePresence mode="wait" initial={false}>
-            {lastCaller && (
-              <motion.p key={lastCaller.id} layout="position" {...fadeBlur} className="mt-2 text-[13px] leading-relaxed text-white/50">
-                Caller: {lastCaller.text}
-              </motion.p>
-            )}
-          </AnimatePresence>
+          {/* Live transcript: scrolls, follows the newest line */}
+          {transcript.length > 0 && <LiveTranscript transcript={transcript} reduce={!!reduce} />}
 
           {/* Chips */}
           <motion.div layout="position" transition={{ layout: { duration: reduce ? 0 : 0.26, ease: EASE } }} className="mt-4 flex flex-wrap items-center gap-2 text-[12px] text-white/60">
@@ -634,46 +648,11 @@ function View({ open, onToggle, callId, status, startedAt, assistantSpeaking, ha
               {tools.length} tool{tools.length === 1 ? "" : "s"} · <span className={SOURCE.live.text}>{liveCount} live</span> ·{" "}
               <span className={SOURCE.simulated.text}>{simCount} simulated</span>
             </span>
-            <AnimatePresence initial={false}>
-              {transcript.length > 0 && (
-                <motion.button
-                  key="transcript"
-                  type="button"
-                  {...fadeBlur}
-                  onClick={() => setShowTranscript((v) => !v)}
-                  aria-expanded={showTranscript}
-                  className="flex items-center gap-1 rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1 hover:bg-white/[0.07]"
-                >
-                  Transcript <span className="tabular-nums">{transcript.length}</span>
-                  <motion.span initial={false} animate={{ rotate: showTranscript ? 90 : 0 }} transition={{ duration: reduce ? 0 : 0.2, ease: EASE }} className="flex">
-                    <ChevronRight size={12} />
-                  </motion.span>
-                </motion.button>
-              )}
-            </AnimatePresence>
+            {transcript.length > 0 && (
+              <span className="rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1 tabular-nums">Transcript {transcript.length}</span>
+            )}
           </motion.div>
 
-          <AnimatePresence initial={false}>
-            {showTranscript && (
-              <motion.div
-                key="transcript"
-                initial={reduce ? false : { opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: reduce ? 0 : 0.28, ease: EASE }}
-                className="overflow-hidden"
-              >
-                <ul className="mt-3 space-y-1.5 border-t border-white/[0.08] pt-3">
-                  {transcript.map((t) => (
-                    <li key={t.id} className={cn("text-[13px] leading-snug", t.role === "assistant" ? "text-white/85" : "text-white/50")}>
-                      <span className="mr-1 text-[10px] uppercase tracking-wide text-white/35">{t.role === "assistant" ? "Agent" : "Caller"}</span>
-                      {t.text}
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            )}
-          </AnimatePresence>
         </div>
 
         <footer className="border-t border-white/[0.08] px-5 py-2 text-[11px] leading-snug text-white/40">

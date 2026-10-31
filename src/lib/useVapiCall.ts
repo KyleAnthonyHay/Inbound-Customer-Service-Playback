@@ -84,6 +84,16 @@ export function useVapiCall() {
   const pushEvent = useCallback((e: Omit<ActivityEvent, "id" | "at">) => {
     setEvents((prev) => [...prev, { ...e, id: nextId(), at: Date.now() }]);
   }, []);
+  /** GPT-Live sends no result for its internal delegate step; close those rows when the agent moves on. */
+  const settleThinking = useCallback(() => {
+    setEvents((prev) =>
+      prev.map((e) =>
+        e.tool === "delegate" && e.status === "running"
+          ? { ...e, status: "succeeded", durationMs: e.durationMs ?? Date.now() - (toolStartTimes.current.get(e.toolCallId ?? "") ?? e.at) }
+          : e
+      )
+    );
+  }, []);
   /** Mark any still-running client rows (e.g. "Connecting") as finished. */
   const settleRunning = useCallback((status: "succeeded" | "failed") => {
     setEvents((prev) => prev.map((e) => (e.status === "running" ? { ...e, status } : e)));
@@ -97,6 +107,7 @@ export function useVapiCall() {
           if (!m.transcript || !m.role || m.role === "system") return;
           const role = m.role;
           const final = m.transcriptType === "final";
+          if (role === "assistant" && final) settleThinking();
           setTranscript((prev) => {
             const last = prev[prev.length - 1];
             // Replace the trailing partial line of the same speaker.
@@ -119,6 +130,7 @@ export function useVapiCall() {
         case "tool-calls": {
           for (const call of m.toolCallList ?? []) {
             const name = call.name ?? call.function?.name ?? "tool";
+            if (name !== "delegate") settleThinking();
             const meta = toolMeta(name);
             const id = call.id ?? nextId();
             toolStartTimes.current.set(id, Date.now());
@@ -173,7 +185,7 @@ export function useVapiCall() {
           return;
       }
     },
-    [pushEvent]
+    [pushEvent, settleThinking]
   );
 
   const start = useCallback(async () => {
@@ -205,6 +217,7 @@ export function useVapiCall() {
       });
       vapi.on("call-end", () => {
         if (backstopRef.current) clearTimeout(backstopRef.current);
+        settleThinking();
         setStatus("ended");
         setAssistantSpeaking(false);
         pushEvent({ kind: "call", label: "Call ended" });
@@ -244,7 +257,7 @@ export function useVapiCall() {
       settleRunning("failed");
       pushEvent({ kind: "error", label: "Start failed", detail: msg, status: "failed" });
     }
-  }, [handleMessage, pushEvent, settleRunning]);
+  }, [handleMessage, pushEvent, settleRunning, settleThinking]);
 
   const stop = useCallback(() => {
     vapiRef.current?.stop();
