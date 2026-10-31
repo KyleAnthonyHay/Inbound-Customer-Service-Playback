@@ -1,0 +1,9 @@
+{
+  "name": "output-routing",
+  "expectedIntent": "audio-output",
+  "lines": [
+    "My click track is coming out of the main speakers instead of just my in-ears.",
+    "iPhone, with a USB interface. I have time, we're not playing right now.",
+    "Got it, I'll set up the click on its own bus. Thanks, that's all."
+  ]
+}

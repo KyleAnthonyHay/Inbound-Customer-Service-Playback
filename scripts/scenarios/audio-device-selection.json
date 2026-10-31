@@ -1,0 +1,10 @@
+{
+  "name": "audio-device-selection",
+  "expectedIntent": "audio-output",
+  "lines": [
+    "Hey, I'm not getting any sound out of Playback. It's playing but nothing comes out of my speakers.",
+    "I'm on a MacBook with a USB interface plugged in. We don't play until tomorrow.",
+    "Oh, it was set to the laptop speakers. I switched it to the interface and now I hear it. Thank you!",
+    "That's everything, bye."
+  ]
+}

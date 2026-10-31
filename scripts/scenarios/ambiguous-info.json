@@ -1,0 +1,10 @@
+{
+  "name": "ambiguous-info",
+  "expectedIntent": "song-loading",
+  "lines": [
+    "It's just not working.",
+    "The songs, they won't go.",
+    "Oh, they won't download, it's stuck loading. I'm on an iPad, I don't know the version.",
+    "Okay thanks, I'll try that. Bye."
+  ]
+}

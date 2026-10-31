@@ -1,0 +1,9 @@
+{
+  "name": "current-version-no-update-advice",
+  "expectedIntent": "subscription",
+  "lines": [
+    "I keep getting a Cloud Pro expired message but my subscription is active.",
+    "I'm on Playback 8.6.4 on my iPad, the latest one. My customer ID is DEMO 1001.",
+    "Okay, I'll try that. Thanks, bye."
+  ]
+}
