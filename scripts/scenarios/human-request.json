@@ -1,0 +1,10 @@
+{
+  "name": "human-request",
+  "expectedIntent": "human-request",
+  "lines": [
+    "I don't want to troubleshoot, I just want to talk to a real person please.",
+    "Yes, a callback is fine. Any time tomorrow afternoon, I'm in Central time, my number is 555 010 0199, and my name is Marcus Bell.",
+    "Yes, that time works, go ahead and book it.",
+    "Great, thanks, bye."
+  ]
+}

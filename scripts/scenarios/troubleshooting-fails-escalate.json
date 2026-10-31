@@ -1,0 +1,11 @@
+{
+  "name": "troubleshooting-fails-escalate",
+  "expectedIntent": "audio-output",
+  "lines": [
+    "No sound from my USB interface in Playback. I'm on an iPad, version 8.6.4, and I have time.",
+    "I checked the audio device setting, it's set to the interface. Still nothing.",
+    "Tried a different cable and a powered hub too. Still no sound.",
+    "Yeah, okay, let's set up a callback. Tomorrow morning, Central time, 555 010 0142, name is Elena Cruz.",
+    "Yes, confirm it. Bye."
+  ]
+}

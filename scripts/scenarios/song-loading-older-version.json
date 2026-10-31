@@ -1,0 +1,10 @@
+{
+  "name": "song-loading-older-version",
+  "expectedIntent": "song-loading",
+  "lines": [
+    "Hi, my song won't download. It keeps saying download error.",
+    "I'm on an iPad, Playback version 8.6.2. We don't play until Sunday so I have time.",
+    "Okay, I tried that and it still says download error.",
+    "Thanks, that's all I needed. Bye."
+  ]
+}

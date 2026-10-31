@@ -1,0 +1,8 @@
+{
+  "name": "out-of-scope-refund",
+  "expectedIntent": "out-of-scope",
+  "lines": [
+    "I got charged twice this month and I want a refund.",
+    "No, nothing else. Bye."
+  ]
+}

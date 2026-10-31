@@ -1,0 +1,10 @@
+{
+  "name": "genuinely-expired-subscription",
+  "expectedIntent": "subscription",
+  "lines": [
+    "Playback says my Cloud Pro expired and I can't download songs anymore.",
+    "My email is priya dot n at example dot org.",
+    "Okay so I actually need to renew. Can you just do that for me?",
+    "Alright, I'll handle it with billing. Bye."
+  ]
+}

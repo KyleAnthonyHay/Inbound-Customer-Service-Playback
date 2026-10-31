@@ -1,0 +1,48 @@
+{
+  "scenario": "song-loading-older-version",
+  "expectedIntent": "song-loading",
+  "callId": "01a19049-9905-7000-a0f3-9322775b1f99",
+  "endedReason": "assistant-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "delegate",
+    "search_playback_docs",
+    "delegate",
+    "endCall"
+  ],
+  "convexToolEvents": [
+    "search_playback_docs succeeded 18ms 3 result(s)"
+  ],
+  "liveEvents": [
+    "16.8s TOOL-CALLS delegate({})",
+    "27.2s TOOL-CALLS delegate({})",
+    "29.6s TOOL-CALLS search_playback_docs({\"query\":\"song download error unable to download song\",\"category\":\"song-loading\",\"platform\":\"iPadOS\"})",
+    "44.6s TOOL-CALLS delegate({})",
+    "46.7s TOOL-CALLS endCall({})",
+    "47.4s STATUS ended assistant-ended-call",
+    "47.4s hangup"
+  ],
+  "transcript": [
+    "AGENT: Hi, thanks for calling MultiTracks Playback support. I'm an AI assistant. Are you having trouble with a song loading, or with audio output?",
+    "CALLER: Hi. My song won't download. It keeps saying download error",
+    "AGENT: Hmm.",
+    "CALLER: I'm on an iPad",
+    "AGENT: I can help with",
+    "CALLER: . Playback",
+    "AGENT: that.",
+    "CALLER: version eight point six point two. We don't play until sunday so I have time",
+    "AGENT: Okay, just to confirm,",
+    "CALLER: Okay",
+    "AGENT: are you",
+    "CALLER: , I",
+    "AGENT: using",
+    "CALLER: tried that",
+    "AGENT: Playback",
+    "CALLER: and it still says download error",
+    "AGENT: on an iPhone, iPad, Mac, or Windows",
+    "AGENT: device?",
+    "AGENT: That generic download error, try tapping “Try again” at least twice. Did you already try it two times?",
+    "CALLER: Thanks. That's all I needed. Bye",
+    "AGENT: Bye, glad I could help."
+  ]
+}
