@@ -27,6 +27,9 @@ type Props = {
 export const SCREEN_W = 440;
 export const SCREEN_H = 956;
 
+// iOS systemRed, the End button in the Phone app
+const END_RED = "#ff3b30";
+
 const FONT = '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Inter, system-ui, sans-serif';
 
 function useElapsed(startedAt: number | null, running: boolean) {
@@ -57,11 +60,10 @@ function MuteIcon({ dark }: { dark?: boolean }) {
 }
 
 function KeypadIcon() {
-  // 26 x 25, measured: 10.3 pt column pitch, 6.6 pt row pitch, 5 pt dots, one dot below
+  // 28 x 28, Apple's Phone keypad glyph: an even 3 x 3 grid of 6 pt dots
   return (
-    <svg width="26" height="25" viewBox="0 0 26 25" fill="#fff" aria-hidden>
-      {[0, 1, 2].map((r) => [0, 1, 2].map((c) => <circle key={`${r}${c}`} cx={2.6 + c * 10.3} cy={2.6 + r * 6.6} r="2.5" />))}
-      <circle cx="12.9" cy="22.4" r="2.5" />
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="#fff" aria-hidden>
+      {[0, 1, 2].map((r) => [0, 1, 2].map((c) => <circle key={`${r}${c}`} cx={3 + c * 11} cy={3 + r * 11} r="3" />))}
     </svg>
   );
 }
@@ -132,7 +134,10 @@ function Control({
     >
       <span
         className="flex h-[86px] w-[86px] items-center justify-center rounded-full transition-colors active:brightness-150"
-        style={{ background: fill ?? (active ? "#9a9a9a" : "#2c2c2c") }}
+        style={{
+          background: fill ?? (active ? "#e5e5e5" : "rgba(255,255,255,0.16)"),
+          boxShadow: fill || active ? undefined : "inset 0 0 0 1px rgba(255,255,255,0.18)",
+        }}
       >
         {icon}
       </span>
@@ -253,7 +258,7 @@ export function CallScreen({
         <>
           <Keypad onDigit={digit} />
           {inCall ? (
-            <Control x={220} y={827} icon={<EndIcon />} onClick={onEnd} fill="#8a1114" ariaLabel="End" />
+            <Control x={220} y={827} icon={<EndIcon />} onClick={onEnd} fill={END_RED} ariaLabel="End" />
           ) : (
             <Control x={220} y={827} icon={<CallIcon />} onClick={onStart} fill="#30d158" ariaLabel="Call" />
           )}
@@ -272,7 +277,7 @@ export function CallScreen({
             onClick={onToggleMute} active={muted} disabled={status !== "active"}
           />
           {inCall ? (
-            <Control x={220} y={827} label="End" icon={<EndIcon />} onClick={onEnd} fill="#8a1114" />
+            <Control x={220} y={827} label="End" icon={<EndIcon />} onClick={onEnd} fill={END_RED} />
           ) : (
             <Control x={220} y={827} label="Call" icon={<CallIcon />} onClick={onStart} fill="#30d158" />
           )}
