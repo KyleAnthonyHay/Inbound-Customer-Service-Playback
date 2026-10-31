@@ -730,7 +730,7 @@ function View({ open, onToggle, callId, status, startedAt, assistantSpeaking, ha
         </div>
 
         <footer className="border-t border-white/[0.08] px-4 py-2 text-[11px] leading-snug text-white/40 sm:px-5" style={{ paddingBottom: "max(8px, env(safe-area-inset-bottom))" }}>
-          Apple = live App Store lookup. Simulated = demo customers, teams, callbacks; not MultiTracks systems. Docs = bounded help-center snapshot. Model = GPT-Live reasoning.
+          Apple = live App Store lookup. Simulated = demo customers, teams, callbacks; not MultiTracks systems. Docs = bounded MultiTracks help-center and Apple Support snapshots. Model = GPT-Live reasoning.
         </footer>
       </aside>
     </MotionConfig>

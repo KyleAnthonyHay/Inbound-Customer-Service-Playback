@@ -9,7 +9,8 @@ the Regal AI Product Specialist take-home. Not affiliated with MultiTracks.com.
 - Next.js 16 (App Router, TypeScript, Tailwind 4)
 - Vapi (`@vapi-ai/web` for browser calls; GPT-Live `gpt-live-1` with OpenAI voice)
 - Convex for synthetic demo data, bookings, and the live activity log
-- Apple iTunes Lookup API (live, public) for current app version
+- Apple iTunes Lookup API (live, public) for current app version, release notes, and minimum OS
+- Apple Support articles (snapshot) for device-level troubleshooting
 
 ## Run locally
 
@@ -43,6 +44,22 @@ runs, so nothing needs deploying or tunnelling to test tools from a real call.
 - `src/lib/vapiTools.ts`: function-tool schemas Vapi sends to the model.
 - `convex/http.ts` + `convex/vapiTools.ts`: the webhook and tool implementations.
 - `src/knowledge/playback-kb.json`: source-backed knowledge snapshot with URLs and retrieval dates.
+- `src/knowledge/apple-support-kb.json`: device-level steps from Apple Support articles (storage, Wi-Fi,
+  USB accessories, Bluetooth, Mac sound output, Audio MIDI Setup, restoring purchases, iOS updates),
+  used as a second tier after the Playback docs.
+
+## How troubleshooting works
+
+`search_playback_docs` returns `nextSteps`, an ordered plan of untried documented steps, each with a
+stable `stepId`, source, URL and disruption tag. The agent gives one step per turn and passes the
+`stepIds` the caller has tried back in `alreadyTried`, so a failed step is never repeated and the plan
+moves forward. Ordering: steps that mention the caller's symptom (Playback docs, then Apple Support),
+then the rest of the best-matching Playback article, with last-resort steps last and, when the caller
+is live, disruptive steps after safe ones. Articles that branch on the exact on-screen message
+(e.g. the download-errors article) return `askWhichMessage` until the caller names it. Caller wording
+is normalized with a small synonym list ("won't load" matches "download"). Contact-support lines are
+left to the agent's handoff. `get_relevant_changes_since_version` also matches the live App Store
+release notes and checks the device's OS against Apple's live `minimumOsVersion`.
 - `convex/`: schema, seed, and functions. Every record is fictional and marked `simulated`.
 
 ## Vapi configuration

@@ -19,12 +19,23 @@ export type ToolDef = {
 };
 
 const str = (v: unknown) => (typeof v === "string" ? v : undefined);
+/** The model sometimes sends a list as a comma-separated string. */
+const strList = (v: unknown): string[] | undefined =>
+  Array.isArray(v) ? v.filter((x): x is string => typeof x === "string") : typeof v === "string" ? v.split(/[,\s]+/).filter(Boolean) : undefined;
+const timing = (v: unknown) => (v === "live" || v === "has-time" || v === "unknown" ? v : undefined);
 
 export const tools: Record<string, ToolDef> = {
   search_playback_docs: {
     source: "internal",
     label: TOOL_META.search_playback_docs.label,
-    run: async (a) => searchDocs(str(a.query) ?? "", { category: str(a.category), platform: str(a.platform), limit: 3 }),
+    run: async (a) =>
+      searchDocs(str(a.query) ?? "", {
+        category: str(a.category),
+        platform: str(a.platform),
+        limit: 3,
+        alreadyTried: strList(a.alreadyTried),
+        callerTiming: timing(a.callerTiming),
+      }),
   },
   get_current_playback_app_info: {
     source: "live",
@@ -34,7 +45,13 @@ export const tools: Record<string, ToolDef> = {
   get_relevant_changes_since_version: {
     source: "live",
     label: TOOL_META.get_relevant_changes_since_version.label,
-    run: async (a) => getRelevantChangesSinceVersion({ installedVersion: str(a.installedVersion) ?? "", symptom: str(a.symptom) }),
+    run: async (a) =>
+      getRelevantChangesSinceVersion({
+        installedVersion: str(a.installedVersion) ?? "",
+        symptom: str(a.symptom),
+        deviceOsVersion: str(a.deviceOsVersion),
+        platform: str(a.platform),
+      }),
   },
   lookup_demo_customer: {
     source: "simulated",
@@ -96,7 +113,11 @@ export function summarize(out: unknown): string | undefined {
   if (!out || typeof out !== "object") return undefined;
   const o = out as Record<string, unknown>;
   if (o.reason) return String(o.reason);
-  if (typeof o.found === "number") return `${o.found} result(s)`;
+  if (typeof o.found === "number") {
+    const next = Array.isArray(o.nextSteps) ? (o.nextSteps as { source?: string }[]) : [];
+    const apple = next.filter((s) => s.source === "Apple Support").length;
+    return `${o.found} article(s), ${next.length} next step(s)${apple ? ` (${apple} from Apple Support)` : ""}`;
+  }
   if (o.app && typeof o.app === "object") return `v${(o.app as { currentVersion?: string }).currentVersion}`;
   if (Array.isArray(o.documentedReleasesBetween)) return `${(o.relevantChanges as unknown[])?.length ?? 0} relevant change(s)`;
   if (o.customer && typeof o.customer === "object") return String((o.customer as { subscriptionStatus?: string }).subscriptionStatus ?? "found");

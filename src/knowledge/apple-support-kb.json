@@ -1,0 +1,189 @@
+{
+  "retrievedAt": "2026-10-31",
+  "provider": "Apple Support (support.apple.com)",
+  "note": "Device-level guidance from Apple's public support articles. Used as a second tier after MultiTracks' Playback documentation: for the device, OS, network, storage, and audio-routing layers that Playback articles point to but do not explain.",
+  "articles": [
+    {
+      "id": "apple-check-storage-ios",
+      "category": "song-loading",
+      "title": "How to check the storage on your iPhone and iPad",
+      "url": "https://support.apple.com/en-us/108429",
+      "appliesTo": ["iOS", "iPadOS"],
+      "summary": "Where to see how full the device is, which apps use the most space, and how to free space. Relevant when Playback reports Insufficient Storage or downloads fail on a nearly full device.",
+      "keywords": ["storage", "space", "full", "insufficient storage", "storage almost full", "offload", "free up space"],
+      "steps": [
+        "Open Settings, tap General, then tap iPad Storage (or iPhone Storage) to see how much space is free and which apps use the most.",
+        "If the device shows Storage Almost Full, tap Show All on the Storage screen and review Apple's recommendations, such as offloading unused apps.",
+        "Remove large items you no longer need, such as videos or unused apps, then try the download in Playback again."
+      ]
+    },
+    {
+      "id": "apple-wifi-ios",
+      "category": "song-loading",
+      "title": "If you can't connect to Wi-Fi on your iPhone or iPad",
+      "url": "https://support.apple.com/en-us/111786",
+      "appliesTo": ["iOS", "iPadOS"],
+      "summary": "Checks for the device's network connection, from Wi-Fi settings to VPN software and the router. Relevant when downloads fail or stall, or Playback can't reach the cloud.",
+      "keywords": ["wifi", "wi-fi", "network", "internet", "connection", "offline", "airplane mode", "vpn", "router", "download failed", "stuck downloading", "cloud"],
+      "steps": [
+        "Go to Settings, then Wi-Fi, make sure Wi-Fi is on and a checkmark shows next to your network. Also check that Airplane Mode is off.",
+        "Check whether other devices can get online on the same network. If they can't, the problem is the network rather than the iPad.",
+        "If a VPN or security app is installed, turn it off or remove it, restart the device, and test again.",
+        "Move closer to the router, and if it offers both bands try the 5 gigahertz network instead of 2.4.",
+        "Restart the router and modem by unplugging them and plugging them back in.",
+        "Last resort: Settings, General, Transfer or Reset, Reset, Reset Network Settings. This erases saved Wi-Fi networks and passwords, so check with IT first on a church or business network."
+      ]
+    },
+    {
+      "id": "apple-app-not-responding-ios",
+      "category": "general",
+      "title": "If an app on your iPhone or iPad stops responding, closes unexpectedly, or won't open",
+      "url": "https://support.apple.com/en-us/119876",
+      "appliesTo": ["iOS", "iPadOS"],
+      "summary": "Apple's general sequence for an app that misbehaves: force close, restart the device, update, then reinstall.",
+      "keywords": ["frozen", "freeze", "crash", "crashes", "closes", "won't open", "stuck", "not responding", "spinning", "hangs", "force close", "restart"],
+      "steps": [
+        "Force close the app, then reopen it: swipe up from the bottom of the screen and pause, then swipe the app's preview up.",
+        "Restart the iPhone or iPad, then open the app again.",
+        "Open the App Store, tap your profile icon, and check App Updates for an update to the app. If none is listed, update the device's software.",
+        "Delete the app and reinstall it from the App Store. This can erase data stored in the app, so only do it when there's time to set it up again."
+      ]
+    },
+    {
+      "id": "apple-usb-accessories-ios",
+      "category": "audio-output",
+      "title": "Allow USB and other accessories to connect to your iPhone or iPad",
+      "url": "https://support.apple.com/en-us/111806",
+      "appliesTo": ["iOS", "iPadOS"],
+      "summary": "The Wired Accessories security setting controls whether a USB device, such as an audio interface, can connect while the device is locked or before it's approved.",
+      "keywords": ["usb", "interface", "audio interface", "not recognized", "not detected", "accessory", "wired accessories", "hub", "adapter", "usb-c", "lightning"],
+      "steps": [
+        "Unlock the iPad or iPhone, then unplug and reconnect the USB cable or adapter. If a prompt asks to allow the accessory, tap Allow.",
+        "Check the setting: Settings, Privacy and Security, then Wired Accessories under Security. Automatically Allow When Unlocked is the default; Always Allow lets accessories connect while locked."
+      ]
+    },
+    {
+      "id": "apple-usb-c-ipad",
+      "category": "audio-output",
+      "title": "Charge and connect with the USB-C port on your iPad",
+      "url": "https://support.apple.com/en-us/108894",
+      "appliesTo": ["iPadOS"],
+      "summary": "The iPad's USB-C port works with audio interfaces, hubs and docks, and USB-C headphones. Other speakers or headphones need Apple's USB-C to 3.5 mm adapter. Some accessories draw more power from the iPad.",
+      "keywords": ["usb-c", "usb c", "interface", "hub", "dock", "headphone adapter", "3.5 mm", "power", "audio interface"],
+      "steps": [
+        "Confirm the connection type: USB-C audio interfaces and hubs plug straight into the iPad's USB-C port; speakers or headphones with a 3.5 millimeter plug need Apple's USB-C to 3.5 mm adapter.",
+        "If the interface or hub draws power from the iPad, connect it through a powered hub or dock so it has its own power."
+      ]
+    },
+    {
+      "id": "apple-no-sound-speaker-ios",
+      "category": "audio-output",
+      "title": "If you hear no sound or distorted sound from your iPhone, iPad, or iPod touch speaker",
+      "url": "https://support.apple.com/en-us/118432",
+      "appliesTo": ["iOS", "iPadOS"],
+      "summary": "Device-level checks when nothing comes out of the built-in speaker: Silent mode, Do Not Disturb, blocked openings, and a speaker test.",
+      "keywords": ["no sound", "silent", "mute", "muted", "quiet", "speaker", "volume", "distorted", "do not disturb", "can't hear"],
+      "steps": [
+        "Make sure Silent mode is off: on iPad, swipe down from the top-right corner to open Control Center and check the Silent mode button; on older iPhones, check the Ring/Silent switch.",
+        "Turn off Do Not Disturb: Settings, Focus, Do Not Disturb.",
+        "Test the speaker: Settings, Sounds, and drag the Ringtone and Alerts slider. If you hear nothing, the device speaker may need service, and an external output is the workaround."
+      ]
+    },
+    {
+      "id": "apple-headphones-ios",
+      "category": "audio-output",
+      "title": "If your headphones don't work with your iPhone or iPad",
+      "url": "https://support.apple.com/en-us/102449",
+      "appliesTo": ["iOS", "iPadOS"],
+      "summary": "Checks for wired headphones or a headphone-port cable: port debris, cable damage, a firm connection, volume, and a second pair to isolate the fault.",
+      "keywords": ["headphones", "headphone jack", "in-ear", "in ears", "click", "cable", "one side", "left", "right", "earbuds", "wired"],
+      "steps": [
+        "Check the headphone port for lint or debris, and inspect the cable and connector for damage.",
+        "Reconnect firmly, removing the case if it stops the plug seating fully, then raise the volume with the side buttons or Control Center.",
+        "Try a second pair of headphones or a different cable. If the second one works, the first cable or pair is the problem."
+      ]
+    },
+    {
+      "id": "apple-bluetooth-ios",
+      "category": "audio-output",
+      "title": "If a Bluetooth accessory won't connect to your iPhone or iPad",
+      "url": "https://support.apple.com/en-us/111804",
+      "appliesTo": ["iOS", "iPadOS"],
+      "summary": "Apple's steps for a Bluetooth speaker, headphones, or pedal that won't connect. Playback's documentation does not cover Bluetooth outputs, so this is device-level guidance only.",
+      "keywords": ["bluetooth", "airpods", "wireless", "pair", "pairing", "speaker", "headphones", "pedal", "won't connect"],
+      "steps": [
+        "Keep the accessory close to the device, turn it off and back on, and make sure it's charged.",
+        "If the accessory was paired before, forget it in Settings, Bluetooth, then put it back in pairing mode and pair it again.",
+        "If it works with other devices but not this one, unpair it from those devices and pair it with this iPad or iPhone again."
+      ]
+    },
+    {
+      "id": "apple-mac-sound-output",
+      "category": "audio-output",
+      "title": "Change the sound output settings on Mac",
+      "url": "https://support.apple.com/guide/mac-help/change-the-sound-output-settings-mchlp2256/mac",
+      "appliesTo": ["macOS"],
+      "summary": "How to choose which device the Mac sends sound to and check volume, mute, and balance.",
+      "keywords": ["mac", "output", "sound output", "audio device", "interface", "wrong output", "no sound", "volume", "mute", "balance", "system settings"],
+      "steps": [
+        "Choose Apple menu, System Settings, then Sound. Click Output and select the device you want, such as your audio interface.",
+        "Check that the Output volume slider isn't all the way down and that Mute is not selected. Also check the Balance slider is centered."
+      ]
+    },
+    {
+      "id": "apple-mac-no-sound",
+      "category": "audio-output",
+      "title": "If you can't hear sound from your Mac speakers",
+      "url": "https://support.apple.com/guide/mac-help/if-you-cant-hear-sound-from-your-speakers-mchlp1439/mac",
+      "appliesTo": ["macOS"],
+      "summary": "Mac checks when there's no sound: app volume, the selected output, and whether a USB device is detected.",
+      "keywords": ["mac", "no sound", "usb", "interface", "not recognized", "not detected", "speakers", "system information"],
+      "steps": [
+        "Check the app's own volume isn't muted, and try a different audio source to see whether the problem is the Mac or the app.",
+        "For a USB interface or USB speakers: select it in System Settings, Sound, Output.",
+        "Check the Mac sees the USB device: hold Option, choose Apple menu, System Information, then click USB under Hardware. If it isn't listed, unplug and reconnect it."
+      ]
+    },
+    {
+      "id": "apple-mac-audio-midi-setup",
+      "category": "audio-output",
+      "title": "Set up audio devices in Audio MIDI Setup on Mac",
+      "url": "https://support.apple.com/guide/audio-midi-setup/set-up-audio-devices-ams59f301fda/mac",
+      "appliesTo": ["macOS"],
+      "summary": "Audio MIDI Setup sets an interface's format and sample rate and its speaker configuration. Playback's documentation does not cover sample rate; this is the macOS-level setting.",
+      "keywords": ["mac", "sample rate", "format", "audio midi setup", "interface", "channels", "outputs", "configure speakers", "crackling", "distorted"],
+      "steps": [
+        "Open Audio MIDI Setup (in Applications, Utilities) and select the interface in the sidebar.",
+        "Use the Format pop-up to choose a sample rate and bit depth that match the audio interface.",
+        "To make it the default output, Control-click the interface and choose Use This Device for Sound Output."
+      ]
+    },
+    {
+      "id": "apple-in-app-purchases",
+      "category": "subscription",
+      "title": "If you can't find or use your Apple In-App Purchases",
+      "url": "https://support.apple.com/en-us/108096",
+      "appliesTo": ["iOS", "iPadOS", "macOS"],
+      "summary": "What to check when an in-app subscription isn't recognized: restore from inside the app, confirm the Apple Account, check purchases are allowed, restart.",
+      "keywords": ["subscription", "restore purchases", "not recognized", "expired", "cloud pro", "apple id", "apple account", "in-app purchase", "pro"],
+      "steps": [
+        "Use the app's own restore option. In Playback that's Settings, About, Restore Purchases.",
+        "If restoring does nothing, confirm the device is signed in to the same Apple Account that bought the subscription.",
+        "Restart the device, then try Restore Purchases again."
+      ]
+    },
+    {
+      "id": "apple-update-ios",
+      "category": "requirements",
+      "title": "Update your iPhone or iPad",
+      "url": "https://support.apple.com/en-us/118575",
+      "appliesTo": ["iOS", "iPadOS"],
+      "summary": "How to check the device's iOS or iPadOS version and install an update. Relevant when the device is below the app's minimum OS version.",
+      "keywords": ["ios version", "ipados", "software update", "update ios", "os version", "minimum", "compatible", "requirements"],
+      "steps": [
+        "Check the device's version: Settings, General, Software Update shows the current iOS or iPadOS version and whether an update is available.",
+        "To update, back up first, plug in, connect to Wi-Fi, then tap Download and Install. This restarts the device, so it's not for during a service."
+      ]
+    }
+  ]
+}

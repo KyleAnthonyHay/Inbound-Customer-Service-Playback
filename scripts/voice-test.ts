@@ -144,7 +144,14 @@ async function main() {
       // unless the assistant has since asked us something.
       const askedSinceTool = lastToolCallAt < lastAssistantTranscriptAt && /\?/.test(assistantTextSinceSend);
       const toolPending = now - lastToolCallAt < 15000 && !askedSinceTool;
-      const turnLooksComplete = /\?/.test(assistantTextSinceSend) || quietFor > 7000;
+      // A bare holding line ("thanks, one moment") means the answer is still coming even if
+      // no tool-call event has arrived yet; replying early makes the caller "answer" a step
+      // they never heard. Give it up to 15 s.
+      const holdingOnly =
+        !/\?/.test(assistantTextSinceSend) &&
+        /\b(one moment|one sec|let me (check|look|see|pull)|checking|hold on|bear with)\b/i.test(assistantTextSinceSend) &&
+        assistantTextSinceSend.trim().split(/\s+/).length < 12;
+      const turnLooksComplete = (/\?/.test(assistantTextSinceSend) || quietFor > 7000) && !(holdingOnly && quietFor < 15000);
       if (assistantEverSpoke && quietFor > 2500 && turnLooksComplete && !toolPending) return;
       await sleep(100);
     }
