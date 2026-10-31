@@ -27,8 +27,8 @@ type Props = {
 export const SCREEN_W = 440;
 export const SCREEN_H = 956;
 
-// iOS systemRed, the End button in the Phone app
-const END_RED = "#ff3b30";
+// The Phone app's End button, sampled from the reference
+const END_RED = "#8a1c16";
 
 const FONT = '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Inter, system-ui, sans-serif';
 
@@ -60,10 +60,10 @@ function MuteIcon({ dark }: { dark?: boolean }) {
 }
 
 function KeypadIcon() {
-  // 28 x 28, Apple's Phone keypad glyph: an even 3 x 3 grid of 6 pt dots
+  // 26 x 26, Apple's Phone keypad glyph: a tight 3 x 3 grid, 7.4 pt dots on a 9.3 pt pitch
   return (
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="#fff" aria-hidden>
-      {[0, 1, 2].map((r) => [0, 1, 2].map((c) => <circle key={`${r}${c}`} cx={3 + c * 11} cy={3 + r * 11} r="3" />))}
+    <svg width="26" height="26" viewBox="0 0 26 26" fill="#fff" aria-hidden>
+      {[0, 1, 2].map((r) => [0, 1, 2].map((c) => <circle key={`${r}${c}`} cx={3.7 + c * 9.3} cy={3.7 + r * 9.3} r="3.7" />))}
     </svg>
   );
 }
@@ -135,8 +135,9 @@ function Control({
       <span
         className="flex h-[86px] w-[86px] items-center justify-center rounded-full transition-colors active:brightness-150"
         style={{
-          background: fill ?? (active ? "#e5e5e5" : "rgba(255,255,255,0.16)"),
-          boxShadow: fill || active ? undefined : "inset 0 0 0 1px rgba(255,255,255,0.18)",
+          background: fill ?? (active ? "#e5e5e5" : "rgba(255,255,255,0.09)"),
+          // Thin glass rim, as on the Phone app's round buttons
+          boxShadow: active ? undefined : "inset 0 0 0 1.5px rgba(255,255,255,0.28)",
         }}
       >
         {icon}
