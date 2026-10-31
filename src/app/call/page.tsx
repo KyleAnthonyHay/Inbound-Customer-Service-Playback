@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { CallScreen } from "@/components/CallScreen";
+import { PhoneFrame } from "@/components/PhoneFrame";
 import { ActivityPanel } from "@/components/ActivityPanel";
 import { config, isVapiConfigured } from "@/lib/config";
 import { useVapiCall } from "@/lib/useVapiCall";
@@ -34,10 +35,11 @@ export default function CallPage() {
         <ArrowLeft size={16} /> Home
       </Link>
 
+      <PhoneFrame>
       <CallScreen
         status={call.status}
-        label={config.callerLabel}
-        subtitle="MultiTracks · AI assistant"
+        label={config.inboundNumber || config.callerLabel}
+        subtitle="MultiTracks, Playback"
         startedAt={call.startedAt}
         muted={call.muted}
         assistantSpeaking={call.assistantSpeaking}
@@ -45,6 +47,7 @@ export default function CallPage() {
         onEnd={call.stop}
         onToggleMute={call.toggleMute}
       />
+      </PhoneFrame>
 
       <ActivityPanel
         open={panelOpen}
@@ -59,7 +62,7 @@ export default function CallPage() {
       {(call.error || !configured) && (
         <div
           role="alert"
-          className="fixed inset-x-0 top-16 z-10 mx-auto w-[calc(100%-2rem)] max-w-[400px] rounded-xl bg-danger/90 px-4 py-2.5 text-center text-sm text-white shadow-lg"
+          className="fixed inset-x-0 top-4 z-10 mx-auto w-[calc(100%-2rem)] max-w-[360px] rounded-xl bg-danger/90 px-4 py-2.5 text-center text-sm text-white shadow-lg"
         >
           {call.error ?? "Add NEXT_PUBLIC_VAPI_PUBLIC_KEY to .env.local to place a real call."}
         </div>
