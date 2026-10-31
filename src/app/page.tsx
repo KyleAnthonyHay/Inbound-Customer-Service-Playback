@@ -92,7 +92,7 @@ export default function Home() {
             </div>
 
             {/* Laptop sits in its own band so it never overlaps the text */}
-            <div className="relative mt-2 flex min-h-0 flex-1 items-center justify-center px-6">
+            <div className="relative mt-2 flex min-h-0 flex-1 items-center justify-center px-6 pb-8">
               <div className="pointer-events-none absolute inset-x-[15%] bottom-[8%] top-[25%] rounded-full bg-[#43b1e6]/15 blur-3xl" aria-hidden />
               <Image
                 src="/playback-laptop.webp"
@@ -101,42 +101,10 @@ export default function Home() {
                 height={1086}
                 priority
                 sizes="50vw"
-                className="relative h-auto max-h-[min(44vh,520px)] w-auto max-w-full"
+                className="relative h-auto max-h-[min(56vh,640px)] w-auto max-w-full"
               />
             </div>
 
-            {/* Card, like the loyalty card in the reference; overlaps only the laptop base */}
-            <div className="relative mx-auto -mt-6 mb-8 w-[min(400px,80%)] rounded-[22px] bg-white p-[12px] text-[#1a1a1a] shadow-[0_24px_60px_rgba(0,0,0,0.22)]">
-              <div className="rounded-[14px] border border-black/[0.06] bg-white">
-                <div className="flex items-center justify-between px-5 pt-4 pb-3">
-                  <span className="flex items-center gap-3">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#43b1e6] text-white">
-                      <Phone size={18} />
-                    </span>
-                    <span className="text-[17px] font-semibold">Playback Support</span>
-                  </span>
-                  <span className="text-right">
-                    <span className="block text-[11px] font-semibold tracking-wide text-[#666]">AGENT</span>
-                    <span className="block text-[15px]">AI, says so first</span>
-                  </span>
-                </div>
-                <div className="grid grid-cols-3 bg-[#e3f3fb] px-5 py-4 text-center text-[13px] font-medium text-[#205773]">
-                  <span>Song loading</span>
-                  <span>Audio output</span>
-                  <span>Version check</span>
-                </div>
-                <div className="grid grid-cols-2 px-5 pt-3 pb-4 text-center">
-                  <span>
-                    <span className="block text-[11px] font-semibold tracking-wide text-[#666]">HANDOFF</span>
-                    <span className="block text-[15px]">Simulated</span>
-                  </span>
-                  <span>
-                    <span className="block text-[11px] font-semibold tracking-wide text-[#666]">VERSION DATA</span>
-                    <span className="block text-[15px]">Live App Store</span>
-                  </span>
-                </div>
-              </div>
-            </div>
           </div>
         </section>
       </main>
