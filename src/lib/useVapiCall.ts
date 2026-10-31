@@ -5,7 +5,7 @@ import type Vapi from "@vapi-ai/web";
 import { config, isVapiConfigured, toolServerUrl } from "./config";
 import { buildAssistant } from "./assistant";
 import { toolMeta, type ToolSource } from "./tools/meta";
-import { playCue, primeCues } from "./cues";
+import { playCue, primeCues, startRingback, stopRingback } from "./cues";
 import { parseHandoffResult } from "./handoff";
 
 export type CallStatus = "idle" | "connecting" | "active" | "ended" | "error";
@@ -220,6 +220,7 @@ export function useVapiCall() {
       vapiRef.current = vapi;
 
       vapi.on("call-start", () => {
+        stopRingback();
         setStatus("active");
         setStartedAt(Date.now());
         void playCue("connected");
@@ -284,6 +285,13 @@ export function useVapiCall() {
     setMuted(next);
     void playCue(next ? "mute" : "unmute");
   }, []);
+
+  // Ringback while connecting; stops on answer, hang-up, error, or unmount.
+  useEffect(() => {
+    if (status !== "connecting") return;
+    startRingback();
+    return stopRingback;
+  }, [status]);
 
   useEffect(() => {
     return () => {
