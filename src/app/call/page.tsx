@@ -8,7 +8,6 @@ import { PhoneFrame } from "@/components/PhoneFrame";
 import { ActivityPanel } from "@/components/ActivityPanel";
 import { config, isVapiConfigured } from "@/lib/config";
 import { useVapiCall } from "@/lib/useVapiCall";
-
 export default function CallPage() {
   const call = useVapiCall();
   const configured = isVapiConfigured();
@@ -73,6 +72,7 @@ export default function CallPage() {
         clientEvents={call.events}
         transcript={call.transcript}
         onOpenPastCall={openPastCall}
+        onRemoteCall={() => setPanelOpen(true)}
       />
 
       {demo && (

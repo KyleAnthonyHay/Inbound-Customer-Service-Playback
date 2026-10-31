@@ -96,10 +96,57 @@ export const endOfCallReport = mutation({
   },
 });
 
+/** Mark a call as in progress (speech-update), creating the row if the tool webhook hasn't yet. */
+export const touch = mutation({
+  args: { callId: v.string(), callType: v.optional(v.string()) },
+  handler: async (ctx, a) => {
+    await ensureCall(ctx, a.callId, { channel: a.callType });
+    return { ok: true };
+  },
+});
+
+/**
+ * conversation-update: Vapi sends the whole running message list each time. Stored lines are
+ * append-only and in order, so only the tail beyond what we already have is inserted.
+ */
+export const syncConversation = mutation({
+  args: {
+    callId: v.string(),
+    callType: v.optional(v.string()),
+    messages: v.array(v.object({ role: v.union(v.literal("user"), v.literal("assistant")), text: v.string(), at: v.number() })),
+  },
+  handler: async (ctx, a) => {
+    const id = await ensureCall(ctx, a.callId, { channel: a.callType });
+    const call = (await ctx.db.get(id))!;
+    const lines = a.messages.filter((m) => m.text.trim());
+    if (lines.length <= call.transcriptCount) return { ok: true, added: 0 };
+    let title = call.title;
+    for (const m of lines.slice(call.transcriptCount)) {
+      await ctx.db.insert("transcripts", { callId: a.callId, at: m.at > 1e12 ? m.at : Date.now(), role: m.role, text: m.text.trim() });
+      if (!title && m.role === "user") title = m.text.length > 90 ? m.text.slice(0, 87) + "…" : m.text.trim();
+    }
+    await ctx.db.patch(id, { transcriptCount: lines.length, title });
+    return { ok: true, added: lines.length - call.transcriptCount };
+  },
+});
+
 /** Newest first. Capped so the sidebar list never grows unbounded; the UI pages within it. */
 export const list = query({
   args: { limit: v.optional(v.number()) },
   handler: async (ctx, a) => ctx.db.query("calls").withIndex("by_startedAt").order("desc").take(Math.min(a.limit ?? 50, 200)),
+});
+
+/**
+ * The one call the agent is on right now (newest in-progress, started within 15 min), from any
+ * channel. The demo runs a single agent instance, so the website follows this call live.
+ */
+export const current = query({
+  args: {},
+  handler: async (ctx) => {
+    const recent = await ctx.db.query("calls").withIndex("by_startedAt").order("desc").take(10);
+    const cutoff = Date.now() - 15 * 60 * 1000;
+    return recent.find((c) => c.status === "in-progress" && c.startedAt > cutoff) ?? null;
+  },
 });
 
 export const get = query({

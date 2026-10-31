@@ -92,6 +92,9 @@ type ServerMessage = {
   analysis?: { summary?: string };
   summary?: string;
   artifact?: { messages?: Array<{ role?: string; message?: string; time?: number; secondsFromStart?: number }> };
+  /** conversation-update: the running message list (Vapi sends both shapes). */
+  conversation?: Array<{ role?: string; content?: string }>;
+  messages?: Array<{ role?: string; message?: string; content?: string; time?: number }>;
   durationSeconds?: number;
   startedAt?: string;
   endedAt?: string;
@@ -113,9 +116,25 @@ http.route({
         await ctx.runMutation(api.calls.statusUpdate, { callId, status: m.status ?? "", callType: m.call?.type, endedReason: m.endedReason, startedAt: m.call?.startedAt });
         break;
       case "transcript":
+        // Browser calls are mirrored by the web client itself (ActivityPanel), so skip server copies for them.
+        if (m.call?.type === "webCall") break;
         if (m.transcriptType === "final" && (m.role === "user" || m.role === "assistant") && m.transcript)
           await ctx.runMutation(api.calls.appendTranscript, { callId, role: m.role, text: m.transcript, callType: m.call?.type });
         break;
+      case "speech-update":
+        await ctx.runMutation(api.calls.touch, { callId, callType: m.call?.type });
+        break;
+      case "conversation-update": {
+        if (m.call?.type === "webCall") break;
+        const src: Array<{ role?: string; text?: string; time?: number }> = m.messages?.length
+          ? m.messages.map((x) => ({ role: x.role, text: x.message ?? x.content, time: x.time }))
+          : (m.conversation ?? []).map((c) => ({ role: c.role, text: c.content }));
+        const lines = src
+          .filter((x) => (x.role === "user" || x.role === "bot" || x.role === "assistant") && x.text)
+          .map((x) => ({ role: x.role === "user" ? ("user" as const) : ("assistant" as const), text: x.text!, at: x.time ?? 0 }));
+        await ctx.runMutation(api.calls.syncConversation, { callId, callType: m.call?.type, messages: lines });
+        break;
+      }
       case "end-of-call-report":
         await ctx.runMutation(api.calls.endOfCallReport, {
           callId, callType: m.call?.type, endedReason: m.endedReason, summary: m.analysis?.summary ?? m.summary,

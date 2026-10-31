@@ -1,0 +1,38 @@
+{
+  "scenario": "off-topic",
+  "expectedIntent": "off-topic",
+  "callId": "01a19209-06b1-7777-a843-9eaf15dee427",
+  "endedReason": "assistant-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "delegate",
+    "search_playback_docs",
+    "delegate",
+    "endCall"
+  ],
+  "convexToolEvents": [
+    "search_playback_docs succeeded 18ms 3 result(s)"
+  ],
+  "liveEvents": [
+    "21.9s TOOL-CALLS delegate({})",
+    "30.3s TOOL-CALLS delegate({})",
+    "32.7s TOOL-CALLS search_playback_docs({\"query\":\"song won't download on iPad Playback version 8.6.4\",\"category\":\"song-loading\",\"platform\":\"iPadOS\"})",
+    "51.3s TOOL-CALLS delegate({})",
+    "53.4s TOOL-CALLS endCall({})",
+    "54.2s STATUS ended assistant-ended-call",
+    "54.2s hangup"
+  ],
+  "transcript": [
+    "AGENT: Hi, thanks for calling MultiTracks Playback support. I'm an AI assistant. Are you having trouble with a song loading, or with audio output?",
+    "CALLER: Hey, can you give me a good recipe for lasagna",
+    "AGENT: Oh, sure, yeah.",
+    "CALLER: Ha",
+    "CALLER: , okay fine",
+    "AGENT: Oh,",
+    "CALLER: Actually my song won't download. iPad. .8.6.4. And I have time",
+    "AGENT: Thanks. One moment.",
+    "AGENT: What exact error message do you see when the song download fails?",
+    "CALLER: Alright I'll try that. Thanks. Bye",
+    "AGENT: Okay, take care, and thanks for calling."
+  ]
+}

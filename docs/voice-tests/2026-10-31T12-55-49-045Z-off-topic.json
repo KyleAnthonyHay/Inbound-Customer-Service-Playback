@@ -1,0 +1,33 @@
+{
+  "scenario": "off-topic",
+  "expectedIntent": "off-topic",
+  "callId": "01a19206-c83d-7000-a63b-37026911b807",
+  "endedReason": "customer-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "delegate",
+    "search_playback_docs",
+    "delegate"
+  ],
+  "convexToolEvents": [
+    "search_playback_docs succeeded 22ms 3 result(s)"
+  ],
+  "liveEvents": [
+    "22.2s TOOL-CALLS delegate({})",
+    "30.7s TOOL-CALLS delegate({})",
+    "32.6s TOOL-CALLS search_playback_docs({\"query\":\"song won't download on iPad Playback version 8.6.4\",\"category\":\"song-loading\",\"platform\":\"iPadOS\"})",
+    "51.3s TOOL-CALLS delegate({})"
+  ],
+  "transcript": [
+    "AGENT: Hi, thanks for calling MultiTracks Playback support. I'm an AI assistant. Are you having trouble with a song loading, or with audio output?",
+    "CALLER: Hey, can you give me a good recipe for lasagna",
+    "AGENT: Oh, one moment.",
+    "CALLER: Ha",
+    "CALLER: . Okay. Fine. Actually, my song won't download .iPad, eight, six, four, and I have time",
+    "AGENT: Okay, let me check on that.",
+    "AGENT: Thanks. When the download fails, what exact error message do you see?",
+    "CALLER: Alright, I'll try that. Thanks. Bye",
+    "AGENT: Bye!",
+    "AGENT: You’re welcome. If it still won’t download, just call back with the exact error message and we’ll keep going."
+  ]
+}

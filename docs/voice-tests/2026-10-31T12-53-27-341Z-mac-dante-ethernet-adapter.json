@@ -1,0 +1,32 @@
+{
+  "scenario": "mac-dante-ethernet-adapter",
+  "expectedIntent": "audio-output",
+  "callId": "01a19204-b62a-7cc2-8f2d-7d5cc1e9d3b6",
+  "endedReason": "assistant-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "delegate",
+    "endCall"
+  ],
+  "convexToolEvents": [],
+  "liveEvents": [
+    "24.1s TOOL-CALLS delegate({})",
+    "55.8s TOOL-CALLS delegate({})",
+    "57.4s TOOL-CALLS endCall({})",
+    "58.1s STATUS ended assistant-ended-call",
+    "58.1s hangup"
+  ],
+  "transcript": [
+    "AGENT: Hi, thanks for calling MultiTracks Playback support. I'm an AI assistant. Are you having trouble with a song loading, or with audio output?",
+    "CALLER: I'm trying to send audio out, but no audio device is showing up. I can only pick my Mac speaker",
+    "AGENT: Mmm,",
+    "CALLER: It's a",
+    "AGENT: okay,",
+    "CALLER: Mac, I'm",
+    "AGENT: got it.",
+    "CALLER: connecting it to our network with a USB to Cat 6 dongle. We use Dante",
+    "AGENT: And what audio setup are you trying to use? Like a USB interface, Dante with an Ethernet adapter, or something else?",
+    "CALLER: Um, I don't think the Dante virtual sound card app is actually running right now. Okay yeah, it shows up now after I pressed start. Thanks. Bye",
+    "AGENT: Great, one moment."
+  ]
+}

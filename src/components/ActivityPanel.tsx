@@ -69,6 +69,8 @@ type Props = {
   transcript: TranscriptLine[];
   /** Open a past call (from the history list) in the panel. */
   onOpenPastCall?: (callId: string) => void;
+  /** The single agent instance picked up a call on another channel (phone, harness); the page may open the panel. */
+  onRemoteCall?: (callId: string) => void;
 };
 
 type ViewData = {
@@ -127,13 +129,52 @@ export function ActivityPanel(props: Props) {
 
 function Live(props: Props) {
   const skip = !config.convexUrl;
-  const callArgs = skip ? "skip" : { callId: props.callId ?? "" };
+  const browserLive = props.status === "active" || props.status === "connecting";
+  // One agent instance: when the browser is not on a call, follow the call the agent is on elsewhere.
+  const current = useQuery(api.calls.current, skip ? "skip" : {}) ?? null;
+  const remoteId = !browserLive && current ? current.callId : null;
+  const callId = remoteId ?? props.callId;
+  const { onRemoteCall } = props;
+  useEffect(() => {
+    if (remoteId) onRemoteCall?.(remoteId);
+  }, [remoteId, onRemoteCall]);
+  const callArgs = skip ? "skip" : { callId: callId ?? "" };
   const serverEvents = useQuery(api.callEvents.byCall, callArgs) ?? [];
   const pastCalls = useQuery(api.calls.list, skip ? "skip" : { limit: 50 }) ?? [];
   const callRow = useQuery(api.calls.get, callArgs) ?? null;
   const storedTranscript = useQuery(api.calls.transcriptByCall, callArgs) ?? [];
   const clearAll = useMutation(api.calls.clearAll);
-  return <View {...props} serverEvents={serverEvents} pastCalls={pastCalls} callRow={callRow} storedTranscript={storedTranscript} onClearHistory={() => clearAll({})} />;
+
+  // Browser calls are mirrored to Convex from here (Vapi's web client is the only party that sees
+  // them live), so the same call shows on every other device and lands in Past calls.
+  const touch = useMutation(api.calls.touch);
+  const appendTranscript = useMutation(api.calls.appendTranscript);
+  const statusUpdate = useMutation(api.calls.statusUpdate);
+  const mirrored = useRef<{ callId: string | null; lines: Set<string>; ended: boolean }>({ callId: null, lines: new Set(), ended: false });
+  const browserCallId = props.status === "active" ? props.callId : null;
+  useEffect(() => {
+    if (skip || !browserCallId) return;
+    if (mirrored.current.callId !== browserCallId) mirrored.current = { callId: browserCallId, lines: new Set(), ended: false };
+    void touch({ callId: browserCallId, callType: "webCall" }).catch(() => {});
+  }, [skip, browserCallId, touch]);
+  const { transcript } = props;
+  useEffect(() => {
+    const m = mirrored.current;
+    if (skip || !m.callId || props.status !== "active") return;
+    for (const line of transcript) {
+      if (!line.final || m.lines.has(line.id)) continue;
+      m.lines.add(line.id);
+      void appendTranscript({ callId: m.callId, role: line.role, text: line.text, callType: "webCall" }).catch(() => {});
+    }
+  }, [skip, transcript, props.status, appendTranscript]);
+  useEffect(() => {
+    const m = mirrored.current;
+    if (skip || !m.callId || m.ended || props.status !== "ended") return;
+    m.ended = true;
+    void statusUpdate({ callId: m.callId, status: "ended", callType: "webCall" }).catch(() => {});
+  }, [skip, props.status, statusUpdate]);
+
+  return <View {...props} callId={callId} serverEvents={serverEvents} pastCalls={pastCalls} callRow={callRow} storedTranscript={storedTranscript} onClearHistory={() => clearAll({})} />;
 }
 
 function useElapsed(startedAt: number | null, status: CallStatus): { prefix: string; value: string | null } {
@@ -754,8 +795,12 @@ function HistoryView({ calls, currentId, busy, onOpen, onClear, reduce }: { call
 
 /* ------------------------------------------------------------------ view */
 
-function View({ open, onToggle, callId, status, startedAt, assistantSpeaking, handoff, clientEvents, transcript, onOpenPastCall, serverEvents, pastCalls, callRow, storedTranscript, onClearHistory }: Props & ViewData) {
+function View({ open, onToggle, callId, status: browserStatus, startedAt: browserStartedAt, assistantSpeaking, handoff, clientEvents, transcript, onOpenPastCall, serverEvents, pastCalls, callRow, storedTranscript, onClearHistory }: Props & ViewData) {
   const reduce = useReducedMotion();
+  // A call on another channel (phone, harness) that the agent is on right now: show it as live.
+  const remoteLive = browserStatus !== "active" && browserStatus !== "connecting" && !!callRow && callRow.status === "in-progress" && clientEvents.length === 0;
+  const status: CallStatus = remoteLive ? "active" : browserStatus;
+  const startedAt = remoteLive && callRow ? callRow.startedAt : browserStartedAt;
   const [cardOpen, setCardOpen] = useState(true);
   const [view, setView] = useState<"activity" | "history">("activity");
   const elapsed = useElapsed(startedAt, status);
@@ -766,11 +811,13 @@ function View({ open, onToggle, callId, status, startedAt, assistantSpeaking, ha
   const viewingPast = !!callRow && callRow.status === "ended" && status !== "active" && status !== "connecting";
   // A replayed call has no client rows (Connected / Call ended), so frame its tool rows from the stored call record.
   const steps: Step[] =
-    viewingPast && clientEvents.length === 0 && callRow
+    (viewingPast || remoteLive) && clientEvents.length === 0 && callRow
       ? [
-          { id: `${callRow.callId}-start`, at: callRow.startedAt, label: "Call connected", status: "info", source: "call" },
+          { id: `${callRow.callId}-start`, at: callRow.startedAt, label: remoteLive ? `Call connected (${callRow.channel})` : "Call connected", status: "info", source: "call" },
           ...logged,
-          { id: `${callRow.callId}-end`, at: callRow.endedAt ?? callRow.startedAt + (callRow.durationSeconds ?? 0) * 1000, label: "Call ended", status: "info", source: "call", detail: callRow.endedReason?.replace(/-/g, " ") },
+          ...(viewingPast
+            ? [{ id: `${callRow.callId}-end`, at: callRow.endedAt ?? callRow.startedAt + (callRow.durationSeconds ?? 0) * 1000, label: "Call ended", status: "info" as const, source: "call" as const, detail: callRow.endedReason?.replace(/-/g, " ") }]
+            : []),
         ]
       : logged;
   const liveCall = status === "active" || status === "connecting";
@@ -1028,6 +1075,12 @@ function View({ open, onToggle, callId, status, startedAt, assistantSpeaking, ha
             {viewingPast && (
               <span className="rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1">
                 Past call{callRow?.endedReason ? ` · ${callRow.endedReason.replace(/-/g, " ")}` : ""}
+              </span>
+            )}
+            {remoteLive && callRow && (
+              <span className="flex items-center gap-1.5 rounded-full border border-[#34c79a]/30 bg-[#34c79a]/10 px-2.5 py-1 text-[#6edcb8]">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#34c79a] motion-safe:animate-pulse" aria-hidden />
+                Live on {callRow.channel === "phone" ? "the phone line" : callRow.channel}
               </span>
             )}
           </motion.div>

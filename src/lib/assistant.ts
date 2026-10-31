@@ -118,7 +118,9 @@ export function buildAssistant(opts: { toolServerUrl: string; toolSecret?: strin
           server: { url: eventsUrl, timeoutSeconds: 20, ...(opts.toolSecret ? { headers: { "x-demo-secret": opts.toolSecret } } : {}) },
           // Plain "transcript" (finals filtered server-side): the [transcriptType="final"] filter
           // produced no server messages on a GPT-Live call.
-          serverMessages: ["status-update", "transcript", "end-of-call-report"],
+          // conversation-update carries the running message list live; speech-update marks the
+          // call as in progress as soon as anyone speaks (status-update "in-progress" did not arrive).
+          serverMessages: ["status-update", "transcript", "conversation-update", "speech-update", "end-of-call-report"],
         }
       : {}),
   };
