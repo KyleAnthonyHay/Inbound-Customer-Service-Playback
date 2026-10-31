@@ -87,6 +87,6 @@ export function searchDocs(query: string, opts?: { category?: string; limit?: nu
     note:
       scored.length === 0
         ? "No documented article matched. Do not invent steps; offer a handoff or ask a clarifying question."
-        : "Only give steps that appear in these results. Give non-disruptive steps first. Before a step marked disruptive, say its caution in one short sentence (e.g. 'heads up, this one closes the app, so not mid-service'); do not ask whether they are in a service unless the caution changes which step you give.",
+        : "Only give steps that appear in these results. Give non-disruptive steps first. Say a disruptive step's caution once per call, in one short sentence, unless the caller already told you their timing; then act on what they said and skip the caution.",
   };
 }
