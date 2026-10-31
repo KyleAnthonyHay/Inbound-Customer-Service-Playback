@@ -119,3 +119,38 @@ test("searchDocs results carry per-step disruption tags", () => {
   assert.ok("disruptive" in first.steps[0]);
   assert.equal(typeof first.hasDisruptiveSteps, "boolean");
 });
+
+import { supportSlots, isWithinSupportHours, isValidSlotStart, describeCentral, centralOffsetHours, normalizePhoneNumber } from "../src/lib/tools/schedule";
+
+test("support hours are weekdays 9am-5pm Central, including across the DST change", () => {
+  // Fri 2026-10-30 10:00 CDT = 15:00 UTC: open. Sat 2026-10-31: closed.
+  assert.ok(isWithinSupportHours(new Date("2026-10-30T15:00:00Z")));
+  assert.ok(!isWithinSupportHours(new Date("2026-10-31T15:00:00Z")));
+  // Fri 16:59 CDT open, 17:00 CDT closed, 08:59 closed.
+  assert.ok(isWithinSupportHours(new Date("2026-10-30T21:59:00Z")));
+  assert.ok(!isWithinSupportHours(new Date("2026-10-30T22:00:00Z")));
+  assert.ok(!isWithinSupportHours(new Date("2026-10-30T13:59:00Z")));
+  // DST ends Sun 2026-11-01, so Monday 9am is 15:00 UTC.
+  assert.equal(centralOffsetHours(new Date("2026-10-30T15:00:00Z")), -5);
+  assert.equal(centralOffsetHours(new Date("2026-11-02T15:00:00Z")), -6);
+  assert.ok(isWithinSupportHours(new Date("2026-11-02T15:00:00Z")));
+  assert.ok(!isWithinSupportHours(new Date("2026-11-02T14:30:00Z")));
+});
+
+test("slots asked for on a Saturday start Monday 9am Central, 16 per day", () => {
+  const slots = supportSlots(new Date("2026-10-31T15:19:00Z"), { days: 2 }); // Sat, Sun, Mon
+  assert.equal(slots[0].startAt, "2026-11-02T15:00:00.000Z");
+  assert.equal(describeCentral(slots[0].startAt), "Monday, Nov 2, 9:00 AM Central");
+  assert.equal(slots.length, 16);
+  assert.equal(slots.at(-1)!.startAt, "2026-11-02T22:30:00.000Z"); // 4:30 PM CST
+  assert.ok(slots.every((s) => isValidSlotStart(s.startAt)));
+  assert.ok(!isValidSlotStart("2026-11-02T15:10:00.000Z"));
+  assert.ok(!isValidSlotStart("2026-11-07T15:00:00.000Z")); // Saturday
+});
+
+test("phone numbers are normalized from spoken or typed forms", () => {
+  assert.equal(normalizePhoneNumber("555 010 0199"), "5550100199");
+  assert.equal(normalizePhoneNumber("+1 (512) 555-0199"), "+15125550199");
+  assert.equal(normalizePhoneNumber("call me"), null);
+  assert.equal(normalizePhoneNumber("123"), null);
+});

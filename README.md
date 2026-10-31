@@ -84,6 +84,27 @@ from the caller's last speech: a nudge at 120 s ("Hey, are you still there?")
 and, at 150 s, a spoken goodbye followed by `endCall`. Both reset when the
 caller speaks.
 
+## Support hours and callbacks
+
+Both simulated teams keep **weekdays 9am to 5pm Central** (`src/lib/tools/schedule.ts`,
+DST-aware). Inside those hours `check_team_availability` allows a transfer; outside them
+it says when support next opens and the agent offers a callback. Callback slots are
+generated on the fly in 30-minute steps during support hours (earliest 30 minutes from
+now), so they never run out or go stale; a slot is only unavailable once someone books it.
+
+## Inbound phone number
+
+1. `npm run sync:assistant` (creates the saved assistant; set `NEXT_PUBLIC_VAPI_ASSISTANT_ID`).
+2. `npm run provision:number` gives that assistant a free Vapi US number
+   (optional `VAPI_NUMBER_AREA_CODE`), or imports your own Twilio number when
+   `TWILIO_PHONE_NUMBER`, `TWILIO_ACCOUNT_SID` and `TWILIO_AUTH_TOKEN` are set. Re-running reuses it.
+3. Set `NEXT_PUBLIC_INBOUND_NUMBER` to the printed number; the landing page shows it with a `tel:` link.
+
+On phone calls the tool webhook reads the caller ID, so when booking a callback the agent
+offers to call back on the number the caller is dialing from instead of asking them to
+read one out (it passes `callbackNumber: "caller-id"`). Browser calls have no caller ID,
+so the agent asks for a number as before. Spoken numbers are normalized to digits.
+
 ## Simulation boundaries
 
 Transfers, support-team availability, callback slots, and customer records

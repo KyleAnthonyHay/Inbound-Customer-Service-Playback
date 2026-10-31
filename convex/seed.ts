@@ -59,39 +59,19 @@ const teams = [
     label: "Playback Technical Support",
     description: "Song loading, audio output, device and version issues.",
     status: "available" as const,
-    hoursUtc: { start: 14, end: 23 }, // 9am-6pm US Central (approx.)
     simulated: true as const,
   },
   {
     teamId: "billing",
     label: "Billing & Accounts",
     description: "Subscriptions, refunds, and account administration.",
-    status: "busy" as const,
-    hoursUtc: { start: 14, end: 22 },
+    status: "available" as const,
     simulated: true as const,
   },
 ];
 
-function buildSlots(now: Date) {
-  const slots: { teamId: string; startAt: string; endAt: string; reserved: boolean }[] = [];
-  for (let day = 1; day <= 30; day++) {
-    const d = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + day));
-    const weekday = d.getUTCDay();
-    if (weekday === 0 || weekday === 6) continue; // weekdays only
-    for (const team of teams) {
-      for (let hour = team.hoursUtc.start; hour < team.hoursUtc.end; hour++) {
-        for (const minute of [0, 30]) {
-          const start = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), hour, minute));
-          const end = new Date(start.getTime() + 30 * 60 * 1000);
-          // Pre-reserve a few slots so "slot unavailable" scenarios are testable.
-          const reserved = (day * 7 + hour + minute / 30) % 11 === 0;
-          slots.push({ teamId: team.teamId, startAt: start.toISOString(), endAt: end.toISOString(), reserved });
-        }
-      }
-    }
-  }
-  return slots;
-}
+// Hours (weekdays 9am-5pm Central) and callback slots come from
+// src/lib/tools/schedule.ts, so nothing time-based is seeded here.
 
 export const run = internalMutation({
   args: {},
@@ -102,8 +82,6 @@ export const run = internalMutation({
     }
     for (const c of customers) await ctx.db.insert("customers", c);
     for (const t of teams) await ctx.db.insert("teams", t);
-    const slots = buildSlots(new Date());
-    for (const s of slots) await ctx.db.insert("callbackSlots", s);
-    return { customers: customers.length, teams: teams.length, slots: slots.length };
+    return { customers: customers.length, teams: teams.length };
   },
 });

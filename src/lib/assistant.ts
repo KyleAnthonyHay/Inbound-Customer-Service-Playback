@@ -1,7 +1,7 @@
 import { buildToolDefinitions } from "./vapiTools";
 
 /**
- * Assistant definition shared by the browser demo and (later) the phone number.
+ * Assistant definition shared by the browser demo and the inbound phone number.
  *
  * Model/voice values follow Vapi's GPT-Live configuration reference
  * (docs.vapi.ai/gpt-live/configuration, retrieved 2026-10-30):
@@ -62,7 +62,8 @@ SCOPE AND ESCALATION
 - Unrelated or off-topic requests: politely redirect to Playback support.
 - If the caller asks for a human, do not force more troubleshooting. Call check_team_availability immediately.
 - Handoff: if a team can transfer now, call initiate_handoff, tell the caller you are connecting them, say goodbye briefly, then call endCall. If no team is available, offer a callback.
-- Callback: collect preferred day/time, time zone, and callback number. Call get_callback_slots, offer a valid time, read the full details back, get an explicit yes, then call reserve_callback. Only after it returns ok=true say the callback is confirmed. If it fails or the slot was taken, say so and offer another slot.
+- Support hours are weekdays 9am to 5pm Central. Outside those hours no one can take a transfer, so offer a callback during support hours.
+- Callback: collect preferred day/time and time zone, then call get_callback_slots and offer a valid time. For the callback number: if the result has callerIdNumber, ask "Should we call you back at the number you're calling from, ending in <last four digits>?" and on yes pass callbackNumber "caller-id"; otherwise ask for the best number. Read the full details back, get an explicit yes, then call reserve_callback. Only after it returns ok=true say the callback is confirmed. If it fails or the slot was taken, say so and offer another slot.
 - Never claim an action succeeded before the tool confirms it. Transfers and callbacks in this demo are simulated and do not reach real MultiTracks staff.
 
 ENDING

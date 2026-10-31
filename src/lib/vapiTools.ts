@@ -72,7 +72,7 @@ export function buildToolDefinitions(opts: { serverUrl: string; secret?: string 
     ),
     fn(
       "get_callback_slots",
-      "Get the next open callback slots for a team (simulated scheduling). Times are ISO 8601 UTC; convert to the caller's time zone when speaking.",
+      "Get the next open callback slots for a team (simulated scheduling). Support hours are weekdays 9am to 5pm Central. Each slot has a 'spoken' Central-time label; convert to the caller's time zone when it differs. On phone calls the result includes callerIdNumber, the number the caller is calling from.",
       {
         teamId: { type: "string", enum: ["playback-support", "billing"] },
         fromIso: { type: "string", description: "Optional earliest time, ISO 8601." },
@@ -86,12 +86,16 @@ export function buildToolDefinitions(opts: { serverUrl: string; secret?: string 
       {
         slotId: { type: "string", description: "slotId from get_callback_slots." },
         callerName: { type: "string" },
-        callbackNumber: { type: "string" },
+        teamId: { type: "string", enum: ["playback-support", "billing"] },
+        callbackNumber: {
+          type: "string",
+          description: "Number to call back, digits as the caller said them. Pass 'caller-id' when the caller wants the call back on the number they are calling from.",
+        },
         timeZone: { type: "string", description: "Caller's time zone, e.g. America/Chicago or 'Central'." },
         reason: { type: "string", description: "One-line summary of the issue for the team." },
         customerId: { type: "string" },
       },
-      ["slotId", "callerName", "callbackNumber", "timeZone", "reason"],
+      ["slotId", "callerName", "timeZone", "reason"],
       "Booking that now."
     ),
     fn(
