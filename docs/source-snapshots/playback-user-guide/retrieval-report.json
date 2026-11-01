@@ -1,35 +1,35 @@
 {
-  "ran_at": "2026-11-01T23:27:25.459Z",
-  "passed": 18,
+  "ran_at": "2026-11-01T23:31:43.154Z",
+  "passed": 19,
   "total": 20,
   "rows": [
     {
       "q": "How do I choose which audio device Playback uses for output?",
       "category": "audio-output",
-      "ok": false,
+      "ok": true,
       "top": [
         {
           "id": "playback-user-guide:setting-up-audio-and-midi-choosing-an-audio-interface:1",
-          "score": 0.495,
+          "score": 0.48,
           "scope": "in-scope",
           "disruptive": false
         },
         {
-          "id": "playback-user-guide:playback-user-guide-setting-up-audio-and-midi:1",
-          "score": 0.478,
+          "id": "playback-user-guide:playback-settings-general-settings-tab:2",
+          "score": 0.48,
           "scope": "in-scope",
           "disruptive": false
         },
         {
           "id": "playback-user-guide:playback-settings-buses-settings-tab:1",
-          "score": 0.475,
+          "score": 0.477,
           "scope": "in-scope",
           "disruptive": false
         }
       ],
       "outOfScope": [],
       "expectAny": [
-        "general-settings-tab:1"
+        "general-settings-tab"
       ]
     },
     {
@@ -39,26 +39,26 @@
       "top": [
         {
           "id": "playback-user-guide:playback-settings-general-settings-tab:1",
-          "score": 0.313,
+          "score": 0.302,
           "scope": "in-scope",
           "disruptive": false
         },
         {
-          "id": "playback-user-guide:live-performance-tracks-buses-mixer-controlling-your-tracks:2",
-          "score": 0.25,
+          "id": "playback-user-guide:live-performance-tracks-buses-mixer-controlling-your-tracks:3",
+          "score": 0.252,
           "scope": "adjacent",
           "disruptive": false
         },
         {
-          "id": "playback-user-guide:playback-user-guide-setting-up-audio-and-midi:1",
-          "score": 0.197,
+          "id": "playback-user-guide:playback-settings-general-settings-tab:2",
+          "score": 0.215,
           "scope": "in-scope",
           "disruptive": false
         }
       ],
       "outOfScope": [],
       "expectAny": [
-        "general-settings-tab:1",
+        "general-settings-tab",
         "setting-up-audio-and-midi:1"
       ],
       "note": "Auto-Pan: click/guide left, tracks right on the stereo output"
@@ -70,27 +70,27 @@
       "top": [
         {
           "id": "playback-user-guide:playback-user-guide-setting-up-audio-and-midi:1",
-          "score": 0.406,
+          "score": 0.394,
           "scope": "in-scope",
           "disruptive": false
         },
         {
-          "id": "playback-user-guide:live-performance-tracks-buses-mixer-controlling-your-tracks:2",
-          "score": 0.377,
+          "id": "playback-user-guide:live-performance-tracks-buses-mixer-controlling-your-tracks:3",
+          "score": 0.363,
           "scope": "adjacent",
           "disruptive": false
         },
         {
           "id": "playback-user-guide:setting-up-audio-and-midi-choosing-an-audio-interface:1",
-          "score": 0.338,
+          "score": 0.356,
           "scope": "in-scope",
           "disruptive": false
         }
       ],
       "outOfScope": [],
       "expectAny": [
-        "buses-settings-tab:1",
-        "tracks-settings-tab:1"
+        "buses-settings-tab",
+        "tracks-settings-tab"
       ],
       "note": "bus routing is per audio device; no fixed output1/output2 mapping"
     },
@@ -106,22 +106,22 @@
           "disruptive": false
         },
         {
-          "id": "playback-user-guide:playback-settings-general-settings-tab:1",
-          "score": 0.364,
+          "id": "playback-user-guide:playback-settings-general-settings-tab:2",
+          "score": 0.352,
           "scope": "in-scope",
           "disruptive": false
         },
         {
           "id": "playback-user-guide:playback-settings-buses-settings-tab:1",
-          "score": 0.333,
+          "score": 0.339,
           "scope": "in-scope",
           "disruptive": false
         }
       ],
       "outOfScope": [],
       "expectAny": [
-        "tracks-settings-tab:1",
-        "buses-settings-tab:1"
+        "tracks-settings-tab",
+        "buses-settings-tab"
       ]
     },
     {
@@ -131,26 +131,26 @@
       "top": [
         {
           "id": "playback-user-guide:playback-settings-buses-settings-tab:1",
-          "score": 0.459,
+          "score": 0.471,
           "scope": "in-scope",
           "disruptive": false
         },
         {
           "id": "playback-user-guide:playback-settings-tracks-settings-tab:1",
-          "score": 0.415,
+          "score": 0.414,
           "scope": "in-scope",
           "disruptive": false
         },
         {
           "id": "playback-user-guide:setting-up-audio-and-midi-audio-routing-premium-feature:1",
-          "score": 0.317,
+          "score": 0.32,
           "scope": "in-scope",
           "disruptive": false
         }
       ],
       "outOfScope": [],
       "expectAny": [
-        "buses-settings-tab:1"
+        "buses-settings-tab"
       ],
       "note": "SMPTE bus may be using the output"
     },
@@ -160,20 +160,20 @@
       "ok": true,
       "top": [
         {
-          "id": "playback-user-guide:setting-up-audio-and-midi-choosing-an-audio-interface:1",
-          "score": 0.342,
+          "id": "playback-user-guide:playback-user-guide-setting-up-audio-and-midi:1",
+          "score": 0.343,
           "scope": "in-scope",
           "disruptive": false
         },
         {
-          "id": "playback-user-guide:playback-user-guide-setting-up-audio-and-midi:1",
-          "score": 0.332,
+          "id": "playback-user-guide:setting-up-audio-and-midi-choosing-an-audio-interface:1",
+          "score": 0.335,
           "scope": "in-scope",
           "disruptive": false
         },
         {
           "id": "playback-user-guide:playback-settings-general-settings-tab:1",
-          "score": 0.301,
+          "score": 0.299,
           "scope": "in-scope",
           "disruptive": false
         }
@@ -181,7 +181,7 @@
       "outOfScope": [],
       "expectAny": [
         "setting-up-audio-and-midi:1",
-        "general-settings-tab:1"
+        "general-settings-tab"
       ]
     },
     {
@@ -191,19 +191,19 @@
       "top": [
         {
           "id": "playback-user-guide:setting-up-audio-and-midi-choosing-an-audio-interface:1",
-          "score": 0.653,
-          "scope": "in-scope",
-          "disruptive": false
-        },
-        {
-          "id": "playback-user-guide:setting-up-audio-and-midi-audio-routing-premium-feature:1",
-          "score": 0.418,
+          "score": 0.644,
           "scope": "in-scope",
           "disruptive": false
         },
         {
           "id": "playback-user-guide:playback-user-guide-setting-up-audio-and-midi:1",
-          "score": 0.408,
+          "score": 0.415,
+          "scope": "in-scope",
+          "disruptive": false
+        },
+        {
+          "id": "playback-user-guide:setting-up-audio-and-midi-audio-routing-premium-feature:1",
+          "score": 0.412,
           "scope": "in-scope",
           "disruptive": false
         }
@@ -219,28 +219,28 @@
       "ok": true,
       "top": [
         {
-          "id": "playback-user-guide:adding-a-song-settings-available-when-adding-a-song:2",
-          "score": 0.493,
+          "id": "playback-user-guide:adding-a-song-settings-available-when-adding-a-song:3",
+          "score": 0.499,
           "scope": "in-scope",
           "disruptive": false
         },
         {
-          "id": "playback-user-guide:building-a-setlist-adding-a-song:1",
-          "score": 0.393,
+          "id": "playback-user-guide:the-setlists-menu-navigating-the-setlists-menu:2",
+          "score": 0.481,
           "scope": "in-scope",
           "disruptive": false
         },
         {
-          "id": "playback-user-guide:building-a-setlist-setlist-data-management-in-playback:1",
-          "score": 0.39,
+          "id": "playback-user-guide:building-a-setlist-setlist-data-management-in-playback:2",
+          "score": 0.426,
           "scope": "in-scope",
           "disruptive": false
         }
       ],
       "outOfScope": [],
       "expectAny": [
-        "navigating-the-setlists-menu:1",
-        "settings-available-when-adding-a-song:2",
+        "navigating-the-setlists-menu",
+        "settings-available-when-adding-a-song",
         "setlist-data-management"
       ]
     },
@@ -250,27 +250,27 @@
       "ok": true,
       "top": [
         {
-          "id": "playback-user-guide:adding-a-song-settings-available-when-adding-a-song:2",
-          "score": 0.405,
+          "id": "playback-user-guide:the-setlists-menu-navigating-the-setlists-menu:2",
+          "score": 0.51,
           "scope": "in-scope",
           "disruptive": false
         },
         {
-          "id": "playback-user-guide:the-setlists-menu-navigating-the-setlists-menu:1",
-          "score": 0.37,
+          "id": "playback-user-guide:adding-a-song-settings-available-when-adding-a-song:3",
+          "score": 0.41,
           "scope": "in-scope",
           "disruptive": false
         },
         {
           "id": "playback-user-guide:building-a-setlist-adding-a-song:1",
-          "score": 0.345,
+          "score": 0.344,
           "scope": "in-scope",
           "disruptive": false
         }
       ],
       "outOfScope": [],
       "expectAny": [
-        "navigating-the-setlists-menu:1"
+        "navigating-the-setlists-menu"
       ]
     },
     {
@@ -279,20 +279,20 @@
       "ok": true,
       "top": [
         {
+          "id": "playback-user-guide:building-a-setlist-setlist-data-management-in-playback:2",
+          "score": 0.645,
+          "scope": "in-scope",
+          "disruptive": false
+        },
+        {
           "id": "playback-user-guide:building-a-setlist-setlist-data-management-in-playback:1",
-          "score": 0.615,
+          "score": 0.574,
           "scope": "in-scope",
           "disruptive": false
         },
         {
           "id": "playback-user-guide:the-setlists-menu-navigating-the-setlists-menu:1",
-          "score": 0.473,
-          "scope": "in-scope",
-          "disruptive": false
-        },
-        {
-          "id": "playback-user-guide:adding-a-song-settings-available-when-adding-a-song:2",
-          "score": 0.413,
+          "score": 0.489,
           "scope": "in-scope",
           "disruptive": false
         }
@@ -309,26 +309,26 @@
       "top": [
         {
           "id": "playback-user-guide:adding-a-song-in-playback-options-in-the-add-a-song-menu:1",
-          "score": 0.533,
+          "score": 0.565,
           "scope": "in-scope",
           "disruptive": false
         },
         {
           "id": "playback-user-guide:building-a-setlist-adding-a-song-in-playback:1",
-          "score": 0.483,
+          "score": 0.487,
           "scope": "in-scope",
           "disruptive": false
         },
         {
           "id": "playback-user-guide:adding-a-song-settings-available-when-adding-a-song:1",
-          "score": 0.413,
+          "score": 0.454,
           "scope": "in-scope",
           "disruptive": false
         }
       ],
       "outOfScope": [],
       "expectAny": [
-        "options-in-the-add-a-song-menu:1"
+        "options-in-the-add-a-song-menu"
       ],
       "note": "needs Playback Rentals or Cloud Pro / permissions"
     },
@@ -339,19 +339,19 @@
       "top": [
         {
           "id": "playback-user-guide:building-a-setlist-adding-a-song:1",
-          "score": 0.625,
+          "score": 0.635,
           "scope": "in-scope",
           "disruptive": false
         },
         {
           "id": "playback-user-guide:building-a-setlist-adding-a-song-in-playback:1",
-          "score": 0.586,
+          "score": 0.585,
           "scope": "in-scope",
           "disruptive": false
         },
         {
-          "id": "playback-user-guide:adding-a-song-settings-available-when-adding-a-song:2",
-          "score": 0.578,
+          "id": "playback-user-guide:adding-a-song-settings-available-when-adding-a-song:3",
+          "score": 0.582,
           "scope": "in-scope",
           "disruptive": false
         }
@@ -369,19 +369,19 @@
       "top": [
         {
           "id": "playback-user-guide:login-requirements-general-login-requirements:1",
-          "score": 0.479,
+          "score": 0.488,
           "scope": "in-scope",
           "disruptive": false
         },
         {
           "id": "playback-user-guide:playback-user-guide-user-interface-overview:1",
-          "score": 0.428,
+          "score": 0.429,
           "scope": "in-scope",
           "disruptive": false
         },
         {
           "id": "playback-user-guide:login-requirements-organizational-content-permissions:1",
-          "score": 0.419,
+          "score": 0.413,
           "scope": "in-scope",
           "disruptive": false
         }
@@ -398,7 +398,7 @@
       "top": [
         {
           "id": "playback-user-guide:login-requirements-organizational-content-permissions:1",
-          "score": 0.353,
+          "score": 0.347,
           "scope": "in-scope",
           "disruptive": false
         },
@@ -410,14 +410,12 @@
         },
         {
           "id": "playback-user-guide:login-requirements-general-login-requirements:1",
-          "score": 0.265,
+          "score": 0.256,
           "scope": "in-scope",
           "disruptive": false
         }
       ],
-      "outOfScope": [
-        "playback-user-guide:midi-cues-edit-mode-who-can-save-midi-cues-to-the-cloud:1"
-      ],
+      "outOfScope": [],
       "expectAny": [
         "organizational-content-permissions:1"
       ]
@@ -428,26 +426,26 @@
       "top": [
         {
           "id": "playback-user-guide:playback-user-guide-playback-settings:1",
-          "score": 0.335,
+          "score": 0.324,
           "scope": "adjacent",
           "disruptive": false
         },
         {
           "id": "playback-user-guide:the-setlists-menu-navigating-the-setlists-menu:1",
-          "score": 0.28,
+          "score": 0.3,
           "scope": "in-scope",
           "disruptive": false
         },
         {
           "id": "playback-user-guide:playback-settings-side-menu-settings-and-features:1",
-          "score": 0.252,
+          "score": 0.253,
           "scope": "in-scope",
           "disruptive": true
         }
       ],
       "outOfScope": [
         "playback-user-guide:customizing-setlists-setlist-song-map-edit-mode:2",
-        "playback-user-guide:setlist-song-map-edit-mode-edit-song-menu:1"
+        "playback-user-guide:customizing-setlists-playback-edit-modes-overview:1"
       ],
       "expectAny": [
         "side-menu-settings-and-features:1",
@@ -461,7 +459,7 @@
       "top": [
         {
           "id": "playback-user-guide:playback-settings-about-tab:1",
-          "score": 0.521,
+          "score": 0.517,
           "scope": "adjacent",
           "disruptive": true
         }
@@ -488,20 +486,20 @@
       "ok": true,
       "top": [
         {
-          "id": "playback-user-guide:adding-a-song-settings-available-when-adding-a-song:1",
-          "score": 0.332,
+          "id": "playback-user-guide:playback-settings-general-settings-tab:4",
+          "score": 0.431,
           "scope": "in-scope",
           "disruptive": false
         },
         {
-          "id": "playback-user-guide:playback-settings-general-settings-tab:2",
-          "score": 0.314,
+          "id": "playback-user-guide:adding-a-song-settings-available-when-adding-a-song:2",
+          "score": 0.409,
           "scope": "in-scope",
           "disruptive": false
         },
         {
           "id": "playback-user-guide:playback-user-guide-setting-up-audio-and-midi:1",
-          "score": 0.255,
+          "score": 0.25,
           "scope": "in-scope",
           "disruptive": false
         }
@@ -509,7 +507,7 @@
       "outOfScope": [
         "playback-user-guide:playback-user-guide-smpte:1",
         "playback-user-guide:customizing-setlists-smpte-edit-mode:1",
-        "playback-user-guide:midi-settings-tab-midi-clock:1"
+        "playback-user-guide:customizing-setlists-playback-edit-modes-overview:3"
       ],
       "expectAny": []
     },
@@ -519,19 +517,19 @@
       "top": [
         {
           "id": "playback-user-guide:playback-settings-side-menu-settings-and-features:1",
-          "score": 0.5,
+          "score": 0.491,
           "scope": "in-scope",
           "disruptive": true
         },
         {
           "id": "playback-user-guide:playback-user-guide-app-overview:1",
-          "score": 0.47,
+          "score": 0.481,
           "scope": "in-scope",
           "disruptive": false
         },
         {
-          "id": "playback-user-guide:playback-settings-general-settings-tab:1",
-          "score": 0.45,
+          "id": "playback-user-guide:playback-settings-general-settings-tab:2",
+          "score": 0.442,
           "scope": "in-scope",
           "disruptive": false
         }
@@ -555,21 +553,21 @@
         },
         {
           "id": "playback-user-guide:playback-user-guide-building-a-setlist:1",
-          "score": 0.097,
+          "score": 0.099,
           "scope": "in-scope",
           "disruptive": false
         },
         {
-          "id": "playback-user-guide:adding-a-song-settings-available-when-adding-a-song:2",
-          "score": 0.091,
+          "id": "playback-user-guide:adding-a-song-settings-available-when-adding-a-song:1",
+          "score": 0.094,
           "scope": "in-scope",
           "disruptive": false
         }
       ],
       "outOfScope": [
         "playback-user-guide:playback-named-arrangements-saving-named-arrangements:1",
-        "playback-user-guide:setlist-song-map-edit-mode-edit-song-menu:2",
-        "playback-user-guide:customizing-setlists-setlist-song-map-edit-mode:2"
+        "playback-user-guide:playback-user-guide-redundancy-mode:1",
+        "playback-user-guide:setlist-song-map-edit-mode-edit-song-menu:3"
       ],
       "expectAny": [],
       "note": "should return weak or no in-scope hits; the tool note says not to invent"
