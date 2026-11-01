@@ -26,10 +26,10 @@ export function buildToolDefinitions(opts: { serverUrl: string; secret?: string 
   return [
     fn(
       "search_playback_docs",
-      "Search MultiTracks' official Playback support documentation for troubleshooting steps. Use before giving any troubleshooting instruction. Returns documented steps with source URLs; only give steps that appear in the results.",
+      "Search MultiTracks' official Playback support documentation: help-center articles (results) and sections of the Playback User Guide (manual.results). Use before giving any troubleshooting instruction. Returns documented steps with source URLs; only give steps that appear in the results. manual.outOfScope lists topics the guide documents but this line does not troubleshoot.",
       {
         query: { type: "string", description: "Symptom or topic in the caller's words, e.g. 'song stuck downloading' or 'no sound from USB interface'." },
-        category: { type: "string", enum: ["song-loading", "audio-output", "requirements", "subscription", "general"], description: "Optional category filter." },
+        category: { type: "string", enum: ["song-loading", "audio-output", "setup", "requirements", "subscription", "general"], description: "Optional category filter. 'setup' covers first-time login, organizations and the main interface." },
         platform: { type: "string", description: "Caller's platform if known: iOS, iPadOS, macOS, Windows." },
       },
       ["query"],

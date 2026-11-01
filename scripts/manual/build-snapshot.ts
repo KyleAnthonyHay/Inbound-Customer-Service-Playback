@@ -97,7 +97,7 @@ async function main() {
       })),
     ],
     videos,
-    related_articles: article.relatedArticles,
+    related_articles: article.relatedArticles.map((l) => ({ title: l.text, url: l.url })),
     outbound_links: outboundLinks,
   };
 
