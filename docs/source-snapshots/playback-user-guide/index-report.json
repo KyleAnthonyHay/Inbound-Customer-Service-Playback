@@ -1,0 +1,40 @@
+{
+  "indexed_at": "2026-11-01T23:27:19.084Z",
+  "index": "playback-support-kb",
+  "host": "https://playback-support-kb-vsu2osv.svc.aped-4627-b74a.pinecone.io",
+  "namespace": "playback-user-guide",
+  "embed_model": "llama-text-embed-v2",
+  "records_upserted": 78,
+  "records_in_namespace_after": 78,
+  "pruned": [],
+  "record_bytes": 116377,
+  "probes": [
+    {
+      "query": "how do I pick which audio device Playback uses",
+      "ok": true,
+      "top": [
+        "playback-user-guide:playback-settings-general-settings-tab:1 (0.482)",
+        "playback-user-guide:setting-up-audio-and-midi-choosing-an-audio-interface:1 (0.481)",
+        "playback-user-guide:playback-user-guide-setting-up-audio-and-midi:1 (0.465)"
+      ]
+    },
+    {
+      "query": "song will not download in my setlist",
+      "ok": true,
+      "top": [
+        "playback-user-guide:adding-a-song-settings-available-when-adding-a-song:2 (0.461)",
+        "playback-user-guide:building-a-setlist-setlist-data-management-in-playback:1 (0.367)",
+        "playback-user-guide:building-a-setlist-adding-a-song:1 (0.367)"
+      ]
+    },
+    {
+      "query": "click track and guide only in one ear",
+      "ok": true,
+      "top": [
+        "playback-user-guide:playback-settings-general-settings-tab:1 (0.389)",
+        "playback-user-guide:live-performance-tracks-buses-mixer-controlling-your-tracks:2 (0.352)",
+        "playback-user-guide:playback-user-guide-setting-up-audio-and-midi:1 (0.315)"
+      ]
+    }
+  ]
+}
