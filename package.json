@@ -13,7 +13,8 @@
     "voice:test": "tsx --env-file=.env.local scripts/voice-test.ts",
     "sync:assistant:prod": "tsx --env-file=.env.production.local scripts/sync-assistant.ts",
     "voice:test:prod": "tsx --env-file=.env.production.local scripts/voice-test.ts",
-    "release": "npm run typecheck && npm test && npx convex deploy -y && npm run sync:assistant:prod && npx vercel --prod --yes"
+    "release": "npm run typecheck && npm test && npx convex deploy -y && npm run sync:assistant:prod && npx vercel --prod --yes",
+    "manual:fetch": "tsx scripts/manual/fetch-manual.ts"
   },
   "dependencies": {
     "@vapi-ai/web": "^3.1.0",
@@ -34,6 +35,7 @@
     "@types/ws": "^8.18.2",
     "eslint": "^9",
     "eslint-config-next": "16.4.3",
+    "node-html-parser": "^9.0.6",
     "tailwindcss": "^4",
     "tsx": "^4.23.15",
     "typescript": "^5",
