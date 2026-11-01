@@ -50,13 +50,14 @@ test("chunks start with the title and heading path, stay under budget, and have 
 });
 
 test("splits keep steps with their lead-in and notes with their step", () => {
-  const buses = chunks.find((c) => c.id === "playback-user-guide:playback-settings-buses-settings-tab:1")!;
-  assert.ok(buses, "buses chunk exists");
-  assert.match(buses.text, /Tap the bus cell to open the routing menu/);
-  assert.match(buses.text, /greyed-out/);
-  const general1 = chunks.find((c) => c.id === "playback-user-guide:playback-settings-general-settings-tab:1")!;
-  assert.match(general1.text, /Audio Device: See and set which connected Audio Device/);
-  assert.match(general1.text, /Auto-Pan: When enabled, Auto Pan routes the click & guide through the left/);
+  const buses = chunks.find((c) => /Tap the bus cell to open the routing menu/.test(c.text))!;
+  assert.ok(buses, "bus routing steps exist");
+  assert.match(buses.text, /Change Bus Routing/, "lead-in stays with its steps");
+  assert.match(buses.text, /greyed-out/, "note stays with the step it qualifies");
+  const audioDevice = chunks.find((c) => /Audio Device: See and set which connected Audio Device/.test(c.text))!;
+  assert.ok(audioDevice.id.startsWith("playback-user-guide:playback-settings-general-settings-tab:"));
+  assert.match(audioDevice.text, /for all audio output\./, "list item is never cut mid-sentence");
+  assert.ok(chunks.some((c) => /Auto-Pan: When enabled, Auto Pan routes the click & guide through the left/.test(c.text)));
   // A sub-heading-like lead-in never ends a part.
   for (const c of chunks) {
     const last = c.text.trimEnd().split("\n").pop()!;
@@ -99,7 +100,7 @@ test("chunk fields are Pinecone-safe (string, number, boolean, string[])", () =>
 });
 
 test("manual search shapes Pinecone hits, classifies steps and separates out-of-scope hits", async () => {
-  const general = chunks.find((c) => c.id.endsWith("general-settings-tab:1"))!;
+  const general = chunks.find((c) => /Audio Device: See and set/.test(c.text))!;
   const midi = chunks.find((c) => c.id.includes("midi-cues-edit-mode-add-midi-cue-menu"))!;
   const data = chunks.find((c) => c.id.includes("setlist-data-management"))!;
   const calls: Array<{ url: string; body: unknown }> = [];

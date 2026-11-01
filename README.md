@@ -64,8 +64,8 @@ Pipeline (all under `scripts/manual/`, outputs in `docs/source-snapshots/playbac
 | 4 Validate | `npm run manual:eval` | `retrieval-report.json` (real caller questions vs expected sections) |
 
 - Chunks are one per leaf heading (title + heading path on every chunk), split
-  only between blocks so steps, lead-ins and notes stay together; ~750 chars
-  average, under 2,000.
+  only between blocks so steps, lead-ins and notes stay together; ~630 chars
+  average, under 1,200 (96 chunks).
 - Text only is embedded (Pinecone integrated `llama-text-embed-v2`, field
   `text`). Screenshots are never embedded or stored as binaries: a chunk carries
   `image_ids`, and `manual-manifest.json` maps each id to source URL, local

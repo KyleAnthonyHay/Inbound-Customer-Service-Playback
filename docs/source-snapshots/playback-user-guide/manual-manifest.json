@@ -5,11 +5,11 @@
   "source_url": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide",
   "source_updated_at": "2026-07-31",
   "retrieved_at": "2026-11-01T22:54:42.910Z",
-  "built_at": "2026-11-01T23:02:47.269Z",
+  "built_at": "2026-11-01T23:29:13.182Z",
   "snapshot_html": "playback-user-guide.snapshot.html",
   "extracted_text": "playback-user-guide.txt",
   "chunks_file": "chunks.jsonl",
-  "chunk_count": 78,
+  "chunk_count": 96,
   "image_count": 43,
   "images": [
     {
@@ -170,7 +170,7 @@
       "caption": "",
       "section_path": "Playback User Guide > Building a Setlist > The Setlists Menu > Navigating the Setlists menu",
       "chunk_ids": [
-        "playback-user-guide:the-setlists-menu-navigating-the-setlists-menu:1"
+        "playback-user-guide:the-setlists-menu-navigating-the-setlists-menu:2"
       ],
       "block_index": 61,
       "width": 867,
@@ -230,7 +230,7 @@
       "caption": "",
       "section_path": "Playback User Guide > Building a Setlist > Setlist Data Management in Playback",
       "chunk_ids": [
-        "playback-user-guide:building-a-setlist-setlist-data-management-in-playback:1"
+        "playback-user-guide:building-a-setlist-setlist-data-management-in-playback:2"
       ],
       "block_index": 73,
       "width": 1440,
@@ -305,7 +305,7 @@
       "caption": "",
       "section_path": "Playback User Guide > Customizing Setlists > Setlist / Song Map Edit Mode > Edit Song Menu",
       "chunk_ids": [
-        "playback-user-guide:setlist-song-map-edit-mode-edit-song-menu:3"
+        "playback-user-guide:setlist-song-map-edit-mode-edit-song-menu:5"
       ],
       "block_index": 96,
       "width": 2160,
@@ -682,23 +682,23 @@
   ],
   "related_articles": [
     {
-      "text": "HOW TO | Setup a MIDI Controller to control Playback?",
+      "title": "HOW TO | Setup a MIDI Controller to control Playback?",
       "url": "https://helpcenter.multitracks.com/en/articles/4490527-how-to-setup-a-midi-controller-to-control-playback"
     },
     {
-      "text": "Playback Setlists & Setlists Menu",
+      "title": "Playback Setlists & Setlists Menu",
       "url": "https://helpcenter.multitracks.com/en/articles/5189112-playback-setlists-setlists-menu"
     },
     {
-      "text": "HOW TO | Create Custom Arrangements in Playback",
+      "title": "HOW TO | Create Custom Arrangements in Playback",
       "url": "https://helpcenter.multitracks.com/en/articles/6437439-how-to-create-custom-arrangements-in-playback"
     },
     {
-      "text": "HOW TO | Automations in Playback",
+      "title": "HOW TO | Automations in Playback",
       "url": "https://helpcenter.multitracks.com/en/articles/7225305-how-to-automations-in-playback"
     },
     {
-      "text": "Playback General Settings Overview",
+      "title": "Playback General Settings Overview",
       "url": "https://helpcenter.multitracks.com/en/articles/12549860-playback-general-settings-overview"
     }
   ],

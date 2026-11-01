@@ -19,18 +19,18 @@ type Case = { q: string; category?: string; expectAny: string[]; expectOutOfScop
 
 export const CASES: Case[] = [
   // Audio output
-  { q: "How do I choose which audio device Playback uses for output?", category: "audio-output", expectAny: ["general-settings-tab:1"] },
-  { q: "The click and guide are only in my left ear and the band is in the right", category: "audio-output", expectAny: ["general-settings-tab:1", "setting-up-audio-and-midi:1"], note: "Auto-Pan: click/guide left, tracks right on the stereo output" },
-  { q: "How do I send the click to a different output on my USB interface?", category: "audio-output", expectAny: ["buses-settings-tab:1", "tracks-settings-tab:1"], note: "bus routing is per audio device; no fixed output1/output2 mapping" },
-  { q: "I want the guide vocal cues to go to a different bus than the click", category: "audio-output", expectAny: ["tracks-settings-tab:1", "buses-settings-tab:1"] },
-  { q: "An output is greyed out when I try to route a bus", category: "audio-output", expectAny: ["buses-settings-tab:1"], note: "SMPTE bus may be using the output" },
-  { q: "no sound from Playback through my headphones without an interface", category: "audio-output", expectAny: ["setting-up-audio-and-midi:1", "general-settings-tab:1"] },
+  { q: "How do I choose which audio device Playback uses for output?", category: "audio-output", expectAny: ["general-settings-tab"] },
+  { q: "The click and guide are only in my left ear and the band is in the right", category: "audio-output", expectAny: ["general-settings-tab", "setting-up-audio-and-midi:1"], note: "Auto-Pan: click/guide left, tracks right on the stereo output" },
+  { q: "How do I send the click to a different output on my USB interface?", category: "audio-output", expectAny: ["buses-settings-tab", "tracks-settings-tab"], note: "bus routing is per audio device; no fixed output1/output2 mapping" },
+  { q: "I want the guide vocal cues to go to a different bus than the click", category: "audio-output", expectAny: ["tracks-settings-tab", "buses-settings-tab"] },
+  { q: "An output is greyed out when I try to route a bus", category: "audio-output", expectAny: ["buses-settings-tab"], note: "SMPTE bus may be using the output" },
+  { q: "no sound from Playback through my headphones without an interface", category: "audio-output", expectAny: ["setting-up-audio-and-midi:1", "general-settings-tab"] },
   { q: "Which USB audio interfaces work with Playback?", category: "audio-output", expectAny: ["choosing-an-audio-interface:1"] },
   // Song loading
-  { q: "The song in my setlist won't download", category: "song-loading", expectAny: ["navigating-the-setlists-menu:1", "settings-available-when-adding-a-song:2", "setlist-data-management"] },
-  { q: "How do I download all the songs in a setlist before Sunday?", category: "song-loading", expectAny: ["navigating-the-setlists-menu:1"] },
+  { q: "The song in my setlist won't download", category: "song-loading", expectAny: ["navigating-the-setlists-menu", "settings-available-when-adding-a-song", "setlist-data-management"] },
+  { q: "How do I download all the songs in a setlist before Sunday?", category: "song-loading", expectAny: ["navigating-the-setlists-menu"] },
   { q: "Will deleting setlists from my iPad delete them from my account?", category: "song-loading", expectAny: ["setlist-data-management-in-playback:1"] },
-  { q: "I don't see the All Songs option when adding a song", category: "song-loading", expectAny: ["options-in-the-add-a-song-menu:1"], note: "needs Playback Rentals or Cloud Pro / permissions" },
+  { q: "I don't see the All Songs option when adding a song", category: "song-loading", expectAny: ["options-in-the-add-a-song-menu"], note: "needs Playback Rentals or Cloud Pro / permissions" },
   { q: "How do I add a song to my setlist?", category: "song-loading", expectAny: ["adding-a-song-in-playback:1", "building-a-setlist-adding-a-song:1"] },
   // First-time setup (bounded)
   { q: "First time opening Playback, which organization do I pick at login?", category: "setup", expectAny: ["organizations-vs-users:1", "general-login-requirements:1"] },

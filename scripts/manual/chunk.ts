@@ -147,7 +147,7 @@ function splitLongGroup(group: Block[], maxChars: number): Block[][] {
 }
 
 export function chunkSections(sections: Section[], opts: ChunkOptions): { chunks: ManualChunk[]; images: ManualImage[] } {
-  const maxChars = opts.maxChars ?? 1800;
+  const maxChars = opts.maxChars ?? 1000;
   const chunks: ManualChunk[] = [];
   const images = new Map<string, ManualImage>();
   const usedSlugs = new Map<string, number>();
