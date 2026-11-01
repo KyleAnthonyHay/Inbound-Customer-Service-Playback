@@ -48,16 +48,27 @@ async function api<T>(url: string, init: RequestInit = {}): Promise<{ status: nu
   return { status: res.status, body };
 }
 
-type IndexDesc = { name: string; host: string; status: { ready: boolean; state: string }; embed?: { model?: string; field_map?: Record<string, string> } };
+type IndexDesc = {
+  name: string;
+  host: string;
+  status: { ready: boolean; state: string };
+  /** Pre-2026 API versions report integrated embeddings here. */
+  embed?: { model?: string; field_map?: Record<string, string> };
+  /** API version 2026-07 reports them as a semantic_text field in the schema. */
+  schema?: { fields?: Record<string, { type?: string; model?: string }> };
+};
 
 async function ensureIndex(): Promise<IndexDesc> {
   const existing = await api<IndexDesc>(`https://api.pinecone.io/indexes/${indexName}`);
   if (existing.status === 200) {
     const d = existing.body;
-    if (!d.embed?.model) throw new Error(`Index ${indexName} exists but has no integrated embedding model; pick another PINECONE_INDEX (this script never recreates indexes).`);
-    if (d.embed.model !== EMBED.model || d.embed.field_map?.text !== "text")
-      throw new Error(`Index ${indexName} uses ${d.embed.model} on field '${d.embed.field_map?.text}', expected ${EMBED.model} on 'text'. Pick another PINECONE_INDEX.`);
-    console.log(`Index ${indexName} exists (${d.embed.model}, host ${d.host}, ready=${d.status.ready})`);
+    const semanticField = Object.entries(d.schema?.fields ?? {}).find(([, f]) => f.type === "semantic_text");
+    const model = d.embed?.model ?? semanticField?.[1].model;
+    const textField = d.embed?.field_map?.text ?? semanticField?.[0];
+    if (!model) throw new Error(`Index ${indexName} exists but has no integrated embedding model; pick another PINECONE_INDEX (this script never recreates indexes).`);
+    if (model !== EMBED.model || textField !== "text")
+      throw new Error(`Index ${indexName} uses ${model} on field '${textField}', expected ${EMBED.model} on 'text'. Pick another PINECONE_INDEX.`);
+    console.log(`Index ${indexName} exists (${model}, host ${d.host}, ready=${d.status.ready})`);
     return d;
   }
   if (existing.status !== 404) throw new Error(`describe index: HTTP ${existing.status} ${JSON.stringify(existing.body)}`);
