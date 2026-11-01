@@ -13,15 +13,15 @@
     "callout": 13
   },
   "sections": 71,
-  "chunks": 96,
+  "chunks": 95,
   "chunk_chars": {
     "min": 149,
-    "max": 1106,
-    "avg": 632
+    "max": 1314,
+    "avg": 638
   },
   "by_scope": {
     "adjacent": 13,
-    "in-scope": 33,
+    "in-scope": 32,
     "out-of-scope": 50
   },
   "by_category": {
@@ -29,7 +29,7 @@
     "setup": 9,
     "song-loading": 13,
     "advanced": 50,
-    "audio-output": 14,
+    "audio-output": 13,
     "subscription": 1
   },
   "images": 43,
@@ -551,18 +551,10 @@
     },
     {
       "id": "playback-user-guide:playback-settings-buses-settings-tab:1",
-      "chars": 988,
+      "chars": 1314,
       "scope": "in-scope",
       "category": "audio-output",
       "images": 1,
-      "path": "Playback User Guide > Playback Settings > Buses Settings Tab"
-    },
-    {
-      "id": "playback-user-guide:playback-settings-buses-settings-tab:2",
-      "chars": 414,
-      "scope": "in-scope",
-      "category": "audio-output",
-      "images": 0,
       "path": "Playback User Guide > Playback Settings > Buses Settings Tab"
     },
     {
@@ -623,7 +615,7 @@
     },
     {
       "id": "playback-user-guide:playback-user-guide-redundancy-mode:1",
-      "chars": 1041,
+      "chars": 485,
       "scope": "out-of-scope",
       "category": "advanced",
       "images": 0,
@@ -631,7 +623,7 @@
     },
     {
       "id": "playback-user-guide:playback-user-guide-redundancy-mode:2",
-      "chars": 406,
+      "chars": 962,
       "scope": "out-of-scope",
       "category": "advanced",
       "images": 0,

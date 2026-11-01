@@ -102,14 +102,18 @@ const isLeadIn = (b: Block) => b.kind === "paragraph" && (/[:：]\s*$/.test(b.te
 /** Groups of blocks that must stay together when splitting. */
 function cohesiveGroups(blocks: Block[]): Block[][] {
   const groups: Block[][] = [];
-  let open = false; // previous group ended with a lead-in ("...:") and wants the next block
+  // A lead-in ("Change Bus Routing", "...the following:") keeps absorbing blocks until it has
+  // its list, callout or image, so a sub-heading never ends up in a different part from its steps.
+  let wanting = 0;
   for (const b of blocks) {
     const last = groups[groups.length - 1];
     const attachToPrev =
-      last && (open || b.kind === "callout" || b.kind === "image" || b.kind === "video" || (b.kind === "paragraph" && b.emphasis && last.some((x) => x.kind === "image")));
+      last && (wanting > 0 || b.kind === "callout" || b.kind === "image" || b.kind === "video" || (b.kind === "paragraph" && b.emphasis && last.some((x) => x.kind === "image")));
     if (attachToPrev) last.push(b);
     else groups.push([b]);
-    open = isLeadIn(b);
+    if (isLeadIn(b)) wanting = 3;
+    else if (b.kind === "list" || b.kind === "callout" || b.kind === "image") wanting = 0;
+    else wanting = Math.max(0, wanting - 1);
   }
   return groups;
 }
