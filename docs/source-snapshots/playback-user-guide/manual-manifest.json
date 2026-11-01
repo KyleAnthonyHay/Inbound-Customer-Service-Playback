@@ -1,0 +1,997 @@
+{
+  "kind": "manual-manifest",
+  "doc_title": "Playback User Guide",
+  "doc_slug": "playback-user-guide",
+  "source_url": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide",
+  "source_updated_at": "2026-07-31",
+  "retrieved_at": "2026-11-01T22:54:42.910Z",
+  "built_at": "2026-11-01T23:02:47.269Z",
+  "snapshot_html": "playback-user-guide.snapshot.html",
+  "extracted_text": "playback-user-guide.txt",
+  "chunks_file": "chunks.jsonl",
+  "chunk_count": 78,
+  "image_count": 43,
+  "images": [
+    {
+      "id": "img-02",
+      "source_url": "https://multitrackscom.intercom-attachments-1.com/i/o/303228680/0cf087b11e588b0d0e6dec5c/1+Introduction.jpg?expires=1793574900&signature=c1c57308238cb6f9f60f2442376dc1e493c2e684298a1ea3f9d910d80f220810&req=dyAkFMt2m4lfFb4f3HP0gH1zQd687mzccEWJjcR2BSYRDDTEIRjfQBAT8Avx%0Ae0mYAmY1otiPsBAVfw%3D%3D%0A",
+      "file": "images/02-0c4a9ffd95.jpg",
+      "alt": "",
+      "caption": "",
+      "section_path": "Playback User Guide",
+      "chunk_ids": [
+        "playback-user-guide:playback-user-guide:1"
+      ],
+      "block_index": 0,
+      "width": 1440,
+      "height": 278,
+      "bytes": 59981
+    },
+    {
+      "id": "img-03",
+      "source_url": "https://multitrackscom.intercom-attachments-1.com/i/o/303228948/2f1550ed7b360ff4fed6643c/2+Opening+Playback.jpg?expires=1793574900&signature=881861be7b9a7f783b45a7284c72d7c39d455e1302415c1d946867312f68a655&req=dyAkFMt2lIVXFb4f3HP0gH1EJhsWb6wugOWaGQBA3pBZjtQAenzexZuCo8f9%0AxNi%2BOxvzUCpszvn0Qg%3D%3D%0A",
+      "file": "images/03-ac5dcfb982.jpg",
+      "alt": "",
+      "caption": "",
+      "section_path": "Playback User Guide > App Overview > Login Requirements > Organizational Content Permissions",
+      "chunk_ids": [
+        "playback-user-guide:login-requirements-organizational-content-permissions:1"
+      ],
+      "block_index": 17,
+      "width": 1440,
+      "height": 278,
+      "bytes": 65669
+    },
+    {
+      "id": "img-04",
+      "source_url": "https://multitrackscom.intercom-attachments-1.com/i/o/336710205/9967e3c0f58cb80f504cf5c8/IMG_0876+copy.PNG?expires=1793574900&signature=c51925a6c707d9577a1ffb12bdc67da0c5a1df1650f0fd086b2637622e172020&req=dyMhEch%2Bn4FaFb4f3HP0gJV3V3I552tonl8k7rVr6LR5p14QRPT3Jx6cYsYt%0AvQuGshIPhRahuc%2BFcw%3D%3D%0A",
+      "file": "images/04-67a8161323.png",
+      "alt": "",
+      "caption": "",
+      "section_path": "Playback User Guide > User Interface Overview > Transport Controls",
+      "chunk_ids": [
+        "playback-user-guide:user-interface-overview-transport-controls:1"
+      ],
+      "block_index": 22,
+      "width": 2160,
+      "height": 198,
+      "bytes": 190786
+    },
+    {
+      "id": "img-05",
+      "source_url": "https://multitrackscom.intercom-attachments-1.com/i/o/336710575/9616219dbc406100d8878087/IMG_0876+copy+2.PNG?expires=1793574900&signature=eaf8f3292166d78eb1a8574256092dc4cf7111dbc37fd9224b9835d3464cbb11&req=dyMhEch%2BmIZaFb4f3HP0gJFsQKPr1Z4pBVJzDbCaEI0cYueER%2F2H9s9c4ogH%0AbmBBYNDeYKJD9XpgmQ%3D%3D%0A",
+      "file": "images/05-3473fbc366.png",
+      "alt": "",
+      "caption": "",
+      "section_path": "Playback User Guide > User Interface Overview > Setlist Song Tiles",
+      "chunk_ids": [
+        "playback-user-guide:user-interface-overview-setlist-song-tiles:1"
+      ],
+      "block_index": 27,
+      "width": 2160,
+      "height": 361,
+      "bytes": 445217
+    },
+    {
+      "id": "img-06",
+      "source_url": "https://multitrackscom.intercom-attachments-1.com/i/o/336710800/692a773c997cfab258fe53c1/IMG_0876+copy+3.PNG?expires=1793574900&signature=54005a51e3b016e8930e07853623ac4283c478226adb48ab2dc19a55e5c21f06&req=dyMhEch%2BlYFfFb4f3HP0gMW3oq0XZfuPgtsEYQRkkjHKm%2Fh8U%2FGpPSNOqFiP%0AKLi3DHtJS0dnsNLiJA%3D%3D%0A",
+      "file": "images/06-80a8894680.png",
+      "alt": "",
+      "caption": "",
+      "section_path": "Playback User Guide > User Interface Overview > Setlist Song Tiles",
+      "chunk_ids": [
+        "playback-user-guide:user-interface-overview-setlist-song-tiles:1"
+      ],
+      "block_index": 29,
+      "width": 2160,
+      "height": 317,
+      "bytes": 105181
+    },
+    {
+      "id": "img-07",
+      "source_url": "https://downloads.intercomcdn.com/i/o/1109531850/8c958d830698890aa7c985e4/CleanShot+2024-07-10+at+16_19_22.png?expires=1793574900&signature=7c206c7d8dc05221e2b9a9a652f2efa4c45f6143e56e698bfb189ab34a9ec499&req=dSEnH8x9nIlaWfMW1HO4zfwrxz4MhhLJlD54OvtKRKB02mZkv2WC92%2BmdbZq%0ARtBY5pVGJWhWnXDh%2B6Q%3D%0A",
+      "file": "images/07-72f9e351f4.png",
+      "alt": "",
+      "caption": "",
+      "section_path": "Playback User Guide > User Interface Overview > Tracks/Buses/Pad Player",
+      "chunk_ids": [
+        "playback-user-guide:user-interface-overview-tracks-buses-pad-player:1"
+      ],
+      "block_index": 32,
+      "width": 1187,
+      "height": 418,
+      "bytes": 193876
+    },
+    {
+      "id": "img-08",
+      "source_url": "https://multitrackscom.intercom-attachments-1.com/i/o/303230484/009aa72cb911f1948d625842/3+Building+a+Setlist.jpg?expires=1793664000&signature=fbce8f30440e05f0a2433da033b482d9708182090a5f01009f5b83424305cab7&req=dyAkFMp%2BmYlbFb4X1HO4gcR3UUgcsoAadsYTTgEzMi3yfJGSx8j4%2BP%2FHen%2BT%0A",
+      "file": "images/08-bbb5afc78a.jpg",
+      "alt": "",
+      "caption": "",
+      "section_path": "Playback User Guide > User Interface Overview > Tracks/Buses/Pad Player",
+      "chunk_ids": [
+        "playback-user-guide:user-interface-overview-tracks-buses-pad-player:1"
+      ],
+      "block_index": 33,
+      "width": 1440,
+      "height": null,
+      "bytes": 64112
+    },
+    {
+      "id": "img-09",
+      "source_url": "https://multitrackscom.intercom-attachments-1.com/i/o/336711581/cee75f4f06becfd653c25685/IMG_0877.PNG?expires=1793574900&signature=6632c803a8bc933d34d0a8b89912900bf0aae7935b676d2a5894041cb1849e08&req=dyMhEch%2FmIleFb4f3HP0gMzitnFySXyj6PT8NHHXy8ai9%2FQkENAJ6CrVMcmH%0AwE%2BmHp2LnWmkh2GfWw%3D%3D%0A",
+      "file": "images/09-5bc0b5cba1.png",
+      "alt": "",
+      "caption": "",
+      "section_path": "Playback User Guide > Building a Setlist > Adding A Song in Playback",
+      "chunk_ids": [
+        "playback-user-guide:building-a-setlist-adding-a-song-in-playback:1"
+      ],
+      "block_index": 39,
+      "width": 2160,
+      "height": 1150,
+      "bytes": 345267
+    },
+    {
+      "id": "img-10",
+      "source_url": "https://multitrackscom.intercom-attachments-1.com/i/o/336712004/8eeb33800cb0d9cb1ae60162/IMG_0878.PNG?expires=1793574900&signature=912a677ae5f281daa0251f72a0ab68c216827f8febae9afe22ff19666313652c&req=dyMhEch8nYFbFb4f3HP0gI3BFj2zckniXYnUWW9wQIexPbjZSjtHMzQdYBJm%0AtJMHpkTa2IbR3qPxcw%3D%3D%0A",
+      "file": "images/10-92b16b3b45.png",
+      "alt": "",
+      "caption": "",
+      "section_path": "Playback User Guide > Building a Setlist > Adding a song",
+      "chunk_ids": [
+        "playback-user-guide:building-a-setlist-adding-a-song:1"
+      ],
+      "block_index": 45,
+      "width": 2160,
+      "height": 1407,
+      "bytes": 406907
+    },
+    {
+      "id": "img-11",
+      "source_url": "https://downloads.intercomcdn.com/i/o/1109545370/619f506151d672e3e71e7f18/CleanShot+2024-07-10+at+16_37_38.png?expires=1793574900&signature=4e19fd03798a655ab4b80d54b2b783262eafa9e89fa3fd87249e7a4820dc1b6c&req=dSEnH8x6mIJYWfMW1HO4zRgQMrLpenCxmD3lAMp7mVWWNLpE9IwnuWqgYPRk%0AxMoRsQ3MamlXq7p6kac%3D%0A",
+      "file": "images/11-a2cfa5c206.png",
+      "alt": "",
+      "caption": "",
+      "section_path": "Playback User Guide > Building a Setlist > The Setlists Menu > Navigating the Setlists menu",
+      "chunk_ids": [
+        "playback-user-guide:the-setlists-menu-navigating-the-setlists-menu:1"
+      ],
+      "block_index": 56,
+      "width": 900,
+      "height": 517,
+      "bytes": 261655
+    },
+    {
+      "id": "img-12",
+      "source_url": "https://downloads.intercomcdn.com/i/o/1109553318/3eebd24eaf957e1faa362510/CleanShot+2024-07-10+at+16_45_30.png?expires=1793574900&signature=9d393bedc6e3f79e71fa5a3602268c2fcef5f004f616de988264cd7d7999e7de&req=dSEnH8x7noJeUfMW1HO4zdewjQgw03e%2FzosldvPmqguxKa9Zg1hEfnUBpELR%0ADXCVvBubKFJM2fis6TU%3D%0A",
+      "file": "images/12-ae56296f20.png",
+      "alt": "",
+      "caption": "",
+      "section_path": "Playback User Guide > Building a Setlist > The Setlists Menu > Navigating the Setlists menu",
+      "chunk_ids": [
+        "playback-user-guide:the-setlists-menu-navigating-the-setlists-menu:1"
+      ],
+      "block_index": 61,
+      "width": 867,
+      "height": 460,
+      "bytes": 226949
+    },
+    {
+      "id": "img-13",
+      "source_url": "https://downloads.intercomcdn.com/i/o/1109556341/eb502fe99e3dbe840b58d155/CleanShot+2024-07-10+at+16_49_07.png?expires=1793574900&signature=54e98a29c1e476f069ba3c0503fae002eb360ced6e786d6c1114bf2cfb955f90&req=dSEnH8x7m4JbWPMW1HO4zdUP%2FtTJZHHtkUzMloBzZwQjLRUS1PaqjIWzQ8d2%0ARECaLA7Qxwx%2FLWfJVjs%3D%0A",
+      "file": "images/13-52304a2297.png",
+      "alt": "",
+      "caption": "Removing Individual Setlists from a device",
+      "section_path": "Playback User Guide > Building a Setlist > Setlist Data Management in Playback",
+      "chunk_ids": [
+        "playback-user-guide:building-a-setlist-setlist-data-management-in-playback:1"
+      ],
+      "block_index": 64,
+      "width": 888,
+      "height": 520,
+      "bytes": 241569
+    },
+    {
+      "id": "img-14",
+      "source_url": "https://downloads.intercomcdn.com/i/o/1109558053/2cb5b5a6cc51be7f38566051/CleanShot+2024-07-10+at+16_52_38.png?expires=1793574900&signature=02074ddcc96647f53490fae519d1c7f392d8e57ecd472a096d5d6ab905340c82&req=dSEnH8x7lYFaWvMW1HO4zY7YELrepOkzL0kw8knvaau6Rl%2FFH8yL5DPMQRjP%0ALFSMLr8EXtrNQCSCI5k%3D%0A",
+      "file": "images/14-2238a29a5c.png",
+      "alt": "",
+      "caption": "Removing ALL local setlists from a device",
+      "section_path": "Playback User Guide > Building a Setlist > Setlist Data Management in Playback",
+      "chunk_ids": [
+        "playback-user-guide:building-a-setlist-setlist-data-management-in-playback:1"
+      ],
+      "block_index": 67,
+      "width": 883,
+      "height": 509,
+      "bytes": 200686
+    },
+    {
+      "id": "img-15",
+      "source_url": "https://downloads.intercomcdn.com/i/o/1109559445/74aa82d3fc8f7e9b5c1626b8/CleanShot+2024-07-10+at+16_54_41.png?expires=1793574900&signature=f3ce87def19a6633299d1a2fde8a33d07672e06ac19050dd14dde861fe478e63&req=dSEnH8x7lIVbXPMW1HO4zSM0N6aAJHVAvc1Lk9jYhL2x9Hggjvyh3cEf1m8S%0AOgKpgComnbgnaX4LUy4%3D%0A",
+      "file": "images/15-9d408bc8d8.png",
+      "alt": "",
+      "caption": "",
+      "section_path": "Playback User Guide > Building a Setlist > Setlist Data Management in Playback",
+      "chunk_ids": [
+        "playback-user-guide:building-a-setlist-setlist-data-management-in-playback:1"
+      ],
+      "block_index": 70,
+      "width": 907,
+      "height": 472,
+      "bytes": 170276
+    },
+    {
+      "id": "img-16",
+      "source_url": "https://multitrackscom.intercom-attachments-1.com/i/o/303232191/a6c5338b784de1a344540597/4+Customize+your+Setlist.jpg?expires=1793574900&signature=1d802f9dac27782703e934baef456163b3f86797277536233026a370279b0912&req=dyAkFMp8nIheFb4f3HP0gGBLK1TTuvHnf2eTTfmqa98P5dpjOYS48yIWbwfC%0A7iWLiw8N%2BtYqiy3o%2FA%3D%3D%0A",
+      "file": "images/16-cb66c16d40.jpg",
+      "alt": "",
+      "caption": "",
+      "section_path": "Playback User Guide > Building a Setlist > Setlist Data Management in Playback",
+      "chunk_ids": [
+        "playback-user-guide:building-a-setlist-setlist-data-management-in-playback:1"
+      ],
+      "block_index": 73,
+      "width": 1440,
+      "height": 278,
+      "bytes": 61230
+    },
+    {
+      "id": "img-17",
+      "source_url": "https://downloads.intercomcdn.com/i/o/747881717/1d5aa383e5f60b8feec85eb8/Edit+Modes.png?expires=1793574900&signature=b71fb195bb04413d78f5fce524c4af5019fb50047668d2a9836d9d41354696a5&req=cyQgHsF%2FmoBYFb4f3HP0gHhcfJb3ot7pCXAZhZzukhBU9yq%2Bwcs08jd1cFay%0ANAf7PJSBWCr1TCNNSQ%3D%3D%0A",
+      "file": "images/17-1d0177c5c8.png",
+      "alt": "Tap \"Edit\" in the top right, and then select the Edit Mode from the bottom edit menu drawer.",
+      "caption": "Tap \"Edit\" in the top right, and then select the Edit Mode from the bottom edit menu drawer.",
+      "section_path": "Playback User Guide > Customizing Setlists > Playback Edit Modes: Overview",
+      "chunk_ids": [
+        "playback-user-guide:customizing-setlists-playback-edit-modes-overview:1"
+      ],
+      "block_index": 79,
+      "width": 2500,
+      "height": 1536,
+      "bytes": 517375
+    },
+    {
+      "id": "img-18",
+      "source_url": "https://downloads.intercomcdn.com/i/o/1109166115/3dd776f2d70bf00690ab5fbd/CleanShot+2024-07-10+at+11_09_52%402x.png?expires=1793574900&signature=e25b5e51a28c1447e8c2f77f17acf36157a9a5f39678c52af7d18e043efaa8a5&req=dSEnH8h4m4BeXPMW1HO4zeoyPfqzoKcygsmPlDjUE43nvWgsuder19MQzMqE%0AT87j%2FyMXjRSJ%2FgUPLw8%3D%0A",
+      "file": "images/18-fe472bd815.png",
+      "alt": "",
+      "caption": "",
+      "section_path": "Playback User Guide > Customizing Setlists > Setlist / Song Map Edit Mode",
+      "chunk_ids": [
+        "playback-user-guide:customizing-setlists-setlist-song-map-edit-mode:1"
+      ],
+      "block_index": 84,
+      "width": 3040,
+      "height": 1792,
+      "bytes": 1453466
+    },
+    {
+      "id": "img-19",
+      "source_url": "https://multitrackscom.intercom-attachments-1.com/i/o/336714736/ab632d82906c04c7110985b8/IMG_0887.PNG?expires=1793574900&signature=3986038d926aa0d14d42f1e0632ca4f3e7d15bea668185c4b539f72b41c88460&req=dyMhEch6moJZFb4f3HP0gHojW%2BQNoI7zEGWp%2F46mK8JBR%2BYpE0s4mo%2BbqgqF%0ALovhvkBW6nswLF%2F%2FYA%3D%3D%0A",
+      "file": "images/19-9dc4c9c22b.png",
+      "alt": "",
+      "caption": "",
+      "section_path": "Playback User Guide > Customizing Setlists > Setlist / Song Map Edit Mode > Transitions",
+      "chunk_ids": [
+        "playback-user-guide:setlist-song-map-edit-mode-transitions:1"
+      ],
+      "block_index": 89,
+      "width": 1741,
+      "height": 858,
+      "bytes": 624995
+    },
+    {
+      "id": "img-20",
+      "source_url": "https://multitrackscom.intercom-attachments-1.com/i/o/336715276/59a43392ab8617dd8a4c3368/IMG_0888.PNG?expires=1793574900&signature=4566786ca86594c605a0efba0e3a85c36b66d1ddd3b230c7d9a54d9d0795f8f3&req=dyMhEch7n4ZZFb4f3HP0gBW2eBRUQ82wMnPdOsv3M%2Fuz9%2Bfvi2GaioplAHHZ%0AYsg8FZWv2R2ly4w%2FZQ%3D%3D%0A",
+      "file": "images/20-5a294f922c.png",
+      "alt": "",
+      "caption": "",
+      "section_path": "Playback User Guide > Customizing Setlists > Setlist / Song Map Edit Mode > Edit Song Menu",
+      "chunk_ids": [
+        "playback-user-guide:setlist-song-map-edit-mode-edit-song-menu:1"
+      ],
+      "block_index": 94,
+      "width": 2160,
+      "height": 1483,
+      "bytes": 864061
+    },
+    {
+      "id": "img-21",
+      "source_url": "https://multitrackscom.intercom-attachments-1.com/i/o/336715586/97b7ec1371aa015fae0e22e9/IMG_0890.PNG?expires=1793574900&signature=00850cd35b9af4b9b275d6e9a12604ff9cafaff71589b3702f719eaad6ae4bae&req=dyMhEch7mIlZFb4f3HP0gPbNnaRFB11HSbbY%2BvNAkt6gtMuxUN6YbYCjXZNq%0A6Rk%3D%0A",
+      "file": "images/21-63eb493744.png",
+      "alt": "",
+      "caption": "",
+      "section_path": "Playback User Guide > Customizing Setlists > Setlist / Song Map Edit Mode > Edit Song Menu",
+      "chunk_ids": [
+        "playback-user-guide:setlist-song-map-edit-mode-edit-song-menu:3"
+      ],
+      "block_index": 96,
+      "width": 2160,
+      "height": 1458,
+      "bytes": 943479
+    },
+    {
+      "id": "img-22",
+      "source_url": "https://multitrackscom.intercom-attachments-1.com/i/o/336716115/fffc894bcb3625f21d64ab1f/IMG_0891.PNG?expires=1793574900&signature=ee51338f810c13070fb1145d909ef2b81fb3187eb3a95a7aec67ec658b8e8a7b&req=dyMhEch4nIBaFb4f3HP0gODH5mbMmp%2F2S5fIfSdyCt8lFFYdjivmIFk7S8cE%0A4z1g61MuWM6TRWykHA%3D%3D%0A",
+      "file": "images/22-23141fb072.png",
+      "alt": "",
+      "caption": "",
+      "section_path": "Playback User Guide > Customizing Setlists > MIDI Cues Edit Mode > Video Overview",
+      "chunk_ids": [
+        "playback-user-guide:midi-cues-edit-mode-video-overview:1"
+      ],
+      "block_index": 107,
+      "width": 2160,
+      "height": 1160,
+      "bytes": 826541
+    },
+    {
+      "id": "img-23",
+      "source_url": "https://multitrackscom.intercom-attachments-1.com/i/o/336716727/5a407a72ed6a2b35cdbdd436/IMG_0892.PNG?expires=1793574900&signature=acecd1a83fff0e2a7e599777b5197f9c24689601be72e586dd5b89af2c8057a2&req=dyMhEch4moNYFb4f3HP0gKnmIrE%2B02RhHfeXONClaY4rSaQEayM3wT3rlxDr%0AYnQ6iA0Y5lwY9OiMzg%3D%3D%0A",
+      "file": "images/23-4656ed4f50.png",
+      "alt": "",
+      "caption": "",
+      "section_path": "Playback User Guide > Customizing Setlists > MIDI Cues Edit Mode > Add MIDI Cue Menu",
+      "chunk_ids": [
+        "playback-user-guide:midi-cues-edit-mode-add-midi-cue-menu:1"
+      ],
+      "block_index": 118,
+      "width": 1526,
+      "height": 920,
+      "bytes": 373163
+    },
+    {
+      "id": "img-24",
+      "source_url": "https://multitrackscom.intercom-attachments-1.com/i/o/336717456/bddb2e782a91b54d08adc4fb/IMG_0893.PNG?expires=1793574900&signature=9a736aa2e698f57fe1b2aeac79522969c999706c294bbd7f29aa3eeae3cfd5ef&req=dyMhEch5mYRZFb4f3HP0gJRnWXBTmbIqIueFXzMWGYhl6pl%2FHWJOQ9fqn0In%0ADAE5tOVyQJBQkb%2BcBw%3D%3D%0A",
+      "file": "images/24-bec3ef5d90.png",
+      "alt": "",
+      "caption": "",
+      "section_path": "Playback User Guide > Customizing Setlists > MIDI Cues Edit Mode > Editing MIDI Cues",
+      "chunk_ids": [
+        "playback-user-guide:midi-cues-edit-mode-editing-midi-cues:1"
+      ],
+      "block_index": 127,
+      "width": 1058,
+      "height": 844,
+      "bytes": 318090
+    },
+    {
+      "id": "img-25",
+      "source_url": "https://multitrackscom.intercom-attachments-1.com/i/o/336717813/4d763e33dad8712ac259f96d/IMG_0894.PNG?expires=1793574900&signature=6090a5ce3602711947cd82f3163127c7fda88e04838e5ea65827d00d5c48a9d3&req=dyMhEch5lYBcFb4f3HP0gIDAYzYTNJojIwhbhKqH0b1eTM%2BstdSzoreEJOwf%0AWRihp1Ah26KHsGd90A%3D%3D%0A",
+      "file": "images/25-6379c6eb6a.png",
+      "alt": "",
+      "caption": "",
+      "section_path": "Playback User Guide > Customizing Setlists > MIDI Cues Edit Mode > Copy and Paste Cues",
+      "chunk_ids": [
+        "playback-user-guide:midi-cues-edit-mode-copy-and-paste-cues:1"
+      ],
+      "block_index": 132,
+      "width": 2032,
+      "height": 359,
+      "bytes": 163836
+    },
+    {
+      "id": "img-26",
+      "source_url": "https://multitrackscom.intercom-attachments-1.com/i/o/336718066/0d306311c424690f0a9ead63/IMG_0895.PNG?expires=1793574900&signature=eca78e058676961191e088932113946298d9f836a9eba3de58071fdf45ad8d33&req=dyMhEch2nYdZFb4f3HP0gG6eDqTXsTBcRrrCncHu3oUp458m5Fu92EUgfLdo%0Am84Q6EP6ua0wF%2BfLRA%3D%3D%0A",
+      "file": "images/26-5ef32a2b58.png",
+      "alt": "",
+      "caption": "",
+      "section_path": "Playback User Guide > Customizing Setlists > MIDI Cues Edit Mode > Saving MIDI Cues",
+      "chunk_ids": [
+        "playback-user-guide:midi-cues-edit-mode-saving-midi-cues:1"
+      ],
+      "block_index": 139,
+      "width": 2160,
+      "height": 672,
+      "bytes": 371518
+    },
+    {
+      "id": "img-27",
+      "source_url": "https://downloads.intercomcdn.com/i/o/552119804/099af336995c678594eedf4e/Screen+Shot+2022-07-25+at+2.13.37+PM.png?expires=1793574900&signature=4684d2e6031a5c0fce19c6e0a10ccf091ddf830e709fc9ca48c1570141052e35&req=cSUlF8h3lYFbFb4f3HP0gAlrpIqIx1%2FDr5hokPSgeCJyTKLOoLwAOacuqeQV%0Adfio%2FI2Za458FpOTzg%3D%3D%0A",
+      "file": "images/27-452884fc47.png",
+      "alt": "",
+      "caption": "",
+      "section_path": "Playback User Guide > Customizing Setlists > MIDI & Keyboard Mapping Edit Mode > Mapping a MIDI Controller to Playback",
+      "chunk_ids": [
+        "playback-user-guide:midi-and-keyboard-mapping-edit-mode-mapping-a-midi-controlle:1"
+      ],
+      "block_index": 153,
+      "width": 1648,
+      "height": 926,
+      "bytes": 486797
+    },
+    {
+      "id": "img-28",
+      "source_url": "https://downloads.intercomcdn.com/i/o/552123231/24f0239463f49a5eaa946395/Screen+Shot+2022-07-25+at+2.18.32+PM.png?expires=1793574900&signature=e688eb17666c87185aa07035827cbd13be7cc35c8f61c065d412d0c9920d1d29&req=cSUlF8t9n4JeFb4f3HP0gMBudlT8gg7BTcsIkP4QOYus3xeHFS07TRvnSmFx%0AKhE%3D%0A",
+      "file": "images/28-d354d66fa9.png",
+      "alt": "",
+      "caption": "",
+      "section_path": "Playback User Guide > Customizing Setlists > MIDI & Keyboard Mapping Edit Mode > Mapping a MIDI Controller to Playback",
+      "chunk_ids": [
+        "playback-user-guide:midi-and-keyboard-mapping-edit-mode-mapping-a-midi-controlle:1"
+      ],
+      "block_index": 155,
+      "width": 1228,
+      "height": 290,
+      "bytes": 111101
+    },
+    {
+      "id": "img-29",
+      "source_url": "https://downloads.intercomcdn.com/i/o/552124258/8d4911903bf9c119ae35dc3d/MIDI+mapping+transport+song+sections.png?expires=1793574900&signature=9bf84c5a2994c53746cf4ce2c85b7a0a0e71d0888eb6713e0e4d9136e430c0c1&req=cSUlF8t6n4RXFb4f3HP0gIEUqTad%2FxOCyDQ4Oq3ls8hOGrcCvmc%2FMJqWo7cD%0AkEbZHKMVrKl1QMa5RA%3D%3D%0A",
+      "file": "images/29-e8f8b2de2c.png",
+      "alt": "",
+      "caption": "",
+      "section_path": "Playback User Guide > Customizing Setlists > MIDI & Keyboard Mapping Edit Mode > Live ReOrder Controls",
+      "chunk_ids": [
+        "playback-user-guide:midi-and-keyboard-mapping-edit-mode-live-reorder-controls:1"
+      ],
+      "block_index": 160,
+      "width": 784,
+      "height": 230,
+      "bytes": 73955
+    },
+    {
+      "id": "img-30",
+      "source_url": "https://multitrackscom.intercom-attachments-1.com/i/o/336736019/36d8c537027bc45bba412781/IMG_0898.PNG?expires=1793574900&signature=ce79bdfbac8731e8ca8213b2d72c0615a5c5cec96ae0db22a10ee7aeed30c6f2&req=dyMhEcp4nYBWFb4f3HP0gCkqDNJRIvInDnXodCJRJAmx7VCjfab6OoLlDvOa%0A0xg%3D%0A",
+      "file": "images/30-ca551a87a3.png",
+      "alt": "",
+      "caption": "",
+      "section_path": "Playback User Guide > Customizing Setlists > Cloud Song Sections Edit Mode > Add Song Section Markers",
+      "chunk_ids": [
+        "playback-user-guide:cloud-song-sections-edit-mode-add-song-section-markers:1"
+      ],
+      "block_index": 171,
+      "width": 2160,
+      "height": 1136,
+      "bytes": 750216
+    },
+    {
+      "id": "img-31",
+      "source_url": "https://multitrackscom.intercom-attachments-1.com/i/o/336736584/c1b0034ba0ad0105731ce982/IMG_0900.PNG?expires=1793574900&signature=cb97298dfbb55b511727626a48a3d03d8b10587b213d4b5e852535fecbe3911b&req=dyMhEcp4mIlbFb4f3HP0gDTCjbZZggl41qPNlPHfId52XYRx4eovtg66YjNl%0A%2Bm%2BxdDK99H%2Bzti8twA%3D%3D%0A",
+      "file": "images/31-09db70512b.png",
+      "alt": "",
+      "caption": "",
+      "section_path": "Playback User Guide > Customizing Setlists > Cloud Song Sections Edit Mode > Add Song Section Markers",
+      "chunk_ids": [
+        "playback-user-guide:cloud-song-sections-edit-mode-add-song-section-markers:1"
+      ],
+      "block_index": 173,
+      "width": 1503,
+      "height": 724,
+      "bytes": 259427
+    },
+    {
+      "id": "img-32",
+      "source_url": "https://multitrackscom.intercom-attachments-1.com/i/o/336736583/072dcf56f87b9356ed316e4f/IMG_0901.PNG?expires=1793574900&signature=8a0bef62f697b42001caa4ad302619605fbfeb74cbb34eb509d952ed7c0408b5&req=dyMhEcp4mIlcFb4f3HP0gImUZqDLo%2B6owxWg5GtTV4YUO4D5Mak0rxLiL2Fb%0AhzXyzE5x1Sboqt3HBQ%3D%3D%0A",
+      "file": "images/32-d06dc9c58d.png",
+      "alt": "",
+      "caption": "Changing a marker’s song section",
+      "section_path": "Playback User Guide > Customizing Setlists > Cloud Song Sections Edit Mode > Add Song Section Markers",
+      "chunk_ids": [
+        "playback-user-guide:cloud-song-sections-edit-mode-add-song-section-markers:1"
+      ],
+      "block_index": 174,
+      "width": 1479,
+      "height": 680,
+      "bytes": 305280
+    },
+    {
+      "id": "img-33",
+      "source_url": "https://multitrackscom.intercom-attachments-1.com/i/o/336737119/e02d05eaa5e264638485e9d8/IMG_0902.PNG?expires=1793574900&signature=f66e5d6d2438b207ade7d7c3ee6186f3d5c0915a009d60bd49f64875eed8cbb8&req=dyMhEcp5nIBWFb4f3HP0gImLF%2BiMN6ufA9Uqhogjsw8q17h5Y3%2B%2F6w4Z7DYX%0A6DkZKdsdfNLAaIWj6w%3D%3D%0A",
+      "file": "images/33-a1f9b3e316.png",
+      "alt": "",
+      "caption": "",
+      "section_path": "Playback User Guide > Customizing Setlists > Cloud Song Sections Edit Mode > Moving a Song Section Marker",
+      "chunk_ids": [
+        "playback-user-guide:cloud-song-sections-edit-mode-moving-a-song-section-marker:1"
+      ],
+      "block_index": 178,
+      "width": 1014,
+      "height": 551,
+      "bytes": 198028
+    },
+    {
+      "id": "img-34",
+      "source_url": "https://multitrackscom.intercom-attachments-1.com/i/o/336735066/06c66122f0ecf179472b61f7/5SecondsApp_642624916.726203.gif?expires=1793574900&signature=ae9e7c53712ddabb365118d066de51a7b4fa2f4f6a1b7ecb629c02dcfd03ed3c&req=dyMhEcp7nYdZFb4f3HP0gMW0AyNoIvvgTdbvjkUBQfza3iu6l4sNqz7kkh5T%0AJYM%3D%0A",
+      "file": "images/34-bc6344dafa.gif",
+      "alt": "",
+      "caption": "",
+      "section_path": "Playback User Guide > Customizing Setlists > Cloud Song Sections Edit Mode > Moving a Song Section Marker",
+      "chunk_ids": [
+        "playback-user-guide:cloud-song-sections-edit-mode-moving-a-song-section-marker:1"
+      ],
+      "block_index": 181,
+      "width": 751,
+      "height": 424,
+      "bytes": 1418087
+    },
+    {
+      "id": "img-35",
+      "source_url": "https://downloads.intercomcdn.com/i/o/1110693511/a8e01565c27216a33211e784/CleanShot+2024-07-11+at+14_52_04%402x.png?expires=1793574900&signature=bb803c3d6f62085407ef1734d67f25eadfc2e6b763b64918314ab86db4a68ae9&req=dSEmFs93noReWPMW1HO4zanrMLiWrL9Q6rf7paAs7wPbNqyaJWWECAxwDmGV%0A3Knf04rmLtDuhC84AMI%3D%0A",
+      "file": "images/35-f687a432d7.png",
+      "alt": "",
+      "caption": "",
+      "section_path": "Playback User Guide > Playback Settings",
+      "chunk_ids": [
+        "playback-user-guide:playback-user-guide-playback-settings:1"
+      ],
+      "block_index": 195,
+      "width": 1260,
+      "height": 595,
+      "bytes": 111302
+    },
+    {
+      "id": "img-36",
+      "source_url": "https://downloads.intercomcdn.com/i/o/1110704131/c208ef77172a040285f3c2c5/CleanShot+2024-07-11+at+14_58_08%402x.png?expires=1793574900&signature=bb8a9b17f4d2ea81da8d8517f0f9206d9e7ce561b2b276c7eac9f36abb8bf416&req=dSEmFs5%2BmYBcWPMW1HO4zRuIfj9LqLbGbfuA7zxL09YPaqBS86o0xHXwvF4Z%0AzoC7HcjHThxBuV1uGoc%3D%0A",
+      "file": "images/36-20ec12b55b.png",
+      "alt": "",
+      "caption": "",
+      "section_path": "Playback User Guide > Playback Settings > Side Menu: Settings & Features",
+      "chunk_ids": [
+        "playback-user-guide:playback-settings-side-menu-settings-and-features:1"
+      ],
+      "block_index": 197,
+      "width": 1583,
+      "height": 1307,
+      "bytes": 420281
+    },
+    {
+      "id": "img-37",
+      "source_url": "https://downloads.intercomcdn.com/i/o/1110677501/65f719661a1248eb644bb399/CleanShot+2024-07-11+at+14_39_16%402x.png?expires=1793574900&signature=09678ebbc0b4fa072446cf445f254eaf8afab8a569ffbb00cdebace9fab13777&req=dSEmFs95moRfWPMW1HO4zYIvL9VOqqpMvwo3eUP%2FJemdaFrsstE76EvqIWGp%0Ad%2BJkJxAuvNM%2BjIlQEBs%3D%0A",
+      "file": "images/37-2d9a9b0401.png",
+      "alt": "",
+      "caption": "",
+      "section_path": "Playback User Guide > Playback Settings > General Settings Tab",
+      "chunk_ids": [
+        "playback-user-guide:playback-settings-general-settings-tab:1"
+      ],
+      "block_index": 202,
+      "width": 2200,
+      "height": 1104,
+      "bytes": 595221
+    },
+    {
+      "id": "img-38",
+      "source_url": "https://downloads.intercomcdn.com/i/o/1110737750/a6180fbd0c60f305497e9741/CleanShot+2024-07-11+at+15_39_44%402x.png?expires=1793574900&signature=ae567bb671d2d5ee54362431e7b7c57727c4cfc47f864bbc461a9a0fe6b4bc10&req=dSEmFs59moZaWfMW1HO4zcvV5NaI5TkwxDv%2FEY8Hie15oDZXX423tDqoQZmM%0A26I7CaWRQ8O5sMmrkns%3D%0A",
+      "file": "images/38-6b0433930b.png",
+      "alt": "",
+      "caption": "Tracks Outputs",
+      "section_path": "Playback User Guide > Playback Settings > Tracks Settings Tab",
+      "chunk_ids": [
+        "playback-user-guide:playback-settings-tracks-settings-tab:1"
+      ],
+      "block_index": 205,
+      "width": 2130,
+      "height": 1534,
+      "bytes": 404707
+    },
+    {
+      "id": "img-39",
+      "source_url": "https://downloads.intercomcdn.com/i/o/1110718913/593317a68f202a125fc8315b/CleanShot+2024-07-11+at+15_16_28%402x.png?expires=1793574900&signature=f22688d27c3ebda6f7ec1481ba8227f6aea96b4abe00b6693d9c29f974dd2d0e&req=dSEmFs5%2FlYheWvMW1HO4zSOHbYcO%2B7bDpCF%2FWm0TSQJNglC4tzk4LEe9en4I%0A89FnWOFwQyqTNw4Mj0M%3D%0A",
+      "file": "images/39-e2ca1acad7.png",
+      "alt": "",
+      "caption": "Bus Outputs",
+      "section_path": "Playback User Guide > Playback Settings > Buses Settings Tab",
+      "chunk_ids": [
+        "playback-user-guide:playback-settings-buses-settings-tab:1"
+      ],
+      "block_index": 210,
+      "width": 2768,
+      "height": 1588,
+      "bytes": 283528
+    },
+    {
+      "id": "img-40",
+      "source_url": "https://downloads.intercomcdn.com/i/o/380672177/94c01bf7dd5f3bae4c389a71/IMG_1017.PNG?expires=1793574900&signature=8d66c8f4338861ef1c331ddc67e690628feca6ce1edc31759d6b57c29ef58908&req=dygnEM58nIZYFb4f3HP0gDv1mUtk2debBtNMCC1zIpHjqj%2BS9Cx7QPSyeFad%0A7brjynDkISAuP9aNAw%3D%3D%0A",
+      "file": "images/40-5a83e87460.png",
+      "alt": "",
+      "caption": "",
+      "section_path": "Playback User Guide > Playback Settings > MIDI Settings Tab > MIDI Clock",
+      "chunk_ids": [
+        "playback-user-guide:midi-settings-tab-midi-clock:1"
+      ],
+      "block_index": 234,
+      "width": 2160,
+      "height": 1231,
+      "bytes": 221081
+    },
+    {
+      "id": "img-41",
+      "source_url": "https://downloads.intercomcdn.com/i/o/1110709866/437e2458f5f84eb54738dd5e/CleanShot+2024-07-11+at+15_10_45%402x.png?expires=1793574900&signature=1059862d383bc898b850854af47bceafd58eb8a70df88f91703ca6a67cf39d9f&req=dSEmFs5%2BlIlZX%2FMW1HO4zQa9E3Zz5373LAYoOg0x5V%2BoWw5ejMQe5jfFsapd%0APVcUDMdVFDB676KhwTk%3D%0A",
+      "file": "images/41-60128e06f5.png",
+      "alt": "",
+      "caption": "",
+      "section_path": "Playback User Guide > Playback Settings > About Tab",
+      "chunk_ids": [
+        "playback-user-guide:playback-settings-about-tab:1"
+      ],
+      "block_index": 236,
+      "width": 2282,
+      "height": 1540,
+      "bytes": 436015
+    },
+    {
+      "id": "img-42",
+      "source_url": "https://multitrackscom.intercom-attachments-1.com/i/o/303243596/05f7ec806723e75f83ffc3b5/5+Perform-+Routing.jpg?expires=1793574900&signature=634934bcd3e9c7ca31dce0c5e3bd2574a72d23eec8cec9e172768f1e587e6c48&req=dyAkFM19mIhZFb4f3HP0gIbS5aawx0uMXl23ZTfj2ykOwgzbNxgMOhA%2BRgDj%0Audg8cDUIcrhMufiO6A%3D%3D%0A",
+      "file": "images/42-0908f66b34.jpg",
+      "alt": "",
+      "caption": "",
+      "section_path": "Playback User Guide > Playback Settings > About Tab",
+      "chunk_ids": [
+        "playback-user-guide:playback-settings-about-tab:1"
+      ],
+      "block_index": 238,
+      "width": 1440,
+      "height": 278,
+      "bytes": 77250
+    },
+    {
+      "id": "img-43",
+      "source_url": "https://multitrackscom.intercom-attachments-1.com/i/o/303247842/385ef885d0315cd388531fc1/6+Perform+-+Performance.jpg?expires=1793574900&signature=cd86e47d447049210f24e57f8410ca0a60e132fa9009678bbcb19a30d59cdbc9&req=dyAkFM15lYVdFb4f3HP0gMRssIUCeC2yTu2xGsu5yuYDYGXp9d6WGyxVASLf%0Abu1DdfvDTXHOEtqXuw%3D%3D%0A",
+      "file": "images/43-52120a24d0.jpg",
+      "alt": "",
+      "caption": "",
+      "section_path": "Playback User Guide > SMPTE",
+      "chunk_ids": [
+        "playback-user-guide:playback-user-guide-smpte:1"
+      ],
+      "block_index": 265,
+      "width": 1440,
+      "height": 278,
+      "bytes": 64675
+    },
+    {
+      "id": "img-44",
+      "source_url": "https://multitrackscom.intercom-attachments-1.com/i/o/303252788/279e11c80f8814e6a2497e1b/7+Save+Arrangements.jpg?expires=1793574900&signature=8c21e40e554175a207e8cc4c83257bfd7ceb8d9c34ebe9f4f95bf10d483f48ac&req=dyAkFMx8molXFb4f3HP0gHIBgBQuD0yLHcFlQdoVGbQKMgq%2FsJNzEMTL3D1Q%0AIpKEEYXJsLy2A7sw2w%3D%3D%0A",
+      "file": "images/44-412207a53d.jpg",
+      "alt": "Save Song Arrangements",
+      "caption": "Save Song Arrangements",
+      "section_path": "Playback User Guide > Playback Sync > Live Navigation: Keyboard Shortcuts (Mac Only)",
+      "chunk_ids": [
+        "playback-user-guide:playback-sync-live-navigation-keyboard-shortcuts-mac-only:1"
+      ],
+      "block_index": 317,
+      "width": 1440,
+      "height": 278,
+      "bytes": 64725
+    }
+  ],
+  "videos": [
+    {
+      "src": "https://player.vimeo.com/video/202233533",
+      "section_path": "Playback User Guide"
+    },
+    {
+      "src": "https://player.vimeo.com/video/383397402",
+      "section_path": "Playback User Guide > Building a Setlist > The Setlists Menu > How to Use Setlists | Video Guide"
+    },
+    {
+      "src": "https://player.vimeo.com/video/444911315",
+      "section_path": "Playback User Guide > Customizing Setlists > MIDI Cues Edit Mode > Video Overview"
+    },
+    {
+      "src": "https://player.vimeo.com/video/491692487",
+      "section_path": "Playback User Guide > Customizing Setlists > Cloud Song Sections Edit Mode > Video Overview"
+    },
+    {
+      "src": "https://player.vimeo.com/video/552883416",
+      "section_path": "Playback User Guide > Playback Sync"
+    }
+  ],
+  "related_articles": [
+    {
+      "text": "HOW TO | Setup a MIDI Controller to control Playback?",
+      "url": "https://helpcenter.multitracks.com/en/articles/4490527-how-to-setup-a-midi-controller-to-control-playback"
+    },
+    {
+      "text": "Playback Setlists & Setlists Menu",
+      "url": "https://helpcenter.multitracks.com/en/articles/5189112-playback-setlists-setlists-menu"
+    },
+    {
+      "text": "HOW TO | Create Custom Arrangements in Playback",
+      "url": "https://helpcenter.multitracks.com/en/articles/6437439-how-to-create-custom-arrangements-in-playback"
+    },
+    {
+      "text": "HOW TO | Automations in Playback",
+      "url": "https://helpcenter.multitracks.com/en/articles/7225305-how-to-automations-in-playback"
+    },
+    {
+      "text": "Playback General Settings Overview",
+      "url": "https://helpcenter.multitracks.com/en/articles/12549860-playback-general-settings-overview"
+    }
+  ],
+  "outbound_links": [
+    {
+      "text": "📖Playback Minimum System Requirements",
+      "url": "https://helpcenter.multitracks.com/en/articles/5351200-playback-minimum-system-requirements",
+      "section_path": "Playback User Guide > App Overview"
+    },
+    {
+      "text": "visit this link.",
+      "url": "https://apps.apple.com/us/app/playback/id751755884",
+      "section_path": "Playback User Guide > App Overview"
+    },
+    {
+      "text": "📖 Managing Roles and Permissions",
+      "url": "https://helpcenter.multitracks.com/en/articles/4501736-team-member-s-roles-and-subscriptions",
+      "section_path": "Playback User Guide > App Overview > Login Requirements > Organizational Content Permissions"
+    },
+    {
+      "text": "Which Tracks Product is right for me?",
+      "url": "https://intercom.help/multitracks/en/articles/4620755-which-track-product-is-right-for-me",
+      "section_path": "Playback User Guide > Building a Setlist"
+    },
+    {
+      "text": "AppTracks vs Playback Rentals",
+      "url": "https://helpcenter.multitracks.com/en/articles/4520361-what-s-the-difference-between-playback-rentals-and-apptracks",
+      "section_path": "Playback User Guide > Building a Setlist"
+    },
+    {
+      "text": "Playback Rentals",
+      "url": "https://www.multitracks.com/rentals",
+      "section_path": "Playback User Guide > Building a Setlist"
+    },
+    {
+      "text": "Playback Rentals",
+      "url": "http://www.multitracks.com/products/rentals",
+      "section_path": "Playback User Guide > Building a Setlist > Adding A Song in Playback > Options in the Add a Song menu"
+    },
+    {
+      "text": "Cloud Pro",
+      "url": "http://www.multitracks.com/products/cloud",
+      "section_path": "Playback User Guide > Building a Setlist > Adding A Song in Playback > Options in the Add a Song menu"
+    },
+    {
+      "text": "🌐Browser Soundbeds",
+      "url": "https://www.multitracks.com/sounds/soundbeds/",
+      "section_path": "Playback User Guide > Building a Setlist > Adding A Song in Playback > Options in the Add a Song menu"
+    },
+    {
+      "text": "📖Expanding Team Access to Playback",
+      "url": "https://helpcenter.multitracks.com/en/articles/5189172-how-can-my-team-access-playback",
+      "section_path": "Playback User Guide > Building a Setlist > Adding A Song in Playback > Options in the Add a Song menu"
+    },
+    {
+      "text": "📖Named Arrangements",
+      "url": "https://helpcenter.multitracks.com/en/articles/9062072-named-arrangements-in-the-multitracks-com-ecosystem",
+      "section_path": "Playback User Guide > Building a Setlist > Adding a song > Settings available when adding a song:"
+    },
+    {
+      "text": "📖HOW TO | SMPTE out in Playback",
+      "url": "https://helpcenter.multitracks.com/en/articles/6371444-how-to-smpte-timecode-in-playback",
+      "section_path": "Playback User Guide > Building a Setlist > Adding a song > Settings available when adding a song:"
+    },
+    {
+      "text": "content and user permissions apply",
+      "url": "https://intercom.help/multitracks/en/articles/4501736-manage-team-member-s-roles-and-seats",
+      "section_path": "Playback User Guide > Building a Setlist > The Setlists Menu > How to Use Setlists | Video Guide"
+    },
+    {
+      "text": "more info below",
+      "url": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_909a398d30",
+      "section_path": "Playback User Guide > Customizing Setlists > Setlist / Song Map Edit Mode"
+    },
+    {
+      "text": "read Edit Song Menu below",
+      "url": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_e417d5f647",
+      "section_path": "Playback User Guide > Customizing Setlists > Setlist / Song Map Edit Mode"
+    },
+    {
+      "text": "Song Section Menu Details",
+      "url": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_4734b22a5c",
+      "section_path": "Playback User Guide > Customizing Setlists > Setlist / Song Map Edit Mode"
+    },
+    {
+      "text": "MultiTracks.com",
+      "url": "http://multitracks.com/",
+      "section_path": "Playback User Guide > Customizing Setlists > Setlist / Song Map Edit Mode > Edit Song Menu"
+    },
+    {
+      "text": "📖Learn More",
+      "url": "https://helpcenter.multitracks.com/en/articles/9527432-edit-song-section-names-in-playback-new",
+      "section_path": "Playback User Guide > Customizing Setlists > Setlist / Song Map Edit Mode > Edit Song Section Menu (NEW)"
+    },
+    {
+      "text": "📖Learn More",
+      "url": "https://helpcenter.multitracks.com/en/articles/9579744-how-to-trim-song-sections-in-playback-new",
+      "section_path": "Playback User Guide > Customizing Setlists > Setlist / Song Map Edit Mode > Edit Song Section Menu (NEW)"
+    },
+    {
+      "text": "📖Add and Saving MIDI cues in Playback",
+      "url": "https://helpcenter.multitracks.com/en/articles/4377847-how-to-add-edit-midi-cues-in-playback",
+      "section_path": "Playback User Guide > Customizing Setlists > MIDI Cues Edit Mode > Video Overview"
+    },
+    {
+      "text": "📖Automations in Playback.",
+      "url": "https://helpcenter.multitracks.com/en/articles/7225305-how-to-automations-in-playback",
+      "section_path": "Playback User Guide > Customizing Setlists > Automation Edit Mode"
+    },
+    {
+      "text": "MIDI Mapping Controls Explained",
+      "url": "https://helpcenter.multitracks.com/en/articles/8280193-midi-mapping-controls-explained",
+      "section_path": "Playback User Guide > Customizing Setlists > MIDI & Keyboard Mapping Edit Mode"
+    },
+    {
+      "text": "HOW TO | use a MIDI Controller with Playback",
+      "url": "https://helpcenter.multitracks.com/en/articles/4490527-how-to-setup-a-midi-controller-to-control-playback",
+      "section_path": "Playback User Guide > Customizing Setlists > MIDI & Keyboard Mapping Edit Mode"
+    },
+    {
+      "text": "MIDI Mapping Troubleshooting",
+      "url": "https://helpcenter.multitracks.com/en/articles/8107531-midi-mapping-troubleshooting",
+      "section_path": "Playback User Guide > Customizing Setlists > MIDI & Keyboard Mapping Edit Mode"
+    },
+    {
+      "text": "(learn more here",
+      "url": "https://www.multitracks.com/premium/custom/",
+      "section_path": "Playback User Guide > Customizing Setlists > Cloud Song Sections Edit Mode > Video Overview"
+    },
+    {
+      "text": "📖HOW TO | SMPTE Timecode in Playback",
+      "url": "https://helpcenter.multitracks.com/en/articles/6371444-how-to-smpte-timecode-in-playback",
+      "section_path": "Playback User Guide > Customizing Setlists > SMPTE Edit Mode"
+    },
+    {
+      "text": "📖HOW TO | Playback Remote",
+      "url": "https://intercom.help/multitracks/en/articles/8268134-how-to-playback-remote-new",
+      "section_path": "Playback User Guide > Playback Remote"
+    },
+    {
+      "text": "📖Playback Remote Troubleshooting",
+      "url": "https://intercom.help/multitracks/en/articles/8809572-playback-remote-troubleshooting",
+      "section_path": "Playback User Guide > Playback Remote"
+    },
+    {
+      "text": "📖Learn More",
+      "url": "https://helpcenter.multitracks.com/en/articles/8268134-how-to-playback-remote-new",
+      "section_path": "Playback User Guide > Playback Settings > Side Menu: Settings & Features"
+    },
+    {
+      "text": "General",
+      "url": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#",
+      "section_path": "Playback User Guide > Playback Settings > Side Menu: Settings & Features"
+    },
+    {
+      "text": "Tacks",
+      "url": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#",
+      "section_path": "Playback User Guide > Playback Settings > Side Menu: Settings & Features"
+    },
+    {
+      "text": "Buses",
+      "url": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#",
+      "section_path": "Playback User Guide > Playback Settings > Side Menu: Settings & Features"
+    },
+    {
+      "text": "MIDI",
+      "url": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#",
+      "section_path": "Playback User Guide > Playback Settings > Side Menu: Settings & Features"
+    },
+    {
+      "text": "About",
+      "url": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#",
+      "section_path": "Playback User Guide > Playback Settings > Side Menu: Settings & Features"
+    },
+    {
+      "text": "Learn about setting up Playback for Auto Pan",
+      "url": "https://intercom.help/multitracks/en/articles/4498599-how-do-i-enable-autopan-in-playback",
+      "section_path": "Playback User Guide > Playback Settings > General Settings Tab"
+    },
+    {
+      "text": "Upload your own custom Click & Guide samples",
+      "url": "https://www.multitracks.com/premium/custom/",
+      "section_path": "Playback User Guide > Playback Settings > General Settings Tab"
+    },
+    {
+      "text": "📖Learn More",
+      "url": "https://helpcenter.multitracks.com/en/articles/12496495-how-to-song-section-pre-roll-in-playback",
+      "section_path": "Playback User Guide > Playback Settings > General Settings Tab"
+    },
+    {
+      "text": "🌐Learn More",
+      "url": "https://www.multitracks.com/premium/custom/",
+      "section_path": "Playback User Guide > Playback Settings > General Settings Tab"
+    },
+    {
+      "text": "📖Learn More",
+      "url": "https://helpcenter.multitracks.com/en/articles/5413358-how-to-playback-redundancy",
+      "section_path": "Playback User Guide > Playback Settings > General Settings Tab"
+    },
+    {
+      "text": "📖Bus Routing in Playback",
+      "url": "https://helpcenter.multitracks.com/en/articles/4439220-how-to-bus-routing-in-playback",
+      "section_path": "Playback User Guide > Playback Settings > Buses Settings Tab"
+    },
+    {
+      "text": "📖HOW TO | MIDI Clock",
+      "url": "https://intercom.help/multitracks/en/articles/5524066-how-to-send-midi-clock-out-of-playback",
+      "section_path": "Playback User Guide > Playback Settings > MIDI Settings Tab > MIDI Clock"
+    },
+    {
+      "text": "Learn More Here",
+      "url": "http://www.multitracks.com/products/playback",
+      "section_path": "Playback User Guide > Playback Settings > About Tab"
+    },
+    {
+      "text": "📖Setting up Playback with a sound system",
+      "url": "https://helpcenter.multitracks.com/en/articles/4649709-how-to-use-playback-with-your-sound-system",
+      "section_path": "Playback User Guide > Setting up Audio and MIDI"
+    },
+    {
+      "text": "📖Connecting to a USB Interface",
+      "url": "https://helpcenter.multitracks.com/en/articles/4466444-how-do-i-connect-my-usb-audio-interface-to-playback",
+      "section_path": "Playback User Guide > Setting up Audio and MIDI"
+    },
+    {
+      "text": "📖Troubleshooting Playback Audio Issues",
+      "url": "https://helpcenter.multitracks.com/en/articles/4873511-troubleshooting-playback-audio-issues",
+      "section_path": "Playback User Guide > Setting up Audio and MIDI"
+    },
+    {
+      "text": "Here is a list",
+      "url": "http://www.multitracks.com/products/playback/supported",
+      "section_path": "Playback User Guide > Setting up Audio and MIDI > Choosing an Audio Interface"
+    },
+    {
+      "text": "Supported Audio Devices",
+      "url": "http://www.multitracks.com/products/playback/supported",
+      "section_path": "Playback User Guide > Setting up Audio and MIDI > Choosing an Audio Interface"
+    },
+    {
+      "text": "This Guide.",
+      "url": "https://intercom.help/multitracks/en/articles/4490527-how-do-i-use-my-midi-controller-with-playback",
+      "section_path": "Playback User Guide > Setting up Audio and MIDI > Connecting MIDI Devices for control"
+    },
+    {
+      "text": "Does my MIDI Controller work with Playback?",
+      "url": "https://intercom.help/multitracks/en/articles/4727646-does-my-midi-controller-work-with-playback",
+      "section_path": "Playback User Guide > Setting up Audio and MIDI > Connecting MIDI Devices for control"
+    },
+    {
+      "text": "iConnectivity PlayAudio12",
+      "url": "https://www.sweetwater.com/store/detail/PlayAUDIO12--iconnectivity-playaudio12-dual-usb-audio-and-midi-interface-for-live?mrkgadid=3250494479&mrkgcl=28&mrkgen=gpla&mrkgbflag=1&mrkgcat=brand&acctid=21700000001645388&dskeywordid=92700046937728410&lid=92700046937728410&ds_s_kwgid=58700005283819391&ds_s_inventory_feed_id=97700000007215323&dsproductgroupid=377809959297&product_id=PlayAUDIO12&prodctry=US&prodlang=en&channel=online&storeid=&device=c&network=g&matchtype=&adpos=largenumber&locationid=1026276&creative=228658011815&targetid=aud-471402636157:pla-377809959297&campaignid=741659211&awsearchcpc=1&gclid=Cj0KCQjwub-HBhCyARIsAPctr7ze1SnS-mVogCBCCiYzVa9P2BPDYaDU3M95v32LBqmewP71XJB6UQwaAvDFEALw_wcB&gclsrc=aw.ds",
+      "section_path": "Playback User Guide > Redundancy Mode"
+    },
+    {
+      "text": "Visit this article",
+      "url": "https://helpcenter.multitracks.com/en/articles/5413358-how-to-playback-redundancy",
+      "section_path": "Playback User Guide > Redundancy Mode"
+    },
+    {
+      "text": "HOW TO | SMPTE Timecode in Playback",
+      "url": "https://helpcenter.multitracks.com/en/articles/6371444-how-to-smpte-timecode-in-playback",
+      "section_path": "Playback User Guide > SMPTE"
+    },
+    {
+      "text": "www.multitracks.com/products/padplayer",
+      "url": "http://www.multitracks.com/products/padplayer",
+      "section_path": "Playback User Guide > Pad Player: Using the Interface"
+    },
+    {
+      "text": "HOW TO | Use Playback Sync",
+      "url": "https://helpcenter.multitracks.com/en/articles/5451485-how-to-playback-sync",
+      "section_path": "Playback User Guide > Playback Sync"
+    },
+    {
+      "text": "Visit the Landing Page",
+      "url": "https://www.multitracks.com/products/playbacksync",
+      "section_path": "Playback User Guide > Playback Sync"
+    },
+    {
+      "text": "📖HOW TO | Save Playback Named Arrangements",
+      "url": "https://intercom.help/multitracks/en/articles/4832807-how-to-save-playback-custom-arrangements",
+      "section_path": "Playback User Guide > Playback Named Arrangements"
+    },
+    {
+      "text": "📖Named Arrangements in the MultiTracks.com Ecosystem",
+      "url": "https://intercom.help/multitracks/en/articles/9062072-named-arrangements-in-the-multitracks-com-ecosystem",
+      "section_path": "Playback User Guide > Playback Named Arrangements"
+    },
+    {
+      "text": "MultiTracks.com/support",
+      "url": "http://www.multitracks.com/support",
+      "section_path": "Playback User Guide > Conclusion and FAQs"
+    }
+  ]
+}
