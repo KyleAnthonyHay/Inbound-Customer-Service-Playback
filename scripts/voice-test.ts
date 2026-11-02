@@ -13,6 +13,7 @@ import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import WebSocket from "ws";
+import { FIRST_MESSAGE } from "../src/lib/assistant";
 
 type Scenario = { name: string; expectedIntent: string; lines: string[]; maxTurnWaitMs?: number };
 
@@ -66,6 +67,17 @@ async function main() {
   let lastAssistantTranscriptAt = 0;
   let lastToolCallAt = 0;
   let assistantTextSinceSend = "";
+  let assistantFinalsSinceSend = 0;
+  // Set when the current caller clip STARTS streaming. Vapi emits an agent turn's final
+  // transcript only once the caller speaks again, so that final arrives while the next clip
+  // is streaming; attributing agent speech to the current turn only from the clip's start
+  // keeps the previous turn's final (and its "?") from ending the new wait early.
+  let clipStartAt = 0;
+  // Vapi only emits the greeting's final transcript once the caller starts speaking, so it
+  // always lands inside the first caller turn. Recognise it by its text and ignore it.
+  const norm = (t: string) => t.toLowerCase().replace(/[^a-z0-9 ]+/g, " ").replace(/\s+/g, " ").trim().split(" ").slice(0, 8).join(" ");
+  const greetingKey = norm(FIRST_MESSAGE);
+  let greetingFinalSeen = false;
   const events: string[] = [];
   const transcript: string[] = [];
   let ended = false;
@@ -86,7 +98,7 @@ async function main() {
       const buf = Buffer.isBuffer(data) ? data : Buffer.from(data as ArrayBuffer);
       if (isLoud(buf)) {
         lastAssistantAudioAt = Date.now();
-        assistantEverSpoke = true;
+        if (lastAssistantAudioAt > clipStartAt) assistantEverSpoke = true;
       }
       return;
     }
@@ -94,12 +106,18 @@ async function main() {
       const m = JSON.parse(data.toString()) as Record<string, unknown>;
       const type = String(m.type);
       if (type === "transcript") {
+        const countsForThisTurn = m.role === "assistant" && lastAssistantAudioAt > clipStartAt;
         if (m.role === "assistant") {
           lastAssistantTranscriptAt = Date.now();
-          assistantEverSpoke = true;
+          if (countsForThisTurn) assistantEverSpoke = true;
         }
         if (m.transcriptType === "final") {
-          if (m.role === "assistant") assistantTextSinceSend += " " + String(m.transcript);
+          const isGreeting = m.role === "assistant" && !greetingFinalSeen && norm(String(m.transcript)) === greetingKey;
+          if (isGreeting) greetingFinalSeen = true;
+          if (countsForThisTurn && !isGreeting) {
+            assistantTextSinceSend += " " + String(m.transcript);
+            assistantFinalsSinceSend++;
+          }
           transcript.push(`${stamp()} ${String(m.role).toUpperCase()}: ${m.transcript}`);
           console.log(`  ${String(m.role).toUpperCase()}: ${m.transcript}`);
         }
@@ -145,7 +163,12 @@ async function main() {
       const askedSinceTool = lastToolCallAt < lastAssistantTranscriptAt && /\?/.test(assistantTextSinceSend);
       const toolPending = now - lastToolCallAt < 15000 && !askedSinceTool;
       const turnLooksComplete = /\?/.test(assistantTextSinceSend) || quietFor > 7000;
-      if (assistantEverSpoke && quietFor > 2500 && turnLooksComplete && !toolPending) return;
+      // Final transcripts can trail the audio by several seconds. Returning before the turn's
+      // final arrived let it land during the next turn (the greeting's "?" then ended that wait
+      // early and the caller talked over the agent), so wait for at least one final unless the
+      // agent has been quiet for a long time.
+      const finalArrived = assistantFinalsSinceSend > 0 || quietFor > 15000;
+      if (assistantEverSpoke && quietFor > 2500 && turnLooksComplete && finalArrived && !toolPending) return;
       await sleep(100);
     }
   };
@@ -153,6 +176,7 @@ async function main() {
   const sendClip = async (pcm: Buffer) => {
     // stream in 20 ms frames in near real time
     const frame = (RATE * 2 * 20) / 1000;
+    clipStartAt = Date.now();
     for (let o = 0; o < pcm.length && !ended; o += frame) {
       ws.send(pcm.subarray(o, o + frame));
       await sleep(20);
@@ -166,6 +190,7 @@ async function main() {
     console.log(`  CALLER (sent): ${scenario.lines[i]}`);
     assistantEverSpoke = false;
     assistantTextSinceSend = "";
+    assistantFinalsSinceSend = 0;
     await sendClip(clips[i]);
     await waitForAssistantToFinish(scenario.maxTurnWaitMs ?? 45000);
   }
@@ -182,6 +207,7 @@ async function main() {
     messages?: Array<{ role: string; message?: string; toolCalls?: Array<{ function: { name: string; arguments: string } }>; name?: string; result?: string; secondsFromStart?: number }>;
   };
   const toolCalls = (rec.messages ?? []).filter((m) => m.role === "tool_calls").flatMap((m) => (m.toolCalls ?? []).map((t) => t.function.name));
+  const timing = analyzeTiming(rec.messages ?? []);
   let convexEvents: unknown[] = [];
   try {
     const { ConvexHttpClient } = await import("convex/browser");
@@ -197,6 +223,7 @@ async function main() {
     callId: call.id,
     endedReason: rec.endedReason,
     vapiToolCalls: toolCalls,
+    timing,
     convexToolEvents: (convexEvents as Array<{ kind: string; tool?: string; status?: string; durationMs?: number; detail?: string }>)
       .filter((e) => e.kind === "tool-end")
       .map((e) => `${e.tool} ${e.status} ${e.durationMs ?? "?"}ms ${e.detail ?? ""}`),
@@ -208,8 +235,50 @@ async function main() {
   console.log("\n=== REPORT ===");
   console.log("endedReason:", report.endedReason);
   console.log("Vapi tool calls:", report.vapiToolCalls);
+  console.log("Timing (per caller turn):");
+  for (const t of timing.turns) console.log(`  ${t.summary}`);
+  console.log(`Longest silence after a caller turn: ${timing.longestSilenceS}s; longest gap after a transition line: ${timing.longestGapAfterTransitionS}s`);
   console.log("Convex tool events:", report.convexToolEvents);
   console.log("saved:", out);
+}
+
+type VapiMsg = { role: string; message?: string; toolCalls?: Array<{ function: { name: string; arguments: string } }>; secondsFromStart?: number; duration?: number; endTime?: number; time?: number };
+
+/**
+ * "No unexplained silence" check. For each caller turn, measures how long the caller waited
+ * before hearing anything (silenceS), whether the first thing they heard was a short transition
+ * line ("one moment", "let me check") rather than the real answer, and how long the gap was
+ * between that transition line and the next thing the agent said (gapAfterTransitionS). Tool
+ * calls inside the turn are listed with their offset from the caller's last word.
+ */
+function analyzeTiming(messages: VapiMsg[]) {
+  const endOf = (m: VapiMsg) => {
+    if (typeof m.endTime === "number" && typeof m.time === "number" && typeof m.secondsFromStart === "number") return m.secondsFromStart + (m.endTime - m.time) / 1000;
+    if (typeof m.duration === "number" && typeof m.secondsFromStart === "number") return m.secondsFromStart + m.duration / 1000;
+    return m.secondsFromStart ?? 0;
+  };
+  const isTransition = (text: string) => /\b(one moment|one second|just a (second|sec|moment)|hold on|let me (check|pull|see|look|take)|bear with me|give me a (second|moment))\b/i.test(text) && text.split(/\s+/).length <= 16;
+  const timeline = messages.filter((m) => m.role === "user" || m.role === "bot" || m.role === "tool_calls").sort((a, b) => (a.secondsFromStart ?? 0) - (b.secondsFromStart ?? 0));
+  const turns: Array<{ caller: string; silenceS: number | null; firstHeard: string; transition: boolean; gapAfterTransitionS: number | null; tools: string[]; summary: string }> = [];
+  for (let i = 0; i < timeline.length; i++) {
+    const m = timeline[i];
+    if (m.role !== "user") continue;
+    const callerEnd = endOf(m);
+    const rest: VapiMsg[] = [];
+    for (let j = i + 1; j < timeline.length && timeline[j].role !== "user"; j++) rest.push(timeline[j]);
+    const bots = rest.filter((r) => r.role === "bot");
+    const tools = rest.filter((r) => r.role === "tool_calls").flatMap((r) => (r.toolCalls ?? []).map((t) => `${t.function.name}@+${((r.secondsFromStart ?? 0) - callerEnd).toFixed(1)}s`));
+    const first = bots[0];
+    const silenceS = first ? Math.max(0, +((first.secondsFromStart ?? 0) - callerEnd).toFixed(1)) : null;
+    const transition = !!first && isTransition(first.message ?? "");
+    const second = bots[1];
+    const gapAfterTransitionS = transition && second ? +((second.secondsFromStart ?? 0) - endOf(first)).toFixed(1) : null;
+    const summary = `"${(m.message ?? "").slice(0, 40)}" -> ${silenceS === null ? "no reply" : `${silenceS}s silence`}, then ${transition ? "transition" : "answer"}: "${(first?.message ?? "").slice(0, 50)}"${gapAfterTransitionS !== null ? ` -> ${gapAfterTransitionS}s gap -> "${(second?.message ?? "").slice(0, 40)}"` : ""}${tools.length ? ` [${tools.join(", ")}]` : ""}`;
+    turns.push({ caller: m.message ?? "", silenceS, firstHeard: first?.message ?? "", transition, gapAfterTransitionS, tools, summary });
+  }
+  const longestSilenceS = Math.max(0, ...turns.map((t) => t.silenceS ?? 0));
+  const longestGapAfterTransitionS = Math.max(0, ...turns.map((t) => t.gapAfterTransitionS ?? 0));
+  return { turns, longestSilenceS, longestGapAfterTransitionS };
 }
 
 main().catch((e) => {

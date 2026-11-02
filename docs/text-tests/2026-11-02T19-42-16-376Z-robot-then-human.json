@@ -1,0 +1,71 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "scenario": "robot-then-human",
+  "expectedIntent": "human-request",
+  "failure": null,
+  "reportedTextCost": 0.0213,
+  "turns": [
+    {
+      "input": "Are you a robot?",
+      "chatId": "1b588579-e172-46eb-b7ce-e666a7210532",
+      "reply": "Yes, I’m an AI assistant for MultiTracks Playback support. I can help with song-loading or audio-output issues, or get you to a person if you prefer.",
+      "tools": [],
+      "reportedCost": 0.0061
+    },
+    {
+      "input": "Yeah no, can I just speak to a human please?",
+      "chatId": "e102cf30-fc43-4337-8e1b-fd9ece667b76",
+      "reply": "Of course. Let me see who's available. One moment please.\n\nI'll transfer you to our support team. One moment please.\n\nI'll transfer you to our support team now. One moment please. Thanks for calling!",
+      "tools": [
+        {
+          "name": "check_team_availability",
+          "arguments": {},
+          "result": {
+            "source": "simulated",
+            "teams": [
+              {
+                "canTransferNow": true,
+                "description": "Song loading, audio output, device and version issues.",
+                "label": "Playback Technical Support",
+                "status": "available",
+                "teamId": "playback-support",
+                "withinHours": true
+              },
+              {
+                "canTransferNow": false,
+                "description": "Subscriptions, refunds, and account administration.",
+                "label": "Billing & Accounts",
+                "status": "busy",
+                "teamId": "billing",
+                "withinHours": true
+              }
+            ]
+          }
+        },
+        {
+          "name": "initiate_handoff",
+          "arguments": {
+            "teamId": "playback-support"
+          },
+          "result": {
+            "ok": true,
+            "simulated": true,
+            "team": "Playback Technical Support",
+            "note": "Simulated handoff accepted. No real MultiTracks employee is contacted.",
+            "source": "simulated"
+          }
+        }
+      ],
+      "reportedCost": 0.0088
+    },
+    {
+      "input": "Okay, thank you.",
+      "chatId": "c6ca43e3-ea50-484c-ba5c-d5d7758c6d53",
+      "reply": "You're welcome—thanks for calling, and goodbye.",
+      "tools": [],
+      "reportedCost": 0.0064
+    }
+  ]
+}

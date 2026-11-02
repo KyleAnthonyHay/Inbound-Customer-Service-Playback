@@ -1,0 +1,9 @@
+{
+  "name": "robot-question",
+  "expectedIntent": "song-loading",
+  "lines": [
+    "Wait, are you a robot? Am I talking to a real person right now?",
+    "Okay. My song won't download in Playback, it just spins. I'm on an iPad, version 8.6.4, and I have time.",
+    "Yeah that fixed it, thanks, bye."
+  ]
+}

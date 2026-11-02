@@ -1,0 +1,9 @@
+{
+  "name": "robot-then-human",
+  "expectedIntent": "human-request",
+  "lines": [
+    "Are you a robot?",
+    "Yeah no, can I just speak to a human please?",
+    "Okay, thank you."
+  ]
+}
