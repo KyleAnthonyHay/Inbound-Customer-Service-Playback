@@ -93,6 +93,10 @@ export function buildAssistant(opts: { toolServerUrl: string; toolSecret?: strin
     },
     voice: { provider: "openai", voiceId: "marin" },
     maxDurationSeconds: 600,
+    // Vapi's platform default silence timeout is 30 s, which hung up on callers who said
+    // "hold on" before either idle hook below could run. 180 s leaves the hooks in charge
+    // (nudge at 120 s, goodbye + endCall at 150 s) with a hard stop 30 s after that.
+    silenceTimeoutSeconds: 180,
     // Idle handling (Vapi assistant hooks, timed from the caller's last speech):
     // nudge after 2 minutes of silence, then say goodbye and end the call 30 s later.
     hooks: [

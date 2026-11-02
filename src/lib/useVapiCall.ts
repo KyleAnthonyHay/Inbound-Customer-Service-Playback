@@ -60,12 +60,43 @@ export function isRemoteHangup(raw: string): boolean {
   return /ejection|meeting has ended|ejected/i.test(raw);
 }
 
+/**
+ * The SDK's error event is not one shape: a string, an Error, or
+ * { type: "daily-error", error: { type, msg, errorMsg, details } }. Always
+ * return a string; rendering the raw object crashed the activity panel.
+ */
+export function errorText(e: unknown): string {
+  if (typeof e === "string") return e;
+  if (!e || typeof e !== "object") return "Call error";
+  const o = e as Record<string, unknown>;
+  const inner = (o.error && typeof o.error === "object" ? (o.error as Record<string, unknown>) : null) ?? o;
+  for (const k of ["errorMsg", "msg", "message"]) {
+    const v = inner[k] ?? o[k];
+    if (typeof v === "string" && v) return v;
+  }
+  if (typeof inner.type === "string") return `Call error (${inner.type})`;
+  try {
+    return JSON.stringify(e).slice(0, 200);
+  } catch {
+    return "Call error";
+  }
+}
+
 /** Turns browser/SDK error strings into something a tester can act on. */
 export function friendlyCallError(raw: string): string {
   if (/permission denied|notallowederror|not allowed/i.test(raw))
     return "Microphone access was denied. Allow the mic for this site, or open the page in Chrome; embedded browser panes block it.";
   if (/notfounderror|no microphone|device not found/i.test(raw)) return "No microphone was found. Connect one and try again.";
   return raw;
+}
+
+/** Vapi endedReason codes a tester sees most, in plain words. */
+export function friendlyEndedReason(reason: string): string {
+  if (reason === "silence-timed-out") return "silence-timed-out (nobody spoke for the silence timeout)";
+  if (reason === "assistant-ended-call") return "assistant-ended-call (the assistant called endCall)";
+  if (reason === "customer-ended-call") return "customer-ended-call (hung up from the page)";
+  if (reason === "exceeded-max-duration") return "exceeded-max-duration (maxDurationSeconds reached)";
+  return reason;
 }
 
 let idCounter = 0;
@@ -134,7 +165,7 @@ export function useVapiCall() {
         case "status-update": {
           // call-start / call-end already produce rows; only surface an ended reason.
           if (m.status === "ended" && m.endedReason) {
-            endedReasonRef.current = String(m.endedReason);
+            endedReasonRef.current = friendlyEndedReason(String(m.endedReason));
             setEvents((prev) =>
               prev.map((e) => (e.kind === "call" && e.label === "Call ended" ? { ...e, detail: String(m.endedReason) } : e))
             );
@@ -255,12 +286,7 @@ export function useVapiCall() {
       vapi.on("volume-level", (v: number) => setVolume(v));
       vapi.on("message", handleMessage);
       vapi.on("error", (e: unknown) => {
-        const raw =
-          typeof e === "string"
-            ? e
-            : (e as { message?: string; error?: { message?: string } })?.message ??
-              (e as { error?: { message?: string } })?.error?.message ??
-              "Call error";
+        const raw = errorText(e);
         if (isRemoteHangup(raw)) {
           // The assistant (or Vapi) hung up; "call-end" follows from Daily's left-meeting.
           pushEvent({ kind: "call", label: "Ended by the assistant", detail: "The call was closed from the server side; see the ended reason below." });
