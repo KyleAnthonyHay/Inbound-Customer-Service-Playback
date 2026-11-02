@@ -1,3 +1,5 @@
+**Activated development version:** [Manual test sheet with current seeded IDs](dev-manual-tests.md). The original case phrasing below is retained for comparison; use current seeded caller facts when a lookup is needed.
+
 # Curated caller worksheet
 
 Ten cases across five intents. Target handling: seven agent resolutions and three human/admin reviews. These are test expectations, not completed results.
@@ -147,7 +149,7 @@ Intent: **account-access** · Intended handling: **agent**
 
 **Facts available to the caller — reveal when relevant**
 
-Playback 8.6.4. Side menu currently shows Taylor Personal Demo; organization picker also lists North Harbor Demo Church. Caller already belongs to that organization with necessary access. These MultiTracks organization observations are fictional and separate from the shared Planning Center organization. Actual role/seat changes are not needed.
+Playback 8.6.4. Side menu currently shows Olivia Brennan (personal), org 931027; organization picker also lists Northgate Worship Collective (demo), org 362990. Caller already belongs to that organization with necessary access. These MultiTracks organization observations are fictional and separate from the shared Planning Center organization. Actual role/seat changes are not needed.
 
 **Reviewer expectation — do not feed to the agent**
 

@@ -1,0 +1,31 @@
+[
+  {
+    "run": "01-expired-a-v1",
+    "input": "Playback 8.6.1."
+  },
+  {
+    "run": "02-expired-b-v1",
+    "input": "Restore Purchases did not help. We bought the plan through the MultiTracks website, not Apple."
+  },
+  {
+    "run": "03-progress-a-v1",
+    "input": "Graves Into Gardens, and it happens to other purchased songs too."
+  },
+  {
+    "run": "04-progress-b-v1",
+    "input": "Playback 8.5.0."
+  },
+  {
+    "run": "05-wrong-output-v1",
+    "input": "Selecting the interface restored sound. That worked, thank you.",
+    "done": true
+  },
+  {
+    "run": "06-direct-human-v1",
+    "done": true
+  },
+  {
+    "run": "07-current-unexplained-v1",
+    "input": "Playback 8.6.4."
+  }
+]

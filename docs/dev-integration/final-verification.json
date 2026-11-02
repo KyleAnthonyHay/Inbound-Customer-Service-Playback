@@ -1,0 +1,9 @@
+{
+  "savedDevMatchesSharedDefinition": true,
+  "webhookRejectsUnsignedRequests": true,
+  "productionAssistantUnchanged": true,
+  "remainingIsolatedTextLogs": 0,
+  "toolCount": 11,
+  "vercelProductionGitBranch": "main",
+  "voiceCallsPlaced": 0
+}

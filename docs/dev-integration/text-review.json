@@ -1,0 +1,28 @@
+{
+  "merged-text": {
+    "cases": 7,
+    "turns": 27,
+    "requestFailures": 0,
+    "closed": 7,
+    "cleanupComplete": 7,
+    "reportedTextCost": 0.4105,
+    "configurationHashes": [
+      "b075a555fb2013da1d89198079b54806e9a4eac4af699f364527dded2eb13046"
+    ],
+    "reviewedPasses": 6,
+    "note": "Direct-human variant announced connection after availability only; preserved as failure."
+  },
+  "final-text": {
+    "cases": 7,
+    "turns": 24,
+    "requestFailures": 0,
+    "closed": 7,
+    "cleanupComplete": 7,
+    "reportedTextCost": 0.3869,
+    "configurationHashes": [
+      "9c38b3db81b6e2feb7cd8c409a093a08699e62bdac01e5637dce81d9d882db4e"
+    ],
+    "reviewedPasses": 7,
+    "note": "All seven defined diagnostic, update-prerequisite and handoff checks passed; one small text sample, scripted caller outcomes."
+  }
+}

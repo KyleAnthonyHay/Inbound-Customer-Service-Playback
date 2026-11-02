@@ -1,0 +1,22 @@
+[
+  {
+    "run": "01-expired-a-v1",
+    "input": "I updated and tested it. The original symptom is resolved now. Thank you.",
+    "done": true
+  },
+  {
+    "run": "02-expired-b-v1",
+    "input": "I updated and tested it. The original symptom is resolved now. Thank you.",
+    "done": true
+  },
+  {
+    "run": "04-progress-b-v1",
+    "input": "I updated and tested it. The original symptom is resolved now. Thank you.",
+    "done": true
+  },
+  {
+    "run": "07-current-unexplained-v1",
+    "input": "I would prefer specialist review. Please connect me with support.",
+    "done": true
+  }
+]

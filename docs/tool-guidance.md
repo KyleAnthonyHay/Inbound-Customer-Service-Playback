@@ -22,9 +22,9 @@ do not encode a fixed sequence or tailor policy to individual test scripts.
 | `initiate_handoff` | Caller requested/accepted transfer and availability confirmed. Rechecks availability, returns simulated success/failure, contacts no real staff. |
 | `endCall` | Built-in voice tool; wrap-up is governed by shared prompt. No new custom definition. Text harness substitutes a goodbye because no voice call exists. |
 
-## Local diagnostic/update candidate
+## Activated development diagnostic/update policy
 
-The current local candidate separates choosing a useful next investigation from
+The current development policy separates choosing a useful next investigation from
 the prerequisites for update advice. A clear configuration explanation is handled
 first; unexplained symptoms may justify relevant historical release evidence.
 Direct human requests still route immediately, and inconclusive evidence still
@@ -37,10 +37,10 @@ note applicability before update advice, then caller-reported outcome confirmati
 The helper checks the live iOS/iPadOS OS minimum; it does not turn that minimum
 into a macOS requirement or verify external audio hardware.
 
-This candidate is not activated on the saved agents. See the
-[seven-decision review](text-tests/seven-decisions-review.md) for local runtime,
-tests, results and the development auto-deploy incident/restoration. The older
-synced policy and observations below remain historical context.
+The combined policy is activated on the development saved agent and backend.
+See the [activation record](dev-integration/README.md) for the merged verification.
+The [seven-decision review](text-tests/seven-decisions-review.md) preserves the
+earlier local-only evidence and auto-deploy incident/restoration history.
 
 ## Policy consolidation
 

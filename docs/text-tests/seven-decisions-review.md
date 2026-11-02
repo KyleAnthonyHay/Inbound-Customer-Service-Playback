@@ -1,5 +1,7 @@
 # Seven diagnostic/update decisions — November 2, 2026
 
+**Subsequent activation:** This report preserves the earlier local-candidate run. The combined development build is now deployed/synced; see the [integration and final rerun](../dev-integration/README.md).
+
 **7/7 focused conversation cases passed their defined diagnostic/routing and update-prerequisite checks.** This is one small text run, not a measured production reliability rate, a clean score for every utterance, or voice validation. The candidate is local and has not been activated on the saved assistants.
 
 The earlier comparable diagnostic score was **3/4**, not 4/5. Those four diagnostic paths now passed **4/4**. The seven-case set consists of those four wording/symptom variations, the existing clear wrong-output control, and two new controls: a direct human request and an already-current installation with an unexplained symptom. It is not seven unrelated product defects.

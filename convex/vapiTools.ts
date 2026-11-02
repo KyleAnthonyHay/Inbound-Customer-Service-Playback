@@ -75,7 +75,11 @@ export const tools: Record<string, ToolDef> = {
   check_team_availability: {
     source: "simulated",
     label: TOOL_META.check_team_availability.label,
-    run: async (a, ctx) => ctx.runQuery(api.teams.availability, { teamId: str(a.teamId) }),
+    run: async (a, ctx) => ({
+      ...await ctx.runQuery(api.teams.availability, { teamId: str(a.teamId) }),
+      handoffStarted: false,
+      actionPerformed: "availability-lookup-only",
+    }),
   },
   get_callback_slots: {
     source: "simulated",

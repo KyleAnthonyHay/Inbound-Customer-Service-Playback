@@ -1,0 +1,22 @@
+{
+  "environment": "development",
+  "checks": {
+    "savedDevDefinitionMatches": true,
+    "account": true,
+    "songAccess": true,
+    "updateAssessment": true,
+    "manual": true,
+    "planning": true
+  },
+  "productionAssistantUnchanged": true,
+  "organization": "Regal Playback Demo",
+  "seed": {
+    "organizations": 7,
+    "customers": 8,
+    "songs": 20,
+    "teams": 2,
+    "callbackSlots": 748
+  },
+  "callsPlaced": 0,
+  "smokeLogRemoved": true
+}

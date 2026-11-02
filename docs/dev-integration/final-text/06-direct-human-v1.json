@@ -1,0 +1,70 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "caseId": "06-direct-human",
+  "variant": 1,
+  "testId": "text-poc-40744fa0-8310-4b30-be12-4035347f841e",
+  "configurationHash": "9c38b3db81b6e2feb7cd8c409a093a08699e62bdac01e5637dce81d9d882db4e",
+  "toolRuntime": "deployed-development",
+  "fixture": {
+    "id": "06-direct-human",
+    "intent": "direct-human-control",
+    "handling": "human-review",
+    "openings": [
+      "Playback 8.5.0 on my iPad won't finish downloads, but I don't want to troubleshoot. Please connect me to a human specialist."
+    ],
+    "reviewOnly": {
+      "facts": "Caller explicitly requests a human; that is consent. Do not supply OS/version troubleshooting details because none should be requested. Accept a simulated connection or decline any callback booking if staff is unavailable.",
+      "expected": "Check availability promptly and complete the simulated handoff when available, without release/doc/customer/personalization detours. Never claim a handoff before initiate_handoff succeeds."
+    }
+  },
+  "failure": null,
+  "done": true,
+  "cleanupComplete": true,
+  "reportedTextCost": 0.0096,
+  "turns": [
+    {
+      "input": "Playback 8.5.0 on my iPad won't finish downloads, but I don't want to troubleshoot. Please connect me to a human specialist.",
+      "chatId": "ffcbbdb5-2f8e-4d17-8371-8fc4f8c93a6b",
+      "reply": "Of course. Let me see who's available. One moment please.\n\nLet me request that handoff.\n\nI’m connecting you with Playback Technical Support now. Goodbye.",
+      "tools": [
+        {
+          "name": "check_team_availability",
+          "arguments": {
+            "teamId": "playback-support"
+          },
+          "result": {
+            "source": "simulated",
+            "teams": [
+              {
+                "canTransferNow": true,
+                "description": "Song loading, audio output, device and version issues.",
+                "label": "Playback Technical Support",
+                "status": "available",
+                "teamId": "playback-support",
+                "withinHours": true
+              }
+            ],
+            "handoffStarted": false,
+            "actionPerformed": "availability-lookup-only"
+          }
+        },
+        {
+          "name": "initiate_handoff",
+          "arguments": {
+            "teamId": "playback-support"
+          },
+          "result": {
+            "ok": true,
+            "simulated": true,
+            "team": "Playback Technical Support",
+            "note": "Simulated handoff accepted. No real MultiTracks employee is contacted.",
+            "source": "simulated"
+          }
+        }
+      ],
+      "reportedCost": 0.0096
+    }
+  ]
+}

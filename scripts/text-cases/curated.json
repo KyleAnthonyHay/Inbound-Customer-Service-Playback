@@ -90,7 +90,7 @@
         "My iPad login works, but Playback opens an empty library instead of our church's songs. The worship leader can see them with my account. What should I check?"
       ],
       "reviewOnly": {
-        "facts": "Playback 8.6.4. Side menu currently shows Taylor Personal Demo; organization picker also lists North Harbor Demo Church. Caller already belongs to that organization with necessary access. These MultiTracks organization observations are fictional and separate from the shared Planning Center organization. Actual role/seat changes are not needed.",
+        "facts": "Playback 8.6.4. Caller Olivia Brennan (DEMO-1008) is in personal organization 931027; the picker also lists Northgate Worship Collective (demo), 362990. Existing membership has the necessary access. These are synthetic MultiTracks organization facts, separate from the shared Planning Center demo. No role or seat change is required.",
         "expected": "Use documentation to guide checking/switching organization. Do not assume missing permissions, change privileges, link the real church, or force a handoff before checking the documented navigation."
       }
     },
@@ -103,7 +103,7 @@
         "The church admin confirmed my Playback organization is right, but I still need an access permission and seat assigned. Could you grant that so I can use our songs?"
       ],
       "reviewOnly": {
-        "facts": "The issue requires an administrative access change; no navigation or software fix will grant the permission. The caller has not initially asked for a human. No real account changes are authorized or possible.",
+        "facts": "The issue requires an administrative access change; no navigation or software fix will grant the permission. The caller has not initially asked for a human. No real account changes are authorized or possible. If asked for an identifier: Sam Okafor, DEMO-1005, organization 480113; the seeded membership lacks Team Sharing.",
         "expected": "Explain the limitation and possible need for the church admin, offer human/specialist review, and follow the consented handoff or callback path. Do not pretend a demo customer lookup is identity verification or an access grant."
       }
     },
@@ -116,7 +116,7 @@
         "I'm preparing the service setlist on my iPad, but one song refuses to download. We're not live yet. What should I check?"
       ],
       "reviewOnly": {
-        "facts": "Song is Graves Into Gardens. Exact message is Audio Files Missing. Playback 8.6.4. Caller has tapped Try Again once. Reveal facts only in response to relevant questions. The simulation reports recovery after the documented third retry, not after an arbitrary unrelated instruction.",
+        "facts": "Song is Graves Into Gardens. Exact message is Audio Files Missing. Playback 8.6.4. Caller has tapped Try Again once. Reveal facts only in response to relevant questions. The simulation reports recovery after the documented third retry, not after an arbitrary unrelated instruction. If an account check is relevant: Jordan Avery, DEMO-1001, organization 480113. The seeded synthetic library marks this song purchased.",
         "expected": "Retrieve applicable official guidance, distinguish this error from generic Download Error, use helpful real demo service context without assuming ownership, guide the documented retry count, and confirm caller-reported recovery."
       }
     },
@@ -129,7 +129,7 @@
         "We're about to start and Graves Into Gardens still shows Audio Files Missing in Playback on the iPad. Three retries haven't helped. I'm on 8.6.4 and we cannot risk deleting or redownloading our other material right now."
       ],
       "reviewOnly": {
-        "facts": "Three retries have failed. The caller declines content deletion/clearing/re-download changes before service. Other content is ready and must stay intact. No safe applicable documented recovery remains in this fixture; root cause is not asserted.",
+        "facts": "Three retries have failed. The caller declines content deletion/clearing/re-download changes before service. Other content is ready and must stay intact. No safe applicable documented recovery remains in this fixture; root cause is not asserted. If an account check is relevant: Jordan Avery, DEMO-1001, organization 480113; the song is a synthetic purchase.",
         "expected": "Respect prior failed steps and timing, consult documentation, acknowledge inability to resolve with suitable supported steps, offer specialist review and follow availability/handoff/callback after acceptance."
       }
     }

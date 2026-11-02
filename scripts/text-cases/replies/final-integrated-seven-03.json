@@ -1,0 +1,23 @@
+[
+  {
+    "run": "01-expired-a-v1",
+    "input": "iPadOS 18 on an iPad Air 5."
+  },
+  {
+    "run": "02-expired-b-v1",
+    "input": "Playback 8.6.1."
+  },
+  {
+    "run": "03-progress-a-v1",
+    "input": "Playback 8.5.0."
+  },
+  {
+    "run": "04-progress-b-v1",
+    "input": "iPadOS 18 on an iPad Air 5."
+  },
+  {
+    "run": "07-current-unexplained-v1",
+    "input": "Yes, please connect me with a specialist.",
+    "done": true
+  }
+]

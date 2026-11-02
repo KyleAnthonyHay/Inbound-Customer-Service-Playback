@@ -87,7 +87,7 @@ export function buildToolDefinitions(opts: { serverUrl: string; secret?: string 
     ),
     fn(
       "check_team_availability",
-      "Use when the caller wants a human or specialist involvement may be appropriate because of uncertainty, support scope, unresolved symptoms or account needs. Returns simulated team availability for a transfer now. Checking availability does not transfer the caller or establish their consent; initiate_handoff performs an accepted transfer.",
+      "Use when the caller wants a human or specialist involvement may be appropriate because of uncertainty, support scope, unresolved symptoms or account needs. Returns simulated team availability with handoffStarted=false. This lookup never connects anyone, even when canTransferNow=true; initiate_handoff performs an accepted transfer. The lookup does not establish consent.",
       { teamId: { type: "string", enum: ["playback-support", "billing"], description: "Team to check. Defaults to all." } },
       [],
       "Of course. Let me see who's available. One moment please."

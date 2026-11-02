@@ -1,3 +1,5 @@
+**Current activated fixtures and voice prompts:** [Development manual test sheet](dev-manual-tests.md). The original planning/review history follows.
+
 # Regal Playback conversation test plan
 
 Updated November 2, 2026. During implementation, use lightweight **text reasoning

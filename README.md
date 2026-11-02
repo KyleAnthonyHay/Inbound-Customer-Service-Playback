@@ -202,13 +202,13 @@ Reviewer facts are never sent to the support agent. The
 [November 2 phrasing audit](docs/text-tests/curated-phrasing-review.md) records
 the completed runs and remaining consistency issues; it is not a voice pass rate.
 
-The local version-investigation/update-assessment candidate is covered by the
-[seven-decision review](docs/text-tests/seven-decisions-review.md). It uses
-`scripts/local-text-tools.ts` through a temporary authenticated tunnel to exercise
-local release code; the ordinary text commands otherwise use deployed dev tools.
-Do not confuse a passing local candidate with saved-agent activation. The dev
-auto-deploy watcher was stopped after restoring its previous tool behavior;
-restarting `convex dev` will publish the pending local backend changes.
+The combined `dev` build includes the structured version/update assessment,
+shared Planning Center personalization, synthetic organization/song-access tools,
+and Claude's voice identity/transition behavior. It is deployed to the development
+backend and synced to the development saved assistant. Use the ordinary text
+harness against these deployed tools; the temporary local proxy is optional for
+future undeployed candidates. See the [activation record](docs/dev-integration/README.md)
+and [manual voice test sheet](docs/dev-manual-tests.md).
 
 ## Scheduling and time zones
 
