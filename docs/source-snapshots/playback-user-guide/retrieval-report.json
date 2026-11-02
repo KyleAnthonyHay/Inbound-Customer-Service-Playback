@@ -1,0 +1,576 @@
+{
+  "ran_at": "2026-11-01T23:31:43.154Z",
+  "passed": 19,
+  "total": 20,
+  "rows": [
+    {
+      "q": "How do I choose which audio device Playback uses for output?",
+      "category": "audio-output",
+      "ok": true,
+      "top": [
+        {
+          "id": "playback-user-guide:setting-up-audio-and-midi-choosing-an-audio-interface:1",
+          "score": 0.48,
+          "scope": "in-scope",
+          "disruptive": false
+        },
+        {
+          "id": "playback-user-guide:playback-settings-general-settings-tab:2",
+          "score": 0.48,
+          "scope": "in-scope",
+          "disruptive": false
+        },
+        {
+          "id": "playback-user-guide:playback-settings-buses-settings-tab:1",
+          "score": 0.477,
+          "scope": "in-scope",
+          "disruptive": false
+        }
+      ],
+      "outOfScope": [],
+      "expectAny": [
+        "general-settings-tab"
+      ]
+    },
+    {
+      "q": "The click and guide are only in my left ear and the band is in the right",
+      "category": "audio-output",
+      "ok": true,
+      "top": [
+        {
+          "id": "playback-user-guide:playback-settings-general-settings-tab:1",
+          "score": 0.302,
+          "scope": "in-scope",
+          "disruptive": false
+        },
+        {
+          "id": "playback-user-guide:live-performance-tracks-buses-mixer-controlling-your-tracks:3",
+          "score": 0.252,
+          "scope": "adjacent",
+          "disruptive": false
+        },
+        {
+          "id": "playback-user-guide:playback-settings-general-settings-tab:2",
+          "score": 0.215,
+          "scope": "in-scope",
+          "disruptive": false
+        }
+      ],
+      "outOfScope": [],
+      "expectAny": [
+        "general-settings-tab",
+        "setting-up-audio-and-midi:1"
+      ],
+      "note": "Auto-Pan: click/guide left, tracks right on the stereo output"
+    },
+    {
+      "q": "How do I send the click to a different output on my USB interface?",
+      "category": "audio-output",
+      "ok": false,
+      "top": [
+        {
+          "id": "playback-user-guide:playback-user-guide-setting-up-audio-and-midi:1",
+          "score": 0.394,
+          "scope": "in-scope",
+          "disruptive": false
+        },
+        {
+          "id": "playback-user-guide:live-performance-tracks-buses-mixer-controlling-your-tracks:3",
+          "score": 0.363,
+          "scope": "adjacent",
+          "disruptive": false
+        },
+        {
+          "id": "playback-user-guide:setting-up-audio-and-midi-choosing-an-audio-interface:1",
+          "score": 0.356,
+          "scope": "in-scope",
+          "disruptive": false
+        }
+      ],
+      "outOfScope": [],
+      "expectAny": [
+        "buses-settings-tab",
+        "tracks-settings-tab"
+      ],
+      "note": "bus routing is per audio device; no fixed output1/output2 mapping"
+    },
+    {
+      "q": "I want the guide vocal cues to go to a different bus than the click",
+      "category": "audio-output",
+      "ok": true,
+      "top": [
+        {
+          "id": "playback-user-guide:playback-settings-tracks-settings-tab:1",
+          "score": 0.37,
+          "scope": "in-scope",
+          "disruptive": false
+        },
+        {
+          "id": "playback-user-guide:playback-settings-general-settings-tab:2",
+          "score": 0.352,
+          "scope": "in-scope",
+          "disruptive": false
+        },
+        {
+          "id": "playback-user-guide:playback-settings-buses-settings-tab:1",
+          "score": 0.339,
+          "scope": "in-scope",
+          "disruptive": false
+        }
+      ],
+      "outOfScope": [],
+      "expectAny": [
+        "tracks-settings-tab",
+        "buses-settings-tab"
+      ]
+    },
+    {
+      "q": "An output is greyed out when I try to route a bus",
+      "category": "audio-output",
+      "ok": true,
+      "top": [
+        {
+          "id": "playback-user-guide:playback-settings-buses-settings-tab:1",
+          "score": 0.471,
+          "scope": "in-scope",
+          "disruptive": false
+        },
+        {
+          "id": "playback-user-guide:playback-settings-tracks-settings-tab:1",
+          "score": 0.414,
+          "scope": "in-scope",
+          "disruptive": false
+        },
+        {
+          "id": "playback-user-guide:setting-up-audio-and-midi-audio-routing-premium-feature:1",
+          "score": 0.32,
+          "scope": "in-scope",
+          "disruptive": false
+        }
+      ],
+      "outOfScope": [],
+      "expectAny": [
+        "buses-settings-tab"
+      ],
+      "note": "SMPTE bus may be using the output"
+    },
+    {
+      "q": "no sound from Playback through my headphones without an interface",
+      "category": "audio-output",
+      "ok": true,
+      "top": [
+        {
+          "id": "playback-user-guide:playback-user-guide-setting-up-audio-and-midi:1",
+          "score": 0.343,
+          "scope": "in-scope",
+          "disruptive": false
+        },
+        {
+          "id": "playback-user-guide:setting-up-audio-and-midi-choosing-an-audio-interface:1",
+          "score": 0.335,
+          "scope": "in-scope",
+          "disruptive": false
+        },
+        {
+          "id": "playback-user-guide:playback-settings-general-settings-tab:1",
+          "score": 0.299,
+          "scope": "in-scope",
+          "disruptive": false
+        }
+      ],
+      "outOfScope": [],
+      "expectAny": [
+        "setting-up-audio-and-midi:1",
+        "general-settings-tab"
+      ]
+    },
+    {
+      "q": "Which USB audio interfaces work with Playback?",
+      "category": "audio-output",
+      "ok": true,
+      "top": [
+        {
+          "id": "playback-user-guide:setting-up-audio-and-midi-choosing-an-audio-interface:1",
+          "score": 0.644,
+          "scope": "in-scope",
+          "disruptive": false
+        },
+        {
+          "id": "playback-user-guide:playback-user-guide-setting-up-audio-and-midi:1",
+          "score": 0.415,
+          "scope": "in-scope",
+          "disruptive": false
+        },
+        {
+          "id": "playback-user-guide:setting-up-audio-and-midi-audio-routing-premium-feature:1",
+          "score": 0.412,
+          "scope": "in-scope",
+          "disruptive": false
+        }
+      ],
+      "outOfScope": [],
+      "expectAny": [
+        "choosing-an-audio-interface:1"
+      ]
+    },
+    {
+      "q": "The song in my setlist won't download",
+      "category": "song-loading",
+      "ok": true,
+      "top": [
+        {
+          "id": "playback-user-guide:adding-a-song-settings-available-when-adding-a-song:3",
+          "score": 0.499,
+          "scope": "in-scope",
+          "disruptive": false
+        },
+        {
+          "id": "playback-user-guide:the-setlists-menu-navigating-the-setlists-menu:2",
+          "score": 0.481,
+          "scope": "in-scope",
+          "disruptive": false
+        },
+        {
+          "id": "playback-user-guide:building-a-setlist-setlist-data-management-in-playback:2",
+          "score": 0.426,
+          "scope": "in-scope",
+          "disruptive": false
+        }
+      ],
+      "outOfScope": [],
+      "expectAny": [
+        "navigating-the-setlists-menu",
+        "settings-available-when-adding-a-song",
+        "setlist-data-management"
+      ]
+    },
+    {
+      "q": "How do I download all the songs in a setlist before Sunday?",
+      "category": "song-loading",
+      "ok": true,
+      "top": [
+        {
+          "id": "playback-user-guide:the-setlists-menu-navigating-the-setlists-menu:2",
+          "score": 0.51,
+          "scope": "in-scope",
+          "disruptive": false
+        },
+        {
+          "id": "playback-user-guide:adding-a-song-settings-available-when-adding-a-song:3",
+          "score": 0.41,
+          "scope": "in-scope",
+          "disruptive": false
+        },
+        {
+          "id": "playback-user-guide:building-a-setlist-adding-a-song:1",
+          "score": 0.344,
+          "scope": "in-scope",
+          "disruptive": false
+        }
+      ],
+      "outOfScope": [],
+      "expectAny": [
+        "navigating-the-setlists-menu"
+      ]
+    },
+    {
+      "q": "Will deleting setlists from my iPad delete them from my account?",
+      "category": "song-loading",
+      "ok": true,
+      "top": [
+        {
+          "id": "playback-user-guide:building-a-setlist-setlist-data-management-in-playback:2",
+          "score": 0.645,
+          "scope": "in-scope",
+          "disruptive": false
+        },
+        {
+          "id": "playback-user-guide:building-a-setlist-setlist-data-management-in-playback:1",
+          "score": 0.574,
+          "scope": "in-scope",
+          "disruptive": false
+        },
+        {
+          "id": "playback-user-guide:the-setlists-menu-navigating-the-setlists-menu:1",
+          "score": 0.489,
+          "scope": "in-scope",
+          "disruptive": false
+        }
+      ],
+      "outOfScope": [],
+      "expectAny": [
+        "setlist-data-management-in-playback:1"
+      ]
+    },
+    {
+      "q": "I don't see the All Songs option when adding a song",
+      "category": "song-loading",
+      "ok": true,
+      "top": [
+        {
+          "id": "playback-user-guide:adding-a-song-in-playback-options-in-the-add-a-song-menu:1",
+          "score": 0.565,
+          "scope": "in-scope",
+          "disruptive": false
+        },
+        {
+          "id": "playback-user-guide:building-a-setlist-adding-a-song-in-playback:1",
+          "score": 0.487,
+          "scope": "in-scope",
+          "disruptive": false
+        },
+        {
+          "id": "playback-user-guide:adding-a-song-settings-available-when-adding-a-song:1",
+          "score": 0.454,
+          "scope": "in-scope",
+          "disruptive": false
+        }
+      ],
+      "outOfScope": [],
+      "expectAny": [
+        "options-in-the-add-a-song-menu"
+      ],
+      "note": "needs Playback Rentals or Cloud Pro / permissions"
+    },
+    {
+      "q": "How do I add a song to my setlist?",
+      "category": "song-loading",
+      "ok": true,
+      "top": [
+        {
+          "id": "playback-user-guide:building-a-setlist-adding-a-song:1",
+          "score": 0.635,
+          "scope": "in-scope",
+          "disruptive": false
+        },
+        {
+          "id": "playback-user-guide:building-a-setlist-adding-a-song-in-playback:1",
+          "score": 0.585,
+          "scope": "in-scope",
+          "disruptive": false
+        },
+        {
+          "id": "playback-user-guide:adding-a-song-settings-available-when-adding-a-song:3",
+          "score": 0.582,
+          "scope": "in-scope",
+          "disruptive": false
+        }
+      ],
+      "outOfScope": [],
+      "expectAny": [
+        "adding-a-song-in-playback:1",
+        "building-a-setlist-adding-a-song:1"
+      ]
+    },
+    {
+      "q": "First time opening Playback, which organization do I pick at login?",
+      "category": "setup",
+      "ok": true,
+      "top": [
+        {
+          "id": "playback-user-guide:login-requirements-general-login-requirements:1",
+          "score": 0.488,
+          "scope": "in-scope",
+          "disruptive": false
+        },
+        {
+          "id": "playback-user-guide:playback-user-guide-user-interface-overview:1",
+          "score": 0.429,
+          "scope": "in-scope",
+          "disruptive": false
+        },
+        {
+          "id": "playback-user-guide:login-requirements-organizational-content-permissions:1",
+          "score": 0.413,
+          "scope": "in-scope",
+          "disruptive": false
+        }
+      ],
+      "outOfScope": [],
+      "expectAny": [
+        "organizations-vs-users:1",
+        "general-login-requirements:1"
+      ]
+    },
+    {
+      "q": "I'm logged in but can't download our purchased tracks",
+      "ok": true,
+      "top": [
+        {
+          "id": "playback-user-guide:login-requirements-organizational-content-permissions:1",
+          "score": 0.347,
+          "scope": "in-scope",
+          "disruptive": false
+        },
+        {
+          "id": "playback-user-guide:playback-user-guide-building-a-setlist:1",
+          "score": 0.291,
+          "scope": "in-scope",
+          "disruptive": false
+        },
+        {
+          "id": "playback-user-guide:login-requirements-general-login-requirements:1",
+          "score": 0.256,
+          "scope": "in-scope",
+          "disruptive": false
+        }
+      ],
+      "outOfScope": [],
+      "expectAny": [
+        "organizational-content-permissions:1"
+      ]
+    },
+    {
+      "q": "What does the stack icon in the top right open?",
+      "ok": true,
+      "top": [
+        {
+          "id": "playback-user-guide:playback-user-guide-playback-settings:1",
+          "score": 0.324,
+          "scope": "adjacent",
+          "disruptive": false
+        },
+        {
+          "id": "playback-user-guide:the-setlists-menu-navigating-the-setlists-menu:1",
+          "score": 0.3,
+          "scope": "in-scope",
+          "disruptive": false
+        },
+        {
+          "id": "playback-user-guide:playback-settings-side-menu-settings-and-features:1",
+          "score": 0.253,
+          "scope": "in-scope",
+          "disruptive": true
+        }
+      ],
+      "outOfScope": [
+        "playback-user-guide:customizing-setlists-setlist-song-map-edit-mode:2",
+        "playback-user-guide:customizing-setlists-playback-edit-modes-overview:1"
+      ],
+      "expectAny": [
+        "side-menu-settings-and-features:1",
+        "playback-settings:1"
+      ]
+    },
+    {
+      "q": "Playback says my subscription expired but I'm paying",
+      "category": "subscription",
+      "ok": true,
+      "top": [
+        {
+          "id": "playback-user-guide:playback-settings-about-tab:1",
+          "score": 0.517,
+          "scope": "adjacent",
+          "disruptive": true
+        }
+      ],
+      "outOfScope": [],
+      "expectAny": [
+        "about-tab:1"
+      ],
+      "note": "Restore Purchases"
+    },
+    {
+      "q": "How do I add MIDI cues to a song?",
+      "ok": true,
+      "top": [],
+      "outOfScope": [
+        "playback-user-guide:midi-cues-edit-mode-video-overview:1",
+        "playback-user-guide:midi-cues-edit-mode-editing-midi-cues:1",
+        "playback-user-guide:midi-cues-edit-mode-copy-and-paste-cues:1"
+      ],
+      "expectAny": []
+    },
+    {
+      "q": "How do I set up SMPTE timecode out?",
+      "ok": true,
+      "top": [
+        {
+          "id": "playback-user-guide:playback-settings-general-settings-tab:4",
+          "score": 0.431,
+          "scope": "in-scope",
+          "disruptive": false
+        },
+        {
+          "id": "playback-user-guide:adding-a-song-settings-available-when-adding-a-song:2",
+          "score": 0.409,
+          "scope": "in-scope",
+          "disruptive": false
+        },
+        {
+          "id": "playback-user-guide:playback-user-guide-setting-up-audio-and-midi:1",
+          "score": 0.25,
+          "scope": "in-scope",
+          "disruptive": false
+        }
+      ],
+      "outOfScope": [
+        "playback-user-guide:playback-user-guide-smpte:1",
+        "playback-user-guide:customizing-setlists-smpte-edit-mode:1",
+        "playback-user-guide:customizing-setlists-playback-edit-modes-overview:3"
+      ],
+      "expectAny": []
+    },
+    {
+      "q": "How do I control Playback from another iPad with Playback Remote?",
+      "ok": true,
+      "top": [
+        {
+          "id": "playback-user-guide:playback-settings-side-menu-settings-and-features:1",
+          "score": 0.491,
+          "scope": "in-scope",
+          "disruptive": true
+        },
+        {
+          "id": "playback-user-guide:playback-user-guide-app-overview:1",
+          "score": 0.481,
+          "scope": "in-scope",
+          "disruptive": false
+        },
+        {
+          "id": "playback-user-guide:playback-settings-general-settings-tab:2",
+          "score": 0.442,
+          "scope": "in-scope",
+          "disruptive": false
+        }
+      ],
+      "outOfScope": [
+        "playback-user-guide:playback-user-guide-playback-remote:1",
+        "playback-user-guide:setting-up-audio-and-midi-connecting-midi-devices-for-contro:1",
+        "playback-user-guide:playback-sync-live-navigation-keyboard-shortcuts-mac-only:1"
+      ],
+      "expectAny": []
+    },
+    {
+      "q": "What's a good lasagna recipe?",
+      "ok": true,
+      "top": [
+        {
+          "id": "playback-user-guide:playback-user-guide-conclusion-and-faqs:1",
+          "score": 0.116,
+          "scope": "adjacent",
+          "disruptive": false
+        },
+        {
+          "id": "playback-user-guide:playback-user-guide-building-a-setlist:1",
+          "score": 0.099,
+          "scope": "in-scope",
+          "disruptive": false
+        },
+        {
+          "id": "playback-user-guide:adding-a-song-settings-available-when-adding-a-song:1",
+          "score": 0.094,
+          "scope": "in-scope",
+          "disruptive": false
+        }
+      ],
+      "outOfScope": [
+        "playback-user-guide:playback-named-arrangements-saving-named-arrangements:1",
+        "playback-user-guide:playback-user-guide-redundancy-mode:1",
+        "playback-user-guide:setlist-song-map-edit-mode-edit-song-menu:3"
+      ],
+      "expectAny": [],
+      "note": "should return weak or no in-scope hits; the tool note says not to invent"
+    }
+  ]
+}

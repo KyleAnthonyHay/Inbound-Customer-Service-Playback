@@ -1,0 +1,373 @@
+{
+  "kind": "source-snapshot",
+  "sourceUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide",
+  "finalUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide",
+  "fetchedAt": "2026-11-01T22:54:42.910Z",
+  "httpStatus": 200,
+  "htmlFile": "raw/article.html",
+  "htmlChars": 463883,
+  "imageCount": 45,
+  "imagesSaved": 45,
+  "images": [
+    {
+      "index": 1,
+      "url": "https://downloads.intercomcdn.com/i/o/530003/a863da35daa6912fb4c00e03/58314df6397b54963cdbe7c36b662997.png",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 2200,
+      "file": "images/01-f10d678cfb.png"
+    },
+    {
+      "index": 2,
+      "url": "https://multitrackscom.intercom-attachments-1.com/i/o/303228680/0cf087b11e588b0d0e6dec5c/1+Introduction.jpg?expires=1793574900&amp;signature=c1c57308238cb6f9f60f2442376dc1e493c2e684298a1ea3f9d910d80f220810&amp;req=dyAkFMt2m4lfFb4f3HP0gH1zQd687mzccEWJjcR2BSYRDDTEIRjfQBAT8Avx%0Ae0mYAmY1otiPsBAVfw%3D%3D%0A",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "bytes": 59981,
+      "file": "images/02-0c4a9ffd95.jpg"
+    },
+    {
+      "index": 3,
+      "url": "https://multitrackscom.intercom-attachments-1.com/i/o/303228948/2f1550ed7b360ff4fed6643c/2+Opening+Playback.jpg?expires=1793574900&amp;signature=881861be7b9a7f783b45a7284c72d7c39d455e1302415c1d946867312f68a655&amp;req=dyAkFMt2lIVXFb4f3HP0gH1EJhsWb6wugOWaGQBA3pBZjtQAenzexZuCo8f9%0AxNi%2BOxvzUCpszvn0Qg%3D%3D%0A",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "bytes": 65669,
+      "file": "images/03-ac5dcfb982.jpg"
+    },
+    {
+      "index": 4,
+      "url": "https://multitrackscom.intercom-attachments-1.com/i/o/336710205/9967e3c0f58cb80f504cf5c8/IMG_0876+copy.PNG?expires=1793574900&amp;signature=c51925a6c707d9577a1ffb12bdc67da0c5a1df1650f0fd086b2637622e172020&amp;req=dyMhEch%2Bn4FaFb4f3HP0gJV3V3I552tonl8k7rVr6LR5p14QRPT3Jx6cYsYt%0AvQuGshIPhRahuc%2BFcw%3D%3D%0A",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 190786,
+      "file": "images/04-67a8161323.png"
+    },
+    {
+      "index": 5,
+      "url": "https://multitrackscom.intercom-attachments-1.com/i/o/336710575/9616219dbc406100d8878087/IMG_0876+copy+2.PNG?expires=1793574900&amp;signature=eaf8f3292166d78eb1a8574256092dc4cf7111dbc37fd9224b9835d3464cbb11&amp;req=dyMhEch%2BmIZaFb4f3HP0gJFsQKPr1Z4pBVJzDbCaEI0cYueER%2F2H9s9c4ogH%0AbmBBYNDeYKJD9XpgmQ%3D%3D%0A",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 445217,
+      "file": "images/05-3473fbc366.png"
+    },
+    {
+      "index": 6,
+      "url": "https://multitrackscom.intercom-attachments-1.com/i/o/336710800/692a773c997cfab258fe53c1/IMG_0876+copy+3.PNG?expires=1793574900&amp;signature=54005a51e3b016e8930e07853623ac4283c478226adb48ab2dc19a55e5c21f06&amp;req=dyMhEch%2BlYFfFb4f3HP0gMW3oq0XZfuPgtsEYQRkkjHKm%2Fh8U%2FGpPSNOqFiP%0AKLi3DHtJS0dnsNLiJA%3D%3D%0A",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 105181,
+      "file": "images/06-80a8894680.png"
+    },
+    {
+      "index": 7,
+      "url": "https://downloads.intercomcdn.com/i/o/1109531850/8c958d830698890aa7c985e4/CleanShot+2024-07-10+at+16_19_22.png?expires=1793574900&amp;signature=7c206c7d8dc05221e2b9a9a652f2efa4c45f6143e56e698bfb189ab34a9ec499&amp;req=dSEnH8x9nIlaWfMW1HO4zfwrxz4MhhLJlD54OvtKRKB02mZkv2WC92%2BmdbZq%0ARtBY5pVGJWhWnXDh%2B6Q%3D%0A",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 193876,
+      "file": "images/07-72f9e351f4.png"
+    },
+    {
+      "index": 8,
+      "url": "https://multitrackscom.intercom-attachments-1.com/i/o/303230484/009aa72cb911f1948d625842/3+Building+a+Setlist.jpg?expires=1793664000&amp;signature=fbce8f30440e05f0a2433da033b482d9708182090a5f01009f5b83424305cab7&amp;req=dyAkFMp%2BmYlbFb4X1HO4gcR3UUgcsoAadsYTTgEzMi3yfJGSx8j4%2BP%2FHen%2BT%0A",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "bytes": 64112,
+      "file": "images/08-bbb5afc78a.jpg"
+    },
+    {
+      "index": 9,
+      "url": "https://multitrackscom.intercom-attachments-1.com/i/o/336711581/cee75f4f06becfd653c25685/IMG_0877.PNG?expires=1793574900&amp;signature=6632c803a8bc933d34d0a8b89912900bf0aae7935b676d2a5894041cb1849e08&amp;req=dyMhEch%2FmIleFb4f3HP0gMzitnFySXyj6PT8NHHXy8ai9%2FQkENAJ6CrVMcmH%0AwE%2BmHp2LnWmkh2GfWw%3D%3D%0A",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 345267,
+      "file": "images/09-5bc0b5cba1.png"
+    },
+    {
+      "index": 10,
+      "url": "https://multitrackscom.intercom-attachments-1.com/i/o/336712004/8eeb33800cb0d9cb1ae60162/IMG_0878.PNG?expires=1793574900&amp;signature=912a677ae5f281daa0251f72a0ab68c216827f8febae9afe22ff19666313652c&amp;req=dyMhEch8nYFbFb4f3HP0gI3BFj2zckniXYnUWW9wQIexPbjZSjtHMzQdYBJm%0AtJMHpkTa2IbR3qPxcw%3D%3D%0A",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 406907,
+      "file": "images/10-92b16b3b45.png"
+    },
+    {
+      "index": 11,
+      "url": "https://downloads.intercomcdn.com/i/o/1109545370/619f506151d672e3e71e7f18/CleanShot+2024-07-10+at+16_37_38.png?expires=1793574900&amp;signature=4e19fd03798a655ab4b80d54b2b783262eafa9e89fa3fd87249e7a4820dc1b6c&amp;req=dSEnH8x6mIJYWfMW1HO4zRgQMrLpenCxmD3lAMp7mVWWNLpE9IwnuWqgYPRk%0AxMoRsQ3MamlXq7p6kac%3D%0A",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 261655,
+      "file": "images/11-a2cfa5c206.png"
+    },
+    {
+      "index": 12,
+      "url": "https://downloads.intercomcdn.com/i/o/1109553318/3eebd24eaf957e1faa362510/CleanShot+2024-07-10+at+16_45_30.png?expires=1793574900&amp;signature=9d393bedc6e3f79e71fa5a3602268c2fcef5f004f616de988264cd7d7999e7de&amp;req=dSEnH8x7noJeUfMW1HO4zdewjQgw03e%2FzosldvPmqguxKa9Zg1hEfnUBpELR%0ADXCVvBubKFJM2fis6TU%3D%0A",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 226949,
+      "file": "images/12-ae56296f20.png"
+    },
+    {
+      "index": 13,
+      "url": "https://downloads.intercomcdn.com/i/o/1109556341/eb502fe99e3dbe840b58d155/CleanShot+2024-07-10+at+16_49_07.png?expires=1793574900&amp;signature=54e98a29c1e476f069ba3c0503fae002eb360ced6e786d6c1114bf2cfb955f90&amp;req=dSEnH8x7m4JbWPMW1HO4zdUP%2FtTJZHHtkUzMloBzZwQjLRUS1PaqjIWzQ8d2%0ARECaLA7Qxwx%2FLWfJVjs%3D%0A",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 241569,
+      "file": "images/13-52304a2297.png"
+    },
+    {
+      "index": 14,
+      "url": "https://downloads.intercomcdn.com/i/o/1109558053/2cb5b5a6cc51be7f38566051/CleanShot+2024-07-10+at+16_52_38.png?expires=1793574900&amp;signature=02074ddcc96647f53490fae519d1c7f392d8e57ecd472a096d5d6ab905340c82&amp;req=dSEnH8x7lYFaWvMW1HO4zY7YELrepOkzL0kw8knvaau6Rl%2FFH8yL5DPMQRjP%0ALFSMLr8EXtrNQCSCI5k%3D%0A",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 200686,
+      "file": "images/14-2238a29a5c.png"
+    },
+    {
+      "index": 15,
+      "url": "https://downloads.intercomcdn.com/i/o/1109559445/74aa82d3fc8f7e9b5c1626b8/CleanShot+2024-07-10+at+16_54_41.png?expires=1793574900&amp;signature=f3ce87def19a6633299d1a2fde8a33d07672e06ac19050dd14dde861fe478e63&amp;req=dSEnH8x7lIVbXPMW1HO4zSM0N6aAJHVAvc1Lk9jYhL2x9Hggjvyh3cEf1m8S%0AOgKpgComnbgnaX4LUy4%3D%0A",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 170276,
+      "file": "images/15-9d408bc8d8.png"
+    },
+    {
+      "index": 16,
+      "url": "https://multitrackscom.intercom-attachments-1.com/i/o/303232191/a6c5338b784de1a344540597/4+Customize+your+Setlist.jpg?expires=1793574900&amp;signature=1d802f9dac27782703e934baef456163b3f86797277536233026a370279b0912&amp;req=dyAkFMp8nIheFb4f3HP0gGBLK1TTuvHnf2eTTfmqa98P5dpjOYS48yIWbwfC%0A7iWLiw8N%2BtYqiy3o%2FA%3D%3D%0A",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "bytes": 61230,
+      "file": "images/16-cb66c16d40.jpg"
+    },
+    {
+      "index": 17,
+      "url": "https://downloads.intercomcdn.com/i/o/747881717/1d5aa383e5f60b8feec85eb8/Edit+Modes.png?expires=1793574900&amp;signature=b71fb195bb04413d78f5fce524c4af5019fb50047668d2a9836d9d41354696a5&amp;req=cyQgHsF%2FmoBYFb4f3HP0gHhcfJb3ot7pCXAZhZzukhBU9yq%2Bwcs08jd1cFay%0ANAf7PJSBWCr1TCNNSQ%3D%3D%0A",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 517375,
+      "file": "images/17-1d0177c5c8.png"
+    },
+    {
+      "index": 18,
+      "url": "https://downloads.intercomcdn.com/i/o/1109166115/3dd776f2d70bf00690ab5fbd/CleanShot+2024-07-10+at+11_09_52%402x.png?expires=1793574900&amp;signature=e25b5e51a28c1447e8c2f77f17acf36157a9a5f39678c52af7d18e043efaa8a5&amp;req=dSEnH8h4m4BeXPMW1HO4zeoyPfqzoKcygsmPlDjUE43nvWgsuder19MQzMqE%0AT87j%2FyMXjRSJ%2FgUPLw8%3D%0A",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 1453466,
+      "file": "images/18-fe472bd815.png"
+    },
+    {
+      "index": 19,
+      "url": "https://multitrackscom.intercom-attachments-1.com/i/o/336714736/ab632d82906c04c7110985b8/IMG_0887.PNG?expires=1793574900&amp;signature=3986038d926aa0d14d42f1e0632ca4f3e7d15bea668185c4b539f72b41c88460&amp;req=dyMhEch6moJZFb4f3HP0gHojW%2BQNoI7zEGWp%2F46mK8JBR%2BYpE0s4mo%2BbqgqF%0ALovhvkBW6nswLF%2F%2FYA%3D%3D%0A",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 624995,
+      "file": "images/19-9dc4c9c22b.png"
+    },
+    {
+      "index": 20,
+      "url": "https://multitrackscom.intercom-attachments-1.com/i/o/336715276/59a43392ab8617dd8a4c3368/IMG_0888.PNG?expires=1793574900&amp;signature=4566786ca86594c605a0efba0e3a85c36b66d1ddd3b230c7d9a54d9d0795f8f3&amp;req=dyMhEch7n4ZZFb4f3HP0gBW2eBRUQ82wMnPdOsv3M%2Fuz9%2Bfvi2GaioplAHHZ%0AYsg8FZWv2R2ly4w%2FZQ%3D%3D%0A",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 864061,
+      "file": "images/20-5a294f922c.png"
+    },
+    {
+      "index": 21,
+      "url": "https://multitrackscom.intercom-attachments-1.com/i/o/336715586/97b7ec1371aa015fae0e22e9/IMG_0890.PNG?expires=1793574900&amp;signature=00850cd35b9af4b9b275d6e9a12604ff9cafaff71589b3702f719eaad6ae4bae&amp;req=dyMhEch7mIlZFb4f3HP0gPbNnaRFB11HSbbY%2BvNAkt6gtMuxUN6YbYCjXZNq%0A6Rk%3D%0A",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 943479,
+      "file": "images/21-63eb493744.png"
+    },
+    {
+      "index": 22,
+      "url": "https://multitrackscom.intercom-attachments-1.com/i/o/336716115/fffc894bcb3625f21d64ab1f/IMG_0891.PNG?expires=1793574900&amp;signature=ee51338f810c13070fb1145d909ef2b81fb3187eb3a95a7aec67ec658b8e8a7b&amp;req=dyMhEch4nIBaFb4f3HP0gODH5mbMmp%2F2S5fIfSdyCt8lFFYdjivmIFk7S8cE%0A4z1g61MuWM6TRWykHA%3D%3D%0A",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 826541,
+      "file": "images/22-23141fb072.png"
+    },
+    {
+      "index": 23,
+      "url": "https://multitrackscom.intercom-attachments-1.com/i/o/336716727/5a407a72ed6a2b35cdbdd436/IMG_0892.PNG?expires=1793574900&amp;signature=acecd1a83fff0e2a7e599777b5197f9c24689601be72e586dd5b89af2c8057a2&amp;req=dyMhEch4moNYFb4f3HP0gKnmIrE%2B02RhHfeXONClaY4rSaQEayM3wT3rlxDr%0AYnQ6iA0Y5lwY9OiMzg%3D%3D%0A",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 373163,
+      "file": "images/23-4656ed4f50.png"
+    },
+    {
+      "index": 24,
+      "url": "https://multitrackscom.intercom-attachments-1.com/i/o/336717456/bddb2e782a91b54d08adc4fb/IMG_0893.PNG?expires=1793574900&amp;signature=9a736aa2e698f57fe1b2aeac79522969c999706c294bbd7f29aa3eeae3cfd5ef&amp;req=dyMhEch5mYRZFb4f3HP0gJRnWXBTmbIqIueFXzMWGYhl6pl%2FHWJOQ9fqn0In%0ADAE5tOVyQJBQkb%2BcBw%3D%3D%0A",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 318090,
+      "file": "images/24-bec3ef5d90.png"
+    },
+    {
+      "index": 25,
+      "url": "https://multitrackscom.intercom-attachments-1.com/i/o/336717813/4d763e33dad8712ac259f96d/IMG_0894.PNG?expires=1793574900&amp;signature=6090a5ce3602711947cd82f3163127c7fda88e04838e5ea65827d00d5c48a9d3&amp;req=dyMhEch5lYBcFb4f3HP0gIDAYzYTNJojIwhbhKqH0b1eTM%2BstdSzoreEJOwf%0AWRihp1Ah26KHsGd90A%3D%3D%0A",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 163836,
+      "file": "images/25-6379c6eb6a.png"
+    },
+    {
+      "index": 26,
+      "url": "https://multitrackscom.intercom-attachments-1.com/i/o/336718066/0d306311c424690f0a9ead63/IMG_0895.PNG?expires=1793574900&amp;signature=eca78e058676961191e088932113946298d9f836a9eba3de58071fdf45ad8d33&amp;req=dyMhEch2nYdZFb4f3HP0gG6eDqTXsTBcRrrCncHu3oUp458m5Fu92EUgfLdo%0Am84Q6EP6ua0wF%2BfLRA%3D%3D%0A",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 371518,
+      "file": "images/26-5ef32a2b58.png"
+    },
+    {
+      "index": 27,
+      "url": "https://downloads.intercomcdn.com/i/o/552119804/099af336995c678594eedf4e/Screen+Shot+2022-07-25+at+2.13.37+PM.png?expires=1793574900&amp;signature=4684d2e6031a5c0fce19c6e0a10ccf091ddf830e709fc9ca48c1570141052e35&amp;req=cSUlF8h3lYFbFb4f3HP0gAlrpIqIx1%2FDr5hokPSgeCJyTKLOoLwAOacuqeQV%0Adfio%2FI2Za458FpOTzg%3D%3D%0A",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 486797,
+      "file": "images/27-452884fc47.png"
+    },
+    {
+      "index": 28,
+      "url": "https://downloads.intercomcdn.com/i/o/552123231/24f0239463f49a5eaa946395/Screen+Shot+2022-07-25+at+2.18.32+PM.png?expires=1793574900&amp;signature=e688eb17666c87185aa07035827cbd13be7cc35c8f61c065d412d0c9920d1d29&amp;req=cSUlF8t9n4JeFb4f3HP0gMBudlT8gg7BTcsIkP4QOYus3xeHFS07TRvnSmFx%0AKhE%3D%0A",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 111101,
+      "file": "images/28-d354d66fa9.png"
+    },
+    {
+      "index": 29,
+      "url": "https://downloads.intercomcdn.com/i/o/552124258/8d4911903bf9c119ae35dc3d/MIDI+mapping+transport+song+sections.png?expires=1793574900&amp;signature=9bf84c5a2994c53746cf4ce2c85b7a0a0e71d0888eb6713e0e4d9136e430c0c1&amp;req=cSUlF8t6n4RXFb4f3HP0gIEUqTad%2FxOCyDQ4Oq3ls8hOGrcCvmc%2FMJqWo7cD%0AkEbZHKMVrKl1QMa5RA%3D%3D%0A",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 73955,
+      "file": "images/29-e8f8b2de2c.png"
+    },
+    {
+      "index": 30,
+      "url": "https://multitrackscom.intercom-attachments-1.com/i/o/336736019/36d8c537027bc45bba412781/IMG_0898.PNG?expires=1793574900&amp;signature=ce79bdfbac8731e8ca8213b2d72c0615a5c5cec96ae0db22a10ee7aeed30c6f2&amp;req=dyMhEcp4nYBWFb4f3HP0gCkqDNJRIvInDnXodCJRJAmx7VCjfab6OoLlDvOa%0A0xg%3D%0A",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 750216,
+      "file": "images/30-ca551a87a3.png"
+    },
+    {
+      "index": 31,
+      "url": "https://multitrackscom.intercom-attachments-1.com/i/o/336736584/c1b0034ba0ad0105731ce982/IMG_0900.PNG?expires=1793574900&amp;signature=cb97298dfbb55b511727626a48a3d03d8b10587b213d4b5e852535fecbe3911b&amp;req=dyMhEcp4mIlbFb4f3HP0gDTCjbZZggl41qPNlPHfId52XYRx4eovtg66YjNl%0A%2Bm%2BxdDK99H%2Bzti8twA%3D%3D%0A",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 259427,
+      "file": "images/31-09db70512b.png"
+    },
+    {
+      "index": 32,
+      "url": "https://multitrackscom.intercom-attachments-1.com/i/o/336736583/072dcf56f87b9356ed316e4f/IMG_0901.PNG?expires=1793574900&amp;signature=8a0bef62f697b42001caa4ad302619605fbfeb74cbb34eb509d952ed7c0408b5&amp;req=dyMhEcp4mIlcFb4f3HP0gImUZqDLo%2B6owxWg5GtTV4YUO4D5Mak0rxLiL2Fb%0AhzXyzE5x1Sboqt3HBQ%3D%3D%0A",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 305280,
+      "file": "images/32-d06dc9c58d.png"
+    },
+    {
+      "index": 33,
+      "url": "https://multitrackscom.intercom-attachments-1.com/i/o/336737119/e02d05eaa5e264638485e9d8/IMG_0902.PNG?expires=1793574900&amp;signature=f66e5d6d2438b207ade7d7c3ee6186f3d5c0915a009d60bd49f64875eed8cbb8&amp;req=dyMhEcp5nIBWFb4f3HP0gImLF%2BiMN6ufA9Uqhogjsw8q17h5Y3%2B%2F6w4Z7DYX%0A6DkZKdsdfNLAaIWj6w%3D%3D%0A",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 198028,
+      "file": "images/33-a1f9b3e316.png"
+    },
+    {
+      "index": 34,
+      "url": "https://multitrackscom.intercom-attachments-1.com/i/o/336735066/06c66122f0ecf179472b61f7/5SecondsApp_642624916.726203.gif?expires=1793574900&amp;signature=ae9e7c53712ddabb365118d066de51a7b4fa2f4f6a1b7ecb629c02dcfd03ed3c&amp;req=dyMhEcp7nYdZFb4f3HP0gMW0AyNoIvvgTdbvjkUBQfza3iu6l4sNqz7kkh5T%0AJYM%3D%0A",
+      "status": 200,
+      "contentType": "image/gif",
+      "bytes": 1418087,
+      "file": "images/34-bc6344dafa.gif"
+    },
+    {
+      "index": 35,
+      "url": "https://downloads.intercomcdn.com/i/o/1110693511/a8e01565c27216a33211e784/CleanShot+2024-07-11+at+14_52_04%402x.png?expires=1793574900&amp;signature=bb803c3d6f62085407ef1734d67f25eadfc2e6b763b64918314ab86db4a68ae9&amp;req=dSEmFs93noReWPMW1HO4zanrMLiWrL9Q6rf7paAs7wPbNqyaJWWECAxwDmGV%0A3Knf04rmLtDuhC84AMI%3D%0A",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 111302,
+      "file": "images/35-f687a432d7.png"
+    },
+    {
+      "index": 36,
+      "url": "https://downloads.intercomcdn.com/i/o/1110704131/c208ef77172a040285f3c2c5/CleanShot+2024-07-11+at+14_58_08%402x.png?expires=1793574900&amp;signature=bb8a9b17f4d2ea81da8d8517f0f9206d9e7ce561b2b276c7eac9f36abb8bf416&amp;req=dSEmFs5%2BmYBcWPMW1HO4zRuIfj9LqLbGbfuA7zxL09YPaqBS86o0xHXwvF4Z%0AzoC7HcjHThxBuV1uGoc%3D%0A",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 420281,
+      "file": "images/36-20ec12b55b.png"
+    },
+    {
+      "index": 37,
+      "url": "https://downloads.intercomcdn.com/i/o/1110677501/65f719661a1248eb644bb399/CleanShot+2024-07-11+at+14_39_16%402x.png?expires=1793574900&amp;signature=09678ebbc0b4fa072446cf445f254eaf8afab8a569ffbb00cdebace9fab13777&amp;req=dSEmFs95moRfWPMW1HO4zYIvL9VOqqpMvwo3eUP%2FJemdaFrsstE76EvqIWGp%0Ad%2BJkJxAuvNM%2BjIlQEBs%3D%0A",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 595221,
+      "file": "images/37-2d9a9b0401.png"
+    },
+    {
+      "index": 38,
+      "url": "https://downloads.intercomcdn.com/i/o/1110737750/a6180fbd0c60f305497e9741/CleanShot+2024-07-11+at+15_39_44%402x.png?expires=1793574900&amp;signature=ae567bb671d2d5ee54362431e7b7c57727c4cfc47f864bbc461a9a0fe6b4bc10&amp;req=dSEmFs59moZaWfMW1HO4zcvV5NaI5TkwxDv%2FEY8Hie15oDZXX423tDqoQZmM%0A26I7CaWRQ8O5sMmrkns%3D%0A",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 404707,
+      "file": "images/38-6b0433930b.png"
+    },
+    {
+      "index": 39,
+      "url": "https://downloads.intercomcdn.com/i/o/1110718913/593317a68f202a125fc8315b/CleanShot+2024-07-11+at+15_16_28%402x.png?expires=1793574900&amp;signature=f22688d27c3ebda6f7ec1481ba8227f6aea96b4abe00b6693d9c29f974dd2d0e&amp;req=dSEmFs5%2FlYheWvMW1HO4zSOHbYcO%2B7bDpCF%2FWm0TSQJNglC4tzk4LEe9en4I%0A89FnWOFwQyqTNw4Mj0M%3D%0A",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 283528,
+      "file": "images/39-e2ca1acad7.png"
+    },
+    {
+      "index": 40,
+      "url": "https://downloads.intercomcdn.com/i/o/380672177/94c01bf7dd5f3bae4c389a71/IMG_1017.PNG?expires=1793574900&amp;signature=8d66c8f4338861ef1c331ddc67e690628feca6ce1edc31759d6b57c29ef58908&amp;req=dygnEM58nIZYFb4f3HP0gDv1mUtk2debBtNMCC1zIpHjqj%2BS9Cx7QPSyeFad%0A7brjynDkISAuP9aNAw%3D%3D%0A",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 221081,
+      "file": "images/40-5a83e87460.png"
+    },
+    {
+      "index": 41,
+      "url": "https://downloads.intercomcdn.com/i/o/1110709866/437e2458f5f84eb54738dd5e/CleanShot+2024-07-11+at+15_10_45%402x.png?expires=1793574900&amp;signature=1059862d383bc898b850854af47bceafd58eb8a70df88f91703ca6a67cf39d9f&amp;req=dSEmFs5%2BlIlZX%2FMW1HO4zQa9E3Zz5373LAYoOg0x5V%2BoWw5ejMQe5jfFsapd%0APVcUDMdVFDB676KhwTk%3D%0A",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 436015,
+      "file": "images/41-60128e06f5.png"
+    },
+    {
+      "index": 42,
+      "url": "https://multitrackscom.intercom-attachments-1.com/i/o/303243596/05f7ec806723e75f83ffc3b5/5+Perform-+Routing.jpg?expires=1793574900&amp;signature=634934bcd3e9c7ca31dce0c5e3bd2574a72d23eec8cec9e172768f1e587e6c48&amp;req=dyAkFM19mIhZFb4f3HP0gIbS5aawx0uMXl23ZTfj2ykOwgzbNxgMOhA%2BRgDj%0Audg8cDUIcrhMufiO6A%3D%3D%0A",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "bytes": 77250,
+      "file": "images/42-0908f66b34.jpg"
+    },
+    {
+      "index": 43,
+      "url": "https://multitrackscom.intercom-attachments-1.com/i/o/303247842/385ef885d0315cd388531fc1/6+Perform+-+Performance.jpg?expires=1793574900&amp;signature=cd86e47d447049210f24e57f8410ca0a60e132fa9009678bbcb19a30d59cdbc9&amp;req=dyAkFM15lYVdFb4f3HP0gMRssIUCeC2yTu2xGsu5yuYDYGXp9d6WGyxVASLf%0Abu1DdfvDTXHOEtqXuw%3D%3D%0A",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "bytes": 64675,
+      "file": "images/43-52120a24d0.jpg"
+    },
+    {
+      "index": 44,
+      "url": "https://multitrackscom.intercom-attachments-1.com/i/o/303252788/279e11c80f8814e6a2497e1b/7+Save+Arrangements.jpg?expires=1793574900&amp;signature=8c21e40e554175a207e8cc4c83257bfd7ceb8d9c34ebe9f4f95bf10d483f48ac&amp;req=dyAkFMx8molXFb4f3HP0gHIBgBQuD0yLHcFlQdoVGbQKMgq%2FsJNzEMTL3D1Q%0AIpKEEYXJsLy2A7sw2w%3D%3D%0A",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "bytes": 64725,
+      "file": "images/44-412207a53d.jpg"
+    },
+    {
+      "index": 45,
+      "url": "https://downloads.intercomcdn.com/i/o/kabb4vin/1412002272/143524fe2e5296724a896e2c8aff/MultiTracks_com_Logo_White.png?expires=1793575800&amp;signature=7e99012c15a0d2ff554ada9b91c73b930ecb7b32ed678e7cb5b9e44f1d358aba&amp;req=dSQmFMl%2Bn4NYW%2FMW1HO4zQuvn43vkuNXDtcP%2FCwuz9pdTq2QrSN67OpsBuq2%0AojFcIXcjqpWuv0MJh3M%3D%0A",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 30062,
+      "file": "images/45-81e6ed49b5.png"
+    }
+  ]
+}

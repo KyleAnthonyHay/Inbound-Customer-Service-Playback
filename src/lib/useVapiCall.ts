@@ -48,6 +48,59 @@ type VapiMessage = {
   [key: string]: unknown;
 };
 
+/**
+ * Daily (Vapi's WebRTC layer) reports the server closing the room as an error
+ * ("Meeting ended due to ejection: Meeting has ended"). That is how every
+ * assistant-side hang-up arrives in the browser: endCall, maxDurationSeconds,
+ * the idle hooks, or a server-side failure. It is the end of the call, not a
+ * client fault, so it is handled as a remote hang-up; the real reason comes in
+ * the status-update / end-of-call-report (shown on the "Call ended" row).
+ */
+export function isRemoteHangup(raw: string): boolean {
+  return /ejection|meeting has ended|ejected/i.test(raw);
+}
+
+/**
+ * After a server-side hang-up the Vapi SDK tears the Daily room down with
+ * `cleanup().catch(console.error)`, and Daily rejects that with the same
+ * "Meeting ended due to ejection" error we already handled on the `error`
+ * event. In dev, Next.js turns that console.error into a full error overlay.
+ * While a call is live, drop console.error calls that are only that message;
+ * everything else passes through untouched. Returns a restore function.
+ */
+function muteRemoteHangupConsoleErrors(): () => void {
+  const original = console.error;
+  console.error = (...args: unknown[]) => {
+    if (args.some((a) => isRemoteHangup(errorText(a)))) return;
+    original(...args);
+  };
+  return () => {
+    if (console.error !== original) console.error = original;
+  };
+}
+
+/**
+ * The SDK's error event is not one shape: a string, an Error, or
+ * { type: "daily-error", error: { type, msg, errorMsg, details } }. Always
+ * return a string; rendering the raw object crashed the activity panel.
+ */
+export function errorText(e: unknown): string {
+  if (typeof e === "string") return e;
+  if (!e || typeof e !== "object") return "Call error";
+  const o = e as Record<string, unknown>;
+  const inner = (o.error && typeof o.error === "object" ? (o.error as Record<string, unknown>) : null) ?? o;
+  for (const k of ["errorMsg", "msg", "message"]) {
+    const v = inner[k] ?? o[k];
+    if (typeof v === "string" && v) return v;
+  }
+  if (typeof inner.type === "string") return `Call error (${inner.type})`;
+  try {
+    return JSON.stringify(e).slice(0, 200);
+  } catch {
+    return "Call error";
+  }
+}
+
 /** Turns browser/SDK error strings into something a tester can act on. */
 export function friendlyCallError(raw: string): string {
   if (/permission denied|notallowederror|not allowed/i.test(raw))
@@ -56,11 +109,25 @@ export function friendlyCallError(raw: string): string {
   return raw;
 }
 
+/** Vapi endedReason codes a tester sees most, in plain words. */
+export function friendlyEndedReason(reason: string): string {
+  if (reason === "silence-timed-out") return "silence-timed-out (nobody spoke for the silence timeout)";
+  if (reason === "assistant-ended-call") return "assistant-ended-call (the assistant called endCall)";
+  if (reason === "customer-ended-call") return "customer-ended-call (hung up from the page)";
+  if (reason === "exceeded-max-duration") return "exceeded-max-duration (maxDurationSeconds reached)";
+  return reason;
+}
+
 let idCounter = 0;
 const nextId = () => `${Date.now()}-${idCounter++}`;
 
-/** After a successful simulated handoff, end the demo call if the model has not. */
-const HANDOFF_END_BACKSTOP_MS = 12_000;
+/**
+ * After a successful simulated handoff the transfer cue plays and the demo
+ * call ends: the "transfer" is not real, so there is nothing to stay on the
+ * line for. If the model is still speaking its goodbye, this cuts it off on
+ * purpose. The pause lets the cue finish before the hang-up tone.
+ */
+const HANDOFF_END_DELAY_MS = 400;
 
 export type Handoff = { team: string; at: number };
 
@@ -69,6 +136,9 @@ export function useVapiCall() {
   const toolStartTimes = useRef<Map<string, number>>(new Map());
   const toolNames = useRef<Map<string, string>>(new Map());
   const backstopRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const unmuteConsoleRef = useRef<(() => void) | null>(null);
+  /** Vapi's status-update "ended" usually lands before Daily's left-meeting, so keep the reason for the "Call ended" row. */
+  const endedReasonRef = useRef<string | null>(null);
   const [handoff, setHandoff] = useState<Handoff | null>(null);
   const [status, setStatus] = useState<CallStatus>("idle");
   const [error, setError] = useState<string | null>(null);
@@ -120,6 +190,7 @@ export function useVapiCall() {
         case "status-update": {
           // call-start / call-end already produce rows; only surface an ended reason.
           if (m.status === "ended" && m.endedReason) {
+            endedReasonRef.current = friendlyEndedReason(String(m.endedReason));
             setEvents((prev) =>
               prev.map((e) => (e.kind === "call" && e.label === "Call ended" ? { ...e, detail: String(m.endedReason) } : e))
             );
@@ -164,12 +235,14 @@ export function useVapiCall() {
             if (parsed?.ok) {
               setHandoff({ team: parsed.team, at: Date.now() });
               pushEvent({ kind: "transfer", label: "Transfer sound (browser)", status: "succeeded" });
-              void playCue("transfer");
               if (backstopRef.current) clearTimeout(backstopRef.current);
-              backstopRef.current = setTimeout(() => {
-                pushEvent({ kind: "call", label: "Ending demo call after handoff", status: "succeeded" });
-                vapiRef.current?.stop();
-              }, HANDOFF_END_BACKSTOP_MS);
+              void playCue("transfer").then(() => {
+                backstopRef.current = setTimeout(() => {
+                  backstopRef.current = null;
+                  pushEvent({ kind: "call", label: "Ending demo call after handoff", status: "succeeded" });
+                  vapiRef.current?.stop();
+                }, HANDOFF_END_DELAY_MS);
+              });
             }
           }
           setEvents((prev) =>
@@ -210,6 +283,7 @@ export function useVapiCall() {
     setEvents([]);
     setCallId(null);
     setHandoff(null);
+    endedReasonRef.current = null;
     primeCues();
     setStatus("connecting");
     pushEvent({ kind: "call", label: "Connecting", status: "running" });
@@ -228,29 +302,37 @@ export function useVapiCall() {
       });
       vapi.on("call-end", () => {
         if (backstopRef.current) clearTimeout(backstopRef.current);
+        // The SDK's cleanup runs right after call-end; give it a moment before restoring.
+        const unmute = unmuteConsoleRef.current;
+        unmuteConsoleRef.current = null;
+        if (unmute) setTimeout(unmute, 2000);
         settleThinking();
         void playCue("hangup");
         setStatus("ended");
         setAssistantSpeaking(false);
-        pushEvent({ kind: "call", label: "Call ended" });
+        pushEvent({ kind: "call", label: "Call ended", detail: endedReasonRef.current ?? undefined });
       });
       vapi.on("speech-start", () => setAssistantSpeaking(true));
       vapi.on("speech-end", () => setAssistantSpeaking(false));
       vapi.on("volume-level", (v: number) => setVolume(v));
       vapi.on("message", handleMessage);
       vapi.on("error", (e: unknown) => {
-        const raw =
-          typeof e === "string"
-            ? e
-            : (e as { message?: string; error?: { message?: string } })?.message ??
-              (e as { error?: { message?: string } })?.error?.message ??
-              "Call error";
+        const raw = errorText(e);
+        if (isRemoteHangup(raw)) {
+          // The assistant (or Vapi) hung up; "call-end" follows from Daily's left-meeting.
+          pushEvent({ kind: "call", label: "Ended by the assistant", detail: "The call was closed from the server side; see the ended reason below." });
+          setStatus((s) => (s === "active" || s === "connecting" ? "ended" : s));
+          return;
+        }
         const msg = friendlyCallError(raw);
         setError(msg);
         setStatus("error");
         settleRunning("failed");
         pushEvent({ kind: "error", label: "Error", detail: msg, status: "failed" });
       });
+
+      unmuteConsoleRef.current?.();
+      unmuteConsoleRef.current = muteRemoteHangupConsoleErrors();
 
       let call: { id?: string } | null = null;
       if (config.vapiAssistantId) {
@@ -288,6 +370,8 @@ export function useVapiCall() {
   useEffect(() => {
     return () => {
       if (backstopRef.current) clearTimeout(backstopRef.current);
+      unmuteConsoleRef.current?.();
+      unmuteConsoleRef.current = null;
       vapiRef.current?.stop();
     };
   }, []);

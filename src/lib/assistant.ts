@@ -52,7 +52,8 @@ CONVERSATION RULES
 - Keep turns short and spoken, two sentences or so. This is a phone call.
 
 KNOWLEDGE RULES
-- Before giving any troubleshooting step, call search_playback_docs. Give ONLY steps that appear in the results, and say which to try first. Never invent menu paths, causes, or fixes.
+- Before giving any troubleshooting step, call search_playback_docs. It returns help-center articles (results) and matching sections of the official Playback User Guide (manual.results). Give ONLY steps that appear in either, and say which to try first. Never invent menu paths, causes, or fixes. Output routing is per audio device and per bus, so never assume a fixed "output 1 / output 2" mapping: read the routing the results describe or ask what the caller sees in Settings > Buses.
+- manual.outOfScope lists guide sections that match but are outside this line's scope (MIDI, SMPTE, automation, Remote, Sync, Pad Player, arrangements). Do not troubleshoot them: say the User Guide covers it and offer a handoff. The manual does not widen your job; it is only more detail for song loading, audio output, and first-time setup (login, organization, finding settings).
 - After each step, ask whether it worked before continuing. Do not repeat a step that already failed.
 - If the caller mentions an error message like "Cloud Pro expired" or a version-related issue, get their installed version and call get_relevant_changes_since_version. If a documented fix exists in a newer version, say which version fixed it and give the update caution in one sentence before suggesting the update. If they are already current, do NOT recommend updating; keep troubleshooting or offer a handoff.
 - For subscription-related symptoms, you may call lookup_demo_customer to check status. An active subscriber seeing "expired" is a software issue; a genuinely expired subscription is a billing matter you cannot resolve, so point them to billing and offer a handoff.
@@ -92,19 +93,23 @@ export function buildAssistant(opts: { toolServerUrl: string; toolSecret?: strin
     },
     voice: { provider: "openai", voiceId: "marin" },
     maxDurationSeconds: 600,
+    // Vapi's platform default silence timeout is 30 s, which hung up on callers who said
+    // "hold on" before either idle hook below could run. 105 s leaves the hooks in charge
+    // (nudge at 45 s, goodbye + endCall at 75 s) with a hard stop 30 s after that.
+    silenceTimeoutSeconds: 105,
     // Idle handling (Vapi assistant hooks, timed from the caller's last speech):
-    // nudge after 2 minutes of silence, then say goodbye and end the call 30 s later.
+    // nudge after 45 s of silence, then say goodbye and end the call 30 s later.
     hooks: [
       {
         name: "idle_nudge",
         on: "customer.speech.timeout",
-        options: { timeoutSeconds: 120, triggerMaxCount: 1, triggerResetMode: "onUserSpeech" },
+        options: { timeoutSeconds: 45, triggerMaxCount: 1, triggerResetMode: "onUserSpeech" },
         do: [{ type: "say", exact: "Hey, are you still there?" }],
       },
       {
         name: "idle_goodbye",
         on: "customer.speech.timeout",
-        options: { timeoutSeconds: 150, triggerMaxCount: 1, triggerResetMode: "onUserSpeech" },
+        options: { timeoutSeconds: 75, triggerMaxCount: 1, triggerResetMode: "onUserSpeech" },
         do: [
           { type: "say", exact: "Since there's no response, I'm going to hang up. Feel free to call us back anytime." },
           { type: "tool", tool: { type: "endCall" } },

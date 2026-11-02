@@ -2,6 +2,7 @@ import type { ActionCtx } from "./_generated/server";
 import { api } from "./_generated/api";
 import type { Id } from "./_generated/dataModel";
 import { searchDocs } from "../src/lib/tools/kb";
+import { searchManual } from "../src/lib/tools/manual";
 import { getCurrentPlaybackAppInfo } from "../src/lib/tools/apple";
 import { getRelevantChangesSinceVersion } from "../src/lib/tools/releases";
 import { TOOL_META } from "../src/lib/tools/meta";
@@ -24,7 +25,17 @@ export const tools: Record<string, ToolDef> = {
   search_playback_docs: {
     source: "internal",
     label: TOOL_META.search_playback_docs.label,
-    run: async (a) => searchDocs(str(a.query) ?? "", { category: str(a.category), platform: str(a.platform), limit: 3 }),
+    run: async (a) => {
+      const query = str(a.query) ?? "";
+      const category = str(a.category);
+      // Help-center articles (local keyword snapshot) and the User Guide (Pinecone) in parallel;
+      // the manual degrades to { ok: false } when Pinecone is not configured or slow.
+      const [docs, manual] = await Promise.all([
+        Promise.resolve(searchDocs(query, { category, platform: str(a.platform), limit: 3 })),
+        searchManual(query, { category, limit: 3 }),
+      ]);
+      return { ...docs, found: docs.found + (manual.ok ? manual.found : 0), manual };
+    },
   },
   get_current_playback_app_info: {
     source: "live",

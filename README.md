@@ -45,6 +45,42 @@ runs, so nothing needs deploying or tunnelling to test tools from a real call.
 - `src/knowledge/playback-kb.json`: source-backed knowledge snapshot with URLs and retrieval dates.
 - `convex/`: schema, seed, and functions. Every record is fictional and marked `simulated`.
 
+## Playback User Guide in Pinecone
+
+The official manual (helpcenter.multitracks.com, article 4944485) is a second
+knowledge source next to the keyword KB. `search_playback_docs` returns both:
+`results` (help-center snapshot, `src/knowledge/playback-kb.json`) and
+`manual` (User Guide sections from Pinecone). Without Pinecone env vars the
+manual part returns `{ ok: false, reason: "not-configured" }` and the tool
+keeps working on the keyword KB alone.
+
+Pipeline (all under `scripts/manual/`, outputs in `docs/source-snapshots/playback-user-guide/`):
+
+| Step | Command | Output |
+|---|---|---|
+| 1 Download (needs a laptop; the cloud sandbox blocks the help center) | `npm run manual:fetch` | `raw/article.html`, `images/`, `fetch-manifest.json` |
+| 2 Build, offline | `npm run manual:build` | `*.snapshot.html` (readable, labelled source snapshot, screenshots in place), `*.txt` (extracted text), `chunks.jsonl`, `manual-manifest.json`, `build-report.json` |
+| 3 Index | `npm run manual:index` (`--dry-run`, `--prune`) | Pinecone index + `index-report.json` |
+| 4 Validate | `npm run manual:eval` | `retrieval-report.json` (real caller questions vs expected sections) |
+
+- Chunks are one per leaf heading (title + heading path on every chunk), split
+  only between blocks so steps, lead-ins and notes stay together; ~630 chars
+  average, under 1,200 (96 chunks).
+- Text only is embedded (Pinecone integrated `llama-text-embed-v2`, field
+  `text`). Screenshots are never embedded or stored as binaries: a chunk carries
+  `image_ids`, and `manual-manifest.json` maps each id to source URL, local
+  file, caption, section and chunk ids.
+- Every chunk is tagged `scope` (in-scope / adjacent / out-of-scope) and
+  `category`, so retrieval can cite the manual without widening support scope
+  (song loading, audio output, bounded first-time setup). Out-of-scope hits come
+  back as titles under `manual.outOfScope`.
+- Env: `PINECONE_API_KEY`, `PINECONE_INDEX` (default `playback-support-kb`),
+  `PINECONE_NAMESPACE` (default `playback-user-guide`) for the scripts;
+  `PINECONE_API_KEY`, `PINECONE_INDEX_HOST`, `PINECONE_NAMESPACE` on the Convex
+  deployment (`npx convex env set …`) for the live tool. Starter (free) plan,
+  aws/us-east-1. The index script never deletes an index; `--prune` only removes
+  stale ids of this document.
+
 ## Vapi configuration
 
 - `NEXT_PUBLIC_VAPI_PUBLIC_KEY`: Vapi public key (browser-safe).
