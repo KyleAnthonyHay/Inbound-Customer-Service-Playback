@@ -67,6 +67,8 @@ export default defineSchema({
   calls: defineTable({
     callId: v.string(),
     channel: v.union(v.literal("browser"), v.literal("phone"), v.literal("harness"), v.literal("unknown")),
+    /** Caller ID (E.164) on phone calls, from Vapi's call.customer.number. */
+    callerNumber: v.optional(v.string()),
     status: v.union(v.literal("in-progress"), v.literal("ended")),
     startedAt: v.number(), // epoch ms
     endedAt: v.optional(v.number()),

@@ -56,6 +56,7 @@ import { cn } from "@/lib/cn";
 import type { ActivityEvent, CallStatus, TranscriptLine } from "@/lib/useVapiCall";
 import type { ToolSource } from "@/lib/tools/meta";
 import { config } from "@/lib/config";
+import { formatCallerNumber } from "@/lib/tools/callerId";
 
 type Props = {
   open: boolean;
@@ -737,6 +738,7 @@ function HistoryView({ calls, currentId, busy, onOpen, onClear, reduce }: { call
                             {` · ${c.toolCount} tool${c.toolCount === 1 ? "" : "s"}`}
                             {c.transcriptCount ? ` · ${c.transcriptCount} lines` : ""}
                             {c.channel !== "unknown" ? ` · ${c.channel}` : ""}
+                            {c.callerNumber ? ` · from ${formatCallerNumber(c.callerNumber)}` : ""}
                             {live ? " · live" : c.endedReason ? ` · ${c.endedReason.replace(/-/g, " ")}` : ""}
                           </span>
                         </span>
@@ -1074,13 +1076,13 @@ function View({ open, onToggle, callId, status: browserStatus, startedAt: browse
             )}
             {viewingPast && (
               <span className="rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1">
-                Past call{callRow?.endedReason ? ` · ${callRow.endedReason.replace(/-/g, " ")}` : ""}
+                Past call{callRow?.endedReason ? ` · ${callRow.endedReason.replace(/-/g, " ")}` : ""}{callRow?.callerNumber ? ` · from ${formatCallerNumber(callRow.callerNumber)}` : ""}
               </span>
             )}
             {remoteLive && callRow && (
               <span className="flex items-center gap-1.5 rounded-full border border-[#34c79a]/30 bg-[#34c79a]/10 px-2.5 py-1 text-[#6edcb8]">
                 <span className="h-1.5 w-1.5 rounded-full bg-[#34c79a] motion-safe:animate-pulse" aria-hidden />
-                Live on {callRow.channel === "phone" ? "the phone line" : callRow.channel}
+                Live on {callRow.channel === "phone" ? "the phone line" : callRow.channel}{callRow.callerNumber ? ` from ${formatCallerNumber(callRow.callerNumber)}` : ""}
               </span>
             )}
           </motion.div>
