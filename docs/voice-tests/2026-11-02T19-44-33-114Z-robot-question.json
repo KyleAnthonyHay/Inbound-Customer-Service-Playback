@@ -1,0 +1,109 @@
+{
+  "scenario": "robot-question",
+  "expectedIntent": "song-loading",
+  "callId": "01a19dc9-e667-7227-ae9b-8dc3787bd13f",
+  "endedReason": "customer-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "search_playback_docs"
+  ],
+  "timing": {
+    "turns": [
+      {
+        "caller": "Wait, are you a robot? Am I talking to a real person right now",
+        "silenceS": 0,
+        "firstHeard": "Yes. Yeah,",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [],
+        "summary": "\"Wait, are you a robot? Am I talking to a\" -> 0s silence, then answer: \"Yes. Yeah,\""
+      },
+      {
+        "caller": "Okay, my song won't download in Playback. It just spins. I'm on an iPad, version eight point six point four, and I have time",
+        "silenceS": 0.6,
+        "firstHeard": "Okay,",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"Okay, my song won't download in Playback\" -> 0.6s silence, then answer: \"Okay,\" [delegate@+0.0s]"
+      },
+      {
+        "caller": "Yeah, that",
+        "silenceS": 0,
+        "firstHeard": "let me",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [],
+        "summary": "\"Yeah, that\" -> 0s silence, then answer: \"let me\""
+      },
+      {
+        "caller": "fixed",
+        "silenceS": 0,
+        "firstHeard": "pull",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [],
+        "summary": "\"fixed\" -> 0s silence, then answer: \"pull\""
+      },
+      {
+        "caller": "it",
+        "silenceS": 0,
+        "firstHeard": "that",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "search_playback_docs@+0.2s"
+        ],
+        "summary": "\"it\" -> 0s silence, then answer: \"that\" [search_playback_docs@+0.2s]"
+      },
+      {
+        "caller": ". Thanks",
+        "silenceS": 0,
+        "firstHeard": "One",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [],
+        "summary": "\". Thanks\" -> 0s silence, then answer: \"One\""
+      },
+      {
+        "caller": ". Bye",
+        "silenceS": 0,
+        "firstHeard": "moment please.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [],
+        "summary": "\". Bye\" -> 0s silence, then answer: \"moment please.\""
+      }
+    ],
+    "longestSilenceS": 0.6,
+    "longestGapAfterTransitionS": 0
+  },
+  "convexToolEvents": [
+    "search_playback_docs succeeded 429ms 6 result(s)"
+  ],
+  "liveEvents": [
+    "31.2s TOOL-CALLS delegate({})",
+    "33.0s TOOL-CALLS search_playback_docs({\"query\":\"song will not download just spins on iPad Playback version 8.6.4\",\"category\":\"song-loading\",\"platform\":\"iPadOS\"})"
+  ],
+  "transcript": [
+    "AGENT: Hi, thanks for calling MultiTracks Playback support. I'm an AI assistant. Are you having trouble with a song loading, or with audio output?",
+    "CALLER: Wait, are you a robot? Am I talking to a real person right now",
+    "AGENT: Yes. Yeah,",
+    "CALLER: Okay, my song won't download in Playback. It just spins. I'm on an iPad, version eight point six point four, and I have time",
+    "AGENT: Okay,",
+    "CALLER: Yeah, that",
+    "AGENT: let me",
+    "CALLER: fixed",
+    "AGENT: pull",
+    "CALLER: it",
+    "AGENT: that",
+    "AGENT: up.",
+    "CALLER: . Thanks",
+    "AGENT: One",
+    "CALLER: . Bye",
+    "AGENT: moment please.",
+    "AGENT: Since it's spinning without an error message, can you tell me which song it is? And do you see any download error text at all?"
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "scenario": "human-request",
+  "expectedIntent": "human-request",
+  "callId": "01a19dcc-21ff-7cc4-b165-2530cc56dbc2",
+  "endedReason": "customer-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "check_team_availability",
+    "initiate_handoff"
+  ],
+  "timing": {
+    "turns": [
+      {
+        "caller": "I don't want to troubleshoot. I just want to talk to a real person, please. Yes, a callback is fine. Any time tomorrow afternoon. I'm in Central Time. My number is five five five, zero one zero, zero one nine nine. And my name is Marcus Bell",
+        "silenceS": 0.4,
+        "firstHeard": "Absolutely, let me pull that",
+        "transition": true,
+        "gapAfterTransitionS": 0,
+        "tools": [
+          "delegate@+-0.0s",
+          "check_team_availability@+1.8s",
+          "initiate_handoff@+2.8s"
+        ],
+        "summary": "\"I don't want to troubleshoot. I just wan\" -> 0.4s silence, then transition: \"Absolutely, let me pull that\" -> 0s gap -> \"up. One moment\" [delegate@+-0.0s, check_team_availability@+1.8s, initiate_handoff@+2.8s]"
+      },
+      {
+        "caller": "Yes, that time works. Go ahead and book it. Great, thanks. Bye",
+        "silenceS": null,
+        "firstHeard": "",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [],
+        "summary": "\"Yes, that time works. Go ahead and book \" -> no reply, then answer: \"\""
+      }
+    ],
+    "longestSilenceS": 0.4,
+    "longestGapAfterTransitionS": 0
+  },
+  "convexToolEvents": [
+    "check_team_availability succeeded 26ms Playback Technical Support: available; Billing & Accounts: unavailable",
+    "initiate_handoff succeeded 17ms Playback Technical Support"
+  ],
+  "liveEvents": [
+    "35.5s TOOL-CALLS delegate({})",
+    "37.1s TOOL-CALLS check_team_availability({})",
+    "39.3s TOOL-CALLS initiate_handoff({\"teamId\":\"playback-support\"})"
+  ],
+  "transcript": [
+    "AGENT: Hi, thanks for calling MultiTracks Playback support. I'm an AI assistant. Are you having trouble with a song loading, or with audio output?",
+    "CALLER: I don't want to troubleshoot. I just want to talk to a real person, please. Yes, a callback is fine. Any time tomorrow afternoon. I'm in Central Time. My number is five five five, zero one zero, zero one nine nine. And my name is Marcus Bell",
+    "AGENT: Absolutely, let me pull that",
+    "AGENT: up. One moment",
+    "AGENT: please.",
+    "AGENT: I'll transfer you to our support team now. One moment please. Thanks for calling!",
+    "CALLER: Yes, that time works. Go ahead and book it. Great, thanks. Bye"
+  ]
+}
