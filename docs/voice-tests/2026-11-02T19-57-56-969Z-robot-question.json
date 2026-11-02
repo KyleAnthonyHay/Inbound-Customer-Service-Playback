@@ -1,0 +1,51 @@
+{
+  "scenario": "robot-question",
+  "expectedIntent": "song-loading",
+  "callId": "01a19dd6-54df-7002-b0c9-b71fcf94d8c6",
+  "endedReason": "assistant-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "endCall"
+  ],
+  "timing": {
+    "turns": [
+      {
+        "caller": "Wait, are you a robot? Am I talking to a real person right now",
+        "silenceS": 0,
+        "firstHeard": "Yes, I'm",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [],
+        "summary": "\"Wait, are you a robot? Am I talking to a\" -> 0s silence, then answer: \"Yes, I'm\""
+      },
+      {
+        "caller": "? Okay, my song won't download in Playback. It just spins. I'm on an iPad, version eight point six point four, and I have time. Yeah, that fixed it. Thanks. Bye",
+        "silenceS": 0.4,
+        "firstHeard": "Sure, let me check on that for you. One moment.",
+        "transition": true,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.0s",
+          "endCall@+2.2s"
+        ],
+        "summary": "\"? Okay, my song won't download in Playba\" -> 0.4s silence, then transition: \"Sure, let me check on that for you. One moment.\" [delegate@+0.0s, endCall@+2.2s]"
+      }
+    ],
+    "longestSilenceS": 0.4,
+    "longestGapAfterTransitionS": 0
+  },
+  "convexToolEvents": [],
+  "liveEvents": [
+    "37.2s TOOL-CALLS delegate({})",
+    "40.0s TOOL-CALLS endCall({})",
+    "40.6s STATUS ended assistant-ended-call",
+    "40.6s hangup"
+  ],
+  "transcript": [
+    "AGENT: Hi, thanks for calling MultiTracks Playback support. I'm an AI assistant. Are you having trouble with a song loading? Or with audio output?",
+    "CALLER: Wait, are you a robot? Am I talking to a real person right now",
+    "AGENT: Yes, I'm",
+    "CALLER: ? Okay, my song won't download in Playback. It just spins. I'm on an iPad, version eight point six point four, and I have time. Yeah, that fixed it. Thanks. Bye",
+    "AGENT: Sure, let me check on that for you. One moment."
+  ]
+}

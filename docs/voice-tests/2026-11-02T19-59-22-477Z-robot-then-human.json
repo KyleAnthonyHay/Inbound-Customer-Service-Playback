@@ -1,0 +1,67 @@
+{
+  "scenario": "robot-then-human",
+  "expectedIntent": "human-request",
+  "callId": "01a19dd7-1010-7bbf-bcb7-3380c43c061c",
+  "endedReason": "customer-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "check_team_availability",
+    "initiate_handoff"
+  ],
+  "timing": {
+    "turns": [
+      {
+        "caller": "Are you a robot",
+        "silenceS": 0,
+        "firstHeard": "Yes, I'm an AI assistant for MultiTracks Playback support. I can help you fix song loading and audio output problems, or get you to a person. What's going on today?",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [],
+        "summary": "\"Are you a robot\" -> 0s silence, then answer: \"Yes, I'm an AI assistant for MultiTracks Playback \""
+      },
+      {
+        "caller": "Yeah, no. Can I just speak to a human, please",
+        "silenceS": 0,
+        "firstHeard": "Of course. Let me see who's available. One moment please.",
+        "transition": true,
+        "gapAfterTransitionS": null,
+        "tools": [],
+        "summary": "\"Yeah, no. Can I just speak to a human, p\" -> 0s silence, then transition: \"Of course. Let me see who's available. One moment \""
+      },
+      {
+        "caller": "Okay, thank you",
+        "silenceS": 0.4,
+        "firstHeard": "Oh.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.0s",
+          "check_team_availability@+0.6s",
+          "initiate_handoff@+0.6s"
+        ],
+        "summary": "\"Okay, thank you\" -> 0.4s silence, then answer: \"Oh.\" [delegate@+0.0s, check_team_availability@+0.6s, initiate_handoff@+0.6s]"
+      }
+    ],
+    "longestSilenceS": 0.4,
+    "longestGapAfterTransitionS": 0
+  },
+  "convexToolEvents": [
+    "check_team_availability succeeded 27ms Playback Technical Support: available",
+    "initiate_handoff succeeded 13ms Playback Technical Support"
+  ],
+  "liveEvents": [
+    "57.9s TOOL-CALLS delegate({})",
+    "60.3s TOOL-CALLS check_team_availability({\"teamId\":\"playback-support\"})",
+    "61.7s TOOL-CALLS initiate_handoff({\"teamId\":\"playback-support\"})"
+  ],
+  "transcript": [
+    "AGENT: Hi, thanks for calling MultiTracks Playback support. I'm an AI assistant. Are you having trouble with a song loading, or with audio output?",
+    "CALLER: Are you a robot",
+    "AGENT: Yes, I'm an AI assistant for MultiTracks Playback support. I can help you fix song loading and audio output problems, or get you to a person. What's going on today?",
+    "CALLER: Yeah, no. Can I just speak to a human, please",
+    "AGENT: Of course. Let me see who's available. One moment please.",
+    "CALLER: Okay, thank you",
+    "AGENT: Oh.",
+    "AGENT: Sure thing—I'll get you over to our support team now. One moment, please. Thanks for calling."
+  ]
+}
