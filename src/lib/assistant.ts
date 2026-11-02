@@ -94,22 +94,22 @@ export function buildAssistant(opts: { toolServerUrl: string; toolSecret?: strin
     voice: { provider: "openai", voiceId: "marin" },
     maxDurationSeconds: 600,
     // Vapi's platform default silence timeout is 30 s, which hung up on callers who said
-    // "hold on" before either idle hook below could run. 180 s leaves the hooks in charge
-    // (nudge at 120 s, goodbye + endCall at 150 s) with a hard stop 30 s after that.
-    silenceTimeoutSeconds: 180,
+    // "hold on" before either idle hook below could run. 105 s leaves the hooks in charge
+    // (nudge at 45 s, goodbye + endCall at 75 s) with a hard stop 30 s after that.
+    silenceTimeoutSeconds: 105,
     // Idle handling (Vapi assistant hooks, timed from the caller's last speech):
-    // nudge after 2 minutes of silence, then say goodbye and end the call 30 s later.
+    // nudge after 45 s of silence, then say goodbye and end the call 30 s later.
     hooks: [
       {
         name: "idle_nudge",
         on: "customer.speech.timeout",
-        options: { timeoutSeconds: 120, triggerMaxCount: 1, triggerResetMode: "onUserSpeech" },
+        options: { timeoutSeconds: 45, triggerMaxCount: 1, triggerResetMode: "onUserSpeech" },
         do: [{ type: "say", exact: "Hey, are you still there?" }],
       },
       {
         name: "idle_goodbye",
         on: "customer.speech.timeout",
-        options: { timeoutSeconds: 150, triggerMaxCount: 1, triggerResetMode: "onUserSpeech" },
+        options: { timeoutSeconds: 75, triggerMaxCount: 1, triggerResetMode: "onUserSpeech" },
         do: [
           { type: "say", exact: "Since there's no response, I'm going to hang up. Feel free to call us back anytime." },
           { type: "tool", tool: { type: "endCall" } },
