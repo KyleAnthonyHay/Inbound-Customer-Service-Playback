@@ -68,11 +68,11 @@ async function main() {
   let lastToolCallAt = 0;
   let assistantTextSinceSend = "";
   let assistantFinalsSinceSend = 0;
-  // Set when the last caller clip finished streaming. Transcript finals that belong to the
-  // previous agent turn can arrive after that (the greeting's "?" once ended a wait early
-  // and the next caller lines talked over the agent), so only agent speech heard after the
-  // clip counts towards the current turn.
-  let clipEndAt = 0;
+  // Set when the current caller clip STARTS streaming. Vapi emits an agent turn's final
+  // transcript only once the caller speaks again, so that final arrives while the next clip
+  // is streaming; attributing agent speech to the current turn only from the clip's start
+  // keeps the previous turn's final (and its "?") from ending the new wait early.
+  let clipStartAt = 0;
   // Vapi only emits the greeting's final transcript once the caller starts speaking, so it
   // always lands inside the first caller turn. Recognise it by its text and ignore it.
   const norm = (t: string) => t.toLowerCase().replace(/[^a-z0-9 ]+/g, " ").replace(/\s+/g, " ").trim().split(" ").slice(0, 8).join(" ");
@@ -98,7 +98,7 @@ async function main() {
       const buf = Buffer.isBuffer(data) ? data : Buffer.from(data as ArrayBuffer);
       if (isLoud(buf)) {
         lastAssistantAudioAt = Date.now();
-        if (lastAssistantAudioAt > clipEndAt) assistantEverSpoke = true;
+        if (lastAssistantAudioAt > clipStartAt) assistantEverSpoke = true;
       }
       return;
     }
@@ -106,7 +106,7 @@ async function main() {
       const m = JSON.parse(data.toString()) as Record<string, unknown>;
       const type = String(m.type);
       if (type === "transcript") {
-        const countsForThisTurn = m.role === "assistant" && lastAssistantAudioAt > clipEndAt;
+        const countsForThisTurn = m.role === "assistant" && lastAssistantAudioAt > clipStartAt;
         if (m.role === "assistant") {
           lastAssistantTranscriptAt = Date.now();
           if (countsForThisTurn) assistantEverSpoke = true;
@@ -176,13 +176,13 @@ async function main() {
   const sendClip = async (pcm: Buffer) => {
     // stream in 20 ms frames in near real time
     const frame = (RATE * 2 * 20) / 1000;
+    clipStartAt = Date.now();
     for (let o = 0; o < pcm.length && !ended; o += frame) {
       ws.send(pcm.subarray(o, o + frame));
       await sleep(20);
     }
     // trailing silence so the endpointer closes the turn
     ws.send(Buffer.alloc(frame * 25));
-    clipEndAt = Date.now();
   };
 
   await waitForAssistantToFinish(20000); // greeting
