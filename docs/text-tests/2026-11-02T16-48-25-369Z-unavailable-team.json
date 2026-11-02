@@ -1,0 +1,110 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "testFixture": {
+    "environment": "development",
+    "team": "Playback Technical Support",
+    "originalSimulatedStatus": "available",
+    "duringTestSimulatedStatus": "busy",
+    "originalStatusRestored": true
+  },
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "scenario": "unavailable-team",
+  "expectedIntent": "human-request-unavailable-callback",
+  "failure": null,
+  "reportedTextCost": 0.0288,
+  "turns": [
+    {
+      "input": "Please connect me with a Playback support specialist.",
+      "chatId": "f2fd0c22-c087-492c-bdbd-ddaf4ab20233",
+      "reply": "Let me see who's available.\n\nPlayback Support is busy right now, but I can schedule a callback; when are you next available?",
+      "tools": [
+        {
+          "name": "check_team_availability",
+          "arguments": {
+            "teamId": "playback-support"
+          },
+          "result": {
+            "source": "simulated",
+            "teams": [
+              {
+                "canTransferNow": false,
+                "description": "Song loading, audio output, device and version issues.",
+                "label": "Playback Technical Support",
+                "status": "busy",
+                "teamId": "playback-support",
+                "withinHours": true
+              }
+            ]
+          }
+        }
+      ],
+      "reportedCost": 0.0129
+    },
+    {
+      "input": "Tomorrow at 11 AM Eastern works for me. I'm Taylor and my number is +1 202 555 0146. Please check that time, but do not book yet.",
+      "chatId": "8ad7366e-587c-46af-b938-45ba37db1bd3",
+      "reply": "Let me check that time.\n\nTue, Nov 3, 11:00 AM EST is open; I have your number ending in 0146. Would you like me to book that callback?",
+      "tools": [
+        {
+          "name": "get_callback_slots",
+          "arguments": {
+            "teamId": "playback-support",
+            "preferredDate": "tomorrow",
+            "preferredTime": "11 AM",
+            "timeZone": "Eastern"
+          },
+          "result": {
+            "instruction": "Tue, Nov 3, 11:00 AM EST is open. Read the full details back (time, zone, number) and get an explicit yes before calling reserve_callback with slotId j57204jh21xr94g8ske2e901nh8ha4es.",
+            "now": "2026-11-02T16:48:22.901Z",
+            "nowLocal": "Mon, Nov 2, 11:48 AM EST",
+            "requested": {
+              "available": true,
+              "endAt": "2026-11-03T16:30:00.000Z",
+              "iso": "2026-11-03T16:00:00.000Z",
+              "local": "Tue, Nov 3, 11:00 AM EST",
+              "slotId": "j57204jh21xr94g8ske2e901nh8ha4es"
+            },
+            "slots": [
+              {
+                "endAt": "2026-11-03T16:30:00.000Z",
+                "local": "Tue, Nov 3, 11:00 AM EST",
+                "slotId": "j57204jh21xr94g8ske2e901nh8ha4es",
+                "startAt": "2026-11-03T16:00:00.000Z"
+              },
+              {
+                "endAt": "2026-11-03T16:00:00.000Z",
+                "local": "Tue, Nov 3, 10:30 AM EST",
+                "slotId": "j571sdpdx65bcevh5pa0d9p8s18hbdkb",
+                "startAt": "2026-11-03T15:30:00.000Z"
+              },
+              {
+                "endAt": "2026-11-03T17:00:00.000Z",
+                "local": "Tue, Nov 3, 11:30 AM EST",
+                "slotId": "j576f71kac4tfarf5m0md16qs58hbm6r",
+                "startAt": "2026-11-03T16:30:00.000Z"
+              },
+              {
+                "endAt": "2026-11-03T15:30:00.000Z",
+                "local": "Tue, Nov 3, 10:00 AM EST",
+                "slotId": "j57f7sh4a1cesn38sdprbc6agd8hbk4f",
+                "startAt": "2026-11-03T15:00:00.000Z"
+              }
+            ],
+            "source": "simulated",
+            "teamHoursLocal": "10:00 AM to 7:00 PM EST, weekdays only",
+            "timeZone": "America/New_York"
+          }
+        }
+      ],
+      "reportedCost": 0.0088
+    },
+    {
+      "input": "No booking for now, thank you. Goodbye.",
+      "chatId": "cca13c9c-43d8-468d-be17-76d74d0fb2c4",
+      "reply": "You’re welcome, Taylor. Goodbye.",
+      "tools": [],
+      "reportedCost": 0.0071
+    }
+  ]
+}

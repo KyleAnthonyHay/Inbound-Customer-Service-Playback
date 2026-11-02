@@ -1,0 +1,15 @@
+{
+  "savedAgentsUnchanged": {
+    "development": true,
+    "production": true
+  },
+  "hashes": {
+    "development": "9a2fc089ed8c6b594ad64547286f5359b6ed103833ea5d351804a63eda362cb1",
+    "production": "ae06136501a5c1ac4cc2c6899dd4124be2c95e90abe4b9c99ab6ab48081e29a9"
+  },
+  "remainingIsolatedCallRows": 0,
+  "temporaryToolProxyStopped": true,
+  "temporaryTunnelStopped": true,
+  "temporaryCredentialsRemoved": true,
+  "developmentAutoDeployWatcherStopped": true
+}

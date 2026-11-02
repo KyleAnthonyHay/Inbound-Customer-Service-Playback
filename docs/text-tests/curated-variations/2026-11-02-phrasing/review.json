@@ -1,0 +1,297 @@
+{
+  "kind": "manual-review-of-actual-text-agent-runs",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "agentChangedDuringRun": false,
+  "reviewMethod": "Human-authored fixture follow-ups after reading actual model replies; qualitative assistant review of transcripts and tool traces. No external LLM grader. Criteria concern the core scenario objective; style/efficiency notes are separate.",
+  "conversations": 20,
+  "phrasingVariantsPerCase": 2,
+  "turns": 67,
+  "completed": 20,
+  "cleanupComplete": 20,
+  "requestFailures": 0,
+  "configurationCount": 1,
+  "configurationHash": "df2f3b7f12583248fd9b5f9d92e2590ad98cd11e6a1905a0b6c3591ff16d81aa",
+  "reportedTextCost": 0.9384,
+  "coreCriteriaMet": 15,
+  "materialIssues": 5,
+  "casePairsWithoutMaterialIssue": 6,
+  "reviews": [
+    {
+      "run": "01-click-guide-v1",
+      "caseId": "01-click-guide",
+      "variant": 1,
+      "coreCriteriaMet": true,
+      "materialIssue": null,
+      "notes": [
+        "Asked version before applying version-specific guidance; then learned actual bus assignments and obtained simulated resolution."
+      ],
+      "transcript": "01-click-guide-v1.json",
+      "turnCount": 4,
+      "reportedTextCost": 0.04870000000000001
+    },
+    {
+      "run": "01-click-guide-v2",
+      "caseId": "01-click-guide",
+      "variant": 2,
+      "coreCriteriaMet": false,
+      "materialIssue": {
+        "code": "legacy-guidance-before-version",
+        "detail": "Turn 1 prescribed legacy Guide-bus creation before learning the installed version. It corrected the advice after the caller stated 8.6.4 and challenged creating another bus."
+      },
+      "notes": [],
+      "transcript": "01-click-guide-v2.json",
+      "turnCount": 4,
+      "reportedTextCost": 0.044199999999999996
+    },
+    {
+      "run": "02-reconnect-v1",
+      "caseId": "02-reconnect",
+      "variant": 1,
+      "coreCriteriaMet": true,
+      "materialIssue": null,
+      "notes": [
+        "Applied documented bus routing to the caller-provided intended outputs; did not invent a reset cause."
+      ],
+      "transcript": "02-reconnect-v1.json",
+      "turnCount": 2,
+      "reportedTextCost": 0.0276
+    },
+    {
+      "run": "02-reconnect-v2",
+      "caseId": "02-reconnect",
+      "variant": 2,
+      "coreCriteriaMet": true,
+      "materialIssue": null,
+      "notes": [
+        "Used actual bus observations and documented multi-bus assignment. Planning Center lookup was unnecessary to the routing decision."
+      ],
+      "transcript": "02-reconnect-v2.json",
+      "turnCount": 3,
+      "reportedTextCost": 0.0383
+    },
+    {
+      "run": "03-audio-device-v1",
+      "caseId": "03-audio-device",
+      "variant": 1,
+      "coreCriteriaMet": false,
+      "materialIssue": {
+        "code": "premature-escalation",
+        "detail": "After four turns it offered a specialist without checking the selected Audio Device. The hidden fixture was MacBook Speakers; a fifth turn completed a simulated handoff instead of the intended agent resolution."
+      },
+      "notes": [],
+      "transcript": "03-audio-device-v1.json",
+      "turnCount": 5,
+      "reportedTextCost": 0.09649999999999999
+    },
+    {
+      "run": "03-audio-device-v2",
+      "caseId": "03-audio-device",
+      "variant": 2,
+      "coreCriteriaMet": true,
+      "materialIssue": null,
+      "notes": [
+        "Eventually found Settings > General > Audio Device after several bus/hub detours. The caller supplied observations, not the selected-device diagnosis."
+      ],
+      "transcript": "03-audio-device-v2.json",
+      "turnCount": 5,
+      "reportedTextCost": 0.1038
+    },
+    {
+      "run": "04-false-expired-v1",
+      "caseId": "04-false-expired",
+      "variant": 1,
+      "coreCriteriaMet": false,
+      "materialIssue": {
+        "code": "version-diagnosis-needed-caller-hint",
+        "detail": "Suggested Restore Purchases without establishing Apple billing, then offered human review without asking the installed version. Only an unsolicited 8.6.1 hint led to release comparison and the documented fix."
+      },
+      "notes": [],
+      "transcript": "04-false-expired-v1.json",
+      "turnCount": 4,
+      "reportedTextCost": 0.0542
+    },
+    {
+      "run": "04-false-expired-v2",
+      "caseId": "04-false-expired",
+      "variant": 2,
+      "coreCriteriaMet": false,
+      "materialIssue": {
+        "code": "version-diagnosis-needed-caller-hint",
+        "detail": "Same pattern: Restore Purchases, then escalation despite an active demo plan; the caller volunteered 8.6.1 before the release comparison recovered the intended path."
+      },
+      "notes": [],
+      "transcript": "04-false-expired-v2.json",
+      "turnCount": 4,
+      "reportedTextCost": 0.0604
+    },
+    {
+      "run": "05-supported-setup-v1",
+      "caseId": "05-supported-setup",
+      "variant": 1,
+      "coreCriteriaMet": true,
+      "materialIssue": null,
+      "notes": [
+        "Grounded the Focusrite/hub/four-output compatibility answer in retrieved sources."
+      ],
+      "transcript": "05-supported-setup-v1.json",
+      "turnCount": 2,
+      "reportedTextCost": 0.0274
+    },
+    {
+      "run": "05-supported-setup-v2",
+      "caseId": "05-supported-setup",
+      "variant": 2,
+      "coreCriteriaMet": true,
+      "materialIssue": null,
+      "notes": [
+        "Core compatibility answer was grounded; an unnecessary Planning Center call and redundant iPadOS clarification added friction."
+      ],
+      "transcript": "05-supported-setup-v2.json",
+      "turnCount": 3,
+      "reportedTextCost": 0.0502
+    },
+    {
+      "run": "06-borrowed-mixer-v1",
+      "caseId": "06-borrowed-mixer",
+      "variant": 1,
+      "coreCriteriaMet": false,
+      "materialIssue": {
+        "code": "delayed-specialist-offer",
+        "detail": "After learning the exact model and acknowledging it could not verify the connection, it suggested trying the hardware without offering a specialist. It offered review only after the caller again requested confirmation."
+      },
+      "notes": [],
+      "transcript": "06-borrowed-mixer-v1.json",
+      "turnCount": 4,
+      "reportedTextCost": 0.0618
+    },
+    {
+      "run": "06-borrowed-mixer-v2",
+      "caseId": "06-borrowed-mixer",
+      "variant": 2,
+      "coreCriteriaMet": true,
+      "materialIssue": null,
+      "notes": [
+        "Asked mixer model and connector type, explained the remaining documentation gap and offered/finished a simulated handoff."
+      ],
+      "transcript": "06-borrowed-mixer-v2.json",
+      "turnCount": 4,
+      "reportedTextCost": 0.0591
+    },
+    {
+      "run": "07-organization-v1",
+      "caseId": "07-organization",
+      "variant": 1,
+      "coreCriteriaMet": true,
+      "materialIssue": null,
+      "notes": [
+        "Used actual simulated organization observations, retrieved switching guidance and obtained caller-reported recovery. Planning Center was not needed."
+      ],
+      "transcript": "07-organization-v1.json",
+      "turnCount": 3,
+      "reportedTextCost": 0.0442
+    },
+    {
+      "run": "07-organization-v2",
+      "caseId": "07-organization",
+      "variant": 2,
+      "coreCriteriaMet": true,
+      "materialIssue": null,
+      "notes": [
+        "Organization-selection guidance resolved the simulated missing-library issue. Planning Center was not needed."
+      ],
+      "transcript": "07-organization-v2.json",
+      "turnCount": 2,
+      "reportedTextCost": 0.0279
+    },
+    {
+      "run": "08-permission-v1",
+      "caseId": "08-permission",
+      "variant": 1,
+      "coreCriteriaMet": true,
+      "materialIssue": null,
+      "notes": [
+        "Offered account-team review; busy staffing led to callback-time lookup. Caller explicitly declined booking; no reservation occurred."
+      ],
+      "transcript": "08-permission-v1.json",
+      "turnCount": 4,
+      "reportedTextCost": 0.029500000000000005
+    },
+    {
+      "run": "08-permission-v2",
+      "caseId": "08-permission",
+      "variant": 2,
+      "coreCriteriaMet": true,
+      "materialIssue": null,
+      "notes": [
+        "Same intended administrative boundary and unavailable-team callback path; caller declined booking."
+      ],
+      "transcript": "08-permission-v2.json",
+      "turnCount": 4,
+      "reportedTextCost": 0.030399999999999996
+    },
+    {
+      "run": "09-loading-recovery-v1",
+      "caseId": "09-loading-recovery",
+      "variant": 1,
+      "coreCriteriaMet": true,
+      "materialIssue": null,
+      "notes": [
+        "Used actual demo context and retrieved Audio Files Missing guidance, adjusted retries for the one attempt already made, and obtained simulated recovery. Recited all three songs and asked two questions together initially."
+      ],
+      "transcript": "09-loading-recovery-v1.json",
+      "turnCount": 3,
+      "reportedTextCost": 0.0342
+    },
+    {
+      "run": "09-loading-recovery-v2",
+      "caseId": "09-loading-recovery",
+      "variant": 2,
+      "coreCriteriaMet": true,
+      "materialIssue": null,
+      "notes": [
+        "Retrieved applicable guidance before learning the exact error and reused it correctly for the three-retry procedure. Recited all three service songs rather than keeping context brief."
+      ],
+      "transcript": "09-loading-recovery-v2.json",
+      "turnCount": 3,
+      "reportedTextCost": 0.034300000000000004
+    },
+    {
+      "run": "10-loading-unresolved-v1",
+      "caseId": "10-loading-unresolved",
+      "variant": 1,
+      "coreCriteriaMet": true,
+      "materialIssue": null,
+      "notes": [
+        "Respected failed retries and service timing, avoided deletion and completed a consented simulated support handoff."
+      ],
+      "transcript": "10-loading-unresolved-v1.json",
+      "turnCount": 2,
+      "reportedTextCost": 0.0317
+    },
+    {
+      "run": "10-loading-unresolved-v2",
+      "caseId": "10-loading-unresolved",
+      "variant": 2,
+      "coreCriteriaMet": true,
+      "materialIssue": null,
+      "notes": [
+        "Same intended escalation with documented retry evidence and no forced destructive changes."
+      ],
+      "transcript": "10-loading-unresolved-v2.json",
+      "turnCount": 2,
+      "reportedTextCost": 0.034
+    }
+  ],
+  "verification": {
+    "unitTestsPassed": 57,
+    "typecheckPassed": true,
+    "targetedLintPassed": true,
+    "allTwentyLogsCleaned": true,
+    "credentialMatchesInTranscriptExports": 0,
+    "developmentPromptAndToolsUnchanged": true,
+    "productionAssistantUnchanged": true,
+    "callbackReservationCalls": 0,
+    "voiceCallsCreated": 0
+  }
+}

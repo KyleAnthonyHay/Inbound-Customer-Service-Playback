@@ -1,0 +1,99 @@
+{
+  "original-baseline": {
+    "conversations": 20,
+    "turns": 67,
+    "failures": 0,
+    "closed": 20,
+    "cleanupComplete": 20,
+    "reportedTextCost": 0.9384,
+    "configurationHashes": [
+      "df2f3b7f12583248fd9b5f9d92e2590ad98cd11e6a1905a0b6c3591ff16d81aa"
+    ],
+    "toolCalls": {
+      "search_playback_docs": 29,
+      "check_team_availability": 7,
+      "initiate_handoff": 5,
+      "lookup_demo_customer": 2,
+      "get_relevant_changes_since_version": 7,
+      "get_callback_slots": 2,
+      "get_planning_center_service_context": 8
+    }
+  },
+  "baseline-controls": {
+    "conversations": 4,
+    "turns": 9,
+    "failures": 0,
+    "closed": 4,
+    "cleanupComplete": 4,
+    "reportedTextCost": 0.1311,
+    "configurationHashes": [
+      "df2f3b7f12583248fd9b5f9d92e2590ad98cd11e6a1905a0b6c3591ff16d81aa"
+    ],
+    "toolCalls": {
+      "search_playback_docs": 4,
+      "lookup_demo_customer": 1,
+      "get_planning_center_service_context": 2,
+      "check_team_availability": 2,
+      "initiate_handoff": 2
+    }
+  },
+  "first-revision": {
+    "conversations": 24,
+    "turns": 68,
+    "failures": 1,
+    "closed": 24,
+    "cleanupComplete": 24,
+    "reportedTextCost": 0.9279,
+    "configurationHashes": [
+      "b6f1371f405c3b04d732746e6798cff53cf9e77e0be0a9482b16c219ec842d26"
+    ],
+    "toolCalls": {
+      "search_playback_docs": 26,
+      "check_team_availability": 6,
+      "initiate_handoff": 5,
+      "lookup_demo_customer": 2,
+      "get_relevant_changes_since_version": 4,
+      "get_current_playback_app_info": 3,
+      "get_planning_center_service_context": 9
+    }
+  },
+  "first-revision-replacement": {
+    "conversations": 1,
+    "turns": 5,
+    "failures": 0,
+    "closed": 1,
+    "cleanupComplete": 1,
+    "reportedTextCost": 0.0789,
+    "configurationHashes": [
+      "b6f1371f405c3b04d732746e6798cff53cf9e77e0be0a9482b16c219ec842d26"
+    ],
+    "toolCalls": {
+      "search_playback_docs": 1,
+      "lookup_demo_customer": 1,
+      "get_planning_center_service_context": 1,
+      "get_relevant_changes_since_version": 1,
+      "get_current_playback_app_info": 1
+    }
+  },
+  "final": {
+    "conversations": 24,
+    "turns": 76,
+    "failures": 0,
+    "closed": 24,
+    "cleanupComplete": 24,
+    "reportedTextCost": 1.0742,
+    "configurationHashes": [
+      "18fdafd7438e4b2ffe65bef84705095de49d927c57d2223fdcafcbe74eed426e"
+    ],
+    "toolCalls": {
+      "search_playback_docs": 31,
+      "check_team_availability": 6,
+      "initiate_handoff": 4,
+      "lookup_demo_customer": 4,
+      "get_relevant_changes_since_version": 4,
+      "get_current_playback_app_info": 3,
+      "get_callback_slots": 2,
+      "get_planning_center_service_context": 6
+    }
+  }
+}

@@ -44,9 +44,27 @@ test("older version with Cloud Pro symptom surfaces the documented 8.6.3 fix", a
     assert.deepEqual(r.documentedReleasesBetween, ["8.6.3"]);
     assert.equal(r.relevantChanges.length, 1);
     assert.ok(r.relevantChanges[0].matchingNotes.some((n) => /Cloud Pro expired/.test(n)));
-    assert.match(r.guidance, /documented fix exists/);
+    assert.match(r.guidance, /Candidate release notes/);
+    assert.equal(r.updateAssessment.prerequisitesComplete, false);
+    assert.deepEqual(r.updateAssessment.missingInformation, ["platform", "osVersion"]);
     // Inconsistent metadata is surfaced, not hidden.
     assert.ok(r.gaps.some((g) => /8\.6\.3/.test(g)));
+  } finally {
+    restore();
+  }
+});
+
+test("release matching retains a historical fix older than the newest three releases", async () => {
+  mockApple({ trackName: "Playback", version: "8.6.4", releaseNotes: "Playback 8.6.4 notes" });
+  try {
+    const r = await getRelevantChangesSinceVersion({ installedVersion: "8.5.0", symptom: "download bar stuck at completion" });
+    assert.ok(r.ok);
+    if (!r.ok) return;
+    assert.ok(!r.documentedReleasesBetween.slice(-3).includes("8.5.2"));
+    const fix = r.relevantChanges.find(change => change.version === "8.5.2");
+    assert.ok(fix, "Historical fixes must remain searchable beyond the newest three releases");
+    assert.ok(fix.matchingNotes.some(note => /download.*bar.*stuck|stuck.*download/i.test(note)));
+    assert.ok(r.history.coverage.includes("8.4.1"));
   } finally {
     restore();
   }
@@ -86,6 +104,48 @@ test("Apple API failure is reported as a gap, history still returned", async () 
 test("invalid version asks for the version instead of guessing", async () => {
   const r = await getRelevantChangesSinceVersion({ installedVersion: "latest" });
   assert.equal(r.ok, false);
+});
+
+test("update assessment separates candidate matches from complete OS prerequisites", async () => {
+  mockApple({ trackName: "Playback", version: "8.6.4", minimumOsVersion: "15.6" });
+  try {
+    const ready = await getRelevantChangesSinceVersion({ installedVersion: "8.5.0", symptom: "download bar stuck", platform: "iPadOS", osVersion: "18" });
+    assert.ok(ready.ok);
+    if (!ready.ok) return;
+    assert.equal(ready.updateAssessment.prerequisitesComplete, true);
+    assert.equal(ready.updateAssessment.candidateMatchNeedsReview, true);
+    assert.equal(ready.current.minimumOsVersion, "15.6");
+    const oldOS = await getRelevantChangesSinceVersion({ installedVersion: "8.5.0", symptom: "download bar stuck", platform: "iPadOS", osVersion: "14.8" });
+    assert.ok(oldOS.ok);
+    if (!oldOS.ok) return;
+    assert.equal(oldOS.updateAssessment.prerequisitesComplete, false);
+    assert.ok(oldOS.updateAssessment.blockers.includes("installed-os-below-current-app-minimum"));
+    const mac = await getRelevantChangesSinceVersion({ installedVersion: "8.5.0", symptom: "download bar stuck", platform: "macOS", osVersion: "15" });
+    assert.ok(mac.ok);
+    if (!mac.ok) return;
+    assert.equal(mac.updateAssessment.osRequirementMet, null);
+    assert.equal(mac.updateAssessment.prerequisitesComplete, false);
+    assert.ok(mac.updateAssessment.missingInformation.includes("applicablePlatformRequirements"));
+  } finally { restore(); }
+});
+
+test("unknown current version, absent candidates and current installation cannot authorize an update", async () => {
+  mockApple(null, 503);
+  try {
+    const failed = await getRelevantChangesSinceVersion({ installedVersion: "8.5.0", symptom: "download", platform: "iPadOS", osVersion: "18" });
+    assert.ok(failed.ok);
+    if (!failed.ok) return;
+    assert.equal(failed.updateAssessment.prerequisitesComplete, false);
+    assert.ok(failed.updateAssessment.missingInformation.includes("currentVersion"));
+    mockApple({ version: "8.6.4", minimumOsVersion: "15.6" });
+    for (const args of [{ installedVersion: "8.6.4", symptom: "download" }, { installedVersion: "8.5.0", symptom: "unrecognizable-zebra" }]) {
+      const result = await getRelevantChangesSinceVersion({ ...args, platform: "iPadOS", osVersion: "18" });
+      assert.ok(result.ok);
+      if (!result.ok) return;
+      assert.equal(result.updateAssessment.prerequisitesComplete, false);
+      assert.ok(result.updateAssessment.blockers.length > 0);
+    }
+  } finally { restore(); }
 });
 
 import { parseHandoffResult } from "../src/lib/handoff";
@@ -204,5 +264,5 @@ test("prompt: the reasoner sees the caller ID variable and wraps up after a book
   assert.match(SYSTEM_PROMPT, /Caller ID: \{\{customer\.number\}\}/);
   assert.match(SYSTEM_PROMPT, /callbackNumber "caller-id"/);
   assert.match(SYSTEM_PROMPT, /After reserve_callback returns ok=true[^\n]*call endCall/);
-  assert.match(SYSTEM_PROMPT, /After a transfer \(initiate_handoff\) follow the handoff rule/);
+  assert.match(SYSTEM_PROMPT, /After initiate_handoff succeeds[^\n]*call endCall/);
 });

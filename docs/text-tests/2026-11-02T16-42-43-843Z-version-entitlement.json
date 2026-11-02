@@ -1,0 +1,116 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "scenario": "version-entitlement",
+  "expectedIntent": "version-comparison-and-demo-entitlement",
+  "failure": null,
+  "reportedTextCost": 0.0095,
+  "turns": [
+    {
+      "input": "I'm demo customer DEMO-1001. Playback 8.6.2 on my iPad says Cloud Pro expired. Can you check whether my demo subscription is active and whether a newer version has a documented fix?",
+      "chatId": "a52ba054-4550-48fa-a847-4087b848ae2d",
+      "reply": "Let me compare your version against recent releases.\n\nYour demo Cloud Pro subscription is active through March 14, 2027. Playback 8.6.3 documented a fix for this false expired message; do you have time to update now?",
+      "tools": [
+        {
+          "name": "lookup_demo_customer",
+          "arguments": {
+            "customerId": "DEMO-1001"
+          },
+          "result": {
+            "customer": {
+              "customerId": "DEMO-1001",
+              "email": "jordan.avery@example.org",
+              "entitlements": [
+                "cloud-sync",
+                "playback-pro-features",
+                "multitrack-downloads"
+              ],
+              "name": "Jordan Avery",
+              "notes": "Active Cloud Pro subscriber. Reports a 'Cloud Pro expired' message in Playback despite an active plan. Last known Playback version 8.6.2 (iPad).",
+              "organization": "Riverbend Community Church (demo)",
+              "plan": "Cloud Pro",
+              "renewsAt": "2027-03-14",
+              "subscriptionStatus": "active"
+            },
+            "ok": true,
+            "source": "simulated"
+          }
+        },
+        {
+          "name": "get_relevant_changes_since_version",
+          "arguments": {
+            "installedVersion": "8.6.2",
+            "symptom": "Cloud Pro expired message"
+          },
+          "result": {
+            "ok": true,
+            "installedVersion": "8.6.2",
+            "current": {
+              "version": "8.6.4",
+              "source": "live",
+              "provider": "Apple iTunes Lookup API",
+              "retrievedAt": "2026-11-02T16:42:42.589Z",
+              "releaseDate": "2026-10-26T14:26:55Z"
+            },
+            "isUpToDate": false,
+            "documentedReleasesBetween": [
+              "8.6.3"
+            ],
+            "relevantChanges": [
+              {
+                "version": "8.6.3",
+                "date": null,
+                "url": "https://helpcenter.multitracks.com/en/articles/17617217-playback-8-6-3-release-notes",
+                "matchingNotes": [
+                  "Subscriptions: fixed a false 'Cloud Pro expired' message that appeared for some active subscribers.",
+                  "Rentals & MT Complete: fixed three issues involving custom arrangements, interrupted MT Complete previews, and 'Song Data Error' messages after using Restore From Cloud."
+                ],
+                "matchedKeywords": [
+                  "cloud pro expired",
+                  "false expired message",
+                  "restore from cloud"
+                ],
+                "allNotes": [
+                  "Quality and stability release.",
+                  "Subscriptions: fixed a false 'Cloud Pro expired' message that appeared for some active subscribers.",
+                  "Improvements: removed the 'New' badge from MT Complete in the Add Song menu; reworded the low memory alert.",
+                  "Rentals & MT Complete: fixed three issues involving custom arrangements, interrupted MT Complete previews, and 'Song Data Error' messages after using Restore From Cloud.",
+                  "Setlists: fixed the waveform and mixer not loading after adding the first song; fixed a search display issue in the Open Setlists menu.",
+                  "Mac & Keyboard Shortcuts: fixed a Cmd+, conflict so it consistently opens Playback Settings.",
+                  "Audio & MIDI: improved MIDI Out stability during playback."
+                ]
+              }
+            ],
+            "history": {
+              "source": "documentation",
+              "provider": "MultiTracks Help Center release notes",
+              "snapshotRetrievedAt": "2026-10-31",
+              "coverage": [
+                "8.4.1",
+                "8.4.3",
+                "8.4.4",
+                "8.4.6",
+                "8.5.0",
+                "8.5.2",
+                "8.5.3",
+                "8.5.4",
+                "8.5.5",
+                "8.5.6",
+                "8.6.3"
+              ]
+            },
+            "gaps": [
+              "App Store version is 8.6.4 but the release notes text refers to Playback 8.6.3. Treat the notes as possibly belonging to an earlier release.",
+              "App Store shows 8.6.4 but documented release notes only go up to 8.6.3; changes in between are not covered."
+            ],
+            "updateIsDisruptive": true,
+            "updateCaution": "Updating closes Playback and takes a few minutes, so it should wait until after a service or rehearsal.",
+            "guidance": "A documented fix exists in a newer version. Say which version fixed it, then give the caution in one sentence before suggesting the update; offer a non-disruptive step first if the caller is mid-service."
+          }
+        }
+      ],
+      "reportedCost": 0.0095
+    }
+  ]
+}

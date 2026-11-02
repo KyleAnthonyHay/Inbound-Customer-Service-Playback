@@ -1,0 +1,8 @@
+{
+  "name": "click-guide-wiring-check",
+  "expectedIntent": "audio-output-documentation-and-wiring",
+  "lines": [
+    "I'm using Playback 8.6.4 on an iPad with Premium and a four-output USB audio interface. Click and guide are sharing one channel in our in-ears, but I need independent control. Our interface outputs 1 and 2 feed the house; 3 and 4 feed separate input channels for the in-ear mixer. We have time before rehearsal."
+  ],
+  "expect": "Retrieve documentation before recommending routing. The physical wiring is provided, but the current bus assignments and solution are not. Do not copy a fixed Click 1 / Guide 2 example into this different setup; ask for applicable bus assignments or reason from the stated in-ear outputs. Legacy pre-7.6 articles must not be treated as current bus-creation instructions. This is text reasoning, not a real hardware test."
+}

@@ -273,6 +273,10 @@ const song = (orgId: string, title: string, artist: string, kind: SongKind, extr
 
 export const orgSongs: DemoOrgSong[] = [
   // Riverbend (Cloud Pro, active)
+  // Synthetic purchases for the shared Planning Center demo set, not API-verified entitlements.
+  song("480113", "Graves Into Gardens", "Elevation Worship", "purchased"),
+  song("480113", "Do It Again", "Elevation Worship", "purchased"),
+  song("480113", "What A Beautiful Name", "Hillsong Worship", "purchased"),
   song("480113", "Goodness of God", "Bethel Music", "purchased"),
   song("480113", "Great Are You Lord", "All Sons & Daughters", "purchased"),
   song("480113", "Gratitude", "Brandon Lake", "purchased"),
@@ -331,7 +335,7 @@ export function diagnoseSubscription(
     return {
       code: "wrong-organization",
       summary: `${org.name} has no subscription or purchases, but the caller also belongs to ${richer.name}, which does.`,
-      next: `Ask which organization they picked at login. The church content is under ${richer.name}; they can switch in Settings > About > Switch Organizations, or sign out and pick it at login. Do not troubleshoot downloads until they are in the right organization.`,
+      next: `Ask which organization they picked at login. The church content is under ${richer.name}; they can use Switch Organizations in Playback's side menu, or sign out and pick it at login. Do not troubleshoot downloads until they are in the right organization.`,
     };
   }
   if (membership && !membership.teamSharing && org.subscriptionStatus !== "none") {
@@ -349,7 +353,7 @@ export function diagnoseSubscription(
         next:
           org.plan === "Rentals"
             ? `Rentals subscription is active with ${org.rentalCredits ?? 0} credit(s) left this cycle. Use check_song_access for the specific song.`
-            : "The subscription is fine. If the app says it expired, treat it as a software issue: get the installed version and call get_relevant_changes_since_version; also offer Settings > About > Restore Purchases (documented).",
+            : "The subscription is active. This alone does not establish the cause of a conflicting app message or access to every song. Use caller facts and applicable documentation to choose useful diagnostic evidence; release history can explain behavior left unexplained by account or configuration facts.",
       };
     case "past-due":
       return {

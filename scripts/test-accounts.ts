@@ -55,12 +55,12 @@ test("organization IDs normalize from spoken digits and reject anything else", (
   assert.equal(normalizeOrgId(undefined), null);
 });
 
-test("active Cloud Pro org seeing 'expired' is diagnosed as a software issue, not billing", () => {
+test("active Cloud Pro diagnosis leaves the device cause open and permits relevant version evidence", () => {
   const { diagnosis } = diagnose("DEMO-1001");
   assert.equal(diagnosis.code, "active");
-  assert.match(diagnosis.next, /software issue/);
-  assert.match(diagnosis.next, /get_relevant_changes_since_version/);
-  assert.match(diagnosis.next, /Restore Purchases/);
+  assert.match(diagnosis.next, /does not establish the cause/);
+  assert.match(diagnosis.next, /release history/);
+  assert.doesNotMatch(diagnosis.next, /renew|refund|update.*payment/i);
 });
 
 test("genuinely expired subscription points to billing and says purchased songs still work", () => {

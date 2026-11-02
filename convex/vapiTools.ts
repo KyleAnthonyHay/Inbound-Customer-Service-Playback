@@ -5,6 +5,7 @@ import { searchDocs } from "../src/lib/tools/kb";
 import { searchManual } from "../src/lib/tools/manual";
 import { getCurrentPlaybackAppInfo } from "../src/lib/tools/apple";
 import { getRelevantChangesSinceVersion } from "../src/lib/tools/releases";
+import { getPlanningCenterServiceContext } from "../src/lib/tools/planningCenter";
 import { TOOL_META } from "../src/lib/tools/meta";
 import { lastFour, wantsCallerId, type CallInfo } from "../src/lib/tools/callerId";
 
@@ -20,12 +21,17 @@ export type ToolDef = {
   run: (args: Record<string, unknown>, ctx: ActionCtx, call: CallInfo) => Promise<unknown>;
 };
 
-/** Appended to reserve_callback's success so the reasoner wraps the call up instead of lingering. */
-const CALLBACK_WRAP_UP = "Confirm the callback in one sentence, wish the caller a good day, then call endCall.";
-
 const str = (v: unknown) => (typeof v === "string" ? v : undefined);
 
 export const tools: Record<string, ToolDef> = {
+  get_planning_center_service_context: {
+    source: "live",
+    label: TOOL_META.get_planning_center_service_context.label,
+    // Keep this server-to-server integration behind the existing saved-assistant webhook secret.
+    run: async () => process.env.VAPI_TOOL_SECRET
+      ? getPlanningCenterServiceContext()
+      : { ok: false, source: "live", reason: "not-configured", next: "Planning Center requires the protected saved-assistant webhook. Continue documented Playback support without service context." },
+  },
   search_playback_docs: {
     source: "internal",
     label: TOOL_META.search_playback_docs.label,
@@ -49,7 +55,7 @@ export const tools: Record<string, ToolDef> = {
   get_relevant_changes_since_version: {
     source: "live",
     label: TOOL_META.get_relevant_changes_since_version.label,
-    run: async (a) => getRelevantChangesSinceVersion({ installedVersion: str(a.installedVersion) ?? "", symptom: str(a.symptom) }),
+    run: async (a) => getRelevantChangesSinceVersion({ installedVersion: str(a.installedVersion) ?? "", symptom: str(a.symptom), platform: str(a.platform), osVersion: str(a.osVersion) }),
   },
   lookup_demo_customer: {
     source: "simulated",
@@ -108,7 +114,7 @@ export const tools: Record<string, ToolDef> = {
         customerId: str(a.customerId),
         callId: call.callId,
       });
-      return out.ok ? { ...out, usedCallerId: useCallerId, next: CALLBACK_WRAP_UP } : out;
+      return out.ok ? { ...out, usedCallerId: useCallerId } : out;
     },
   },
   initiate_handoff: {
@@ -125,8 +131,7 @@ export const tools: Record<string, ToolDef> = {
         ok: true,
         simulated: true,
         team: team.label,
-        instruction:
-          "Tell the caller you are connecting them to the team now, say goodbye briefly, then call endCall. This demo does not reach a real MultiTracks employee.",
+        note: "Simulated handoff accepted. No real MultiTracks employee is contacted.",
         source: "simulated",
       };
     },
@@ -138,6 +143,7 @@ export function summarize(out: unknown): string | undefined {
   if (!out || typeof out !== "object") return undefined;
   const o = out as Record<string, unknown>;
   if (o.reason) return String(o.reason);
+  if (o.service && Array.isArray(o.songs)) return `${o.songs.length} demo service song(s) — actual Services API read`;
   if (typeof o.found === "number") return `${o.found} result(s)`;
   if (o.app && typeof o.app === "object") return `v${(o.app as { currentVersion?: string }).currentVersion}`;
   if (Array.isArray(o.documentedReleasesBetween)) return `${(o.relevantChanges as unknown[])?.length ?? 0} relevant change(s)`;

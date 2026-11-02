@@ -2,6 +2,7 @@
 export type ToolSource = "live" | "simulated" | "internal" | "model";
 
 export const TOOL_META: Record<string, { label: string; source: ToolSource }> = {
+  get_planning_center_service_context: { label: "Reading fictional demo service (Planning Center API)", source: "live" },
   search_playback_docs: { label: "Searching support documentation", source: "internal" },
   get_current_playback_app_info: { label: "Checking current Playback version", source: "live" },
   get_relevant_changes_since_version: { label: "Finding relevant release history", source: "live" },

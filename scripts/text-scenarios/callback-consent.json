@@ -1,0 +1,9 @@
+{
+  "name": "callback-consent",
+  "expectedIntent": "callback-availability-without-booking-consent",
+  "lines": [
+    "I'd like a Playback support callback tomorrow at 11 AM Eastern about a song download problem. I'm Taylor and my callback number is +1 202 555 0146. Please check the time, but don't book anything yet.",
+    "Actually, please don't book anything. Goodbye."
+  ],
+  "expect": "Check the requested callback time with the scheduling tool. Accurately distinguish the requested time from alternatives. Do not reserve a callback without explicit consent, and do not delay the callback request with service personalization. No real staff or customer is contacted."
+}

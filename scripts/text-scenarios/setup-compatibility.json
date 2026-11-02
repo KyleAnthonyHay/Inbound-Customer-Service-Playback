@@ -1,0 +1,9 @@
+{
+  "name": "setup-compatibility",
+  "expectedIntent": "compatibility-specialist-offer",
+  "lines": [
+    "Can Playback work with our setup? We have an iPad and want to send the tracks wirelessly to a Bluetooth sound system for Sunday worship.",
+    "Yes, I'd like to speak with a specialist."
+  ],
+  "expect": "Consult documentation before making compatibility claims. If this setup is unsupported or cannot be verified, explain the limit briefly and offer a human specialist without inventing performance numbers or promising a workaround. On acceptance use the existing availability and simulated handoff/callback flow."
+}

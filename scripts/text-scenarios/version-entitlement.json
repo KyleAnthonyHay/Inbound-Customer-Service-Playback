@@ -1,0 +1,8 @@
+{
+  "name": "version-entitlement",
+  "expectedIntent": "version-comparison-and-demo-entitlement",
+  "lines": [
+    "I'm demo customer DEMO-1001. Playback 8.6.2 on my iPad says Cloud Pro expired. Can you check whether my demo subscription is active and whether a newer version has a documented fix?"
+  ],
+  "expect": "Use the simulated customer lookup and installed-version comparison as relevant. The comparison already retrieves current App Store metadata; a separate current-version call is unnecessary. Distinguish bounded release history from live current-version metadata, and avoid claiming a real customer account was verified."
+}

@@ -1,0 +1,19 @@
+[
+  { "run": "01-click-guide-v1", "input": "Yes, Click and Guide are separate buses. Both currently show output 1." },
+  { "run": "01-click-guide-v2", "input": "Both the Click bus and the Guide bus currently show output 1." },
+  { "run": "02-reconnect-v2", "input": "Yes, after that all the instruments are back on the 3/4 stereo feed. Click and guide are still correct. Thanks, that's all.", "done": true },
+  { "run": "03-audio-device-v1", "input": "There is only one USB interface connected and the hub is powered. Its outputs still aren't showing in Playback." },
+  { "run": "03-audio-device-v2", "input": "Yes, the 4i4 is connected through a powered USB hub. Still no sound." },
+  { "run": "04-false-expired-v1", "input": "Before we do that, I'm using Playback version 8.6.1 on the iPad. Could that be relevant?" },
+  { "run": "04-false-expired-v2", "input": "I just checked: the app is version 8.6.1. Does that matter?" },
+  { "run": "05-supported-setup-v2", "input": "No routing steps needed, thanks. That answers the compatibility question. Goodbye.", "done": true },
+  { "run": "06-borrowed-mixer-v1", "input": "I'd like confirmation for this exact mixer before we connect anything. We haven't established whether it is class-compliant. Can you verify the connection from your resources?" },
+  { "run": "06-borrowed-mixer-v2", "input": "It's a USB-C iPad. We still don't know whether the Mackie connection is class-compliant or what this particular model needs." },
+  { "run": "07-organization-v1", "input": "Yes, after selecting North Harbor Demo Church the purchased songs are visible. Thank you, that's all.", "done": true },
+  { "run": "08-permission-v1", "input": "Tomorrow at 11 AM Eastern works for me. I'm Taylor and my number is +1 202 555 0146. Please check that time, but don't book it yet." },
+  { "run": "08-permission-v2", "input": "Could you check tomorrow at 11 AM Eastern? Taylor, +1 202 555 0146. Don't reserve anything yet." },
+  { "run": "09-loading-recovery-v1", "input": "Yes, after reaching the third retry, the song downloaded. Thanks, that's all.", "done": true },
+  { "run": "09-loading-recovery-v2", "input": "I tried until I'd made three retries, and the song downloaded. Thank you, that's all.", "done": true },
+  { "run": "10-loading-unresolved-v1", "done": true },
+  { "run": "10-loading-unresolved-v2", "done": true }
+]

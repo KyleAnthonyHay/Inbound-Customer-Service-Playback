@@ -10,6 +10,8 @@ the Regal AI Product Specialist take-home. Not affiliated with MultiTracks.com.
 - Vapi (`@vapi-ai/web` for browser calls; GPT-Live `gpt-live-1` with OpenAI voice)
 - Convex for synthetic demo data, bookings, and the live activity log
 - Apple iTunes Lookup API (live, public) for current app version
+- Planning Center Services API (server-side PAT, separate fictional demo org;
+  demo service/songs created and a real read-only check verified locally)
 
 ## Run locally
 
@@ -165,11 +167,48 @@ Account data is fictional and lives in `src/lib/demo/accounts.ts`, which both th
 | 829455 | Lakeside Youth Ministry | Cloud Pro, past-due (grace until 2026-11-11) | DEMO-1007 Daniel Kim | Payment failed, features still work |
 | 931027 | Olivia Brennan (personal) | Intro, empty | DEMO-1008 Olivia Brennan | Signed into the wrong organization |
 
+Org 480113 additionally includes the shared demo set's three songs as explicitly synthetic purchases, so its loading-recovery scenario is not an ownership failure. Planning Center does not verify those entitlements.
+
 Re-seed with `npx convex run seed:run` (dev) or `npx convex run seed:run --prod`; the seed wipes and re-inserts these tables. Scenarios: `scripts/scenarios/song-not-purchased.json`, `rental-expired-no-credits.json`, `payment-past-due.json`, `missing-team-sharing-permission.json`, `wrong-organization.json`.
+
+Planning Center's [integration plan and setup evidence](docs/planning-center-integration.md)
+separate real API transport, the simulated service with catalog song metadata,
+and mocked tests.
+The new local `get_planning_center_service_context` tool reads only the explicitly
+configured demo organization; synthetic customers do not select or authenticate
+a church. A real PAT-authenticated read retrieved the November 8 service and its
+three songs; credentials remain server-side in ignored local configuration and
+the dev Convex environment. The dev backend and saved dev assistant are activated
+and their tool webhook is verified; production is unchanged. `npm run planning-center:check -- --read-demo` performs a minimal
+real GET-only verification without calls or simulations.
 
 ## Testing
 
 See `docs/test-matrix.md` for the scenario matrix, metrics definitions, and results.
+
+For quick implementation checks, `npm run text:test` runs an interactive terminal
+conversation through Vapi Chat using the voice agent's shared reasoner definition
+and tools. A scenario file can be passed for scripted text turns. This creates no
+voice sessions, adds no UI, and needs no separate OpenAI key. Text token usage
+still applies. Reports under `docs/text-tests/` are reasoning POCs, not voice-test
+results; the user will manually test the ten selected presentation conversations later.
+See [the testing workflow](docs/conversation-test-plan.md).
+
+The [curated caller worksheet](docs/curated-caller-worksheet.md) contains the ten
+selected cases and two opening phrasings each. `npm run text:cases -- start <dir>`
+starts the twenty text conversations; review actual replies before submitting
+fixture-based follow-ups with `npm run text:cases -- reply <dir> <replies.json>`.
+Reviewer facts are never sent to the support agent. The
+[November 2 phrasing audit](docs/text-tests/curated-phrasing-review.md) records
+the completed runs and remaining consistency issues; it is not a voice pass rate.
+
+The local version-investigation/update-assessment candidate is covered by the
+[seven-decision review](docs/text-tests/seven-decisions-review.md). It uses
+`scripts/local-text-tools.ts` through a temporary authenticated tunnel to exercise
+local release code; the ordinary text commands otherwise use deployed dev tools.
+Do not confuse a passing local candidate with saved-agent activation. The dev
+auto-deploy watcher was stopped after restoring its previous tool behavior;
+restarting `convex dev` will publish the pending local backend changes.
 
 ## Scheduling and time zones
 
@@ -217,3 +256,5 @@ npm run release
 ```
 
 It type-checks, runs the tests, pushes the Convex functions to prod (`npx convex deploy`), syncs the prod assistant (`npm run sync:assistant:prod`), and deploys the site (`npx vercel --prod`). Prod seed data: `npx convex run seed:run --prod`. Prod voice test: `npm run voice:test:prod`. Vercel holds the four `NEXT_PUBLIC_*` values for the prod pair; the private key and secrets stay local and in Convex env.
+
+For the combined development build, use the [manual voice test sheet](docs/dev-manual-tests.md). It preserves the ten selected conversations and adds optional coverage for the newer synthetic-account tools.

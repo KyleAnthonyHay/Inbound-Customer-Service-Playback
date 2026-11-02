@@ -1,0 +1,21 @@
+[
+  {
+    "run": "11-unfamiliar-progress-v1",
+    "input": "Yes, please connect me with a specialist.",
+    "done": true
+  },
+  {
+    "run": "11-unfamiliar-progress-v2",
+    "input": "Yes, three retries on the same download did not change anything. There is still no error message."
+  },
+  {
+    "run": "12-clear-wrong-output-v1",
+    "input": "Selecting the interface worked. I can hear it now, thanks.",
+    "done": true
+  },
+  {
+    "run": "12-clear-wrong-output-v2",
+    "input": "Yes, audio is coming through the interface now. That fixed it, thank you.",
+    "done": true
+  }
+]

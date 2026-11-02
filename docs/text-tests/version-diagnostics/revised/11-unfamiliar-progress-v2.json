@@ -1,0 +1,27 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "caseId": "11-unfamiliar-progress",
+  "variant": 2,
+  "testId": "text-poc-649c7d31-5308-4c3b-93bb-d07fff1d572a",
+  "configurationHash": "b6f1371f405c3b04d732746e6798cff53cf9e77e0be0a9482b16c219ec842d26",
+  "fixture": {
+    "id": "11-unfamiliar-progress",
+    "intent": "song-loading-version-investigation",
+    "handling": "agent",
+    "openings": [
+      "I'm demo customer DEMO-1001. On the iPad, a song's download bar reaches the end and stays there forever, without an error message. Our account is active, there is plenty of storage, retries haven't helped, and it happens on another network too. Rehearsal is tomorrow.",
+      "Could you help with a download that looks complete but never finishes? It affects several songs on my iPad: no error, just a full progress bar. Demo account DEMO-1001 is paid, storage is fine and retrying on a different connection didn't help. We're not live."
+    ],
+    "reviewOnly": {
+      "facts": "Playback 8.5.0; iPadOS 18 on iPad Air 5. Both versions are revealed when asked, without naming a fix or update. Caller has time before tomorrow's rehearsal. This is a simulated pre-fix scenario; official release 8.5.2 describes a stuck-at-completion download-bar fix, older than the newest three stored releases. The scenario does not claim every 8.5.0 installation is affected.",
+      "expected": "After appropriate account/configuration/documented checks, investigate a possible version-specific defect without a caller-supplied version hint. Retrieve the matching historical fix, not only the latest three releases. Before recommending an update verify installed/current versions, applicable platform/OS requirements and available time. Describe it as a supported targeted attempt, never guaranteed; caller recovery is scripted."
+    }
+  },
+  "failure": "fetch failed",
+  "done": true,
+  "cleanupComplete": true,
+  "reportedTextCost": 0,
+  "turns": []
+}

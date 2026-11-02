@@ -1,0 +1,102 @@
+[
+  {
+    "run": "01-click-guide-v1",
+    "input": "Click and Guide are already separate buses. Both are assigned to output 1."
+  },
+  {
+    "run": "02-reconnect-v1",
+    "input": "Audio Device is PlayAUDIO12. The Buses tab shows Drums 3/4, Bass 5/6, Keys 7/8 and Guitars 9/10. We want all that music on 3/4, with click 1 and guide 2."
+  },
+  {
+    "run": "03-audio-device-v1",
+    "input": "The Buses view only shows the Mac's left and right outputs. I don't see the interface's outputs."
+  },
+  {
+    "run": "04-false-expired-v1",
+    "input": "Restore Purchases did not help. We bought the plan on the MultiTracks website, not through Apple."
+  },
+  {
+    "run": "05-supported-setup-v1",
+    "input": "Thanks, that answers our compatibility question. Goodbye.",
+    "done": true
+  },
+  {
+    "run": "06-borrowed-mixer-v1",
+    "input": "It is a Mackie ProFX12v3. I do not know whether it is class compliant or what connection the iPad requires."
+  },
+  {
+    "run": "01-click-guide-v2",
+    "input": "Click and Guide are already separate buses. Both are assigned to output 1."
+  },
+  {
+    "run": "02-reconnect-v2",
+    "input": "Audio Device is PlayAUDIO12. The Buses tab shows Drums 3/4, Bass 5/6, Keys 7/8 and Guitars 9/10. We want all that music on 3/4, with click 1 and guide 2."
+  },
+  {
+    "run": "03-audio-device-v2",
+    "input": "The Buses view only shows the Mac's left and right outputs. I don't see the interface's outputs."
+  },
+  {
+    "run": "04-false-expired-v2",
+    "input": "Restore Purchases did not help. We bought the plan on the MultiTracks website, not through Apple."
+  },
+  {
+    "run": "05-supported-setup-v2",
+    "input": "Thanks, that answers our compatibility question. Goodbye.",
+    "done": true
+  },
+  {
+    "run": "06-borrowed-mixer-v2",
+    "input": "It is a Mackie ProFX12v3. I do not know whether it is class compliant or what connection the iPad requires."
+  },
+  {
+    "run": "07-organization-v1",
+    "input": "The Library is empty."
+  },
+  {
+    "run": "07-organization-v2",
+    "input": "The side menu says Taylor Personal Demo. North Harbor Demo Church is also in the organization picker."
+  },
+  {
+    "run": "08-permission-v1",
+    "input": "Yes, please connect me with the account team."
+  },
+  {
+    "run": "09-loading-recovery-v1",
+    "input": "It is Graves Into Gardens and the exact message is Audio Files Missing. I tapped Try Again once."
+  },
+  {
+    "run": "10-loading-unresolved-v1",
+    "input": "Yes, please connect me with a specialist."
+  },
+  {
+    "run": "11-unfamiliar-progress-v1",
+    "input": "Playback 8.5.0."
+  },
+  {
+    "run": "12-clear-wrong-output-v1",
+    "input": "Selecting the interface worked. There is sound through it now, thanks.",
+    "done": true
+  },
+  {
+    "run": "08-permission-v2",
+    "input": "Yes, please connect me with the account team."
+  },
+  {
+    "run": "09-loading-recovery-v2",
+    "input": "It is Graves Into Gardens and the exact message is Audio Files Missing. I tapped Try Again once."
+  },
+  {
+    "run": "10-loading-unresolved-v2",
+    "input": "Yes, please connect me with a specialist."
+  },
+  {
+    "run": "11-unfamiliar-progress-v2",
+    "input": "Playback 8.5.0."
+  },
+  {
+    "run": "12-clear-wrong-output-v2",
+    "input": "Selecting the interface worked. There is sound through it now, thanks.",
+    "done": true
+  }
+]

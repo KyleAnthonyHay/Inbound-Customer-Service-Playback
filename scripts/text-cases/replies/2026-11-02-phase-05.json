@@ -1,0 +1,6 @@
+[
+  { "run": "03-audio-device-v1", "input": "Yes, please connect me with a specialist." },
+  { "run": "03-audio-device-v2", "input": "Yes, the outputs appeared after selecting the 4i4 in Audio Device, and sound is reaching the desk now. Thanks, that's all.", "done": true },
+  { "run": "06-borrowed-mixer-v1", "done": true },
+  { "run": "06-borrowed-mixer-v2", "done": true }
+]

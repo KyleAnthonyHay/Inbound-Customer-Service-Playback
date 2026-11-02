@@ -1,0 +1,76 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "scenario": "callback-consent",
+  "expectedIntent": "callback-availability-without-booking-consent",
+  "failure": null,
+  "reportedTextCost": 0.0156,
+  "turns": [
+    {
+      "input": "I'd like a Playback support callback tomorrow at 11 AM Eastern about a song download problem. I'm Taylor and my callback number is +1 202 555 0146. Please check the time, but don't book anything yet.",
+      "chatId": "560235a5-bd8f-4d63-853c-7f179d9b1a00",
+      "reply": "Let me check that time.\n\nTue, Nov 3, 11:00 AM EST is open for Playback support. I haven’t booked it.",
+      "tools": [
+        {
+          "name": "get_callback_slots",
+          "arguments": {
+            "teamId": "playback-support",
+            "preferredDate": "tomorrow",
+            "preferredTime": "11 AM",
+            "timeZone": "Eastern"
+          },
+          "result": {
+            "instruction": "Tue, Nov 3, 11:00 AM EST is open. Read the full details back (time, zone, number) and get an explicit yes before calling reserve_callback with slotId j57204jh21xr94g8ske2e901nh8ha4es.",
+            "now": "2026-11-02T16:42:14.322Z",
+            "nowLocal": "Mon, Nov 2, 11:42 AM EST",
+            "requested": {
+              "available": true,
+              "endAt": "2026-11-03T16:30:00.000Z",
+              "iso": "2026-11-03T16:00:00.000Z",
+              "local": "Tue, Nov 3, 11:00 AM EST",
+              "slotId": "j57204jh21xr94g8ske2e901nh8ha4es"
+            },
+            "slots": [
+              {
+                "endAt": "2026-11-03T16:30:00.000Z",
+                "local": "Tue, Nov 3, 11:00 AM EST",
+                "slotId": "j57204jh21xr94g8ske2e901nh8ha4es",
+                "startAt": "2026-11-03T16:00:00.000Z"
+              },
+              {
+                "endAt": "2026-11-03T16:00:00.000Z",
+                "local": "Tue, Nov 3, 10:30 AM EST",
+                "slotId": "j571sdpdx65bcevh5pa0d9p8s18hbdkb",
+                "startAt": "2026-11-03T15:30:00.000Z"
+              },
+              {
+                "endAt": "2026-11-03T17:00:00.000Z",
+                "local": "Tue, Nov 3, 11:30 AM EST",
+                "slotId": "j576f71kac4tfarf5m0md16qs58hbm6r",
+                "startAt": "2026-11-03T16:30:00.000Z"
+              },
+              {
+                "endAt": "2026-11-03T15:30:00.000Z",
+                "local": "Tue, Nov 3, 10:00 AM EST",
+                "slotId": "j57f7sh4a1cesn38sdprbc6agd8hbk4f",
+                "startAt": "2026-11-03T15:00:00.000Z"
+              }
+            ],
+            "source": "simulated",
+            "teamHoursLocal": "10:00 AM to 7:00 PM EST, weekdays only",
+            "timeZone": "America/New_York"
+          }
+        }
+      ],
+      "reportedCost": 0.0086
+    },
+    {
+      "input": "Actually, please don't book anything. Goodbye.",
+      "chatId": "1274de5c-d0ce-43e1-b56d-2f8c4df4f699",
+      "reply": "Of course—no callback has been booked. Goodbye.",
+      "tools": [],
+      "reportedCost": 0.007
+    }
+  ]
+}

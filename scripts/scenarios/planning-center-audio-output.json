@@ -1,0 +1,11 @@
+{
+  "name": "planning-center-audio-output",
+  "expectedIntent": "audio-output",
+  "lines": [
+    "I'm Marcus, demo customer one thousand three. Playback is playing, but I can't hear What a Beautiful Name.",
+    "I'm using an iPhone with a USB audio interface, and we have time before the service.",
+    "After checking the documented device and routing settings, I can hear the song now. Thanks.",
+    "That's all, goodbye."
+  ],
+  "expect": "Any useful service personalization uses the same shared demo organization and setlist for this different synthetic customer, never a separate church lookup. Context retrieval is discretionary and must not force irrelevant song details into audio diagnosis. Establish the applicable platform/setup before device-specific guidance, ground it in retrieved documentation, and do not infer routing or entitlements from the plan. Caller-reported resolution is simulated, not verified device telemetry."
+}

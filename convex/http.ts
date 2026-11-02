@@ -49,6 +49,9 @@ http.route({
     if (!msg || msg.type !== "tool-calls" || !Array.isArray(msg.toolCallList)) return json({ results: [] });
     // Phone calls carry the caller's number (caller ID) on every webhook; browser calls do not.
     const call = callInfoOf(msg.call);
+    // The text POC has no voice call object. Keep its logs/idempotency separate per test.
+    const textTestId = new URL(request.url).searchParams.get("textTestId");
+    if (!msg.call?.id && textTestId && /^text-poc-[a-z0-9-]{1,80}$/.test(textTestId)) call.callId = textTestId;
     const callId = call.callId;
     if (call.callerNumber) await ctx.runMutation(api.calls.touch, { callId, callType: call.callType, callerNumber: call.callerNumber });
 

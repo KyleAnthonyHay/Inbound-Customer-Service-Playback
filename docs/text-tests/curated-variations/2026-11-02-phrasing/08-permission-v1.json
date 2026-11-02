@@ -1,0 +1,127 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "caseId": "08-permission",
+  "variant": 1,
+  "testId": "text-poc-9177a751-085c-4c27-b37f-2a35b69e77e4",
+  "configurationHash": "df2f3b7f12583248fd9b5f9d92e2590ad98cd11e6a1905a0b6c3591ff16d81aa",
+  "fixture": {
+    "id": "08-permission",
+    "intent": "account-access",
+    "handling": "human-admin-review",
+    "openings": [
+      "I'm in the correct church organization in Playback. Our administrator checked and says I haven't been assigned the permission or Team Sharing seat to access our purchased songs. Can you enable it for me?",
+      "The church admin confirmed my Playback organization is right, but I still need an access permission and seat assigned. Could you grant that so I can use our songs?"
+    ],
+    "reviewOnly": {
+      "facts": "The issue requires an administrative access change; no navigation or software fix will grant the permission. The caller has not initially asked for a human. No real account changes are authorized or possible.",
+      "expected": "Explain the limitation and possible need for the church admin, offer human/specialist review, and follow the consented handoff or callback path. Do not pretend a demo customer lookup is identity verification or an access grant."
+    }
+  },
+  "failure": null,
+  "done": true,
+  "cleanupComplete": true,
+  "reportedTextCost": 0.029500000000000005,
+  "turns": [
+    {
+      "input": "I'm in the correct church organization in Playback. Our administrator checked and says I haven't been assigned the permission or Team Sharing seat to access our purchased songs. Can you enable it for me?",
+      "chatId": "8eada53b-b3ad-4979-ad35-045e724a5359",
+      "reply": "I can’t enable permissions or Team Sharing seats, but our account team can help with that. Would you like me to connect you with them?",
+      "tools": [],
+      "reportedCost": 0.0064
+    },
+    {
+      "input": "Yes, please connect me with someone who can review the access.",
+      "chatId": "461e85d2-a07d-4710-801b-262d5612b1aa",
+      "reply": "Let me see who's available.\n\nNo one on the account team is available right now, but I can schedule a callback. When would you next be available?",
+      "tools": [
+        {
+          "name": "check_team_availability",
+          "arguments": {
+            "teamId": "billing"
+          },
+          "result": {
+            "source": "simulated",
+            "teams": [
+              {
+                "canTransferNow": false,
+                "description": "Subscriptions, refunds, and account administration.",
+                "label": "Billing & Accounts",
+                "status": "busy",
+                "teamId": "billing",
+                "withinHours": true
+              }
+            ]
+          }
+        }
+      ],
+      "reportedCost": 0.0072
+    },
+    {
+      "input": "Tomorrow at 11 AM Eastern works for me. I'm Taylor and my number is +1 202 555 0146. Please check that time, but don't book it yet.",
+      "chatId": "aae5f41f-17f5-4b1f-9405-9df802273945",
+      "reply": "Let me check that time.\n\nTue, Nov 3, 11:00 AM EST is available; would you like me to book it for Taylor at the number ending in 0146?",
+      "tools": [
+        {
+          "name": "get_callback_slots",
+          "arguments": {
+            "teamId": "billing",
+            "preferredDate": "tomorrow",
+            "preferredTime": "11 AM",
+            "timeZone": "Eastern"
+          },
+          "result": {
+            "instruction": "Tue, Nov 3, 11:00 AM EST is open. Read the full details back (time, zone, number) and get an explicit yes before calling reserve_callback with slotId j572z5fkt28wdy6eevtybzrhk58hbrn3.",
+            "now": "2026-11-02T19:29:42.944Z",
+            "nowLocal": "Mon, Nov 2, 2:29 PM EST",
+            "requested": {
+              "available": true,
+              "endAt": "2026-11-03T16:30:00.000Z",
+              "iso": "2026-11-03T16:00:00.000Z",
+              "local": "Tue, Nov 3, 11:00 AM EST",
+              "slotId": "j572z5fkt28wdy6eevtybzrhk58hbrn3"
+            },
+            "slots": [
+              {
+                "endAt": "2026-11-03T16:30:00.000Z",
+                "local": "Tue, Nov 3, 11:00 AM EST",
+                "slotId": "j572z5fkt28wdy6eevtybzrhk58hbrn3",
+                "startAt": "2026-11-03T16:00:00.000Z"
+              },
+              {
+                "endAt": "2026-11-03T16:00:00.000Z",
+                "local": "Tue, Nov 3, 10:30 AM EST",
+                "slotId": "j57c1cpzah4ef76chzx8ga8kq58hb1te",
+                "startAt": "2026-11-03T15:30:00.000Z"
+              },
+              {
+                "endAt": "2026-11-03T17:00:00.000Z",
+                "local": "Tue, Nov 3, 11:30 AM EST",
+                "slotId": "j574xnpr53zbrdgrhg9y9k149s8hacqw",
+                "startAt": "2026-11-03T16:30:00.000Z"
+              },
+              {
+                "endAt": "2026-11-03T15:30:00.000Z",
+                "local": "Tue, Nov 3, 10:00 AM EST",
+                "slotId": "j572vh6cskp8v6zfnb9yc5jknd8haj5f",
+                "startAt": "2026-11-03T15:00:00.000Z"
+              }
+            ],
+            "source": "simulated",
+            "teamHoursLocal": "10:00 AM to 6:00 PM EST, weekdays only",
+            "timeZone": "America/New_York"
+          }
+        }
+      ],
+      "reportedCost": 0.0088
+    },
+    {
+      "input": "No, don't book it. I'll speak with our church administrator first. Thank you, goodbye.",
+      "chatId": "0d770605-857c-4ab7-a2f3-c0bcc2c09842",
+      "reply": "You're welcome—goodbye.",
+      "tools": [],
+      "reportedCost": 0.0071
+    }
+  ]
+}
