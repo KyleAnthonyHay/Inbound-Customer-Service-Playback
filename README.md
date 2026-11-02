@@ -255,12 +255,14 @@ Data comes from Vapi's assistant-level server messages, not the browser, so phon
 
 Both assistants are built from the same `buildAssistant()`; only the webhook URLs, the secret and the name differ. The phone number, when claimed, attaches to the prod assistant. Local testing (browser calls, `npm run voice:test`, `npm run sync:assistant`) touches only the dev pair, so the demo's call history and prompts stay untouched while you work.
 
-**Releasing to prod is one command and must always be used, so the three parts never drift:**
+**Keep the frontend, backend and saved voice assistant on the same reviewed version. The coordinated CLI release is:**
 
 ```bash
 npm run release
 ```
 
-It type-checks, runs the tests, pushes the Convex functions to prod (`npx convex deploy`), syncs the prod assistant (`npm run sync:assistant:prod`), and deploys the site (`npx vercel --prod`). Prod seed data: `npx convex run seed:run --prod`. Prod voice test: `npm run voice:test:prod`. Vercel holds the four `NEXT_PUBLIC_*` values for the prod pair; the private key and secrets stay local and in Convex env.
+It type-checks, runs the tests, pushes the Convex functions to prod (`npx convex deploy`), upgrades the fictional accounts without resetting bookings (`seed:upsertAccounts`), syncs the prod assistant (`npm run sync:assistant:prod`), and deploys the site (`npx vercel --prod`). The reset-only `seed:run` is not part of a normal release. Prod voice test: `npm run voice:test:prod`. Vercel holds the four `NEXT_PUBLIC_*` values for the prod pair; the private key and secrets stay local and in Convex env.
+
+With the Vercel Git integration, complete those same validation/backend/account/assistant steps first, then fast-forward `main` and verify its matching production deployment. Let Git publish the frontend instead of creating a duplicate CLI deployment. Preserve callback reservations and call history; never import a dev snapshot over production.
 
 For the combined development build, use the [manual voice test sheet](docs/dev-manual-tests.md). It preserves the ten selected conversations and adds optional coverage for the newer synthetic-account tools.

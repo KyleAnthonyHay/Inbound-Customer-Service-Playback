@@ -1,6 +1,8 @@
 import { internalMutation } from "./_generated/server";
 import { localToUtcMs, partsIn, WEEKEND, weekdayIn } from "./time";
 import { customers, organizations, orgSongs } from "../src/lib/demo/accounts";
+import { v } from "convex/values";
+import { upsertDemoAccounts } from "./lib/seedAccounts";
 
 /**
  * Seeds clearly synthetic demo data. Safe to re-run: it wipes and re-inserts.
@@ -70,4 +72,11 @@ export const run = internalMutation({
     for (const s of slots) await ctx.db.insert("callbackSlots", s);
     return { organizations: organizations.length, customers: customers.length, songs: orgSongs.length, teams: teams.length, slots: slots.length };
   },
+});
+
+/** Production upgrades must not reset callbacks, staffing, slots or call history. */
+export const upsertAccounts = internalMutation({
+  args: {},
+  returns: v.object({ created: v.number(), updated: v.number(), organizations: v.number(), customers: v.number(), songs: v.number() }),
+  handler: upsertDemoAccounts,
 });

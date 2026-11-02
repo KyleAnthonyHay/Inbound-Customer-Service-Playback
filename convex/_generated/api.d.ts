@@ -13,6 +13,7 @@ import type * as callbacks from "../callbacks.js";
 import type * as calls from "../calls.js";
 import type * as customers from "../customers.js";
 import type * as http from "../http.js";
+import type * as lib_seedAccounts from "../lib/seedAccounts.js";
 import type * as seed from "../seed.js";
 import type * as teams from "../teams.js";
 import type * as time from "../time.js";
@@ -30,6 +31,7 @@ declare const fullApi: ApiFromModules<{
   calls: typeof calls;
   customers: typeof customers;
   http: typeof http;
+  "lib/seedAccounts": typeof lib_seedAccounts;
   seed: typeof seed;
   teams: typeof teams;
   time: typeof time;
