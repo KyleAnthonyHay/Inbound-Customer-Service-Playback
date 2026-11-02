@@ -85,13 +85,42 @@ export function stepsOf(body: string) {
   });
 }
 
+export const MANUAL_ENV_KEYS = ["PINECONE_API_KEY", "PINECONE_INDEX_HOST", "PINECONE_NAMESPACE", "PINECONE_RERANK"] as const;
+export type ManualEnv = Partial<Record<(typeof MANUAL_ENV_KEYS)[number], string>>;
+
+/** Per-key lookup (never a spread) so it works under Node and inside Convex; `override` wins when set. */
+export function readManualEnv(override: ManualEnv = {}, source: { [k: string]: string | undefined } = process.env): ManualEnv {
+  const out: ManualEnv = {};
+  for (const k of MANUAL_ENV_KEYS) {
+    const v = override[k] !== undefined ? override[k] : source[k];
+    if (v !== undefined) out[k] = v;
+  }
+  return out;
+}
+
+/** Added to a hit's score when its category is one the caller asked for; small, so a clearly better section still wins. */
+export const CATEGORY_BONUS = 0.05;
+
+/** Stable re-rank: preferred categories get a small bonus, everything else keeps Pinecone's order. */
+export function rankWithCategoryPreference<H extends { _score: number; fields: { category?: string } }>(hits: H[], categories: string[] | undefined): H[] {
+  if (!categories?.length) return hits;
+  const adjusted = (h: H) => h._score + (h.fields.category && categories.includes(h.fields.category) ? CATEGORY_BONUS : 0);
+  return hits
+    .map((h, i) => ({ h, i, s: adjusted(h) }))
+    .sort((a, b) => b.s - a.s || a.i - b.i)
+    .map((x) => x.h);
+}
+
 export function bodyOf(text: string) {
   const i = text.indexOf("\n\n");
   return i === -1 ? text : text.slice(i + 2);
 }
 
 export async function searchManual(query: string, opts: ManualSearchOptions = {}): Promise<ManualSearchResult> {
-  const env = { ...process.env, ...opts.env };
+  // Read each variable by name. Convex's runtime exposes process.env as an object whose keys
+  // do not enumerate, so spreading it yields nothing and the search looked "not-configured"
+  // inside Convex even with the variables set (it only worked under Node: tests, scripts).
+  const env = readManualEnv(opts.env);
   const apiKey = env.PINECONE_API_KEY;
   const host = env.PINECONE_INDEX_HOST?.replace(/\/$/, "");
   const namespace = env.PINECONE_NAMESPACE || "playback-user-guide";
@@ -102,12 +131,11 @@ export async function searchManual(query: string, opts: ManualSearchOptions = {}
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), opts.timeoutMs ?? 8000);
   try {
+    // The category is a preference, not a filter: a hard Pinecone filter dropped the right
+    // section whenever the model's guess was off ("where is Settings" tagged setup hid the
+    // audio-output-tagged Settings sections). Query unfiltered, then nudge matching categories.
     const body: Record<string, unknown> = {
-      query: {
-        inputs: { text: query },
-        top_k: limit * 3,
-        ...(categories ? { filter: { category: { $in: categories } } } : {}),
-      },
+      query: { inputs: { text: query }, top_k: categories ? limit * 4 : limit * 3 },
       fields: MANUAL_FIELDS,
     };
     if (env.PINECONE_RERANK === "1") body.rerank = { model: "bge-reranker-v2-m3", top_n: limit * 2, rank_fields: ["text"] };
@@ -119,7 +147,7 @@ export async function searchManual(query: string, opts: ManualSearchOptions = {}
     });
     if (!res.ok) return { ok: false, source: "manual", reason: "request-failed", detail: `HTTP ${res.status}: ${(await res.text()).slice(0, 300)}` };
     const data = (await res.json()) as { result?: { hits?: Array<{ _id: string; _score: number; fields: Partial<ManualChunk> }> } };
-    const hits = data.result?.hits ?? [];
+    const hits = rankWithCategoryPreference(data.result?.hits ?? [], categories);
     const results: ManualHit[] = [];
     const outOfScope: Array<{ id: string; sectionPath: string; sectionUrl: string }> = [];
     for (const h of hits) {

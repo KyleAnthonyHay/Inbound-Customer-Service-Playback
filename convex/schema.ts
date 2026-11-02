@@ -69,7 +69,10 @@ export default defineSchema({
     channel: v.union(v.literal("browser"), v.literal("phone"), v.literal("harness"), v.literal("unknown")),
     /** Caller ID (E.164) on phone calls, from Vapi's call.customer.number. */
     callerNumber: v.optional(v.string()),
-    status: v.union(v.literal("in-progress"), v.literal("ended")),
+    /** ringing = Vapi queued/ringing before anyone spoke; see src/lib/tools/callState.ts. */
+    status: v.union(v.literal("ringing"), v.literal("in-progress"), v.literal("ended")),
+    /** From Vapi speech-update, so the web phone can show Speaking / Listening for a remote call. */
+    assistantSpeaking: v.optional(v.boolean()),
     startedAt: v.number(), // epoch ms
     endedAt: v.optional(v.number()),
     endedReason: v.optional(v.string()),

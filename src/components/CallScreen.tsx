@@ -22,6 +22,13 @@ type Props = {
   onToggleMute: () => void;
   /** Opens the call log after a call has ended. */
   onViewLog?: () => void;
+  /**
+   * Mirroring a call the agent is on elsewhere (the phone line): the screen follows that call's
+   * state from Convex and the in-call controls are disabled, since it is not this browser's call.
+   */
+  remote?: boolean;
+  /** Remote call only: whether the assistant is talking right now. */
+  speaking?: boolean;
   onKeypadDigit?: (digit: string) => void;
   /** Set after a successful simulated handoff; shows the transferring state. */
   handoff?: { team: string; at: number } | null;
@@ -201,7 +208,7 @@ function Keypad({ onDigit }: { onDigit: (d: string) => void }) {
 /* ---------- Screen ---------- */
 
 export function CallScreen({
-  status, label, subtitle, startedAt, muted, onStart, onEnd, onToggleMute, onViewLog, onKeypadDigit, handoff,
+  status, label, subtitle, startedAt, muted, onStart, onEnd, onToggleMute, onViewLog, onKeypadDigit, handoff, remote = false, speaking = false,
 }: Props) {
   const elapsed = useElapsed(startedAt, status === "active");
   const inCall = status === "active" || status === "connecting";
@@ -231,6 +238,11 @@ export function CallScreen({
     : transferring ? "Transferring…"
     : elapsed;
   const showTyped = keypadOpen && typed.length > 0;
+  // Under the number: "MultiTracks" while dialing; for a mirrored call, who is calling and whether the agent is talking.
+  const detail =
+    status === "connecting" ? subtitle
+    : remote && status === "active" ? [subtitle, speaking ? "Speaking…" : "Listening"].filter(Boolean).join(" · ")
+    : undefined;
 
   return (
     <div
@@ -255,8 +267,8 @@ export function CallScreen({
           <h1 className="absolute inset-x-0 top-[146px] px-4 text-center text-[34px] font-semibold leading-[44px] tracking-[-0.005em] text-[#e5e5e5]">
             {label}
           </h1>
-          {status === "connecting" && subtitle && (
-            <p className="absolute inset-x-0 top-[192px] text-center text-[22px] leading-[27px] text-[#8b8b8f]">{subtitle}</p>
+          {detail && !transferring && (
+            <p className="absolute inset-x-0 top-[192px] truncate px-6 text-center text-[22px] leading-[27px] text-[#8b8b8f]">{detail}</p>
           )}
           {transferring && (
             <p className="absolute inset-x-0 top-[192px] text-center text-[22px] leading-[27px] text-[#8b8b8f]">{handoff.team}</p>
@@ -293,7 +305,7 @@ export function CallScreen({
         <>
           <Keypad onDigit={digit} />
           {inCall ? (
-            <Control x={220} y={827} icon={<EndIcon />} onClick={onEnd} fill={END_RED} ariaLabel="End" />
+            <Control x={220} y={827} icon={<EndIcon />} onClick={onEnd} fill={END_RED} ariaLabel="End" disabled={remote} />
           ) : (
             <Control x={220} y={827} icon={<CallIcon />} onClick={onStart} fill="#30d158" ariaLabel="Call" />
           )}
@@ -309,14 +321,14 @@ export function CallScreen({
         <>
           <Control
             x={88} y={827} label="Mute" icon={<MuteIcon dark={muted} />}
-            onClick={onToggleMute} active={muted} disabled={status !== "active"}
+            onClick={onToggleMute} active={muted} disabled={status !== "active" || remote}
           />
           {inCall ? (
-            <Control x={220} y={827} label="End" icon={<EndIcon />} onClick={onEnd} fill={END_RED} />
+            <Control x={220} y={827} label="End" icon={<EndIcon />} onClick={onEnd} fill={END_RED} disabled={remote} />
           ) : (
             <Control x={220} y={827} label="Call" icon={<CallIcon />} onClick={onStart} fill="#30d158" />
           )}
-          <Control x={352} y={827} label="Keypad" icon={<KeypadIcon />} onClick={() => setKeypadOpen(true)} />
+          <Control x={352} y={827} label="Keypad" icon={<KeypadIcon />} onClick={() => setKeypadOpen(true)} disabled={remote && inCall} />
         </>
       )}
     </div>

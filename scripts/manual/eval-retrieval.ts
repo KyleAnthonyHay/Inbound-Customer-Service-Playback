@@ -19,6 +19,7 @@ type Case = { q: string; category?: string; expectAny: string[]; expectOutOfScop
 
 export const CASES: Case[] = [
   // Audio output
+  { q: "Where are the settings in Playback on my Mac?", category: "setup", expectAny: ["side-menu-settings-and-features", "playback-settings"], note: "Stack icon in the top-right corner opens the side menu; the model tags this setup while the section is tagged audio-output" },
   { q: "How do I choose which audio device Playback uses for output?", category: "audio-output", expectAny: ["general-settings-tab"] },
   { q: "The click and guide are only in my left ear and the band is in the right", category: "audio-output", expectAny: ["general-settings-tab", "setting-up-audio-and-midi:1"], note: "Auto-Pan: click/guide left, tracks right on the stereo output" },
   { q: "How do I send the click to a different output on my USB interface?", category: "audio-output", expectAny: ["buses-settings-tab", "tracks-settings-tab"], note: "bus routing is per audio device; no fixed output1/output2 mapping" },

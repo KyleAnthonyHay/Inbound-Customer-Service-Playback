@@ -169,6 +169,35 @@ test("caller ID: 'caller-id' and friends mean the number the caller is on; real 
   assert.equal(formatCallerNumber("+442071234567"), "+442071234567");
 });
 
+import { assistantSpeakingAfter, isLiveStatus, phoneStatusOf, REMOTE_STALE_MS, storedStatusOf } from "../src/lib/tools/callState";
+
+test("call state: Vapi statuses map to stored statuses; the web phone derives its display state from the row", () => {
+  assert.equal(storedStatusOf("queued"), "ringing");
+  assert.equal(storedStatusOf("ringing"), "ringing");
+  assert.equal(storedStatusOf("in-progress"), "in-progress");
+  assert.equal(storedStatusOf("forwarding"), "in-progress");
+  assert.equal(storedStatusOf("ended"), "ended");
+  assert.equal(storedStatusOf("something-new"), null);
+  assert.equal(storedStatusOf(undefined), null);
+  assert.equal(isLiveStatus("ringing"), true);
+  assert.equal(isLiveStatus("in-progress"), true);
+  assert.equal(isLiveStatus("ended"), false);
+
+  const now = 1_800_000_000_000;
+  assert.equal(phoneStatusOf(null, now), "idle");
+  assert.equal(phoneStatusOf({ status: "ringing", startedAt: now - 5_000 }, now), "connecting");
+  assert.equal(phoneStatusOf({ status: "in-progress", startedAt: now - 60_000 }, now), "active");
+  assert.equal(phoneStatusOf({ status: "ended", startedAt: now - 60_000 }, now), "ended");
+  // A live row whose end event never arrived stops reading as live.
+  assert.equal(phoneStatusOf({ status: "in-progress", startedAt: now - REMOTE_STALE_MS - 1 }, now), "ended");
+
+  assert.equal(assistantSpeakingAfter("assistant", "started"), true);
+  assert.equal(assistantSpeakingAfter("assistant", "stopped"), false);
+  assert.equal(assistantSpeakingAfter("user", "started"), false);
+  assert.equal(assistantSpeakingAfter("user", "stopped"), undefined);
+  assert.equal(assistantSpeakingAfter(undefined, undefined), undefined);
+});
+
 import { SYSTEM_PROMPT } from "../src/lib/assistant";
 
 test("prompt: the reasoner sees the caller ID variable and wraps up after a booked callback", () => {
