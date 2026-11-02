@@ -5,7 +5,7 @@ import path from "node:path";
 import { parseArticle } from "./manual/parse-article";
 import { chunkSections, sectionize } from "./manual/chunk";
 import { classifySection } from "../src/lib/manual/types";
-import { bodyOf, manualCategoriesFor, searchManual, stepsOf } from "../src/lib/tools/manual";
+import { bodyOf, manualCategoriesFor, readManualEnv, searchManual, stepsOf } from "../src/lib/tools/manual";
 
 const dir = path.join("docs", "source-snapshots", "playback-user-guide");
 const html = readFileSync(path.join(dir, "raw", "article.html"), "utf8");
@@ -140,4 +140,18 @@ test("helpers", () => {
   const steps = stepsOf("- Tap Restore Purchases\n- Update the app from the App Store\nplain line");
   assert.equal(steps.length, 2);
   assert.equal(steps[1].disruptive, true);
+});
+
+test("manual env is read per key, so a non-enumerable process.env (Convex) still configures the search", async () => {
+  // Convex's process.env has the values but Object.keys() is empty, so a spread drops everything.
+  const convexLike = new Proxy({} as Record<string, string | undefined>, {
+    get: (_t, k) => ({ PINECONE_API_KEY: "k", PINECONE_INDEX_HOST: "https://h.svc.pinecone.io/" } as Record<string, string>)[String(k)],
+    ownKeys: () => [],
+  });
+  assert.deepEqual({ ...convexLike }, {}, "spread sees nothing");
+  const env = readManualEnv({}, convexLike);
+  assert.equal(env.PINECONE_API_KEY, "k");
+  assert.equal(env.PINECONE_INDEX_HOST, "https://h.svc.pinecone.io/");
+  assert.deepEqual(readManualEnv({ PINECONE_NAMESPACE: "ns" }, convexLike).PINECONE_NAMESPACE, "ns", "override wins");
+  assert.equal(readManualEnv({ PINECONE_API_KEY: "" }, convexLike).PINECONE_API_KEY, "", "an explicit empty override disables it");
 });

@@ -85,13 +85,29 @@ export function stepsOf(body: string) {
   });
 }
 
+export const MANUAL_ENV_KEYS = ["PINECONE_API_KEY", "PINECONE_INDEX_HOST", "PINECONE_NAMESPACE", "PINECONE_RERANK"] as const;
+export type ManualEnv = Partial<Record<(typeof MANUAL_ENV_KEYS)[number], string>>;
+
+/** Per-key lookup (never a spread) so it works under Node and inside Convex; `override` wins when set. */
+export function readManualEnv(override: ManualEnv = {}, source: { [k: string]: string | undefined } = process.env): ManualEnv {
+  const out: ManualEnv = {};
+  for (const k of MANUAL_ENV_KEYS) {
+    const v = override[k] !== undefined ? override[k] : source[k];
+    if (v !== undefined) out[k] = v;
+  }
+  return out;
+}
+
 export function bodyOf(text: string) {
   const i = text.indexOf("\n\n");
   return i === -1 ? text : text.slice(i + 2);
 }
 
 export async function searchManual(query: string, opts: ManualSearchOptions = {}): Promise<ManualSearchResult> {
-  const env = { ...process.env, ...opts.env };
+  // Read each variable by name. Convex's runtime exposes process.env as an object whose keys
+  // do not enumerate, so spreading it yields nothing and the search looked "not-configured"
+  // inside Convex even with the variables set (it only worked under Node: tests, scripts).
+  const env = readManualEnv(opts.env);
   const apiKey = env.PINECONE_API_KEY;
   const host = env.PINECONE_INDEX_HOST?.replace(/\/$/, "");
   const namespace = env.PINECONE_NAMESPACE || "playback-user-guide";
