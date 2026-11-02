@@ -66,6 +66,11 @@ async function main() {
   let lastAssistantTranscriptAt = 0;
   let lastToolCallAt = 0;
   let assistantTextSinceSend = "";
+  // Set when the last caller clip finished streaming. Transcript finals that belong to the
+  // previous agent turn can arrive after that (the greeting's "?" once ended a wait early
+  // and the next caller lines talked over the agent), so only agent speech heard after the
+  // clip counts towards the current turn.
+  let clipEndAt = 0;
   const events: string[] = [];
   const transcript: string[] = [];
   let ended = false;
@@ -86,7 +91,7 @@ async function main() {
       const buf = Buffer.isBuffer(data) ? data : Buffer.from(data as ArrayBuffer);
       if (isLoud(buf)) {
         lastAssistantAudioAt = Date.now();
-        assistantEverSpoke = true;
+        if (lastAssistantAudioAt > clipEndAt) assistantEverSpoke = true;
       }
       return;
     }
@@ -94,12 +99,13 @@ async function main() {
       const m = JSON.parse(data.toString()) as Record<string, unknown>;
       const type = String(m.type);
       if (type === "transcript") {
+        const countsForThisTurn = m.role === "assistant" && lastAssistantAudioAt > clipEndAt;
         if (m.role === "assistant") {
           lastAssistantTranscriptAt = Date.now();
-          assistantEverSpoke = true;
+          if (countsForThisTurn) assistantEverSpoke = true;
         }
         if (m.transcriptType === "final") {
-          if (m.role === "assistant") assistantTextSinceSend += " " + String(m.transcript);
+          if (countsForThisTurn) assistantTextSinceSend += " " + String(m.transcript);
           transcript.push(`${stamp()} ${String(m.role).toUpperCase()}: ${m.transcript}`);
           console.log(`  ${String(m.role).toUpperCase()}: ${m.transcript}`);
         }
@@ -159,6 +165,7 @@ async function main() {
     }
     // trailing silence so the endpointer closes the turn
     ws.send(Buffer.alloc(frame * 25));
+    clipEndAt = Date.now();
   };
 
   await waitForAssistantToFinish(20000); // greeting
