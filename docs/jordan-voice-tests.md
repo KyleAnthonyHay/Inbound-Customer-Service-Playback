@@ -1,6 +1,6 @@
 # Jordan’s quick try-out
 
-Open [the dev phone](http://localhost:3000/call). Try one natural conversation; no technical script is needed.
+Open [the public demo](https://playback-support.vercel.app/call). Try one natural conversation; no technical script is needed.
 
 **Start:** “We’ve got an iPad and a little Focusrite sound box. We want to use tracks at church.”
 
