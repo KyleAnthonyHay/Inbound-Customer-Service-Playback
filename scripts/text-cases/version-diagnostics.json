@@ -1,0 +1,162 @@
+{
+  "name": "version-diagnostics-revised",
+  "cases": [
+    {
+      "id": "01-click-guide",
+      "intent": "routing",
+      "handling": "agent",
+      "openings": [
+        "Click and guide are coming through one channel in our in-ears, but we need independent control. I'm on an iPad with Playback Premium and a four-output USB interface. Outputs 1 and 2 feed separate in-ear mixer channels; 3 and 4 carry the music. We have time before rehearsal.",
+        "Our musicians can't turn down the spoken guide without also turning down the click. Playback is on an iPad with Premium and a four-output USB interface: two separate in-ear feeds on 1 and 2, music on 3 and 4. How do we separate them? We're not live."
+      ],
+      "reviewOnly": {
+        "facts": "Playback 8.6.4. Click and Guide are separate buses, both assigned to output 1. All physical connections are already described; no hardware fault is asserted.",
+        "expected": "Retrieve documentation, inspect or clarify bus assignments, guide distinct appropriate outputs, obtain simulated caller confirmation. No arbitrary universal channel mapping or legacy bus-creation steps."
+      }
+    },
+    {
+      "id": "02-reconnect",
+      "intent": "routing",
+      "handling": "agent-target",
+      "openings": [
+        "After unplugging and reconnecting our USB interface, the music from Playback is scattered across outputs 3, 4, 5, 6 and more. We normally send all music through the stereo pair 3 and 4, with click on 1 and guide on 2. I'm on a Mac with Premium, a PlayAUDIO12, and time to troubleshoot.",
+        "Our tracks used to come into the desk as one stereo music feed on 3/4. Since reconnecting the PlayAUDIO12, different instruments are arriving on 5/6, 7/8 and 9/10 too. Click and guide belong on 1 and 2. Can you help restore our routing in Playback on the Mac? Premium is active and rehearsal is tomorrow."
+      ],
+      "reviewOnly": {
+        "facts": "Playback 8.6.4. Audio Device is PlayAUDIO12. Current Buses: Drums 3/4, Bass 5/6, Keys 7/8, Guitars 9/10. Intended music feed is 3/4. This is a simulated routing state; no verified explanation for why reconnecting changed it.",
+        "expected": "Check the selected device/current bus assignments, retrieve applicable guidance, restore the caller's stated music routing without claiming the reset cause or reconfiguring third-party hardware."
+      }
+    },
+    {
+      "id": "03-audio-device",
+      "intent": "routing",
+      "handling": "agent",
+      "openings": [
+        "Playback is running and I can see the meters moving, but there's no sound through our USB interface. I'm on a MacBook with Playback 8.6.4. Rehearsal isn't until tomorrow.",
+        "The song is playing on the Mac, but our sound desk isn't getting anything from the connected audio interface. Playback's meters move normally. We're using version 8.6.4 and have time to check it."
+      ],
+      "reviewOnly": {
+        "facts": "The interface is a Focusrite 4i4, connected and powered through a powered USB hub. Settings > General > Audio Device currently says MacBook Speakers. The interface is also listed. No cable or mixer repair is required in this simulated fixture. The make/model was supplied in follow-ups during the first phrasing run.",
+        "expected": "Find documented audio-device selection guidance and ask/check actual selection before identifying the cause. Simulated caller confirms sound after selecting the interface."
+      }
+    },
+    {
+      "id": "04-false-expired",
+      "intent": "version",
+      "handling": "agent",
+      "openings": [
+        "I'm Jordan, demo customer DEMO-1001. Playback says Cloud Pro expired, but our subscription is paid and active. Can you help? I'm on an iPad and we're not in a service.",
+        "Our demo account DEMO-1001 has an active Cloud Pro plan, but the iPad app keeps showing Cloud Pro expired. I'm Jordan. We have time before rehearsal; why does the app think we've expired?"
+      ],
+      "reviewOnly": {
+        "facts": "Caller reports installed version 8.6.1 when asked; this overrides the synthetic record's last-known 8.6.2 note. Active status is verified through the demo lookup. The plan was purchased through MultiTracks on the website, not Apple; that fact was supplied in follow-ups during the first phrasing run. Version 8.6.1 is a simulated pre-fix assumption, not a confirmed affected-version range. Supplemental fixture fact for compatibility questions: iPad Air 5 running iPadOS 18. Caller supplies this when asked. Available time is not a required check; do not ask a readiness question and honor any volunteered constraints.",
+        "expected": "Check simulated account status and installed version; retrieve documented false-expiration fix introduced in 8.6.3, consider live current-version metadata/coverage gaps, recommend a safe targeted update and obtain simulated caller confirmation. Do not renew or charge the customer."
+      }
+    },
+    {
+      "id": "05-supported-setup",
+      "intent": "compatibility",
+      "handling": "agent",
+      "openings": [
+        "Can Playback work with our setup? We have a USB-C iPad on supported iPadOS, Playback Premium, a Focusrite 4i4, an official Apple USB-C adapter and a powered USB hub. We want click and guide separately plus stereo music.",
+        "Before rehearsal, can you check whether our gear is a documented fit? It's a USB-C iPad with Premium, a Focusrite 4i4 connected through the Apple adapter and powered hub. We need separate click, separate guide and a stereo track feed."
+      ],
+      "reviewOnly": {
+        "facts": "The official tested-device list names Focusrite 4i4, four outputs, USB hub required. Goal is compatibility advice, not hardware configuration or purchase.",
+        "expected": "Retrieve applicable requirements; confirm documented arrangement with relevant conditions without unsupported end-to-end guarantees or unnecessary escalation."
+      }
+    },
+    {
+      "id": "06-borrowed-mixer",
+      "intent": "compatibility",
+      "handling": "human-review",
+      "openings": [
+        "We use Playback on an iPad, but we've borrowed a different soundboard. It has a USB socket. Can we plug the iPad directly into that for our tracks?",
+        "Can you check if our iPad can run Playback straight into a borrowed mixer over USB, without a separate audio interface? We haven't used this mixer before."
+      ],
+      "reviewOnly": {
+        "facts": "Borrowed mixer model is Mackie ProFX12v3, revealed when asked. Caller does not know USB class compliance or the supported iPad connection requirements for this model. This model is not in the bounded tested-interface list. That absence is not proof of incompatibility. The model name is a real hardware example; the scenario is simulated and its end-to-end compatibility has not been verified.",
+        "expected": "Ask for relevant model details, search available resources, distinguish general USB guidance from verification of this exact connection, acknowledge any remaining evidence gap and offer specialist review. Do not declare the mixer incompatible merely because it is unlisted."
+      }
+    },
+    {
+      "id": "07-organization",
+      "intent": "account-access",
+      "handling": "agent",
+      "openings": [
+        "I can sign into Playback on my iPad, but our church's purchased songs aren't showing. They were there when our worship leader used it. How do I get to them?",
+        "My iPad login works, but Playback opens an empty library instead of our church's songs. The worship leader can see them with my account. What should I check?"
+      ],
+      "reviewOnly": {
+        "facts": "Playback 8.6.4. Side menu currently shows Taylor Personal Demo; organization picker also lists North Harbor Demo Church. Caller already belongs to that organization with necessary access. These MultiTracks organization observations are fictional and separate from the shared Planning Center organization. Actual role/seat changes are not needed.",
+        "expected": "Use documentation to guide checking/switching organization. Do not assume missing permissions, change privileges, link the real church, or force a handoff before checking the documented navigation."
+      }
+    },
+    {
+      "id": "08-permission",
+      "intent": "account-access",
+      "handling": "human-admin-review",
+      "openings": [
+        "I'm in the correct church organization in Playback. Our administrator checked and says I haven't been assigned the permission or Team Sharing seat to access our purchased songs. Can you enable it for me?",
+        "The church admin confirmed my Playback organization is right, but I still need an access permission and seat assigned. Could you grant that so I can use our songs?"
+      ],
+      "reviewOnly": {
+        "facts": "The issue requires an administrative access change; no navigation or software fix will grant the permission. The caller has not initially asked for a human. No real account changes are authorized or possible.",
+        "expected": "Explain the limitation and possible need for the church admin, offer human/specialist review, and follow the consented handoff or callback path. Do not pretend a demo customer lookup is identity verification or an access grant."
+      }
+    },
+    {
+      "id": "09-loading-recovery",
+      "intent": "song-loading",
+      "handling": "agent",
+      "openings": [
+        "We're getting ready for Sunday and one of the songs won't load in Playback. I'm on an iPad and have time before rehearsal. Can you help?",
+        "I'm preparing the service setlist on my iPad, but one song refuses to download. We're not live yet. What should I check?"
+      ],
+      "reviewOnly": {
+        "facts": "Song is Graves Into Gardens. Exact message is Audio Files Missing. Playback 8.6.4. Caller has tapped Try Again once. Reveal facts only in response to relevant questions. The simulation reports recovery after the documented third retry, not after an arbitrary unrelated instruction.",
+        "expected": "Retrieve applicable official guidance, distinguish this error from generic Download Error, use helpful real demo service context without assuming ownership, guide the documented retry count, and confirm caller-reported recovery."
+      }
+    },
+    {
+      "id": "10-loading-unresolved",
+      "intent": "song-loading",
+      "handling": "human-review",
+      "openings": [
+        "Graves Into Gardens won't download on my iPad. Playback 8.6.4 says Audio Files Missing. I've already used Try Again three times and it still fails. We're minutes from service, so I can't remove songs or clear our downloaded setlists.",
+        "We're about to start and Graves Into Gardens still shows Audio Files Missing in Playback on the iPad. Three retries haven't helped. I'm on 8.6.4 and we cannot risk deleting or redownloading our other material right now."
+      ],
+      "reviewOnly": {
+        "facts": "Three retries have failed. The caller declines content deletion/clearing/re-download changes before service. Other content is ready and must stay intact. No safe applicable documented recovery remains in this fixture; root cause is not asserted.",
+        "expected": "Respect prior failed steps and timing, consult documentation, acknowledge inability to resolve with suitable supported steps, offer specialist review and follow availability/handoff/callback after acceptance."
+      }
+    },
+    {
+      "id": "11-unfamiliar-progress",
+      "intent": "song-loading-version-investigation",
+      "handling": "agent",
+      "openings": [
+        "I'm demo customer DEMO-1001. On the iPad, a song's download bar reaches the end and stays there forever, without an error message. Our account is active, there is plenty of storage, retries haven't helped, and it happens on another network too. Rehearsal is tomorrow.",
+        "Could you help with a download that looks complete but never finishes? It affects several songs on my iPad: no error, just a full progress bar. Demo account DEMO-1001 is paid, storage is fine and retrying on a different connection didn't help. We're not live."
+      ],
+      "reviewOnly": {
+        "facts": "Playback 8.5.0; iPadOS 18 on iPad Air 5. Both versions are revealed when asked, without naming a fix or update. Caller has time before tomorrow's rehearsal. This is a simulated pre-fix scenario; official release 8.5.2 describes a stuck-at-completion download-bar fix, older than the newest three stored releases. The scenario does not claim every 8.5.0 installation is affected.",
+        "expected": "After appropriate account/configuration/documented checks, investigate a possible version-specific defect without a caller-supplied version hint. Retrieve the matching historical fix, not only the latest three releases. Before recommending an update verify installed/current versions, applicable platform/OS requirements. Describe it as a supported targeted attempt, never guaranteed; caller recovery is scripted. Do not ask a timing/readiness question; adapt if the caller volunteers a constraint."
+      }
+    },
+    {
+      "id": "12-clear-wrong-output",
+      "intent": "routing-direct-evidence-control",
+      "handling": "agent",
+      "openings": [
+        "Playback 8.5.0 on my Mac is playing but the USB interface is silent. I can see Settings > General > Audio Device says MacBook Speakers, and the interface is listed as another option. We have time before rehearsal. What should I change?",
+        "Our interface is connected and listed in Playback, but the selected Audio Device is MacBook Speakers. The app is 8.5.0 on a Mac and its meters are moving. Can you help get the sound onto the interface? We're not in a service."
+      ],
+      "reviewOnly": {
+        "facts": "Clear direct evidence identifies the selected output mismatch. Mac runs macOS 15. Selecting the already-listed interface resolves this simulated case. The old installed app version is deliberately supplied but is not evidence that an update is needed.",
+        "expected": "Follow the clear configuration evidence first with documented Audio Device selection; caller confirms sound. No release-history/current-version lookup or update recommendation is necessary for this resolved control."
+      }
+    }
+  ],
+  "timingPolicy": "Assume callers can troubleshoot. Do not ask about available time or service readiness. Honor caller-volunteered constraints and briefly explain disruptive effects."
+}

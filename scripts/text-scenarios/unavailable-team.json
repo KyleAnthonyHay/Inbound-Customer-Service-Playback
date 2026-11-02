@@ -1,0 +1,10 @@
+{
+  "name": "unavailable-team",
+  "expectedIntent": "human-request-unavailable-callback",
+  "lines": [
+    "Please connect me with a Playback support specialist.",
+    "Tomorrow at 11 AM Eastern works for me. I'm Taylor and my number is +1 202 555 0146. Please check that time, but do not book yet.",
+    "No booking for now, thank you. Goodbye."
+  ],
+  "expect": "With the simulated development team unavailable, check availability, do not initiate a handoff or announce a connection, state nobody is available and offer a callback with one question about the caller's availability. Check the exact preferred time in the returned zone, then preserve explicit booking consent. No actual callback or staff contact occurs."
+}

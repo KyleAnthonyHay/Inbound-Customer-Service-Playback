@@ -1,0 +1,326 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "scenario": "setup-compatibility",
+  "expectedIntent": "compatibility-specialist-offer",
+  "failure": null,
+  "reportedTextCost": 0.0348,
+  "turns": [
+    {
+      "input": "Can Playback work with our setup? We have an iPad and want to send the tracks wirelessly to a Bluetooth sound system for Sunday worship.",
+      "chatId": "cfd48e5f-8967-4ccc-bb24-a4df758eecef",
+      "reply": "Let me check the documentation on that.\n\nOur documentation doesn’t establish Bluetooth as a supported Playback output, while it does document wired headphone, USB interface, and networked-audio options. Would you like a Playback specialist to review your options?",
+      "tools": [
+        {
+          "name": "search_playback_docs",
+          "arguments": {
+            "query": "iPad Bluetooth sound system wireless audio output compatibility",
+            "category": "audio-output",
+            "platform": "iPadOS"
+          },
+          "result": {
+            "ok": true,
+            "source": "documentation",
+            "provider": "MultiTracks Help Center (bounded snapshot)",
+            "snapshotRetrievedAt": "2026-10-31",
+            "query": "iPad Bluetooth sound system wireless audio output compatibility",
+            "found": 6,
+            "results": [
+              {
+                "id": "how-to-use-playback-with-your-sound-system",
+                "title": "How to Use Playback with Your Sound System",
+                "category": "audio-output",
+                "url": "https://helpcenter.multitracks.com/en/articles/4649709-how-to-use-playback-with-your-sound-system",
+                "retrievedAt": "2026-10-30",
+                "appliesTo": [
+                  "iOS",
+                  "iPadOS",
+                  "macOS"
+                ],
+                "summary": "Three documented ways to get audio out of Playback: the built-in headphone port with Auto-Pan (2 channels: click/guide left, tracks right), a USB audio interface (up to 32 outputs, grouped into mono or stereo buses), and networked audio such as Dante or SoundGrid (iPad/iPhone limited to two channels; macOS can route up to 32 via Dante Virtual Soundcard). Bluetooth, subscription tiers, and menu paths are not covered here.",
+                "steps": [
+                  {
+                    "n": 1,
+                    "text": "Option 1 - headphone port: Auto-Pan is on by default. Use a 1/8\" TRS to dual 1/4\" TS cable, a stereo DI (or two mono DIs) to convert to XLR, then XLR to the stage box. Devices without a headphone jack can use a Lightning-to-3.5mm or USB-C-to-3.5mm adapter. Left channel feeds in-ears (click/guide); right feeds the house mix.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 2,
+                    "text": "Option 2 - USB audio interface: up to 32 outputs via a supported class-compliant interface. Lightning devices need an Apple Lightning Digital AV Adapter; USB-C devices need an Apple USB-C Digital AV Multiport Adapter. Add a powered USB hub if the interface is bus-powered. Outputs are grouped into custom buses, mono or stereo.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 3,
+                    "text": "Option 3 - networked audio (Dante, SoundGrid): connect the Playback device to a network running that protocol. iPad and iPhone support only two channels over networked audio; macOS apps like Dante Virtual Soundcard can route up to 32 channels.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 4,
+                    "text": "Use an in-ear monitoring solution so click and guide are not heard by the congregation. Accompaniment tracks do not include click and guide.",
+                    "disruptive": false
+                  }
+                ],
+                "hasDisruptiveSteps": false,
+                "relevance": 11
+              },
+              {
+                "id": "troubleshooting-playback-audio-issues",
+                "title": "Troubleshooting Playback Audio Issues",
+                "category": "audio-output",
+                "url": "https://helpcenter.multitracks.com/en/articles/4873511-troubleshooting-playback-audio-issues",
+                "retrievedAt": "2026-10-30",
+                "appliesTo": [
+                  "iOS",
+                  "iPadOS",
+                  "macOS"
+                ],
+                "summary": "Focuses on dropouts and disconnections in live setups. Four checks: device/OS/app up to date, iOS performance (RAM, background apps), the USB connection (named as the most common cause in MultiOut setups), and the audio connection (Auto Pan splitter cable, class-compliant interfaces). The article does not cover no-sound, output selection, Bluetooth, sample rate, or mono/stereo settings.",
+                "steps": [
+                  {
+                    "n": 1,
+                    "text": "Check the device is supported (supported devices list for iOS, iPadOS, macOS). On the oldest supported iOS generation, Multi-Outs and MIDI Cue editing are limited.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 2,
+                    "text": "Confirm the OS is up to date and that Playback support for it is confirmed (see the OS compatibility article). Update Playback from the iOS or Mac App Store.",
+                    "disruptive": true,
+                    "kind": "update",
+                    "caution": "Updating the app closes Playback and takes a few minutes; don't do this during a service."
+                  },
+                  {
+                    "n": 3,
+                    "text": "iOS performance: clear RAM, force-close all background apps before opening Playback, and do not multitask during a live performance.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 4,
+                    "text": "USB adapter: an official Apple adapter is required (Lightning to USB3 or USB-C to USB3; both allow simultaneous charging).",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 5,
+                    "text": "USB cable length: max 16 feet for USB 2.0, 3 meters (9 feet) for USB 3.0. Keep the digital USB run short and use longer analog runs (XLR, 1/4\") from the interface to DI boxes and the console.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 6,
+                    "text": "Powered USB extension cables: base cable must respect the limits above; the active repeater needs external power; max extender length 25 m (USB 2.0) or 15 m (USB 3.0).",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 7,
+                    "text": "Powered USB hub: must be powered, no more than 7 USB accessory ports, and only one audio interface connected at a time so Playback sends audio to the correct device.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 8,
+                    "text": "Auto Pan splitter cable: use a high-quality cable with as few adaptors as possible.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 9,
+                    "text": "Audio interface: Playback is generally compatible with class-compliant USB interfaces; check the tested supported devices list on multitracks.com.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 10,
+                    "text": "If issues persist, contact MultiTracks support.",
+                    "disruptive": false
+                  }
+                ],
+                "hasDisruptiveSteps": true,
+                "relevance": 9
+              },
+              {
+                "id": "behringer-u-phoria-no-audio",
+                "title": "Why is Playback not sending audio out of my Behringer U-Phoria Audio Interface?",
+                "category": "audio-output",
+                "url": "https://helpcenter.multitracks.com/en/articles/5653679-why-is-playback-not-sending-audio-out-of-my-behringer-u-phoria-audio-interface",
+                "retrievedAt": "2026-10-30",
+                "appliesTo": [
+                  "iOS",
+                  "iPadOS"
+                ],
+                "summary": "Covers the UMC404HD and UMC1820. Multi-output through an interface requires a Pro/Premium subscription. The UMC404HD needs a powered USB hub to be powered properly, and on iPhone/iPad the device's master volume controls the level Playback sends to the interface.",
+                "steps": [
+                  {
+                    "n": 1,
+                    "text": "Confirm you have the right cables, adapters, and hardware to connect Playback to the interface (see the USB interface connection article).",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 2,
+                    "text": "UMC404HD only: connect through a powered USB hub; the hub powers the interface.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 3,
+                    "text": "iPhone/iPad: after connecting, turn the iOS device's master volume to maximum, since it directly controls the volume out of Playback into the interface.",
+                    "disruptive": false
+                  }
+                ],
+                "hasDisruptiveSteps": false,
+                "relevance": 8
+              }
+            ],
+            "note": "Only give steps that appear in these results. Give non-disruptive steps first. Say a disruptive step's caution once per call, in one short sentence, unless the caller already told you their timing; then act on what they said and skip the caution.",
+            "manual": {
+              "ok": true,
+              "source": "manual",
+              "provider": "Playback User Guide (MultiTracks help center, snapshot in Pinecone)",
+              "query": "iPad Bluetooth sound system wireless audio output compatibility",
+              "found": 3,
+              "results": [
+                {
+                  "id": "playback-user-guide:setting-up-audio-and-midi-choosing-an-audio-interface:1",
+                  "score": 0.336,
+                  "sectionPath": "Playback User Guide > Setting up Audio and MIDI > Choosing an Audio Interface",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_5c7f9ec59b",
+                  "category": "audio-output",
+                  "scope": "in-scope",
+                  "part": 1,
+                  "parts": 1,
+                  "imageIds": [],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "Playback is compatible with most class-compliant USB audio interfaces for sending multiple outputs of tracks. However, some require additional routing and setup.\n\nHere is a list of USB audio interfaces tested and confirmed for support with Playback.\n\nLearn More: Supported Audio Devices",
+                  "steps": [],
+                  "hasDisruptiveSteps": false
+                },
+                {
+                  "id": "playback-user-guide:playback-settings-general-settings-tab:1",
+                  "score": 0.298,
+                  "sectionPath": "Playback User Guide > Playback Settings > General Settings Tab",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide",
+                  "category": "audio-output",
+                  "scope": "in-scope",
+                  "part": 1,
+                  "parts": 4,
+                  "imageIds": [
+                    "img-37"
+                  ],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "- Auto-Pan: When enabled, Auto Pan routes the click & guide through the left and all tracks through the right outputs of the iOS device’s stereo output. Auto Pan makes it possible to run tracks from Playback through the headphone output without using an audio interface. Learn about setting up Playback for Auto Pan.\n- Click Sound: Choose your favorite Click sound from a variety of built-in Click Track presets. Upload your own custom Click & Guide samples for use in Playback as well.\n- Count Into Each Section: Enable to add a 1-bar count-in to every song section marker. Disable to only hear the section cue 1 bar ahead of the marker.\n- Song Section Pre-roll: (Playback Premium) Pressing play from the beginning of any section marker will provide a 1-bar count in as well as automatically fade in the tracks. (📖Learn More)",
+                  "steps": [
+                    {
+                      "n": 1,
+                      "text": "Auto-Pan: When enabled, Auto Pan routes the click & guide through the left and all tracks through the right outputs of the iOS device’s stereo output. Auto Pan makes it possible to run tracks from Playback through the headphone output without using an audio interface. Learn about setting up Playback for Auto Pan.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 2,
+                      "text": "Click Sound: Choose your favorite Click sound from a variety of built-in Click Track presets. Upload your own custom Click & Guide samples for use in Playback as well.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 3,
+                      "text": "Count Into Each Section: Enable to add a 1-bar count-in to every song section marker. Disable to only hear the section cue 1 bar ahead of the marker.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 4,
+                      "text": "Song Section Pre-roll: (Playback Premium) Pressing play from the beginning of any section marker will provide a 1-bar count in as well as automatically fade in the tracks. (📖Learn More)",
+                      "disruptive": false
+                    }
+                  ],
+                  "hasDisruptiveSteps": false
+                },
+                {
+                  "id": "playback-user-guide:playback-user-guide-setting-up-audio-and-midi:1",
+                  "score": 0.27,
+                  "sectionPath": "Playback User Guide > Setting up Audio and MIDI",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_e8eb314b55",
+                  "category": "audio-output",
+                  "scope": "in-scope",
+                  "part": 1,
+                  "parts": 1,
+                  "imageIds": [],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "There are two main ways to send audio out of Playback.\n\n· Auto Pan: Send click and tracks from Playback using the headphone port without any additional audio hardware. Learn how to use Auto Pan with Playback.\n\n· MultiOuts: With a Premium subscription, Playback can send up to 32 outputs can be accessed using compatible audio devices.\n\nNote: For more info on audio routing see:\n- 📖Setting up Playback with a sound system\n- 📖Connecting to a USB Interface\n- 📖Troubleshooting Playback Audio Issues",
+                  "steps": [
+                    {
+                      "n": 1,
+                      "text": "📖Setting up Playback with a sound system",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 2,
+                      "text": "📖Connecting to a USB Interface",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 3,
+                      "text": "📖Troubleshooting Playback Audio Issues",
+                      "disruptive": false
+                    }
+                  ],
+                  "hasDisruptiveSteps": false
+                }
+              ],
+              "outOfScope": [
+                {
+                  "id": "playback-user-guide:setting-up-audio-and-midi-connecting-midi-devices-for-contro:1",
+                  "sectionPath": "Playback User Guide > Setting up Audio and MIDI > Connecting MIDI Devices for control",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_e747dced43"
+                },
+                {
+                  "id": "playback-user-guide:playback-user-guide-redundancy-mode:2",
+                  "sectionPath": "Playback User Guide > Redundancy Mode",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_ae07c05250"
+                },
+                {
+                  "id": "playback-user-guide:playback-user-guide-redundancy-mode:1",
+                  "sectionPath": "Playback User Guide > Redundancy Mode",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_ae07c05250"
+                }
+              ],
+              "note": "Manual sections describe how the app works; give only steps that appear in the text, and cite 'the Playback User Guide'. Sections listed under outOfScope are documented but outside this agent's support scope: name the topic and offer a handoff, do not troubleshoot them."
+            }
+          }
+        }
+      ],
+      "reportedCost": 0.0192
+    },
+    {
+      "input": "Yes, I'd like to speak with a specialist.",
+      "chatId": "a8a01205-f886-4564-a900-5c6211ced29a",
+      "reply": "Let me see who's available.\n\nConnecting you now.\n\nI’m connecting you with Playback Technical Support now. Goodbye.",
+      "tools": [
+        {
+          "name": "check_team_availability",
+          "arguments": {
+            "teamId": "playback-support"
+          },
+          "result": {
+            "source": "simulated",
+            "teams": [
+              {
+                "canTransferNow": true,
+                "description": "Song loading, audio output, device and version issues.",
+                "label": "Playback Technical Support",
+                "status": "available",
+                "teamId": "playback-support",
+                "withinHours": true
+              }
+            ]
+          }
+        },
+        {
+          "name": "initiate_handoff",
+          "arguments": {
+            "teamId": "playback-support"
+          },
+          "result": {
+            "ok": true,
+            "simulated": true,
+            "team": "Playback Technical Support",
+            "instruction": "Tell the caller you are connecting them to the team now, say goodbye briefly, then call endCall. This demo does not reach a real MultiTracks employee.",
+            "source": "simulated"
+          }
+        }
+      ],
+      "reportedCost": 0.0156
+    }
+  ]
+}

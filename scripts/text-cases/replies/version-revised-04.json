@@ -1,0 +1,31 @@
+[
+  {
+    "run": "01-click-guide-v2",
+    "input": "Guide is isolated on 2 and click on 1 now. It works, thanks.",
+    "done": true
+  },
+  {
+    "run": "06-borrowed-mixer-v1",
+    "input": "Yes, please connect me with a specialist.",
+    "done": true
+  },
+  {
+    "run": "06-borrowed-mixer-v2",
+    "input": "Yes, please connect me with a specialist.",
+    "done": true
+  },
+  {
+    "run": "04-false-expired-v1",
+    "input": "iPadOS 18, on an iPad Air 5."
+  },
+  {
+    "run": "04-false-expired-v2",
+    "input": "I updated and tested it. The expired message is gone and the songs are available now, thanks.",
+    "done": true
+  },
+  {
+    "run": "11-unfamiliar-progress-v1",
+    "input": "Yes, I have enough time. After updating and testing, the download completes now. Thank you.",
+    "done": true
+  }
+]

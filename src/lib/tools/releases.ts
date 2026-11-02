@@ -9,7 +9,7 @@ import { getCurrentPlaybackAppInfo } from "./apple";
  */
 const hasWord = (text: string, word: string) => new RegExp(`\\b${word}\\b`, "i").test(text);
 
-export async function getRelevantChangesSinceVersion(args: { installedVersion: string; symptom?: string }) {
+export async function getRelevantChangesSinceVersion(args: { installedVersion: string; symptom?: string; platform?: string; osVersion?: string }) {
   const installed = (args.installedVersion ?? "").trim();
   if (!isValidVersion(installed)) {
     return {
@@ -52,6 +52,24 @@ export async function getRelevantChangesSinceVersion(args: { installedVersion: s
   if (!kb.releases.length) gaps.push("No documented release history is loaded.");
 
   const upToDate = current ? compareVersions(installed, current) >= 0 : null;
+  const platform = args.platform?.trim() || null;
+  const osVersion = args.osVersion?.trim() || null;
+  const storeMinimum = apple.ok && apple.app.minimumOsVersion && isValidVersion(apple.app.minimumOsVersion)
+    ? apple.app.minimumOsVersion : null;
+  // The iOS App Store minimum is not a macOS requirement. Unknown facts stay unknown.
+  const iosPlatform = !!platform && /^(ios|ipados|ipad|iphone)$/i.test(platform);
+  const osKnown = !!osVersion && /^\d+(?:\.\d+){0,2}$/.test(osVersion);
+  const osRequirementMet = iosPlatform && osKnown && storeMinimum
+    ? compareVersions(osVersion!, storeMinimum) >= 0 : null;
+  const missingInformation: string[] = [];
+  if (!current) missingInformation.push("currentVersion");
+  if (!platform) missingInformation.push("platform");
+  if (!osKnown) missingInformation.push("osVersion");
+  if (platform && (!iosPlatform || !storeMinimum)) missingInformation.push("applicablePlatformRequirements");
+  const blockers: string[] = [];
+  if (upToDate) blockers.push("already-current-or-newer");
+  if (osRequirementMet === false) blockers.push("installed-os-below-current-app-minimum");
+  if (!relevant.length) blockers.push("no-matching-release-candidates");
 
   return {
     ok: true as const,
@@ -62,19 +80,34 @@ export async function getRelevantChangesSinceVersion(args: { installedVersion: s
       provider: apple.ok ? apple.provider : "Apple iTunes Lookup API",
       retrievedAt: apple.ok ? apple.retrievedAt : null,
       releaseDate: apple.ok ? apple.app.currentVersionReleaseDate : null,
+      minimumOsVersion: storeMinimum,
+      minimumOsAppliesTo: "iOS/iPadOS only" as const,
     },
     isUpToDate: upToDate,
     documentedReleasesBetween: between.map((r) => r.version),
     relevantChanges: relevant,
     history: { source: "documentation" as const, provider: "MultiTracks Help Center release notes", snapshotRetrievedAt: kb.retrievedAt, coverage: documented.map((r) => r.version) },
     gaps,
+    updateAssessment: {
+      installedVersion: installed,
+      installedVersionSource: "caller-provided argument; historical record notes are not confirmation",
+      platform,
+      osVersion,
+      osRequirementMet,
+      requirementsSource: iosPlatform && storeMinimum && apple.ok ? apple.url : null,
+      missingInformation,
+      blockers,
+      prerequisitesComplete: missingInformation.length === 0 && blockers.length === 0 && osRequirementMet === true,
+      candidateMatchNeedsReview: true,
+      scope: "Checks known versions and the current app's applicable OS minimum. Does not verify audio accessories or establish a device's root cause. Keyword matches are candidates, not confirmed fixes for the caller.",
+    },
     updateIsDisruptive: true,
-    updateCaution: "Updating closes Playback and takes a few minutes, so it should wait until after a service or rehearsal.",
+    updateCaution: "Updating closes Playback. Honor any interruption constraints the caller has volunteered; no timing question is required.",
     guidance:
       upToDate === true
         ? "Caller is already on the current version. Do not recommend updating as a fix; continue with documented troubleshooting."
         : relevant.length
-          ? "A documented fix exists in a newer version. Say which version fixed it, then give the caution in one sentence before suggesting the update; offer a non-disruptive step first if the caller is mid-service."
-          : "No documented fix for this symptom between the installed and current versions. Updating is not a targeted fix here.",
+          ? "Candidate release notes were found. This is not an update recommendation: updateAssessment identifies missing facts or blockers, and the candidate notes still require review for actual symptom applicability. A matching note does not guarantee caller recovery."
+          : "No matching release candidates were found in the available history. This does not establish that no defect exists; updating is not an evidence-based targeted fix from this result.",
   };
 }

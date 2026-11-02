@@ -1,0 +1,19 @@
+[
+  {
+    "run": "01-expired-a-v1",
+    "input": "iPadOS 18 on an iPad Air 5."
+  },
+  {
+    "run": "02-expired-b-v1",
+    "input": "Playback 8.6.1."
+  },
+  {
+    "run": "03-progress-a-v1",
+    "input": "I updated and tested the download. It completes now, thank you.",
+    "done": true
+  },
+  {
+    "run": "04-progress-b-v1",
+    "input": "iPadOS 18 on an iPad Air 5."
+  }
+]

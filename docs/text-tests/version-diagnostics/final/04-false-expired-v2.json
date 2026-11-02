@@ -1,0 +1,583 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "caseId": "04-false-expired",
+  "variant": 2,
+  "testId": "text-poc-41a3e30d-abf0-4ae2-a54e-43ef2af577fa",
+  "configurationHash": "18fdafd7438e4b2ffe65bef84705095de49d927c57d2223fdcafcbe74eed426e",
+  "fixture": {
+    "id": "04-false-expired",
+    "intent": "version",
+    "handling": "agent",
+    "openings": [
+      "I'm Jordan, demo customer DEMO-1001. Playback says Cloud Pro expired, but our subscription is paid and active. Can you help? I'm on an iPad and we're not in a service.",
+      "Our demo account DEMO-1001 has an active Cloud Pro plan, but the iPad app keeps showing Cloud Pro expired. I'm Jordan. We have time before rehearsal; why does the app think we've expired?"
+    ],
+    "reviewOnly": {
+      "facts": "Caller reports installed version 8.6.1 when asked; this overrides the synthetic record's last-known 8.6.2 note. Active status is verified through the demo lookup. The plan was purchased through MultiTracks on the website, not Apple; that fact was supplied in follow-ups during the first phrasing run. Version 8.6.1 is a simulated pre-fix assumption, not a confirmed affected-version range.",
+      "expected": "Check simulated account status and installed version; retrieve documented false-expiration fix introduced in 8.6.3, consider live current-version metadata/coverage gaps, recommend a safe targeted update and obtain simulated caller confirmation. Do not renew or charge the customer."
+    }
+  },
+  "failure": null,
+  "done": true,
+  "cleanupComplete": true,
+  "reportedTextCost": 0.0704,
+  "turns": [
+    {
+      "input": "Our demo account DEMO-1001 has an active Cloud Pro plan, but the iPad app keeps showing Cloud Pro expired. I'm Jordan. We have time before rehearsal; why does the app think we've expired?",
+      "chatId": "77258bbd-165b-4628-855f-9ca8e994ba28",
+      "reply": "Let me pull up that account.\n\nLet me check the documentation on that.\n\nI’ve verified the demo account’s Cloud Pro plan is active through March 14, 2027, so the message appears to be an app confirmation issue rather than an expired plan. In Playback’s Settings, open the About tab and tap Restore Purchases; did that clear the message?",
+      "tools": [
+        {
+          "name": "lookup_demo_customer",
+          "arguments": {
+            "customerId": "DEMO-1001",
+            "name": "Jordan"
+          },
+          "result": {
+            "customer": {
+              "customerId": "DEMO-1001",
+              "email": "jordan.avery@example.org",
+              "entitlements": [
+                "cloud-sync",
+                "playback-pro-features",
+                "multitrack-downloads"
+              ],
+              "name": "Jordan Avery",
+              "notes": "Active Cloud Pro subscriber. Reports a 'Cloud Pro expired' message in Playback despite an active plan. Last known Playback version 8.6.2 (iPad).",
+              "organization": "Riverbend Community Church (demo)",
+              "plan": "Cloud Pro",
+              "renewsAt": "2027-03-14",
+              "subscriptionStatus": "active"
+            },
+            "ok": true,
+            "source": "simulated"
+          }
+        },
+        {
+          "name": "search_playback_docs",
+          "arguments": {
+            "query": "Playback iPad Cloud Pro expired message active subscription",
+            "category": "setup",
+            "platform": "iPadOS"
+          },
+          "result": {
+            "ok": true,
+            "source": "documentation",
+            "provider": "MultiTracks Help Center (bounded snapshot)",
+            "snapshotRetrievedAt": "2026-10-31",
+            "query": "Playback iPad Cloud Pro expired message active subscription",
+            "found": 3,
+            "results": [],
+            "note": "No documented article matched. Do not invent steps; offer a handoff or ask a clarifying question.",
+            "manual": {
+              "ok": true,
+              "source": "manual",
+              "provider": "Playback User Guide (MultiTracks help center, snapshot in Pinecone)",
+              "query": "Playback iPad Cloud Pro expired message active subscription",
+              "found": 3,
+              "results": [
+                {
+                  "id": "playback-user-guide:playback-settings-about-tab:1",
+                  "score": 0.383,
+                  "sectionPath": "Playback User Guide > Playback Settings > About Tab",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide",
+                  "category": "subscription",
+                  "scope": "adjacent",
+                  "part": 1,
+                  "parts": 1,
+                  "imageIds": [
+                    "img-41",
+                    "img-42"
+                  ],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "- Restore Purchases: If an iTunes subscription is expired or not being confirmed by Playback, reconcile any issues with payment info in the App Store and Tap Restore Purchases to reconnect your In-App Subscription.\n- Manage Subscription: Explore the paid versions of Playback and what features they have to offer. Learn More Here.\n- Manual: opens up this user guide.\n- Reset Tool Tips: If a new feature seems confusing, Tap to reset and see the tool tip tour again.\n- Contact Support: will send an email to support with all of the currently-opened setlist details and device information helpful for troubleshooting any potential issues.\n- Become a Beta Tester: Interested in early access to upcoming new features? Apply to become a Playback beta tester.\n- Acknowledgments: Playback software acknowledgments.\n- Playback Version and build information is listed at the very bottom.",
+                  "steps": [
+                    {
+                      "n": 1,
+                      "text": "Restore Purchases: If an iTunes subscription is expired or not being confirmed by Playback, reconcile any issues with payment info in the App Store and Tap Restore Purchases to reconnect your In-App Subscription.",
+                      "disruptive": true,
+                      "kind": "update",
+                      "caution": "Updating the app closes Playback and takes a few minutes; don't do this during a service."
+                    },
+                    {
+                      "n": 2,
+                      "text": "Manage Subscription: Explore the paid versions of Playback and what features they have to offer. Learn More Here.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 3,
+                      "text": "Manual: opens up this user guide.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 4,
+                      "text": "Reset Tool Tips: If a new feature seems confusing, Tap to reset and see the tool tip tour again.",
+                      "disruptive": true,
+                      "kind": "settings-change",
+                      "caution": "Changing this setting takes effect immediately and can cut audio for a moment."
+                    },
+                    {
+                      "n": 5,
+                      "text": "Contact Support: will send an email to support with all of the currently-opened setlist details and device information helpful for troubleshooting any potential issues.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 6,
+                      "text": "Become a Beta Tester: Interested in early access to upcoming new features? Apply to become a Playback beta tester.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 7,
+                      "text": "Acknowledgments: Playback software acknowledgments.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 8,
+                      "text": "Playback Version and build information is listed at the very bottom.",
+                      "disruptive": false
+                    }
+                  ],
+                  "hasDisruptiveSteps": true
+                },
+                {
+                  "id": "playback-user-guide:playback-user-guide-app-overview:1",
+                  "score": 0.239,
+                  "sectionPath": "Playback User Guide > App Overview",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_6b0d10ebeb",
+                  "category": "setup",
+                  "scope": "in-scope",
+                  "part": 1,
+                  "parts": 1,
+                  "imageIds": [],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "Playback is a powerful audio playback software available for free download from the Apple App Store compatible with MacOS, iPadOS, and iOS. For latest compatibility see: 📖Playback Minimum System Requirements\n\nSearch for “Playback” on the Apple App Store from your device or visit this link.",
+                  "steps": [],
+                  "hasDisruptiveSteps": false
+                },
+                {
+                  "id": "playback-user-guide:playback-settings-general-settings-tab:2",
+                  "score": 0.271,
+                  "sectionPath": "Playback User Guide > Playback Settings > General Settings Tab",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide",
+                  "category": "audio-output",
+                  "scope": "in-scope",
+                  "part": 2,
+                  "parts": 4,
+                  "imageIds": [],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "- Guide Cue Language: Change the Guide cue language to Spanish, Portuguese, or French, or two English language options. Upload your own custom Guide cue samples as well on the website (🌐Learn More).\n- Song Specific Buses: (Playback Premium) When enabled, each song has a separate bus fader mix. Disable to use a global bus fader mix for every song.\n- Reference Track: Enabled by default, the Reference Track is the original song available in the track mixer view for AppTracks, MultiTracks, and Rentals. Disable to hide the Reference Track.\n- Playback Redundancy: To toggle redundant features on/off. (📖Learn More)\n- Default Ambient Pad: Choose which purchased or free Ambient Pad to default to in the Pad Player for all loaded songs.\n- Audio Device: See and set which connected Audio Device is currently used by Playback for all audio output.\n- Waveform Grid: Enable/Disable the measure and beat grid (both visual and the snapping behavior) over the Playback waveform.",
+                  "steps": [
+                    {
+                      "n": 1,
+                      "text": "Guide Cue Language: Change the Guide cue language to Spanish, Portuguese, or French, or two English language options. Upload your own custom Guide cue samples as well on the website (🌐Learn More).",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 2,
+                      "text": "Song Specific Buses: (Playback Premium) When enabled, each song has a separate bus fader mix. Disable to use a global bus fader mix for every song.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 3,
+                      "text": "Reference Track: Enabled by default, the Reference Track is the original song available in the track mixer view for AppTracks, MultiTracks, and Rentals. Disable to hide the Reference Track.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 4,
+                      "text": "Playback Redundancy: To toggle redundant features on/off. (📖Learn More)",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 5,
+                      "text": "Default Ambient Pad: Choose which purchased or free Ambient Pad to default to in the Pad Player for all loaded songs.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 6,
+                      "text": "Audio Device: See and set which connected Audio Device is currently used by Playback for all audio output.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 7,
+                      "text": "Waveform Grid: Enable/Disable the measure and beat grid (both visual and the snapping behavior) over the Playback waveform.",
+                      "disruptive": false
+                    }
+                  ],
+                  "hasDisruptiveSteps": false
+                }
+              ],
+              "outOfScope": [
+                {
+                  "id": "playback-user-guide:playback-sync-live-navigation-console-buttons:1",
+                  "sectionPath": "Playback User Guide > Playback Sync > Live Navigation: Console Buttons",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_1699c8f3d7"
+                },
+                {
+                  "id": "playback-user-guide:cloud-song-sections-edit-mode-video-overview:1",
+                  "sectionPath": "Playback User Guide > Customizing Setlists > Cloud Song Sections Edit Mode > Video Overview",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_29d220d044"
+                },
+                {
+                  "id": "playback-user-guide:customizing-setlists-playback-edit-modes-overview:2",
+                  "sectionPath": "Playback User Guide > Customizing Setlists > Playback Edit Modes: Overview",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_766ca00b13"
+                }
+              ],
+              "note": "Manual sections describe how the app works; give only steps that appear in the text, and cite 'the Playback User Guide'. Sections listed under outOfScope are documented but outside this agent's support scope: name the topic and offer a handoff, do not troubleshoot them."
+            }
+          }
+        }
+      ],
+      "reportedCost": 0.0157
+    },
+    {
+      "input": "Restore Purchases did not help. We bought the plan on the MultiTracks website, not through Apple.",
+      "chatId": "29c3e16b-7458-4330-b219-1c9f5d6d5027",
+      "reply": "Let me check the documentation on that.\n\nThat explains why Restore Purchases didn’t help—it only reconnects Apple in-app subscriptions, while your verified Cloud Pro plan is active on MultiTracks. What Playback version is shown at the bottom of Settings > About on this iPad?",
+      "tools": [
+        {
+          "name": "search_playback_docs",
+          "arguments": {
+            "query": "Playback Cloud Pro subscription purchased on MultiTracks website app shows expired Restore Purchases website subscription iPad",
+            "category": "subscription",
+            "platform": "iPadOS"
+          },
+          "result": {
+            "ok": true,
+            "source": "documentation",
+            "provider": "MultiTracks Help Center (bounded snapshot)",
+            "snapshotRetrievedAt": "2026-10-31",
+            "query": "Playback Cloud Pro subscription purchased on MultiTracks website app shows expired Restore Purchases website subscription iPad",
+            "found": 6,
+            "results": [
+              {
+                "id": "playback-subscriptions-explained",
+                "title": "Playback Subscriptions | Explained",
+                "category": "subscription",
+                "url": "https://helpcenter.multitracks.com/en/articles/8106819-playback-subscriptions-explained",
+                "retrievedAt": "2026-10-30",
+                "appliesTo": [
+                  "iOS",
+                  "iPadOS",
+                  "macOS"
+                ],
+                "summary": "Separates Playback Features (Intro, Premium, Cloud Pro, Live Bundle), Playback Content (Rentals, purchased tracks, Sounds, uploaded Cloud Songs, click and guide), and Playback Access (Team Sharing seats). Playback Intro is free on iOS, iPadOS, and macOS but limited to a single stereo output and excludes Premium features (editing arrangements, Playback Remote, Playback Sync). Cloud Pro adds click and guide for every song, Team Sharing seats, and saved custom-named arrangements; uploading Cloud Songs requires Cloud Pro. Rentals are device-specific and not shared. The article does not explain how to check or manage the subscription in-app.",
+                "steps": [],
+                "hasDisruptiveSteps": false,
+                "relevance": 16
+              },
+              {
+                "id": "get-started-cloud-pro-subscription",
+                "title": "GET STARTED | Cloud Pro Subscription",
+                "category": "subscription",
+                "url": "https://helpcenter.multitracks.com/en/articles/5242856-get-started-cloud-pro-subscription",
+                "retrievedAt": "2026-10-30",
+                "appliesTo": [],
+                "summary": "What Cloud Pro gates for Playback: click and guide tracks for every catalog song in setlists (with key/tempo/arrangement edits persisting when tracks are later purchased or rented), saved Custom Arrangements (fader mix, key/tempo, sections), Cloud Songs with uploaded stems/charts/MIDI, custom click and guide cues, cloud-saved MIDI Cues, editing cloud sections, and 10 Playback Team Sharing licenses. Storage 'starts at 50GB' per this article (the pricing page lists other tiers). Cloud Pro also removes the 48-hour download expiration on purchased downloads. No activation or sign-in steps are given.",
+                "steps": [],
+                "hasDisruptiveSteps": false,
+                "relevance": 14
+              },
+              {
+                "id": "managing-chartbuilder-and-playback-devices",
+                "title": "Managing ChartBuilder and Playback Devices",
+                "category": "subscription",
+                "url": "https://helpcenter.multitracks.com/en/articles/10602113-managing-chartbuilder-and-playback-devices",
+                "retrievedAt": "2026-10-30",
+                "appliesTo": [],
+                "summary": "Each Playback user may be signed in on two devices; a user with a Playback Premium seat gets three. Devices are viewed and removed from the Playback Devices section of the user's account page on MultiTracks.com. TestFlight/beta builds register as separate devices.",
+                "steps": [
+                  {
+                    "n": 1,
+                    "text": "View or manage Playback devices: 'Playback Devices' section of your user-account page, or https://www.multitracks.com/premium/playback/devices.aspx",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 2,
+                    "text": "Remove a device: on the Devices page under your username account page, click the 'X' next to the device. This signs that user out of the device and frees a slot.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 3,
+                    "text": "Add a device: confirm an 'Available device' is listed, then sign in to Playback with the user's credentials.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 4,
+                    "text": "Beta/TestFlight builds typically register as separate devices even on the same hardware, so running both can reach the limit faster.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 5,
+                    "text": "To give more people access, add them as users and grant seats and setlist access; the per-user limit itself cannot be raised except via the Premium seat.",
+                    "disruptive": false
+                  }
+                ],
+                "hasDisruptiveSteps": false,
+                "relevance": 3
+              }
+            ],
+            "note": "Only give steps that appear in these results. Give non-disruptive steps first. Say a disruptive step's caution once per call, in one short sentence, unless the caller already told you their timing; then act on what they said and skip the caution.",
+            "manual": {
+              "ok": true,
+              "source": "manual",
+              "provider": "Playback User Guide (MultiTracks help center, snapshot in Pinecone)",
+              "query": "Playback Cloud Pro subscription purchased on MultiTracks website app shows expired Restore Purchases website subscription iPad",
+              "found": 3,
+              "results": [
+                {
+                  "id": "playback-user-guide:playback-settings-about-tab:1",
+                  "score": 0.495,
+                  "sectionPath": "Playback User Guide > Playback Settings > About Tab",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide",
+                  "category": "subscription",
+                  "scope": "adjacent",
+                  "part": 1,
+                  "parts": 1,
+                  "imageIds": [
+                    "img-41",
+                    "img-42"
+                  ],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "- Restore Purchases: If an iTunes subscription is expired or not being confirmed by Playback, reconcile any issues with payment info in the App Store and Tap Restore Purchases to reconnect your In-App Subscription.\n- Manage Subscription: Explore the paid versions of Playback and what features they have to offer. Learn More Here.\n- Manual: opens up this user guide.\n- Reset Tool Tips: If a new feature seems confusing, Tap to reset and see the tool tip tour again.\n- Contact Support: will send an email to support with all of the currently-opened setlist details and device information helpful for troubleshooting any potential issues.\n- Become a Beta Tester: Interested in early access to upcoming new features? Apply to become a Playback beta tester.\n- Acknowledgments: Playback software acknowledgments.\n- Playback Version and build information is listed at the very bottom.",
+                  "steps": [
+                    {
+                      "n": 1,
+                      "text": "Restore Purchases: If an iTunes subscription is expired or not being confirmed by Playback, reconcile any issues with payment info in the App Store and Tap Restore Purchases to reconnect your In-App Subscription.",
+                      "disruptive": true,
+                      "kind": "update",
+                      "caution": "Updating the app closes Playback and takes a few minutes; don't do this during a service."
+                    },
+                    {
+                      "n": 2,
+                      "text": "Manage Subscription: Explore the paid versions of Playback and what features they have to offer. Learn More Here.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 3,
+                      "text": "Manual: opens up this user guide.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 4,
+                      "text": "Reset Tool Tips: If a new feature seems confusing, Tap to reset and see the tool tip tour again.",
+                      "disruptive": true,
+                      "kind": "settings-change",
+                      "caution": "Changing this setting takes effect immediately and can cut audio for a moment."
+                    },
+                    {
+                      "n": 5,
+                      "text": "Contact Support: will send an email to support with all of the currently-opened setlist details and device information helpful for troubleshooting any potential issues.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 6,
+                      "text": "Become a Beta Tester: Interested in early access to upcoming new features? Apply to become a Playback beta tester.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 7,
+                      "text": "Acknowledgments: Playback software acknowledgments.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 8,
+                      "text": "Playback Version and build information is listed at the very bottom.",
+                      "disruptive": false
+                    }
+                  ],
+                  "hasDisruptiveSteps": true
+                },
+                {
+                  "id": "playback-user-guide:playback-user-guide-building-a-setlist:1",
+                  "score": 0.374,
+                  "sectionPath": "Playback User Guide > Building a Setlist",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_610ceb3f3a",
+                  "category": "song-loading",
+                  "scope": "in-scope",
+                  "part": 1,
+                  "parts": 1,
+                  "imageIds": [],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "A variety of tracks products are available for over 15,000 songs in the MultiTracks.com catalog. Purchased tracks can be downloaded in Playback for free. Visit MultiTracks.com/Tracks to learn about our tracks options and find the best solution for your needs.\n\nNote: For more information see:\n- 📖Which Tracks Product is right for me? (Article)\n- 📖AppTracks vs Playback Rentals (Article)\n- 🌐Playback Rentals, the simplest solution for getting started with tracks",
+                  "steps": [
+                    {
+                      "n": 1,
+                      "text": "📖Which Tracks Product is right for me? (Article)",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 2,
+                      "text": "📖AppTracks vs Playback Rentals (Article)",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 3,
+                      "text": "🌐Playback Rentals, the simplest solution for getting started with tracks",
+                      "disruptive": false
+                    }
+                  ],
+                  "hasDisruptiveSteps": false
+                },
+                {
+                  "id": "playback-user-guide:playback-user-guide-conclusion-and-faqs:1",
+                  "score": 0.352,
+                  "sectionPath": "Playback User Guide > Conclusion and FAQs",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_9dd09614e7",
+                  "category": "general",
+                  "scope": "adjacent",
+                  "part": 1,
+                  "parts": 1,
+                  "imageIds": [],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "Is there something missing from this User Guide? Still confused about an experience in Playback, or do you have a request or an idea for making Playback even better? Please reach out to MultiTracks.com/support and we would love to assist you.",
+                  "steps": [],
+                  "hasDisruptiveSteps": false
+                }
+              ],
+              "outOfScope": [
+                {
+                  "id": "playback-user-guide:cloud-song-sections-edit-mode-video-overview:1",
+                  "sectionPath": "Playback User Guide > Customizing Setlists > Cloud Song Sections Edit Mode > Video Overview",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_29d220d044"
+                },
+                {
+                  "id": "playback-user-guide:customizing-setlists-playback-edit-modes-overview:2",
+                  "sectionPath": "Playback User Guide > Customizing Setlists > Playback Edit Modes: Overview",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_766ca00b13"
+                },
+                {
+                  "id": "playback-user-guide:setlist-song-map-edit-mode-edit-song-menu:5",
+                  "sectionPath": "Playback User Guide > Customizing Setlists > Setlist / Song Map Edit Mode > Edit Song Menu",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_e417d5f647"
+                }
+              ],
+              "note": "Manual sections describe how the app works; give only steps that appear in the text, and cite 'the Playback User Guide'. Sections listed under outOfScope are documented but outside this agent's support scope: name the topic and offer a handoff, do not troubleshoot them."
+            }
+          }
+        }
+      ],
+      "reportedCost": 0.0184
+    },
+    {
+      "input": "Playback 8.6.1.",
+      "chatId": "9ad43d77-680f-4601-85be-7510f69b896b",
+      "reply": "Let me compare your version with the documented release history.\n\nOne moment while I check the current Playback version.\n\nPlayback 8.6.3 documents a fix for this exact false “Cloud Pro expired” message; before I suggest updating, what iPadOS version is this iPad running?",
+      "tools": [
+        {
+          "name": "get_relevant_changes_since_version",
+          "arguments": {
+            "installedVersion": "8.6.1",
+            "symptom": "iPad Cloud Pro active subscription purchased on MultiTracks website displays Cloud Pro expired"
+          },
+          "result": {
+            "ok": true,
+            "installedVersion": "8.6.1",
+            "current": {
+              "version": "8.6.4",
+              "source": "live",
+              "provider": "Apple iTunes Lookup API",
+              "retrievedAt": "2026-11-02T19:51:50.250Z",
+              "releaseDate": "2026-10-26T14:26:55Z"
+            },
+            "isUpToDate": false,
+            "documentedReleasesBetween": [
+              "8.6.3"
+            ],
+            "relevantChanges": [
+              {
+                "version": "8.6.3",
+                "date": null,
+                "url": "https://helpcenter.multitracks.com/en/articles/17617217-playback-8-6-3-release-notes",
+                "matchingNotes": [
+                  "Subscriptions: fixed a false 'Cloud Pro expired' message that appeared for some active subscribers.",
+                  "Rentals & MT Complete: fixed three issues involving custom arrangements, interrupted MT Complete previews, and 'Song Data Error' messages after using Restore From Cloud."
+                ],
+                "matchedKeywords": [
+                  "cloud pro expired",
+                  "false expired message",
+                  "subscription",
+                  "restore from cloud"
+                ],
+                "allNotes": [
+                  "Quality and stability release.",
+                  "Subscriptions: fixed a false 'Cloud Pro expired' message that appeared for some active subscribers.",
+                  "Improvements: removed the 'New' badge from MT Complete in the Add Song menu; reworded the low memory alert.",
+                  "Rentals & MT Complete: fixed three issues involving custom arrangements, interrupted MT Complete previews, and 'Song Data Error' messages after using Restore From Cloud.",
+                  "Setlists: fixed the waveform and mixer not loading after adding the first song; fixed a search display issue in the Open Setlists menu.",
+                  "Mac & Keyboard Shortcuts: fixed a Cmd+, conflict so it consistently opens Playback Settings.",
+                  "Audio & MIDI: improved MIDI Out stability during playback."
+                ]
+              }
+            ],
+            "history": {
+              "source": "documentation",
+              "provider": "MultiTracks Help Center release notes",
+              "snapshotRetrievedAt": "2026-10-31",
+              "coverage": [
+                "8.4.1",
+                "8.4.3",
+                "8.4.4",
+                "8.4.6",
+                "8.5.0",
+                "8.5.2",
+                "8.5.3",
+                "8.5.4",
+                "8.5.5",
+                "8.5.6",
+                "8.6.3"
+              ]
+            },
+            "gaps": [
+              "App Store version is 8.6.4 but the release notes text refers to Playback 8.6.3. Treat the notes as possibly belonging to an earlier release.",
+              "App Store shows 8.6.4 but documented release notes only go up to 8.6.3; changes in between are not covered."
+            ],
+            "updateIsDisruptive": true,
+            "updateCaution": "Updating closes Playback and takes a few minutes, so it should wait until after a service or rehearsal.",
+            "guidance": "A documented fix exists in a newer version. Say which version fixed it, then give the caution in one sentence before suggesting the update; offer a non-disruptive step first if the caller is mid-service."
+          }
+        },
+        {
+          "name": "get_current_playback_app_info",
+          "arguments": {},
+          "result": {
+            "ok": true,
+            "source": "live",
+            "provider": "Apple iTunes Lookup API",
+            "url": "https://itunes.apple.com/lookup?id=751755884&country=us",
+            "retrievedAt": "2026-11-02T19:51:51.589Z",
+            "app": {
+              "name": "Playback",
+              "currentVersion": "8.6.4",
+              "currentVersionReleaseDate": "2026-10-26T14:26:55Z",
+              "minimumOsVersion": "15.6",
+              "releaseNotesHead": "Summary - Playback 8.6.3 is a quality and stability release. It fixes a false \"Cloud Pro expired\" message for active subscribers, resolves several issues with MT Complete previews and custom arrangements, and improves MIDI Out reliability and keyboard shortcuts on Mac. Improvements",
+              "releaseNotesMentionsVersion": "8.6.3"
+            },
+            "versionMetadataInconsistent": true,
+            "warnings": [
+              "App Store version is 8.6.4 but the release notes text refers to Playback 8.6.3. Treat the notes as possibly belonging to an earlier release."
+            ]
+          }
+        }
+      ],
+      "reportedCost": 0.0196
+    },
+    {
+      "input": "iPadOS 18 on an iPad Air 5.",
+      "chatId": "bc9abf36-98bd-48b3-bc9e-79f8cadcb46c",
+      "reply": "Your iPad Air on iPadOS 18 meets the current app’s iPadOS 15.6 minimum. Since you have time, update Playback from 8.6.1 to the current 8.6.4, then reopen it and check whether the expired message is gone.",
+      "tools": [],
+      "reportedCost": 0.0094
+    },
+    {
+      "input": "I updated and tested it. The expired message is gone and the songs are available now, thanks.",
+      "chatId": "72a14c02-d87e-42de-8c8e-2657e4d013c4",
+      "reply": "Great, I’m glad the update cleared the message and your songs are available again. Have a great rehearsal.",
+      "tools": [],
+      "reportedCost": 0.0073
+    }
+  ]
+}

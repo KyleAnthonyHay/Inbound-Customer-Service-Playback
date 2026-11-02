@@ -1,0 +1,75 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "caseId": "08-permission",
+  "variant": 1,
+  "testId": "text-poc-11e9469f-5c50-4cca-a444-b4fe9ce6fe94",
+  "configurationHash": "b6f1371f405c3b04d732746e6798cff53cf9e77e0be0a9482b16c219ec842d26",
+  "fixture": {
+    "id": "08-permission",
+    "intent": "account-access",
+    "handling": "human-admin-review",
+    "openings": [
+      "I'm in the correct church organization in Playback. Our administrator checked and says I haven't been assigned the permission or Team Sharing seat to access our purchased songs. Can you enable it for me?",
+      "The church admin confirmed my Playback organization is right, but I still need an access permission and seat assigned. Could you grant that so I can use our songs?"
+    ],
+    "reviewOnly": {
+      "facts": "The issue requires an administrative access change; no navigation or software fix will grant the permission. The caller has not initially asked for a human. No real account changes are authorized or possible.",
+      "expected": "Explain the limitation and possible need for the church admin, offer human/specialist review, and follow the consented handoff or callback path. Do not pretend a demo customer lookup is identity verification or an access grant."
+    }
+  },
+  "failure": null,
+  "done": true,
+  "cleanupComplete": true,
+  "reportedTextCost": 0.0158,
+  "turns": [
+    {
+      "input": "I'm in the correct church organization in Playback. Our administrator checked and says I haven't been assigned the permission or Team Sharing seat to access our purchased songs. Can you enable it for me?",
+      "chatId": "f373b590-3d11-4007-b0dc-ac4821b924bd",
+      "reply": "I can’t change organization permissions or Team Sharing seats. Would you like me to connect you with a specialist who can review the account access?",
+      "tools": [],
+      "reportedCost": 0.0071
+    },
+    {
+      "input": "Yes, please connect me with a specialist.",
+      "chatId": "e94d7711-acae-44ba-803e-c3af59d9b311",
+      "reply": "Let me see who's available.\n\nLet me request that handoff.\n\nI’m connecting you with Playback Technical Support now in this simulated demo. Goodbye.",
+      "tools": [
+        {
+          "name": "check_team_availability",
+          "arguments": {
+            "teamId": "playback-support"
+          },
+          "result": {
+            "source": "simulated",
+            "teams": [
+              {
+                "canTransferNow": true,
+                "description": "Song loading, audio output, device and version issues.",
+                "label": "Playback Technical Support",
+                "status": "available",
+                "teamId": "playback-support",
+                "withinHours": true
+              }
+            ]
+          }
+        },
+        {
+          "name": "initiate_handoff",
+          "arguments": {
+            "teamId": "playback-support"
+          },
+          "result": {
+            "ok": true,
+            "simulated": true,
+            "team": "Playback Technical Support",
+            "note": "Simulated handoff accepted. No real MultiTracks employee is contacted.",
+            "source": "simulated"
+          }
+        }
+      ],
+      "reportedCost": 0.0087
+    }
+  ]
+}

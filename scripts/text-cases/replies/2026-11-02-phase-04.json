@@ -1,0 +1,12 @@
+[
+  { "run": "01-click-guide-v1", "input": "Yes, after setting those buses to separate outputs we can adjust click and guide independently. Thanks, that's all.", "done": true },
+  { "run": "01-click-guide-v2", "input": "Yes, Guide is now arriving separately on output 2 and we can control it independently. Thanks, that's all.", "done": true },
+  { "run": "03-audio-device-v1", "input": "It's a Focusrite 4i4, connected through a powered hub." },
+  { "run": "03-audio-device-v2", "input": "The Buses view only shows the Mac's left and right outputs. I don't see the interface's outputs." },
+  { "run": "04-false-expired-v1", "input": "After updating, the expired message is gone and the subscription is recognized. Thank you, that's all.", "done": true },
+  { "run": "04-false-expired-v2", "input": "The update cleared the message and it recognizes the active subscription now. Thanks, goodbye.", "done": true },
+  { "run": "06-borrowed-mixer-v1", "input": "Yes, please connect me with a specialist." },
+  { "run": "06-borrowed-mixer-v2", "input": "Yes, I'd like a specialist to review it." },
+  { "run": "08-permission-v1", "input": "No, don't book it. I'll speak with our church administrator first. Thank you, goodbye.", "done": true },
+  { "run": "08-permission-v2", "input": "Please leave it unbooked. I'll ask our administrator first. Thanks, goodbye.", "done": true }
+]

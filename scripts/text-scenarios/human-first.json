@@ -1,0 +1,6 @@
+{
+  "name": "human-first-text-poc",
+  "expectedIntent": "human-request",
+  "lines": ["I do not want to troubleshoot. Please connect me to a person."],
+  "expect": "Check support availability promptly. Do not retrieve Planning Center context or support documentation before honoring the human request. Handoffs remain simulated."
+}

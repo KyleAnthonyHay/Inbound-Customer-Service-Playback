@@ -1,0 +1,51 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "scenario": "human-first-text-poc",
+  "expectedIntent": "human-request",
+  "failure": null,
+  "reportedTextCost": 0.0084,
+  "turns": [
+    {
+      "input": "I do not want to troubleshoot. Please connect me to a person.",
+      "chatId": "0b1a5cff-4c53-46d2-a238-3bf98464897c",
+      "reply": "Let me see who's available.\n\nLet me request that handoff.\n\nI’m connecting you to Playback Technical Support now in this simulated demo. Goodbye.",
+      "tools": [
+        {
+          "name": "check_team_availability",
+          "arguments": {
+            "teamId": "playback-support"
+          },
+          "result": {
+            "source": "simulated",
+            "teams": [
+              {
+                "canTransferNow": true,
+                "description": "Song loading, audio output, device and version issues.",
+                "label": "Playback Technical Support",
+                "status": "available",
+                "teamId": "playback-support",
+                "withinHours": true
+              }
+            ]
+          }
+        },
+        {
+          "name": "initiate_handoff",
+          "arguments": {
+            "teamId": "playback-support"
+          },
+          "result": {
+            "ok": true,
+            "simulated": true,
+            "team": "Playback Technical Support",
+            "note": "Simulated handoff accepted. No real MultiTracks employee is contacted.",
+            "source": "simulated"
+          }
+        }
+      ],
+      "reportedCost": 0.0084
+    }
+  ]
+}

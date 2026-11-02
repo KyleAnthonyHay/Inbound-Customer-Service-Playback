@@ -1,0 +1,91 @@
+[
+  {
+    "run": "01-click-guide-v1",
+    "input": "Yes, click is on 1 and guide on 2 with separate control now. Thanks.",
+    "done": true
+  },
+  {
+    "run": "02-reconnect-v1",
+    "input": "All music buses now show 3/4 and sound is restored to the intended stereo feed. Click and guide stayed separate. Thanks.",
+    "done": true
+  },
+  {
+    "run": "03-audio-device-v1",
+    "input": "Yes, Focusrite 4i4 is listed there. Selecting it restored sound at the desk. Thanks.",
+    "done": true
+  },
+  {
+    "run": "08-permission-v1",
+    "input": "Tomorrow at 11 AM Eastern. Please just check availability; do not book anything yet."
+  },
+  {
+    "run": "09-loading-recovery-v1",
+    "input": "The third Try Again worked and Graves Into Gardens loaded. Thank you.",
+    "done": true
+  },
+  {
+    "run": "10-loading-unresolved-v1",
+    "done": true
+  },
+  {
+    "run": "11-unfamiliar-progress-v1",
+    "input": "iPadOS 18 on an iPad Air 5."
+  },
+  {
+    "run": "01-click-guide-v2",
+    "input": "Yes, click is on 1 and guide on 2 with separate control now. Thanks.",
+    "done": true
+  },
+  {
+    "run": "02-reconnect-v2",
+    "input": "All music buses now show 3/4 and sound is restored to the intended stereo feed. Click and guide stayed separate. Thanks.",
+    "done": true
+  },
+  {
+    "run": "03-audio-device-v2",
+    "input": "Yes, Focusrite 4i4 is listed there. Selecting it restored sound at the desk. Thanks.",
+    "done": true
+  },
+  {
+    "run": "08-permission-v2",
+    "input": "Tomorrow at 11 AM Eastern. Please just check availability; do not book anything yet."
+  },
+  {
+    "run": "09-loading-recovery-v2",
+    "input": "The third Try Again worked and Graves Into Gardens loaded. Thank you.",
+    "done": true
+  },
+  {
+    "run": "10-loading-unresolved-v2",
+    "done": true
+  },
+  {
+    "run": "11-unfamiliar-progress-v2",
+    "input": "iPadOS 18 on an iPad Air 5."
+  },
+  {
+    "run": "04-false-expired-v1",
+    "input": "I am on Playback 8.6.1. Could that matter?"
+  },
+  {
+    "run": "04-false-expired-v2",
+    "input": "Playback 8.6.1."
+  },
+  {
+    "run": "06-borrowed-mixer-v1",
+    "input": "We need to know whether this direct USB setup is confirmed before relying on it. Is it verified for our mixer?"
+  },
+  {
+    "run": "06-borrowed-mixer-v2",
+    "input": "USB-C. I need to know whether that direct connection is confirmed before relying on it."
+  },
+  {
+    "run": "07-organization-v1",
+    "input": "The side menu says Taylor Personal Demo. The picker also lists North Harbor Demo Church, our church."
+  },
+  {
+    "run": "07-organization-v2",
+    "input": "The church songs appear after choosing North Harbor Demo Church. That solved it, thank you.",
+    "done": true
+  }
+]

@@ -1,0 +1,16 @@
+[
+  {
+    "run": "01-expired-a-v1",
+    "input": "I updated and checked. The expired message is gone and the songs are available now. Thanks.",
+    "done": true
+  },
+  {
+    "run": "02-expired-b-v1",
+    "input": "iPadOS 18 on an iPad Air 5."
+  },
+  {
+    "run": "04-progress-b-v1",
+    "input": "I updated and tested an affected song. The download finishes normally now. Thank you.",
+    "done": true
+  }
+]

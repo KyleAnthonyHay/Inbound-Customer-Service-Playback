@@ -1,0 +1,179 @@
+{
+  "kind": "manual-transcript-review-with-tool-evidence",
+  "cases": 7,
+  "passed": 7,
+  "turns": 26,
+  "requestFailures": 0,
+  "reportedTextCost": 0.4255,
+  "independentVersionInvestigation": {
+    "passed": 4,
+    "applicable": 4
+  },
+  "completeAssessmentBeforeUpdate": {
+    "passed": 4,
+    "applicable": 4
+  },
+  "timingQuestions": 0,
+  "unnecessaryReleaseComparisonsInDirectControls": 0,
+  "callerOutcomesScripted": true,
+  "voiceParityEstablished": false,
+  "qualityNotes": [
+    "Restore Purchases was tried while billing channel was unknown: a defensible Apple-subscription recovery attempt, with unestablished applicability and a possible efficiency cost. It was not repeated after website billing was disclosed. This is not an automatic test failure.",
+    "Both stuck-progress paths retrieved Planning Center context that did not explain this multi-song device symptom.",
+    "Focused score does not mean every statement or every broad support intent was validated."
+  ],
+  "rows": [
+    {
+      "caseId": "01-expired-a",
+      "label": "False expiration, wording A",
+      "result": "pass",
+      "transcript": "run-01/01-expired-a-v1.json",
+      "turns": 5,
+      "failure": null,
+      "done": true,
+      "cleanupComplete": true,
+      "reportedTextCost": 0.06559999999999999,
+      "configurationHash": "45c46a3df669c0b0b2b53f93cfe744c97e939203c12387b2210aad5c931620b4",
+      "releaseImplementationHash": "5f77ed5df7d6a1e6bf0c4e8210be0b29baf796830837d03227f91098c2d90875",
+      "tools": [
+        "lookup_demo_customer",
+        "search_playback_docs",
+        "get_relevant_changes_since_version",
+        "get_relevant_changes_since_version"
+      ],
+      "assessmentCompleteSequence": [
+        false,
+        true
+      ]
+    },
+    {
+      "caseId": "02-expired-b",
+      "label": "False expiration, wording B",
+      "result": "pass",
+      "transcript": "run-01/02-expired-b-v1.json",
+      "turns": 6,
+      "failure": null,
+      "done": true,
+      "cleanupComplete": true,
+      "reportedTextCost": 0.0681,
+      "configurationHash": "45c46a3df669c0b0b2b53f93cfe744c97e939203c12387b2210aad5c931620b4",
+      "releaseImplementationHash": "5f77ed5df7d6a1e6bf0c4e8210be0b29baf796830837d03227f91098c2d90875",
+      "tools": [
+        "lookup_demo_customer",
+        "search_playback_docs",
+        "get_relevant_changes_since_version",
+        "get_relevant_changes_since_version"
+      ],
+      "assessmentCompleteSequence": [
+        false,
+        true
+      ]
+    },
+    {
+      "caseId": "03-progress-a",
+      "label": "Stuck progress bar, wording A",
+      "result": "pass",
+      "transcript": "run-01/03-progress-a-v1.json",
+      "turns": 4,
+      "failure": null,
+      "done": true,
+      "cleanupComplete": true,
+      "reportedTextCost": 0.11180000000000001,
+      "configurationHash": "45c46a3df669c0b0b2b53f93cfe744c97e939203c12387b2210aad5c931620b4",
+      "releaseImplementationHash": "5f77ed5df7d6a1e6bf0c4e8210be0b29baf796830837d03227f91098c2d90875",
+      "tools": [
+        "search_playback_docs",
+        "lookup_demo_customer",
+        "get_planning_center_service_context",
+        "get_relevant_changes_since_version",
+        "get_relevant_changes_since_version"
+      ],
+      "assessmentCompleteSequence": [
+        false,
+        true
+      ]
+    },
+    {
+      "caseId": "04-progress-b",
+      "label": "Stuck progress bar, wording B",
+      "result": "pass",
+      "transcript": "run-01/04-progress-b-v1.json",
+      "turns": 5,
+      "failure": null,
+      "done": true,
+      "cleanupComplete": true,
+      "reportedTextCost": 0.0906,
+      "configurationHash": "45c46a3df669c0b0b2b53f93cfe744c97e939203c12387b2210aad5c931620b4",
+      "releaseImplementationHash": "5f77ed5df7d6a1e6bf0c4e8210be0b29baf796830837d03227f91098c2d90875",
+      "tools": [
+        "search_playback_docs",
+        "lookup_demo_customer",
+        "get_planning_center_service_context",
+        "get_relevant_changes_since_version",
+        "get_relevant_changes_since_version"
+      ],
+      "assessmentCompleteSequence": [
+        false,
+        true
+      ]
+    },
+    {
+      "caseId": "05-wrong-output",
+      "label": "Clear wrong output",
+      "result": "pass",
+      "transcript": "run-01/05-wrong-output-v1.json",
+      "turns": 2,
+      "failure": null,
+      "done": true,
+      "cleanupComplete": true,
+      "reportedTextCost": 0.0293,
+      "configurationHash": "45c46a3df669c0b0b2b53f93cfe744c97e939203c12387b2210aad5c931620b4",
+      "releaseImplementationHash": "5f77ed5df7d6a1e6bf0c4e8210be0b29baf796830837d03227f91098c2d90875",
+      "tools": [
+        "search_playback_docs"
+      ],
+      "assessmentCompleteSequence": []
+    },
+    {
+      "caseId": "06-direct-human",
+      "label": "Direct human request",
+      "result": "pass",
+      "transcript": "run-01/06-direct-human-v1.json",
+      "turns": 1,
+      "failure": null,
+      "done": true,
+      "cleanupComplete": true,
+      "reportedTextCost": 0.0093,
+      "configurationHash": "45c46a3df669c0b0b2b53f93cfe744c97e939203c12387b2210aad5c931620b4",
+      "releaseImplementationHash": "5f77ed5df7d6a1e6bf0c4e8210be0b29baf796830837d03227f91098c2d90875",
+      "tools": [
+        "check_team_availability",
+        "initiate_handoff"
+      ],
+      "assessmentCompleteSequence": []
+    },
+    {
+      "caseId": "07-current-unexplained",
+      "label": "Already-current, unexplained symptom",
+      "result": "pass",
+      "transcript": "run-01/07-current-unexplained-v1.json",
+      "turns": 3,
+      "failure": null,
+      "done": true,
+      "cleanupComplete": true,
+      "reportedTextCost": 0.0508,
+      "configurationHash": "45c46a3df669c0b0b2b53f93cfe744c97e939203c12387b2210aad5c931620b4",
+      "releaseImplementationHash": "5f77ed5df7d6a1e6bf0c4e8210be0b29baf796830837d03227f91098c2d90875",
+      "tools": [
+        "lookup_demo_customer",
+        "search_playback_docs",
+        "get_relevant_changes_since_version",
+        "check_team_availability",
+        "initiate_handoff"
+      ],
+      "assessmentCompleteSequence": [
+        false
+      ]
+    }
+  ]
+}

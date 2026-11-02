@@ -25,10 +25,17 @@ export function buildToolDefinitions(opts: { serverUrl: string; secret?: string 
 
   return [
     fn(
+      "get_planning_center_service_context",
+      "Use to answer questions about the demo service/setlist, or proactively when service timing or song metadata can inform the next in-scope support decision. The caller need not request the lookup, but general product or hardware suitability does not depend on a song plan. Reads one shared fictional demo organization's upcoming service and songs from the real Planning Center Services API, never a caller's church. Planning metadata does not verify licensing, downloads, imports or audio hardware. Reuse retrieved context; honor retryAt if rate limited.",
+      {},
+      [],
+      "Let me check the demo service's song list."
+    ),
+    fn(
       "search_playback_docs",
-      "Search MultiTracks' official Playback support documentation: help-center articles (results) and sections of the Playback User Guide (manual.results). Use before giving any troubleshooting instruction. Returns documented steps with source URLs; only give steps that appear in the results. manual.outOfScope lists topics the guide documents but this line does not troubleshoot.",
+      "Use when a factual Playback question or support decision needs documentation, including symptoms, setup, requirements, compatibility and subscription features. Searches official help-center articles (results) and the User Guide (manual.results), returning source URLs and documented guidance. Include known platform/setup details and reuse adequate results. If account/configuration evidence and documented behavior leave a symptom unexplained, release notes are another relevant source: obtain the installed version and use get_relevant_changes_since_version to match fixes across the available history, not just the latest three releases. This search itself does not retrieve release history; a missing article match does not establish that no documented fix exists. Follow clear direct evidence first rather than checking versions routinely. manual.outOfScope identifies topics outside this support line's scope.",
       {
-        query: { type: "string", description: "Symptom or topic in the caller's words, e.g. 'song stuck downloading' or 'no sound from USB interface'." },
+        query: { type: "string", description: "The factual question, symptom or topic, including relevant device/setup details the caller provided." },
         category: { type: "string", enum: ["song-loading", "audio-output", "setup", "requirements", "subscription", "general"], description: "Optional category filter. 'setup' covers first-time login, organizations and the main interface." },
         platform: { type: "string", description: "Caller's platform if known: iOS, iPadOS, macOS, Windows." },
       },
@@ -37,24 +44,26 @@ export function buildToolDefinitions(opts: { serverUrl: string; secret?: string 
     ),
     fn(
       "get_current_playback_app_info",
-      "Get the current public Playback app version and release date from Apple's App Store lookup API (live data).",
+      "Use when current published Playback metadata answers the caller's question. Returns live Apple metadata and inconsistencies; check platform applicability. The release comparator already returns the current version and iOS/iPadOS minimum OS, so reuse it rather than duplicate that lookup. This lookup alone does not establish a symptom-specific fix.",
       {},
       [],
       "One moment while I check the current Playback version."
     ),
     fn(
       "get_relevant_changes_since_version",
-      "Given the caller's installed Playback version and symptom, find documented fixes released between their version and the current version. Tells you whether updating is a targeted fix. Use after learning the caller's version.",
+      "Use when release evidence could explain an otherwise unexplained symptom or answer a version question. Requires the installed version confirmed by the caller, not a historical account note. Searches all available newer release history, not only the latest three releases. Returns candidate notes, live current-version/OS metadata, coverage gaps and updateAssessment: missingInformation, blockers and prerequisitesComplete. Known platform/OS details enable the assessment; missing details can be supplied in a later comparison. Candidate keyword matches need review for actual applicability. No match is not proof that no defect exists. Clear account/configuration evidence and direct human requests do not require a version lookup.",
       {
         installedVersion: { type: "string", description: "Caller's installed Playback version, e.g. 8.6.2." },
-        symptom: { type: "string", description: "Short symptom description, e.g. 'Cloud Pro expired message'." },
+        symptom: { type: "string", description: "Optional symptom or change topic to focus the comparison; omit for all documented changes since the installed version." },
+        platform: { type: "string", description: "Caller-confirmed platform, e.g. iPadOS, iOS or macOS. iOS requirements must not be used for macOS." },
+        osVersion: { type: "string", description: "Caller-confirmed operating-system version, e.g. 18. Omit if unknown; the assessment will identify it as missing." },
       },
       ["installedVersion"],
-      "Let me compare your version against recent releases."
+      "Let me compare your version with the documented release history."
     ),
     fn(
       "lookup_demo_customer",
-      "Look up a demo customer record by customer ID, email, or name to check subscription status and entitlements. This is simulated demo data, not real MultiTracks accounts, and is not identity verification.",
+      "Use when account-specific subscription status or entitlements could affect the support answer or routing. Requires at least one provided demo customer ID, email or name. Returns a simulated record, no match or ambiguous matches. This is not a real MultiTracks account lookup or identity verification.",
       {
         customerId: { type: "string", description: "Demo customer ID like DEMO-1001." },
         email: { type: "string" },
@@ -65,14 +74,14 @@ export function buildToolDefinitions(opts: { serverUrl: string; secret?: string 
     ),
     fn(
       "check_team_availability",
-      "Check whether a simulated support team can take a transfer right now. Call this when the caller asks for a human or when documented steps are exhausted.",
+      "Use when the caller wants a human or specialist involvement may be appropriate because of uncertainty, support scope, unresolved symptoms or account needs. Returns simulated team availability for a transfer now. Checking availability does not transfer the caller or establish their consent; initiate_handoff performs an accepted transfer.",
       { teamId: { type: "string", enum: ["playback-support", "billing"], description: "Team to check. Defaults to all." } },
       [],
       "Let me see who's available."
     ),
     fn(
       "get_callback_slots",
-      "Check callback availability for a team (simulated scheduling). When the caller names a day and time, pass preferredDate, preferredTime and timeZone: the result says whether THAT exact time is open (requested.available), why not if it isn't (requested.reason + detail), and lists the nearest open alternatives. Without a preferred time it returns the next open slots. Every slot has a 'local' string already in the caller's zone; speak those, never convert times yourself. If requested.available is false you must say so to the caller before offering anything else.",
+      "Use when exploring or arranging a callback, including a caller-requested callback. With preferredDate, preferredTime and timeZone, checks that exact requested time and returns availability, reasons and nearby alternatives; otherwise returns next open slots. Returns slot IDs and formatted local times. This is simulated scheduling and does not reserve a slot.",
       {
         teamId: { type: "string", enum: ["playback-support", "billing"] },
         preferredDate: { type: "string", description: "The day the caller asked for: YYYY-MM-DD, or exactly what they said ('Monday', 'tomorrow', 'Nov 2'); the tool resolves it from today's date in their zone." },
@@ -85,7 +94,7 @@ export function buildToolDefinitions(opts: { serverUrl: string; secret?: string 
     ),
     fn(
       "reserve_callback",
-      "Reserve a callback slot after the caller has explicitly confirmed the time, time zone, and callback number. Use the slotId that get_callback_slots returned for the time the caller agreed to. Only say the callback is confirmed if this returns ok=true; read back its 'local' time, wish the caller a good day, and end the call. If it fails or the slot was taken, explain and offer another slot.",
+      "Use to book a simulated callback only after the caller explicitly confirms the selected time, time zone and callback number. Requires the agreed slotId returned by get_callback_slots and the caller details. Writes a demo booking and returns confirmation or failure; the booking is confirmed only when ok=true. Does not contact real staff or customers.",
       {
         slotId: { type: "string", description: "slotId from get_callback_slots." },
         callerName: { type: "string" },
@@ -99,10 +108,10 @@ export function buildToolDefinitions(opts: { serverUrl: string; secret?: string 
     ),
     fn(
       "initiate_handoff",
-      "Start the simulated handoff to a support team. Only call after check_team_availability says the team can transfer now. On success, announce the transfer, say a brief goodbye, then end the call.",
+      "Use when the caller has requested or accepted a human transfer and check_team_availability confirms the selected team can transfer now. Starts the simulated handoff and returns success or failure, rechecking availability. Success must be confirmed before announcing a connection; this demo never connects to real staff.",
       { teamId: { type: "string", enum: ["playback-support", "billing"] } },
       ["teamId"],
-      "Connecting you now."
+      "Let me request that handoff."
     ),
     { type: "endCall" },
   ];

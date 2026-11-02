@@ -1,0 +1,22 @@
+[
+  { "run": "01-click-guide-v1", "input": "I'm running Playback 8.6.4." },
+  { "run": "01-click-guide-v2", "input": "I'm on Playback 8.6.4, and Click and Guide already appear as separate buses. Do I really need to create another Guide bus?" },
+  { "run": "02-reconnect-v1", "input": "After following that, the music is back on 3 and 4 and click and guide are still separate on 1 and 2. Thank you, that's all.", "done": true },
+  { "run": "02-reconnect-v2", "input": "Drums is on 3/4. Bass is on 5/6, Keys on 7/8, and Guitars on 9/10. PlayAUDIO12 is selected as the audio device." },
+  { "run": "03-audio-device-v1", "input": "That hasn't restored sound. The bus view isn't showing the interface's outputs. What else should I check?" },
+  { "run": "03-audio-device-v2", "input": "It's a Focusrite 4i4, connected and powered. The Mac can see it." },
+  { "run": "04-false-expired-v1", "input": "Restore Purchases hasn't changed it. Our plan was purchased through the MultiTracks website, not Apple. What should I check next?" },
+  { "run": "04-false-expired-v2", "input": "It still says expired after Restore Purchases. We bought the plan from MultiTracks on the website, not through Apple." },
+  { "run": "05-supported-setup-v1", "input": "Thanks, that answers my compatibility question. Goodbye.", "done": true },
+  { "run": "05-supported-setup-v2", "input": "Yes, it is running iPadOS 18." },
+  { "run": "06-borrowed-mixer-v1", "input": "It's a Mackie ProFX12v3. I don't know whether its USB connection is class-compliant or what iPad connection requirements it has." },
+  { "run": "06-borrowed-mixer-v2", "input": "The label says Mackie ProFX12v3. I'm not sure whether its USB port is class-compliant audio or what it needs for an iPad." },
+  { "run": "07-organization-v1", "input": "The side menu shows Taylor Personal Demo. The organization picker also lists North Harbor Demo Church, which is the one our worship leader used." },
+  { "run": "07-organization-v2", "input": "I selected North Harbor Demo Church instead of my personal organization, and our library is showing now. Thanks, that's all.", "done": true },
+  { "run": "08-permission-v1", "input": "Yes, please connect me with someone who can review the access." },
+  { "run": "08-permission-v2", "input": "Yes, I'd like someone to help review that permission." },
+  { "run": "09-loading-recovery-v1", "input": "It's Graves Into Gardens, and the message says Audio Files Missing. I've only tapped Try Again once." },
+  { "run": "09-loading-recovery-v2", "input": "It says Audio Files Missing." },
+  { "run": "10-loading-unresolved-v1", "input": "Yes, please connect me with a specialist." },
+  { "run": "10-loading-unresolved-v2", "input": "Yes, I'd like to speak with a specialist." }
+]

@@ -1,0 +1,9 @@
+{
+  "name": "uncertain-answer",
+  "expectedIntent": "general-uncertainty-specialist-offer",
+  "lines": [
+    "Playback 8.6.4 on my iPad shows error ZQ-917 when a song downloads. I need the exact meaning of that code, not general download steps. What does it mean?",
+    "Yes, please have a specialist review it."
+  ],
+  "expect": "This error code is synthetic test input, not a documented Playback fact. Search relevant sources; if they do not establish its meaning, acknowledge that uncertainty and offer a specialist without inventing an explanation or forcing generic troubleshooting. On acceptance check availability and use the simulated handoff/callback flow."
+}

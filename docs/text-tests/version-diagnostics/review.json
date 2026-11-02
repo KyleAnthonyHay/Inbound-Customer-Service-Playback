@@ -1,0 +1,49 @@
+{
+  "kind": "manual-transcript-review",
+  "baselineCombinedIndependentVersionInvestigations": 0,
+  "finalIndependentVersionInvestigations": 3,
+  "versionInvestigationCases": 4,
+  "finalPreUpdateGatePasses": 2,
+  "finalPreUpdateGateCases": 4,
+  "baselineOriginalUnnecessaryReleaseComparisons": 5,
+  "finalOriginalUnnecessaryReleaseComparisons": 0,
+  "clearWrongOutputControl": {
+    "baselinePasses": 2,
+    "finalPasses": 2,
+    "baselineReleaseLookups": 0,
+    "finalReleaseLookups": 0
+  },
+  "targets": [
+    {
+      "run": "04-false-expired-v1",
+      "baselineIndependent": false,
+      "finalIndependent": false,
+      "finalGatePass": false,
+      "reason": "Escalated before asking version; caller hint still required; no OS compatibility verification and time inferred from not being in a service."
+    },
+    {
+      "run": "04-false-expired-v2",
+      "baselineIndependent": false,
+      "finalIndependent": true,
+      "finalGatePass": true
+    },
+    {
+      "run": "11-unfamiliar-progress-v1",
+      "baselineIndependent": false,
+      "finalIndependent": true,
+      "finalGatePass": true,
+      "timingCriterion": "Rehearsal tomorrow plus update/test guidance accepted as sufficient fixture timing context."
+    },
+    {
+      "run": "11-unfamiliar-progress-v2",
+      "baselineIndependent": false,
+      "finalIndependent": true,
+      "finalGatePass": false,
+      "reason": "Treated not-live as sufficient time to update/test."
+    }
+  ],
+  "scriptedCallerOutcomes": true,
+  "savedAgentsChanged": false,
+  "phoneCallsCreated": false,
+  "notes": "No aggregate all-green score; see Markdown review for factual/style regressions, adaptive follow-up limits and intermediate transport failure."
+}

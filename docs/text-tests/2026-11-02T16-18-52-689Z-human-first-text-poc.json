@@ -1,0 +1,57 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "scenario": "human-first-text-poc",
+  "expectedIntent": "human-request",
+  "failure": null,
+  "reportedTextCost": 0.0085,
+  "turns": [
+    {
+      "input": "I do not want to troubleshoot. Please connect me to a person.",
+      "chatId": "3e7d79f0-df06-4b3f-8cd1-ec819dda7aa0",
+      "reply": "Let me see who's available.\n\nConnecting you now.\n\nI’m connecting you with Playback Technical Support now. Goodbye!",
+      "tools": [
+        {
+          "name": "check_team_availability",
+          "arguments": {},
+          "result": {
+            "source": "simulated",
+            "teams": [
+              {
+                "canTransferNow": true,
+                "description": "Song loading, audio output, device and version issues.",
+                "label": "Playback Technical Support",
+                "status": "available",
+                "teamId": "playback-support",
+                "withinHours": true
+              },
+              {
+                "canTransferNow": false,
+                "description": "Subscriptions, refunds, and account administration.",
+                "label": "Billing & Accounts",
+                "status": "busy",
+                "teamId": "billing",
+                "withinHours": true
+              }
+            ]
+          }
+        },
+        {
+          "name": "initiate_handoff",
+          "arguments": {
+            "teamId": "playback-support"
+          },
+          "result": {
+            "ok": true,
+            "simulated": true,
+            "team": "Playback Technical Support",
+            "instruction": "Tell the caller you are connecting them to the team now, say goodbye briefly, then call endCall. This demo does not reach a real MultiTracks employee.",
+            "source": "simulated"
+          }
+        }
+      ],
+      "reportedCost": 0.0085
+    }
+  ]
+}

@@ -10,6 +10,8 @@ the Regal AI Product Specialist take-home. Not affiliated with MultiTracks.com.
 - Vapi (`@vapi-ai/web` for browser calls; GPT-Live `gpt-live-1` with OpenAI voice)
 - Convex for synthetic demo data, bookings, and the live activity log
 - Apple iTunes Lookup API (live, public) for current app version
+- Planning Center Services API (server-side PAT, separate fictional demo org;
+  demo service/songs created and a real read-only check verified locally)
 
 ## Run locally
 
@@ -127,9 +129,44 @@ are simulated. Bookings are saved in this demo's Convex database only and do
 not reach MultiTracks' real support systems. The activity panel labels each
 event as **Live API**, **Docs**, or **Simulated**.
 
+Planning Center's [integration plan and setup evidence](docs/planning-center-integration.md)
+separate real API transport, the simulated service with catalog song metadata,
+and mocked tests.
+The new local `get_planning_center_service_context` tool reads only the explicitly
+configured demo organization; synthetic customers do not select or authenticate
+a church. A real PAT-authenticated read retrieved the November 8 service and its
+three songs; credentials remain server-side in ignored local configuration and
+the dev Convex environment. The dev backend and saved dev assistant are activated
+and their tool webhook is verified; production is unchanged. `npm run planning-center:check -- --read-demo` performs a minimal
+real GET-only verification without calls or simulations.
+
 ## Testing
 
 See `docs/test-matrix.md` for the scenario matrix, metrics definitions, and results.
+
+For quick implementation checks, `npm run text:test` runs an interactive terminal
+conversation through Vapi Chat using the voice agent's shared reasoner definition
+and tools. A scenario file can be passed for scripted text turns. This creates no
+voice sessions, adds no UI, and needs no separate OpenAI key. Text token usage
+still applies. Reports under `docs/text-tests/` are reasoning POCs, not voice-test
+results; the user will manually test the ten selected presentation conversations later.
+See [the testing workflow](docs/conversation-test-plan.md).
+
+The [curated caller worksheet](docs/curated-caller-worksheet.md) contains the ten
+selected cases and two opening phrasings each. `npm run text:cases -- start <dir>`
+starts the twenty text conversations; review actual replies before submitting
+fixture-based follow-ups with `npm run text:cases -- reply <dir> <replies.json>`.
+Reviewer facts are never sent to the support agent. The
+[November 2 phrasing audit](docs/text-tests/curated-phrasing-review.md) records
+the completed runs and remaining consistency issues; it is not a voice pass rate.
+
+The local version-investigation/update-assessment candidate is covered by the
+[seven-decision review](docs/text-tests/seven-decisions-review.md). It uses
+`scripts/local-text-tools.ts` through a temporary authenticated tunnel to exercise
+local release code; the ordinary text commands otherwise use deployed dev tools.
+Do not confuse a passing local candidate with saved-agent activation. The dev
+auto-deploy watcher was stopped after restoring its previous tool behavior;
+restarting `convex dev` will publish the pending local backend changes.
 
 ## Scheduling and time zones
 

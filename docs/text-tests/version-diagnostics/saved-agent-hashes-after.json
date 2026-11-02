@@ -1,0 +1,10 @@
+{
+  "hashes": {
+    "development": "08e3b7a806e35c82b8ef06db8386fb20a7364176752234fd63f51588d687aa12",
+    "production": "ae06136501a5c1ac4cc2c6899dd4124be2c95e90abe4b9c99ab6ab48081e29a9"
+  },
+  "unchanged": {
+    "development": true,
+    "production": true
+  }
+}
