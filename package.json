@@ -9,11 +9,15 @@
     "lint": "eslint",
     "sync:assistant": "tsx --env-file=.env.local scripts/sync-assistant.ts",
     "typecheck": "tsc --noEmit",
-    "test": "tsx --test scripts/test-tools.ts scripts/test-callbacks.ts",
+    "test": "tsx --test scripts/test-tools.ts scripts/test-callbacks.ts scripts/test-manual.ts",
     "voice:test": "tsx --env-file=.env.local scripts/voice-test.ts",
     "sync:assistant:prod": "tsx --env-file=.env.production.local scripts/sync-assistant.ts",
     "voice:test:prod": "tsx --env-file=.env.production.local scripts/voice-test.ts",
-    "release": "npm run typecheck && npm test && npx convex deploy -y && npm run sync:assistant:prod && npx vercel --prod --yes"
+    "release": "npm run typecheck && npm test && npx convex deploy -y && npm run sync:assistant:prod && npx vercel --prod --yes",
+    "manual:fetch": "tsx scripts/manual/fetch-manual.ts",
+    "manual:build": "tsx scripts/manual/build-snapshot.ts",
+    "manual:index": "tsx --env-file=.env.local scripts/manual/index-manual.ts",
+    "manual:eval": "tsx --env-file=.env.local scripts/manual/eval-retrieval.ts"
   },
   "dependencies": {
     "@vapi-ai/web": "^3.1.0",
@@ -34,6 +38,7 @@
     "@types/ws": "^8.18.2",
     "eslint": "^9",
     "eslint-config-next": "16.4.3",
+    "node-html-parser": "^9.0.6",
     "tailwindcss": "^4",
     "tsx": "^4.23.15",
     "typescript": "^5",

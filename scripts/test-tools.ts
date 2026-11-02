@@ -137,3 +137,14 @@ test("searchDocs: FAQ questions are answerable from documented sources", () => {
   assert.equal(ram.results[0].id, "ram-memory-warning");
   assert.ok(ram.results[0].hasDisruptiveSteps);
 });
+
+test("Vapi error events always become readable strings and remote hang-ups are recognised", async () => {
+  const { errorText, isRemoteHangup, friendlyEndedReason } = await import("../src/lib/useVapiCall");
+  const daily = { type: "daily-error", error: { type: "ejected", msg: "Meeting ended due to ejection: Meeting has ended", details: {} } };
+  assert.equal(errorText(daily), "Meeting ended due to ejection: Meeting has ended");
+  assert.ok(isRemoteHangup(errorText(daily)));
+  assert.equal(errorText("plain"), "plain");
+  assert.equal(errorText(new Error("boom")), "boom");
+  assert.equal(typeof errorText({ weird: 1 }), "string");
+  assert.match(friendlyEndedReason("silence-timed-out"), /silence/);
+});

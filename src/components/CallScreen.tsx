@@ -19,6 +19,8 @@ type Props = {
   onStart: () => void;
   onEnd: () => void;
   onToggleMute: () => void;
+  /** Opens the call log after a call has ended. */
+  onViewLog?: () => void;
   onKeypadDigit?: (digit: string) => void;
   /** Set after a successful simulated handoff; shows the transferring state. */
   handoff?: { team: string; at: number } | null;
@@ -104,9 +106,7 @@ function StatusBar({ inCall }: { inCall: boolean }) {
           <rect x="10.4" y="3" width="3.3" height="9" rx="1" /><rect x="15.6" y="0" width="3.3" height="12" rx="1" opacity="0.3" />
         </svg>
         <span className="text-[15px] font-semibold leading-none text-white">5G<span className="relative -top-[4px] text-[7px] font-bold leading-none">UW</span></span>
-        <span className="relative flex h-[13px] w-[27px] items-center justify-center rounded-[4px] bg-[#30d158] text-[11px] font-bold leading-none text-black" aria-label="Battery 44%, charging">
-          44
-          <svg className="absolute -right-[1px] top-[2px]" width="6" height="9" viewBox="0 0 6 9" fill="#fff" aria-hidden><path d="M3.6 0 0 5h2.4L2.2 9 6 3.8H3.4z" /></svg>
+        <span className="relative block h-[13px] w-[27px] rounded-[4px] bg-white" aria-label="Battery full">
           <span className="absolute -right-[3px] top-1/2 h-[4px] w-[1.5px] -translate-y-1/2 rounded-r bg-white/40" />
         </span>
       </span>
@@ -200,10 +200,11 @@ function Keypad({ onDigit }: { onDigit: (d: string) => void }) {
 /* ---------- Screen ---------- */
 
 export function CallScreen({
-  status, label, subtitle, startedAt, muted, onStart, onEnd, onToggleMute, onKeypadDigit, handoff,
+  status, label, subtitle, startedAt, muted, onStart, onEnd, onToggleMute, onViewLog, onKeypadDigit, handoff,
 }: Props) {
   const elapsed = useElapsed(startedAt, status === "active");
   const inCall = status === "active" || status === "connecting";
+  const over = status === "ended" || status === "error";
   const [keypadOpen, setKeypadOpen] = useState(false);
   const [typed, setTyped] = useState("");
 
@@ -252,7 +253,32 @@ export function CallScreen({
           {transferring && (
             <p className="absolute inset-x-0 top-[192px] text-center text-[22px] leading-[27px] text-[#8b8b8f]">{handoff.team}</p>
           )}
+          {over && handoff && (
+            <p className="absolute inset-x-0 top-[192px] px-6 text-center text-[22px] leading-[27px] text-[#8b8b8f]">
+              Passed off to {handoff.team}
+            </p>
+          )}
         </>
+      )}
+
+      {over && !keypadOpen && (
+        <div className="absolute inset-x-0 top-[730px] flex flex-col items-center gap-[14px] px-[40px]">
+          <button
+            type="button"
+            onClick={onStart}
+            className="flex h-[56px] w-full items-center justify-center rounded-full bg-[#30d158] text-[17px] font-semibold text-white transition-colors active:brightness-110"
+          >
+            Start new call
+          </button>
+          <button
+            type="button"
+            onClick={onViewLog}
+            disabled={!onViewLog}
+            className="flex h-[56px] w-full items-center justify-center rounded-full bg-white/[0.09] text-[17px] font-semibold text-white shadow-[inset_0_0_0_1.5px_rgba(255,255,255,0.28)] transition-colors active:bg-white/15 disabled:opacity-40"
+          >
+            View call log
+          </button>
+        </div>
       )}
 
       {keypadOpen ? (
@@ -271,7 +297,7 @@ export function CallScreen({
             Hide Keypad
           </button>
         </>
-      ) : (
+      ) : over ? null : (
         <>
           <Control
             x={88} y={827} label="Mute" icon={<MuteIcon dark={muted} />}

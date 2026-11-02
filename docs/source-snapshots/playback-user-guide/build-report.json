@@ -1,0 +1,801 @@
+{
+  "doc_title": "Playback User Guide",
+  "source_url": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide",
+  "source_updated_at": "2026-07-31",
+  "retrieved_at": "2026-11-01T22:54:42.910Z",
+  "blocks": 338,
+  "block_kinds": {
+    "image": 43,
+    "paragraph": 153,
+    "heading": 75,
+    "video": 5,
+    "list": 49,
+    "callout": 13
+  },
+  "sections": 71,
+  "chunks": 95,
+  "chunk_chars": {
+    "min": 149,
+    "max": 1314,
+    "avg": 638
+  },
+  "by_scope": {
+    "adjacent": 13,
+    "in-scope": 32,
+    "out-of-scope": 50
+  },
+  "by_category": {
+    "general": 9,
+    "setup": 9,
+    "song-loading": 13,
+    "advanced": 50,
+    "audio-output": 13,
+    "subscription": 1
+  },
+  "images": 43,
+  "images_in_chunks": 43,
+  "images_without_file": 0,
+  "extracted_text_chars": 56513,
+  "chunk_list": [
+    {
+      "id": "playback-user-guide:playback-user-guide:1",
+      "chars": 408,
+      "scope": "adjacent",
+      "category": "general",
+      "images": 1,
+      "path": "Playback User Guide"
+    },
+    {
+      "id": "playback-user-guide:playback-user-guide-app-overview:1",
+      "chars": 327,
+      "scope": "in-scope",
+      "category": "setup",
+      "images": 0,
+      "path": "Playback User Guide > App Overview"
+    },
+    {
+      "id": "playback-user-guide:login-requirements-general-login-requirements:1",
+      "chars": 606,
+      "scope": "in-scope",
+      "category": "setup",
+      "images": 0,
+      "path": "Playback User Guide > App Overview > Login Requirements > General Login Requirements"
+    },
+    {
+      "id": "playback-user-guide:login-requirements-organizations-vs-users:1",
+      "chars": 869,
+      "scope": "in-scope",
+      "category": "setup",
+      "images": 0,
+      "path": "Playback User Guide > App Overview > Login Requirements > Organizations vs. Users"
+    },
+    {
+      "id": "playback-user-guide:login-requirements-organizational-content-permissions:1",
+      "chars": 706,
+      "scope": "in-scope",
+      "category": "setup",
+      "images": 1,
+      "path": "Playback User Guide > App Overview > Login Requirements > Organizational Content Permissions"
+    },
+    {
+      "id": "playback-user-guide:playback-user-guide-user-interface-overview:1",
+      "chars": 149,
+      "scope": "in-scope",
+      "category": "setup",
+      "images": 0,
+      "path": "Playback User Guide > User Interface Overview"
+    },
+    {
+      "id": "playback-user-guide:user-interface-overview-transport-controls:1",
+      "chars": 188,
+      "scope": "in-scope",
+      "category": "setup",
+      "images": 1,
+      "path": "Playback User Guide > User Interface Overview > Transport Controls"
+    },
+    {
+      "id": "playback-user-guide:transport-controls-transport-controls-explained:1",
+      "chars": 565,
+      "scope": "in-scope",
+      "category": "setup",
+      "images": 0,
+      "path": "Playback User Guide > User Interface Overview > Transport Controls > Transport Controls Explained"
+    },
+    {
+      "id": "playback-user-guide:user-interface-overview-setlist-song-tiles:1",
+      "chars": 553,
+      "scope": "in-scope",
+      "category": "setup",
+      "images": 2,
+      "path": "Playback User Guide > User Interface Overview > Setlist Song Tiles"
+    },
+    {
+      "id": "playback-user-guide:user-interface-overview-tracks-buses-pad-player:1",
+      "chars": 355,
+      "scope": "in-scope",
+      "category": "setup",
+      "images": 2,
+      "path": "Playback User Guide > User Interface Overview > Tracks/Buses/Pad Player"
+    },
+    {
+      "id": "playback-user-guide:playback-user-guide-building-a-setlist:1",
+      "chars": 506,
+      "scope": "in-scope",
+      "category": "song-loading",
+      "images": 0,
+      "path": "Playback User Guide > Building a Setlist"
+    },
+    {
+      "id": "playback-user-guide:building-a-setlist-adding-a-song-in-playback:1",
+      "chars": 318,
+      "scope": "in-scope",
+      "category": "song-loading",
+      "images": 1,
+      "path": "Playback User Guide > Building a Setlist > Adding A Song in Playback"
+    },
+    {
+      "id": "playback-user-guide:adding-a-song-in-playback-options-in-the-add-a-song-menu:1",
+      "chars": 1106,
+      "scope": "in-scope",
+      "category": "song-loading",
+      "images": 0,
+      "path": "Playback User Guide > Building a Setlist > Adding A Song in Playback > Options in the Add a Song menu"
+    },
+    {
+      "id": "playback-user-guide:adding-a-song-in-playback-options-in-the-add-a-song-menu:2",
+      "chars": 751,
+      "scope": "in-scope",
+      "category": "song-loading",
+      "images": 0,
+      "path": "Playback User Guide > Building a Setlist > Adding A Song in Playback > Options in the Add a Song menu"
+    },
+    {
+      "id": "playback-user-guide:building-a-setlist-adding-a-song:1",
+      "chars": 276,
+      "scope": "in-scope",
+      "category": "song-loading",
+      "images": 1,
+      "path": "Playback User Guide > Building a Setlist > Adding a song"
+    },
+    {
+      "id": "playback-user-guide:adding-a-song-settings-available-when-adding-a-song:1",
+      "chars": 1069,
+      "scope": "in-scope",
+      "category": "song-loading",
+      "images": 0,
+      "path": "Playback User Guide > Building a Setlist > Adding a song > Settings available when adding a song:"
+    },
+    {
+      "id": "playback-user-guide:adding-a-song-settings-available-when-adding-a-song:2",
+      "chars": 965,
+      "scope": "in-scope",
+      "category": "song-loading",
+      "images": 0,
+      "path": "Playback User Guide > Building a Setlist > Adding a song > Settings available when adding a song:"
+    },
+    {
+      "id": "playback-user-guide:adding-a-song-settings-available-when-adding-a-song:3",
+      "chars": 659,
+      "scope": "in-scope",
+      "category": "song-loading",
+      "images": 0,
+      "path": "Playback User Guide > Building a Setlist > Adding a song > Settings available when adding a song:"
+    },
+    {
+      "id": "playback-user-guide:the-setlists-menu-how-to-use-setlists-video-guide:1",
+      "chars": 534,
+      "scope": "in-scope",
+      "category": "song-loading",
+      "images": 0,
+      "path": "Playback User Guide > Building a Setlist > The Setlists Menu > How to Use Setlists | Video Guide"
+    },
+    {
+      "id": "playback-user-guide:the-setlists-menu-navigating-the-setlists-menu:1",
+      "chars": 919,
+      "scope": "in-scope",
+      "category": "song-loading",
+      "images": 1,
+      "path": "Playback User Guide > Building a Setlist > The Setlists Menu > Navigating the Setlists menu"
+    },
+    {
+      "id": "playback-user-guide:the-setlists-menu-navigating-the-setlists-menu:2",
+      "chars": 591,
+      "scope": "in-scope",
+      "category": "song-loading",
+      "images": 1,
+      "path": "Playback User Guide > Building a Setlist > The Setlists Menu > Navigating the Setlists menu"
+    },
+    {
+      "id": "playback-user-guide:building-a-setlist-setlist-data-management-in-playback:1",
+      "chars": 661,
+      "scope": "in-scope",
+      "category": "song-loading",
+      "images": 3,
+      "path": "Playback User Guide > Building a Setlist > Setlist Data Management in Playback"
+    },
+    {
+      "id": "playback-user-guide:building-a-setlist-setlist-data-management-in-playback:2",
+      "chars": 648,
+      "scope": "in-scope",
+      "category": "song-loading",
+      "images": 1,
+      "path": "Playback User Guide > Building a Setlist > Setlist Data Management in Playback"
+    },
+    {
+      "id": "playback-user-guide:playback-user-guide-customizing-setlists:1",
+      "chars": 275,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 0,
+      "path": "Playback User Guide > Customizing Setlists"
+    },
+    {
+      "id": "playback-user-guide:customizing-setlists-playback-edit-modes-overview:1",
+      "chars": 410,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 1,
+      "path": "Playback User Guide > Customizing Setlists > Playback Edit Modes: Overview"
+    },
+    {
+      "id": "playback-user-guide:customizing-setlists-playback-edit-modes-overview:2",
+      "chars": 1070,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 0,
+      "path": "Playback User Guide > Customizing Setlists > Playback Edit Modes: Overview"
+    },
+    {
+      "id": "playback-user-guide:customizing-setlists-playback-edit-modes-overview:3",
+      "chars": 247,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 0,
+      "path": "Playback User Guide > Customizing Setlists > Playback Edit Modes: Overview"
+    },
+    {
+      "id": "playback-user-guide:customizing-setlists-setlist-song-map-edit-mode:1",
+      "chars": 320,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 1,
+      "path": "Playback User Guide > Customizing Setlists > Setlist / Song Map Edit Mode"
+    },
+    {
+      "id": "playback-user-guide:customizing-setlists-setlist-song-map-edit-mode:2",
+      "chars": 1077,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 0,
+      "path": "Playback User Guide > Customizing Setlists > Setlist / Song Map Edit Mode"
+    },
+    {
+      "id": "playback-user-guide:customizing-setlists-setlist-song-map-edit-mode:3",
+      "chars": 998,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 0,
+      "path": "Playback User Guide > Customizing Setlists > Setlist / Song Map Edit Mode"
+    },
+    {
+      "id": "playback-user-guide:setlist-song-map-edit-mode-transitions:1",
+      "chars": 1089,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 1,
+      "path": "Playback User Guide > Customizing Setlists > Setlist / Song Map Edit Mode > Transitions"
+    },
+    {
+      "id": "playback-user-guide:setlist-song-map-edit-mode-transitions:2",
+      "chars": 212,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 0,
+      "path": "Playback User Guide > Customizing Setlists > Setlist / Song Map Edit Mode > Transitions"
+    },
+    {
+      "id": "playback-user-guide:setlist-song-map-edit-mode-edit-song-menu:1",
+      "chars": 972,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 1,
+      "path": "Playback User Guide > Customizing Setlists > Setlist / Song Map Edit Mode > Edit Song Menu"
+    },
+    {
+      "id": "playback-user-guide:setlist-song-map-edit-mode-edit-song-menu:2",
+      "chars": 964,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 0,
+      "path": "Playback User Guide > Customizing Setlists > Setlist / Song Map Edit Mode > Edit Song Menu"
+    },
+    {
+      "id": "playback-user-guide:setlist-song-map-edit-mode-edit-song-menu:3",
+      "chars": 942,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 0,
+      "path": "Playback User Guide > Customizing Setlists > Setlist / Song Map Edit Mode > Edit Song Menu"
+    },
+    {
+      "id": "playback-user-guide:setlist-song-map-edit-mode-edit-song-menu:4",
+      "chars": 907,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 0,
+      "path": "Playback User Guide > Customizing Setlists > Setlist / Song Map Edit Mode > Edit Song Menu"
+    },
+    {
+      "id": "playback-user-guide:setlist-song-map-edit-mode-edit-song-menu:5",
+      "chars": 319,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 1,
+      "path": "Playback User Guide > Customizing Setlists > Setlist / Song Map Edit Mode > Edit Song Menu"
+    },
+    {
+      "id": "playback-user-guide:setlist-song-map-edit-mode-edit-song-section-menu-new:1",
+      "chars": 695,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 0,
+      "path": "Playback User Guide > Customizing Setlists > Setlist / Song Map Edit Mode > Edit Song Section Menu (NEW)"
+    },
+    {
+      "id": "playback-user-guide:midi-cues-edit-mode-video-overview:1",
+      "chars": 612,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 1,
+      "path": "Playback User Guide > Customizing Setlists > MIDI Cues Edit Mode > Video Overview"
+    },
+    {
+      "id": "playback-user-guide:midi-cues-edit-mode-add-midi-cue-menu:1",
+      "chars": 1000,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 1,
+      "path": "Playback User Guide > Customizing Setlists > MIDI Cues Edit Mode > Add MIDI Cue Menu"
+    },
+    {
+      "id": "playback-user-guide:midi-cues-edit-mode-add-midi-cue-menu:2",
+      "chars": 444,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 0,
+      "path": "Playback User Guide > Customizing Setlists > MIDI Cues Edit Mode > Add MIDI Cue Menu"
+    },
+    {
+      "id": "playback-user-guide:midi-cues-edit-mode-editing-midi-cues:1",
+      "chars": 674,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 1,
+      "path": "Playback User Guide > Customizing Setlists > MIDI Cues Edit Mode > Editing MIDI Cues"
+    },
+    {
+      "id": "playback-user-guide:midi-cues-edit-mode-copy-and-paste-cues:1",
+      "chars": 579,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 1,
+      "path": "Playback User Guide > Customizing Setlists > MIDI Cues Edit Mode > Copy and Paste Cues"
+    },
+    {
+      "id": "playback-user-guide:midi-cues-edit-mode-add-cues-while-playing:1",
+      "chars": 749,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 0,
+      "path": "Playback User Guide > Customizing Setlists > MIDI Cues Edit Mode > Add Cues while Playing"
+    },
+    {
+      "id": "playback-user-guide:midi-cues-edit-mode-saving-midi-cues:1",
+      "chars": 626,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 1,
+      "path": "Playback User Guide > Customizing Setlists > MIDI Cues Edit Mode > Saving MIDI Cues"
+    },
+    {
+      "id": "playback-user-guide:midi-cues-edit-mode-who-can-save-midi-cues-to-the-cloud:1",
+      "chars": 563,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 0,
+      "path": "Playback User Guide > Customizing Setlists > MIDI Cues Edit Mode > Who can save MIDI Cues to the Cloud?"
+    },
+    {
+      "id": "playback-user-guide:customizing-setlists-automation-edit-mode:1",
+      "chars": 387,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 0,
+      "path": "Playback User Guide > Customizing Setlists > Automation Edit Mode"
+    },
+    {
+      "id": "playback-user-guide:customizing-setlists-midi-and-keyboard-mapping-edit-mode:1",
+      "chars": 452,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 0,
+      "path": "Playback User Guide > Customizing Setlists > MIDI & Keyboard Mapping Edit Mode"
+    },
+    {
+      "id": "playback-user-guide:midi-and-keyboard-mapping-edit-mode-mapping-a-midi-controlle:1",
+      "chars": 661,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 2,
+      "path": "Playback User Guide > Customizing Setlists > MIDI & Keyboard Mapping Edit Mode > Mapping a MIDI Controller to Playback"
+    },
+    {
+      "id": "playback-user-guide:midi-and-keyboard-mapping-edit-mode-song-position-mapping:1",
+      "chars": 683,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 0,
+      "path": "Playback User Guide > Customizing Setlists > MIDI & Keyboard Mapping Edit Mode > Song Position Mapping"
+    },
+    {
+      "id": "playback-user-guide:midi-and-keyboard-mapping-edit-mode-live-reorder-controls:1",
+      "chars": 954,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 1,
+      "path": "Playback User Guide > Customizing Setlists > MIDI & Keyboard Mapping Edit Mode > Live ReOrder Controls"
+    },
+    {
+      "id": "playback-user-guide:cloud-song-sections-edit-mode-video-overview:1",
+      "chars": 600,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 0,
+      "path": "Playback User Guide > Customizing Setlists > Cloud Song Sections Edit Mode > Video Overview"
+    },
+    {
+      "id": "playback-user-guide:cloud-song-sections-edit-mode-add-song-section-markers:1",
+      "chars": 1034,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 3,
+      "path": "Playback User Guide > Customizing Setlists > Cloud Song Sections Edit Mode > Add Song Section Markers"
+    },
+    {
+      "id": "playback-user-guide:cloud-song-sections-edit-mode-moving-a-song-section-marker:1",
+      "chars": 603,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 2,
+      "path": "Playback User Guide > Customizing Setlists > Cloud Song Sections Edit Mode > Moving a Song Section Marker"
+    },
+    {
+      "id": "playback-user-guide:cloud-song-sections-edit-mode-saving-cloud-song-section-mark:1",
+      "chars": 410,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 0,
+      "path": "Playback User Guide > Customizing Setlists > Cloud Song Sections Edit Mode > Saving Cloud Song Section Markers"
+    },
+    {
+      "id": "playback-user-guide:customizing-setlists-smpte-edit-mode:1",
+      "chars": 235,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 0,
+      "path": "Playback User Guide > Customizing Setlists > SMPTE Edit Mode"
+    },
+    {
+      "id": "playback-user-guide:playback-user-guide-playback-remote:1",
+      "chars": 412,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 0,
+      "path": "Playback User Guide > Playback Remote"
+    },
+    {
+      "id": "playback-user-guide:playback-user-guide-playback-settings:1",
+      "chars": 329,
+      "scope": "adjacent",
+      "category": "general",
+      "images": 1,
+      "path": "Playback User Guide > Playback Settings"
+    },
+    {
+      "id": "playback-user-guide:playback-settings-side-menu-settings-and-features:1",
+      "chars": 1066,
+      "scope": "in-scope",
+      "category": "audio-output",
+      "images": 1,
+      "path": "Playback User Guide > Playback Settings > Side Menu: Settings & Features"
+    },
+    {
+      "id": "playback-user-guide:playback-settings-general-settings-tab:1",
+      "chars": 905,
+      "scope": "in-scope",
+      "category": "audio-output",
+      "images": 1,
+      "path": "Playback User Guide > Playback Settings > General Settings Tab"
+    },
+    {
+      "id": "playback-user-guide:playback-settings-general-settings-tab:2",
+      "chars": 1049,
+      "scope": "in-scope",
+      "category": "audio-output",
+      "images": 0,
+      "path": "Playback User Guide > Playback Settings > General Settings Tab"
+    },
+    {
+      "id": "playback-user-guide:playback-settings-general-settings-tab:3",
+      "chars": 943,
+      "scope": "in-scope",
+      "category": "audio-output",
+      "images": 0,
+      "path": "Playback User Guide > Playback Settings > General Settings Tab"
+    },
+    {
+      "id": "playback-user-guide:playback-settings-general-settings-tab:4",
+      "chars": 531,
+      "scope": "in-scope",
+      "category": "audio-output",
+      "images": 0,
+      "path": "Playback User Guide > Playback Settings > General Settings Tab"
+    },
+    {
+      "id": "playback-user-guide:playback-settings-tracks-settings-tab:1",
+      "chars": 527,
+      "scope": "in-scope",
+      "category": "audio-output",
+      "images": 1,
+      "path": "Playback User Guide > Playback Settings > Tracks Settings Tab"
+    },
+    {
+      "id": "playback-user-guide:playback-settings-buses-settings-tab:1",
+      "chars": 1314,
+      "scope": "in-scope",
+      "category": "audio-output",
+      "images": 1,
+      "path": "Playback User Guide > Playback Settings > Buses Settings Tab"
+    },
+    {
+      "id": "playback-user-guide:playback-settings-midi-settings-tab:1",
+      "chars": 811,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 0,
+      "path": "Playback User Guide > Playback Settings > MIDI Settings Tab"
+    },
+    {
+      "id": "playback-user-guide:midi-settings-tab-midi-clock:1",
+      "chars": 608,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 1,
+      "path": "Playback User Guide > Playback Settings > MIDI Settings Tab > MIDI Clock"
+    },
+    {
+      "id": "playback-user-guide:playback-settings-about-tab:1",
+      "chars": 931,
+      "scope": "adjacent",
+      "category": "subscription",
+      "images": 2,
+      "path": "Playback User Guide > Playback Settings > About Tab"
+    },
+    {
+      "id": "playback-user-guide:playback-user-guide-setting-up-audio-and-midi:1",
+      "chars": 546,
+      "scope": "in-scope",
+      "category": "audio-output",
+      "images": 0,
+      "path": "Playback User Guide > Setting up Audio and MIDI"
+    },
+    {
+      "id": "playback-user-guide:setting-up-audio-and-midi-choosing-an-audio-interface:1",
+      "chars": 365,
+      "scope": "in-scope",
+      "category": "audio-output",
+      "images": 0,
+      "path": "Playback User Guide > Setting up Audio and MIDI > Choosing an Audio Interface"
+    },
+    {
+      "id": "playback-user-guide:setting-up-audio-and-midi-connecting-midi-devices-for-contro:1",
+      "chars": 378,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 0,
+      "path": "Playback User Guide > Setting up Audio and MIDI > Connecting MIDI Devices for control"
+    },
+    {
+      "id": "playback-user-guide:setting-up-audio-and-midi-audio-routing-premium-feature:1",
+      "chars": 224,
+      "scope": "in-scope",
+      "category": "audio-output",
+      "images": 0,
+      "path": "Playback User Guide > Setting up Audio and MIDI > Audio Routing (Premium Feature)"
+    },
+    {
+      "id": "playback-user-guide:playback-user-guide-redundancy-mode:1",
+      "chars": 485,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 0,
+      "path": "Playback User Guide > Redundancy Mode"
+    },
+    {
+      "id": "playback-user-guide:playback-user-guide-redundancy-mode:2",
+      "chars": 962,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 0,
+      "path": "Playback User Guide > Redundancy Mode"
+    },
+    {
+      "id": "playback-user-guide:playback-user-guide-smpte:1",
+      "chars": 399,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 1,
+      "path": "Playback User Guide > SMPTE"
+    },
+    {
+      "id": "playback-user-guide:playback-user-guide-live-performance:1",
+      "chars": 194,
+      "scope": "adjacent",
+      "category": "general",
+      "images": 0,
+      "path": "Playback User Guide > Live Performance"
+    },
+    {
+      "id": "playback-user-guide:live-performance-live-transport-control-starting-and-stoppin:1",
+      "chars": 296,
+      "scope": "adjacent",
+      "category": "general",
+      "images": 0,
+      "path": "Playback User Guide > Live Performance > Live Transport Control: Starting and Stopping Songs"
+    },
+    {
+      "id": "playback-user-guide:live-performance-live-transport-control-starting-and-stoppin:2",
+      "chars": 960,
+      "scope": "adjacent",
+      "category": "general",
+      "images": 0,
+      "path": "Playback User Guide > Live Performance > Live Transport Control: Starting and Stopping Songs"
+    },
+    {
+      "id": "playback-user-guide:live-performance-live-transport-control-starting-and-stoppin:3",
+      "chars": 268,
+      "scope": "adjacent",
+      "category": "general",
+      "images": 0,
+      "path": "Playback User Guide > Live Performance > Live Transport Control: Starting and Stopping Songs"
+    },
+    {
+      "id": "playback-user-guide:live-performance-setlist-row-navigating-the-setlist:1",
+      "chars": 662,
+      "scope": "adjacent",
+      "category": "general",
+      "images": 0,
+      "path": "Playback User Guide > Live Performance > Setlist Row: Navigating the Setlist"
+    },
+    {
+      "id": "playback-user-guide:live-performance-waveform-navigating-the-song:1",
+      "chars": 653,
+      "scope": "adjacent",
+      "category": "general",
+      "images": 0,
+      "path": "Playback User Guide > Live Performance > Waveform: Navigating the Song"
+    },
+    {
+      "id": "playback-user-guide:live-performance-tracks-buses-mixer-controlling-your-tracks:1",
+      "chars": 827,
+      "scope": "adjacent",
+      "category": "audio-output",
+      "images": 0,
+      "path": "Playback User Guide > Live Performance > Tracks/Buses Mixer: Controlling Your Tracks"
+    },
+    {
+      "id": "playback-user-guide:live-performance-tracks-buses-mixer-controlling-your-tracks:2",
+      "chars": 986,
+      "scope": "adjacent",
+      "category": "audio-output",
+      "images": 0,
+      "path": "Playback User Guide > Live Performance > Tracks/Buses Mixer: Controlling Your Tracks"
+    },
+    {
+      "id": "playback-user-guide:live-performance-tracks-buses-mixer-controlling-your-tracks:3",
+      "chars": 809,
+      "scope": "adjacent",
+      "category": "audio-output",
+      "images": 0,
+      "path": "Playback User Guide > Live Performance > Tracks/Buses Mixer: Controlling Your Tracks"
+    },
+    {
+      "id": "playback-user-guide:playback-user-guide-pad-player-using-the-interface:1",
+      "chars": 490,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 0,
+      "path": "Playback User Guide > Pad Player: Using the Interface"
+    },
+    {
+      "id": "playback-user-guide:playback-user-guide-playback-sync:1",
+      "chars": 494,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 0,
+      "path": "Playback User Guide > Playback Sync"
+    },
+    {
+      "id": "playback-user-guide:playback-user-guide-playback-sync:2",
+      "chars": 794,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 0,
+      "path": "Playback User Guide > Playback Sync"
+    },
+    {
+      "id": "playback-user-guide:playback-sync-live-navigation-console-buttons:1",
+      "chars": 957,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 0,
+      "path": "Playback User Guide > Playback Sync > Live Navigation: Console Buttons"
+    },
+    {
+      "id": "playback-user-guide:playback-sync-live-navigation-keyboard-shortcuts-mac-only:1",
+      "chars": 833,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 1,
+      "path": "Playback User Guide > Playback Sync > Live Navigation: Keyboard Shortcuts (Mac Only)"
+    },
+    {
+      "id": "playback-user-guide:playback-user-guide-playback-named-arrangements:1",
+      "chars": 506,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 0,
+      "path": "Playback User Guide > Playback Named Arrangements"
+    },
+    {
+      "id": "playback-user-guide:playback-named-arrangements-managing-named-arrangements:1",
+      "chars": 674,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 0,
+      "path": "Playback User Guide > Playback Named Arrangements > Managing Named Arrangements"
+    },
+    {
+      "id": "playback-user-guide:playback-named-arrangements-saving-named-arrangements:1",
+      "chars": 658,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 0,
+      "path": "Playback User Guide > Playback Named Arrangements > Saving Named Arrangements"
+    },
+    {
+      "id": "playback-user-guide:playback-named-arrangements-loading-named-arrangements:1",
+      "chars": 605,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 0,
+      "path": "Playback User Guide > Playback Named Arrangements > Loading Named Arrangements"
+    },
+    {
+      "id": "playback-user-guide:playback-named-arrangements-restoring-named-arrangements:1",
+      "chars": 385,
+      "scope": "out-of-scope",
+      "category": "advanced",
+      "images": 0,
+      "path": "Playback User Guide > Playback Named Arrangements > Restoring Named Arrangements"
+    },
+    {
+      "id": "playback-user-guide:playback-user-guide-conclusion-and-faqs:1",
+      "chars": 285,
+      "scope": "adjacent",
+      "category": "general",
+      "images": 0,
+      "path": "Playback User Guide > Conclusion and FAQs"
+    }
+  ]
+}
