@@ -33,7 +33,7 @@ export function buildToolDefinitions(opts: { serverUrl: string; secret?: string 
         platform: { type: "string", description: "Caller's platform if known: iOS, iPadOS, macOS, Windows." },
       },
       ["query"],
-      "Let me check the documentation on that."
+      "Absolutely, let me pull that up. One moment please."
     ),
     fn(
       "get_current_playback_app_info",
@@ -68,7 +68,7 @@ export function buildToolDefinitions(opts: { serverUrl: string; secret?: string 
       "Check whether a simulated support team can take a transfer right now. Call this when the caller asks for a human or when documented steps are exhausted.",
       { teamId: { type: "string", enum: ["playback-support", "billing"], description: "Team to check. Defaults to all." } },
       [],
-      "Let me see who's available."
+      "Of course. Let me see who's available. One moment please."
     ),
     fn(
       "get_callback_slots",
@@ -102,7 +102,7 @@ export function buildToolDefinitions(opts: { serverUrl: string; secret?: string 
       "Start the simulated handoff to a support team. Only call after check_team_availability says the team can transfer now. On success, announce the transfer, say a brief goodbye, then end the call.",
       { teamId: { type: "string", enum: ["playback-support", "billing"] } },
       ["teamId"],
-      "Connecting you now."
+      "I'll transfer you to our support team. One moment please."
     ),
     { type: "endCall" },
   ];
