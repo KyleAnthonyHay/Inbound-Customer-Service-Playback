@@ -61,6 +61,25 @@ export function isRemoteHangup(raw: string): boolean {
 }
 
 /**
+ * After a server-side hang-up the Vapi SDK tears the Daily room down with
+ * `cleanup().catch(console.error)`, and Daily rejects that with the same
+ * "Meeting ended due to ejection" error we already handled on the `error`
+ * event. In dev, Next.js turns that console.error into a full error overlay.
+ * While a call is live, drop console.error calls that are only that message;
+ * everything else passes through untouched. Returns a restore function.
+ */
+function muteRemoteHangupConsoleErrors(): () => void {
+  const original = console.error;
+  console.error = (...args: unknown[]) => {
+    if (args.some((a) => isRemoteHangup(errorText(a)))) return;
+    original(...args);
+  };
+  return () => {
+    if (console.error !== original) console.error = original;
+  };
+}
+
+/**
  * The SDK's error event is not one shape: a string, an Error, or
  * { type: "daily-error", error: { type, msg, errorMsg, details } }. Always
  * return a string; rendering the raw object crashed the activity panel.
@@ -112,6 +131,7 @@ export function useVapiCall() {
   const toolStartTimes = useRef<Map<string, number>>(new Map());
   const toolNames = useRef<Map<string, string>>(new Map());
   const backstopRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const unmuteConsoleRef = useRef<(() => void) | null>(null);
   /** Vapi's status-update "ended" usually lands before Daily's left-meeting, so keep the reason for the "Call ended" row. */
   const endedReasonRef = useRef<string | null>(null);
   const [handoff, setHandoff] = useState<Handoff | null>(null);
@@ -275,6 +295,10 @@ export function useVapiCall() {
       });
       vapi.on("call-end", () => {
         if (backstopRef.current) clearTimeout(backstopRef.current);
+        // The SDK's cleanup runs right after call-end; give it a moment before restoring.
+        const unmute = unmuteConsoleRef.current;
+        unmuteConsoleRef.current = null;
+        if (unmute) setTimeout(unmute, 2000);
         settleThinking();
         void playCue("hangup");
         setStatus("ended");
@@ -299,6 +323,9 @@ export function useVapiCall() {
         settleRunning("failed");
         pushEvent({ kind: "error", label: "Error", detail: msg, status: "failed" });
       });
+
+      unmuteConsoleRef.current?.();
+      unmuteConsoleRef.current = muteRemoteHangupConsoleErrors();
 
       let call: { id?: string } | null = null;
       if (config.vapiAssistantId) {
@@ -336,6 +363,8 @@ export function useVapiCall() {
   useEffect(() => {
     return () => {
       if (backstopRef.current) clearTimeout(backstopRef.current);
+      unmuteConsoleRef.current?.();
+      unmuteConsoleRef.current = null;
       vapiRef.current?.stop();
     };
   }, []);
