@@ -104,9 +104,7 @@ function StatusBar({ inCall }: { inCall: boolean }) {
           <rect x="10.4" y="3" width="3.3" height="9" rx="1" /><rect x="15.6" y="0" width="3.3" height="12" rx="1" opacity="0.3" />
         </svg>
         <span className="text-[15px] font-semibold leading-none text-white">5G<span className="relative -top-[4px] text-[7px] font-bold leading-none">UW</span></span>
-        <span className="relative flex h-[13px] w-[27px] items-center justify-center rounded-[4px] bg-[#30d158] text-[11px] font-bold leading-none text-black" aria-label="Battery 44%, charging">
-          44
-          <svg className="absolute -right-[1px] top-[2px]" width="6" height="9" viewBox="0 0 6 9" fill="#fff" aria-hidden><path d="M3.6 0 0 5h2.4L2.2 9 6 3.8H3.4z" /></svg>
+        <span className="relative block h-[13px] w-[27px] rounded-[4px] bg-white" aria-label="Battery full">
           <span className="absolute -right-[3px] top-1/2 h-[4px] w-[1.5px] -translate-y-1/2 rounded-r bg-white/40" />
         </span>
       </span>
