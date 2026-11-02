@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/cn";
 import type { CallStatus } from "@/lib/useVapiCall";
+import { playDtmf } from "@/lib/cues";
 
 /**
  * iOS Phone in-call screen, measured from a 1320x2868 (440x956 pt) recording.
@@ -217,6 +218,7 @@ export function CallScreen({
   }
 
   const digit = (d: string) => {
+    playDtmf(d);
     setTyped((t) => (t + d).slice(-20));
     onKeypadDigit?.(d);
   };
@@ -241,7 +243,13 @@ export function CallScreen({
         <p className="absolute inset-x-0 top-[118px] text-center text-[34px] font-semibold leading-[44px] tracking-[0.01em] tabular-nums">{typed}</p>
       ) : (
         <>
-          <p className="absolute inset-x-0 top-[119px] text-center text-[22px] font-normal leading-[27px] tabular-nums text-[#8b8b8f]" aria-live="polite">
+          <p
+            className={cn(
+              "absolute inset-x-0 top-[119px] text-center text-[22px] font-normal leading-[27px] tabular-nums text-[#8b8b8f]",
+              status === "connecting" && "motion-safe:animate-pulse"
+            )}
+            aria-live="polite"
+          >
             {topLine}
           </p>
           <h1 className="absolute inset-x-0 top-[146px] px-4 text-center text-[34px] font-semibold leading-[44px] tracking-[-0.005em] text-[#e5e5e5]">
