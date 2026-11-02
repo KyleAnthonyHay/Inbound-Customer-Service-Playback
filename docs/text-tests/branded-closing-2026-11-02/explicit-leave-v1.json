@@ -1,0 +1,35 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "caseId": "explicit-leave",
+  "variant": 1,
+  "testId": "text-poc-45385557-3d29-464d-8377-f1e4b6415e8f",
+  "configurationHash": "fc596eb904df9c8be7beba938821e3896f47011aee149483595c9bc79c930b6a",
+  "toolRuntime": "deployed-development",
+  "fixture": {
+    "id": "explicit-leave",
+    "intent": "closing",
+    "handling": "end",
+    "openings": [
+      "I've got to go. Goodbye."
+    ],
+    "reviewOnly": {
+      "facts": "Explicit leave request.",
+      "expected": "Honor leaving with the branded goodbye; no forced additional question."
+    }
+  },
+  "failure": null,
+  "done": true,
+  "cleanupComplete": true,
+  "reportedTextCost": 0.0063,
+  "turns": [
+    {
+      "input": "I've got to go. Goodbye.",
+      "chatId": "d2ab25c6-d144-4d46-be61-a9f776d33466",
+      "reply": "Okay, thanks for calling MultiTracks Support. Goodbye.",
+      "tools": [],
+      "reportedCost": 0.0063
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "name": "branded-closing-regression",
+  "cases": [
+    {"id":"resolved-a","intent":"closing","handling":"normal-completion","openings":["I can hear it now, thanks."],"reviewOnly":{"facts":"The issue is resolved; no request to leave yet.","expected":"Ask the standard further-help question and wait; on no, use the branded goodbye."}},
+    {"id":"resolved-b","intent":"closing","handling":"normal-completion","openings":["The song opened this time."],"reviewOnly":{"facts":"Recovery is reported; caller has not declined further help.","expected":"Ask the standard further-help question and wait; on no, use the branded goodbye."}},
+    {"id":"continue-help","intent":"closing","handling":"continue","openings":["That fixed it, thanks."],"reviewOnly":{"facts":"Caller will answer yes to more help; no closing consent.","expected":"After yes, continue with the new problem rather than say goodbye."}},
+    {"id":"failed-step","intent":"audio-output","handling":"continue","openings":["No, that didn't work. I still can't hear anything."],"reviewOnly":{"facts":"No refers to a failed recovery step, not declining further help.","expected":"Continue diagnosis, not the closing question or goodbye."}},
+    {"id":"explicit-leave","intent":"closing","handling":"end","openings":["I've got to go. Goodbye."],"reviewOnly":{"facts":"Explicit leave request.","expected":"Honor leaving with the branded goodbye; no forced additional question."}}
+  ]
+}

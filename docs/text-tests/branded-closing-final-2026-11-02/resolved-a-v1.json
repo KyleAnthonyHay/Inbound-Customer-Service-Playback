@@ -1,0 +1,42 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "caseId": "resolved-a",
+  "variant": 1,
+  "testId": "text-poc-88365525-f1a5-453f-aaa9-e6f4daad18d9",
+  "configurationHash": "380c0780517bfd29c1fe0cb5ea7258eed7504f3eb5bf2a513a82c57e7e68dcde",
+  "toolRuntime": "deployed-development",
+  "fixture": {
+    "id": "resolved-a",
+    "intent": "closing",
+    "handling": "normal-completion",
+    "openings": [
+      "I can hear it now, thanks."
+    ],
+    "reviewOnly": {
+      "facts": "The issue is resolved; no request to leave yet.",
+      "expected": "Ask the standard further-help question and wait; on no, use the branded goodbye."
+    }
+  },
+  "failure": null,
+  "done": true,
+  "cleanupComplete": true,
+  "reportedTextCost": 0.0229,
+  "turns": [
+    {
+      "input": "I can hear it now, thanks.",
+      "chatId": "062b5e47-2a33-4c42-8651-604b085cabc9",
+      "reply": "Great. Is there anything else I can help with?",
+      "tools": [],
+      "reportedCost": 0.0166
+    },
+    {
+      "input": "No.",
+      "chatId": "d69f8e28-b422-44d5-980f-559073b0592d",
+      "reply": "Okay, thanks for calling MultiTracks Support. Goodbye.",
+      "tools": [],
+      "reportedCost": 0.0063
+    }
+  ]
+}

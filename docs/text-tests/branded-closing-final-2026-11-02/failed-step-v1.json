@@ -1,0 +1,42 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "caseId": "failed-step",
+  "variant": 1,
+  "testId": "text-poc-6d3ef534-924c-44b3-957f-b09234347b97",
+  "configurationHash": "380c0780517bfd29c1fe0cb5ea7258eed7504f3eb5bf2a513a82c57e7e68dcde",
+  "toolRuntime": "deployed-development",
+  "fixture": {
+    "id": "failed-step",
+    "intent": "audio-output",
+    "handling": "continue",
+    "openings": [
+      "No, that didn't work. I still can't hear anything."
+    ],
+    "reviewOnly": {
+      "facts": "No refers to a failed recovery step, not declining further help.",
+      "expected": "Continue diagnosis, not the closing question or goodbye."
+    }
+  },
+  "failure": null,
+  "done": true,
+  "cleanupComplete": true,
+  "reportedTextCost": 0.0137,
+  "turns": [
+    {
+      "input": "No, that didn't work. I still can't hear anything.",
+      "chatId": "f195ec3a-733f-4920-80dd-cd1efb2e0894",
+      "reply": "Where are you expecting to hear the sound from when Playback is playing?",
+      "tools": [],
+      "reportedCost": 0.0066
+    },
+    {
+      "input": "No.",
+      "chatId": "302f1a08-b0a3-4563-a393-56f647ce209a",
+      "reply": "What device are you running Playback on?",
+      "tools": [],
+      "reportedCost": 0.0071
+    }
+  ]
+}

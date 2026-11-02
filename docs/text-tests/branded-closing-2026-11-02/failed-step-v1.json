@@ -1,0 +1,35 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "caseId": "failed-step",
+  "variant": 1,
+  "testId": "text-poc-455e2b62-c6fb-426a-8b25-8d40c4a237e2",
+  "configurationHash": "fc596eb904df9c8be7beba938821e3896f47011aee149483595c9bc79c930b6a",
+  "toolRuntime": "deployed-development",
+  "fixture": {
+    "id": "failed-step",
+    "intent": "audio-output",
+    "handling": "continue",
+    "openings": [
+      "No, that didn't work. I still can't hear anything."
+    ],
+    "reviewOnly": {
+      "facts": "No refers to a failed recovery step, not declining further help.",
+      "expected": "Continue diagnosis, not the closing question or goodbye."
+    }
+  },
+  "failure": null,
+  "done": true,
+  "cleanupComplete": true,
+  "reportedTextCost": 0.0066,
+  "turns": [
+    {
+      "input": "No, that didn't work. I still can't hear anything.",
+      "chatId": "78696782-8311-4780-a020-ebf53e801183",
+      "reply": "Where are you expecting to hear the sound from, and what do you hear instead?",
+      "tools": [],
+      "reportedCost": 0.0066
+    }
+  ]
+}

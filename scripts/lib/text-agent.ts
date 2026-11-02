@@ -31,7 +31,7 @@ export function textAssistant(env: Env, testId: string) {
       model: reasoner.model,
       reasoningEffort: reasoner.reasoningEffort,
       maxTokens: 600,
-      messages: [{ role: "system", content: reasoner.instructions.replaceAll("{{call.type}}", "text-proof-of-concept").replaceAll("{{customer.number}}", "") + "\nTEXT TEST ADAPTER: This is a text-only reasoning proof of concept. No voice call exists. If the support policy calls for endCall, finish with a brief goodbye instead. All other support and tool rules still apply." }],
+      messages: [{ role: "system", content: reasoner.instructions.replaceAll("{{call.type}}", "text-proof-of-concept").replaceAll("{{customer.number}}", "") + "\nTEXT TEST ADAPTER: This is a text-only reasoning proof of concept. No voice call exists. If the support policy calls for endCall, finish with its prescribed goodbye wording as the final text reply instead. All other support and tool rules still apply." }],
       tools: voice.model.tools.filter(t => t.type === "function"),
     },
   };

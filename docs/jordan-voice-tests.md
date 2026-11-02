@@ -10,6 +10,8 @@ The box is a **Focusrite 4i4**. You don’t have Playback open; if asked somethi
 
 Once the explanation answers your question, respond naturally. When asked whether you need anything else, say “No, that’s everything.”
 
-**Feedback:** Was it easy to understand? Did it help or explain when a specialist was needed? Did the call end naturally?
+**Ending:** It should ask “Is there anything else I can help with?” and wait. When you decline, it should say “Okay, thanks for calling MultiTracks Support. Goodbye.” and disconnect.
+
+**Feedback:** Was it easy to understand? Did it help or explain when a specialist was needed? Did you hear the whole closing line before disconnect?
 
 Transfers are simulated. The ten detailed developer scenarios are separate; you do not need to run them.

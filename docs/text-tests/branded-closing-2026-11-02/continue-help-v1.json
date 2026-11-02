@@ -1,0 +1,42 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "caseId": "continue-help",
+  "variant": 1,
+  "testId": "text-poc-0d01e694-87b7-40cd-a87c-f77875ec7700",
+  "configurationHash": "fc596eb904df9c8be7beba938821e3896f47011aee149483595c9bc79c930b6a",
+  "toolRuntime": "deployed-development",
+  "fixture": {
+    "id": "continue-help",
+    "intent": "closing",
+    "handling": "continue",
+    "openings": [
+      "That fixed it, thanks."
+    ],
+    "reviewOnly": {
+      "facts": "Caller will answer yes to more help; no closing consent.",
+      "expected": "After yes, continue with the new problem rather than say goodbye."
+    }
+  },
+  "failure": null,
+  "done": true,
+  "cleanupComplete": true,
+  "reportedTextCost": 0.0131,
+  "turns": [
+    {
+      "input": "That fixed it, thanks.",
+      "chatId": "83e782a3-3c1d-4b4b-b53f-b17db34e02af",
+      "reply": "Is there anything else I can help with?",
+      "tools": [],
+      "reportedCost": 0.0063
+    },
+    {
+      "input": "Yes, another song won't open.",
+      "chatId": "79f5da16-5bd1-459c-a065-64949a4414a8",
+      "reply": "What’s the name of the song that won’t open?",
+      "tools": [],
+      "reportedCost": 0.0068
+    }
+  ]
+}

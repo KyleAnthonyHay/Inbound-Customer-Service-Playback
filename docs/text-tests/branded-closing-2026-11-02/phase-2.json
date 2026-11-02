@@ -1,0 +1,24 @@
+[
+  {
+    "run": "resolved-a-v1",
+    "input": "No.",
+    "done": true
+  },
+  {
+    "run": "resolved-b-v1",
+    "input": "No thanks, that's all.",
+    "done": true
+  },
+  {
+    "run": "continue-help-v1",
+    "input": "Yes, another song won't open."
+  },
+  {
+    "run": "failed-step-v1",
+    "done": true
+  },
+  {
+    "run": "explicit-leave-v1",
+    "done": true
+  }
+]
