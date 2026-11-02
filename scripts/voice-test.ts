@@ -13,6 +13,7 @@ import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import WebSocket from "ws";
+import { FIRST_MESSAGE } from "../src/lib/assistant";
 
 type Scenario = { name: string; expectedIntent: string; lines: string[]; maxTurnWaitMs?: number };
 
@@ -72,6 +73,11 @@ async function main() {
   // and the next caller lines talked over the agent), so only agent speech heard after the
   // clip counts towards the current turn.
   let clipEndAt = 0;
+  // Vapi only emits the greeting's final transcript once the caller starts speaking, so it
+  // always lands inside the first caller turn. Recognise it by its text and ignore it.
+  const norm = (t: string) => t.toLowerCase().replace(/[^a-z0-9 ]+/g, " ").replace(/\s+/g, " ").trim().split(" ").slice(0, 8).join(" ");
+  const greetingKey = norm(FIRST_MESSAGE);
+  let greetingFinalSeen = false;
   const events: string[] = [];
   const transcript: string[] = [];
   let ended = false;
@@ -106,7 +112,9 @@ async function main() {
           if (countsForThisTurn) assistantEverSpoke = true;
         }
         if (m.transcriptType === "final") {
-          if (countsForThisTurn) {
+          const isGreeting = m.role === "assistant" && !greetingFinalSeen && norm(String(m.transcript)) === greetingKey;
+          if (isGreeting) greetingFinalSeen = true;
+          if (countsForThisTurn && !isGreeting) {
             assistantTextSinceSend += " " + String(m.transcript);
             assistantFinalsSinceSend++;
           }
