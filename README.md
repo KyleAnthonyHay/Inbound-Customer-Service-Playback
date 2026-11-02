@@ -32,8 +32,8 @@ Browser (/call) ──@vapi-ai/web──▶ Vapi (GPT-Live) ──tool-calls─�
       │ live query callEvents.byCall                                    ├─ search_playback_docs            (bounded KB snapshot)
       └──────────────── Convex ◀── callEvents.log ◀─────────────────────┤─ get_current_playback_app_info   (LIVE Apple lookup)
                          │                                              ├─ get_relevant_changes_since_version (Apple + documented notes)
-                         ├─ customers / teams / callbackSlots / callbacks (SIMULATED)
-                         └─ lookup_demo_customer, check_team_availability, get_callback_slots, reserve_callback, initiate_handoff
+                         ├─ organizations / customers / orgSongs / teams / callbackSlots / callbacks (SIMULATED)
+                         └─ lookup_demo_customer, check_song_access, check_team_availability, get_callback_slots, reserve_callback, initiate_handoff
 
 The webhook lives on the Convex deployment, which is public as soon as `npx convex dev`
 runs, so nothing needs deploying or tunnelling to test tools from a real call.
@@ -144,6 +144,28 @@ Transfers, support-team availability, callback slots, and customer records
 are simulated. Bookings are saved in this demo's Convex database only and do
 not reach MultiTracks' real support systems. The activity panel labels each
 event as **Live API**, **Docs**, or **Simulated**.
+
+## Synthetic accounts: organizations, subscriptions, song libraries
+
+Account data is fictional and lives in `src/lib/demo/accounts.ts`, which both the Convex seed and the unit tests (`scripts/test-accounts.ts`) import, so the diagnosis logic is tested on the same rows that get seeded.
+
+- **Lookup key is the six-digit Organization ID**, which Playback shows in Settings > About. The organization is where MultiTracks content is purchased and subscriptions are shared (User Guide, "Organizations vs. Users"), so it is the record that answers "did we buy this song" and "is our Cloud Pro active". Six digits are easy to say and transcribe on a phone call; a spoken email address is not. Email is the fallback for callers without the app open; the `DEMO-1001` customer IDs still work for the older scenarios.
+- `organizations` hold the plan (`Cloud Pro`, `Cloud`, `Rentals`, `Intro`, `none`) and status (`active`, `past-due`, `expired`, `none`) with renewal, expiry, grace-period and rental-credit fields. `customers` carry a primary `orgId` and `memberships` (role plus the Playback Team Sharing and Rentals permissions from the org's People page). `orgSongs` is each organization's Library: purchased songs, rentals with expiry dates, uploaded Cloud Songs.
+- `lookup_demo_customer` (by `orgId`, `email`, `customerId` or `name`) returns the organization, the caller's membership, other organizations they belong to, the library, and a `diagnosis` with a `next` hint: `active`, `past-due`, `expired`, `no-subscription`, `missing-team-sharing`, or `wrong-organization`.
+- `check_song_access` (song title plus the same keys) answers whether that organization can load the tracks: `purchased`, `rental-active`, `cloud-song`, `rental-expired`, `click-guide-only` (subscription but never bought), `not-in-library`, or `blocked-permission`.
+- The reasoner prompt tells the agent to check the account before giving download steps whenever the symptom smells like entitlement ("Unlock with Rental Credit", no tracks option, empty Library, payment warning), and not to run download troubleshooting on a song the organization cannot access.
+
+| Org ID | Organization | Plan / status | Customer | Situation |
+|--------|--------------|---------------|----------|-----------|
+| 480113 | Riverbend Community Church | Cloud Pro, active | DEMO-1001 Jordan Avery (admin), DEMO-1005 Sam Okafor (member, no Team Sharing) | Active subscriber sees "Cloud Pro expired" (software); member blocked by permission; "Living Hope" never purchased |
+| 517204 | Harbor Light Fellowship | Cloud Pro, expired 2026-09-02 | DEMO-1002 Priya Natarajan | Genuinely expired subscription |
+| 362990 | Northgate Worship Collective | Cloud, active | DEMO-1003 Marcus Bell | Healthy; also Olivia's church org |
+| 605781 | Grace Chapel | none | DEMO-1004 Elena Cruz | Purchased songs only; "Way Maker" not in library |
+| 714318 | Cedar Ridge Church | Rentals, active, 0 credits | DEMO-1006 Tasha Reyes | Rental of "Build My Life" expired, no credits left |
+| 829455 | Lakeside Youth Ministry | Cloud Pro, past-due (grace until 2026-11-11) | DEMO-1007 Daniel Kim | Payment failed, features still work |
+| 931027 | Olivia Brennan (personal) | Intro, empty | DEMO-1008 Olivia Brennan | Signed into the wrong organization |
+
+Re-seed with `npx convex run seed:run` (dev) or `npx convex run seed:run --prod`; the seed wipes and re-inserts these tables. Scenarios: `scripts/scenarios/song-not-purchased.json`, `rental-expired-no-credits.json`, `payment-past-due.json`, `missing-team-sharing-permission.json`, `wrong-organization.json`.
 
 ## Testing
 

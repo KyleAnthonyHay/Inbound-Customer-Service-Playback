@@ -5,18 +5,58 @@ import { v } from "convex/values";
  * All data here is SYNTHETIC demo data. Customers, teams, slots, and bookings
  * are fictional and are not connected to MultiTracks' real systems.
  */
+const plan = v.union(
+  v.literal("Cloud Pro"),
+  v.literal("Cloud"),
+  v.literal("Premium"),
+  v.literal("Rentals"),
+  v.literal("Intro"),
+  v.literal("none")
+);
+const subscriptionStatus = v.union(v.literal("active"), v.literal("past-due"), v.literal("expired"), v.literal("none"));
+
 export default defineSchema({
+  /**
+   * The organization is where MultiTracks content is purchased and subscriptions
+   * are shared (Playback User Guide, "Organizations vs. Users"). The six-digit
+   * orgId is what Playback shows in Settings > About and is the lookup key the
+   * agent asks callers for. Data in src/lib/demo/accounts.ts.
+   */
+  organizations: defineTable({
+    orgId: v.string(),
+    name: v.string(),
+    plan,
+    subscriptionStatus,
+    renewsAt: v.optional(v.string()),
+    expiredAt: v.optional(v.string()),
+    pastDueSince: v.optional(v.string()),
+    graceEndsAt: v.optional(v.string()),
+    rentalCredits: v.optional(v.number()),
+    teamSharingSeats: v.optional(v.object({ total: v.number(), used: v.number() })),
+    notes: v.optional(v.string()),
+    simulated: v.literal(true),
+  }).index("by_orgId", ["orgId"]),
+
+  /** A user. Subscription fields mirror the primary organization for older rows and tests. */
   customers: defineTable({
     customerId: v.string(), // e.g. "DEMO-1001"
     name: v.string(),
     email: v.string(),
     organization: v.string(),
-    plan: v.union(v.literal("Cloud Pro"), v.literal("Cloud"), v.literal("none")),
-    subscriptionStatus: v.union(
-      v.literal("active"),
-      v.literal("expired"),
-      v.literal("none")
+    /** Primary organization (organizations.orgId). Optional so rows seeded before this field existed still validate. */
+    orgId: v.optional(v.string()),
+    memberships: v.optional(
+      v.array(
+        v.object({
+          orgId: v.string(),
+          role: v.union(v.literal("Org Admin"), v.literal("Campus Admin"), v.literal("Team Leader"), v.literal("Team Member")),
+          teamSharing: v.boolean(),
+          rentals: v.boolean(),
+        })
+      )
     ),
+    plan,
+    subscriptionStatus,
     renewsAt: v.optional(v.string()), // ISO date, for active plans
     expiredAt: v.optional(v.string()), // ISO date, for expired plans
     entitlements: v.array(v.string()),
@@ -24,7 +64,19 @@ export default defineSchema({
     notes: v.optional(v.string()),
   })
     .index("by_customerId", ["customerId"])
-    .index("by_email", ["email"]),
+    .index("by_email", ["email"])
+    .index("by_orgId", ["orgId"]),
+
+  /** An organization's Library: purchased songs, rentals (which expire) and uploaded Cloud Songs. */
+  orgSongs: defineTable({
+    orgId: v.string(),
+    title: v.string(),
+    artist: v.string(),
+    kind: v.union(v.literal("purchased"), v.literal("rental"), v.literal("cloud-song")),
+    status: v.union(v.literal("active"), v.literal("expired")),
+    expiresAt: v.optional(v.string()),
+    simulated: v.literal(true),
+  }).index("by_orgId", ["orgId"]),
 
   teams: defineTable({
     teamId: v.string(), // e.g. "playback-support"

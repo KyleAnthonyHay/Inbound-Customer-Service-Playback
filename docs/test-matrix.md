@@ -25,11 +25,16 @@ Metrics (computed from this table):
 | 12 | No team available, then confirmed callback | phone | — | callback | | | | | | |
 | 13 | Unavailable slot / booking failure, then retry | browser | — | callback | | | | | | |
 | 14 | Off-topic request (recipe / weather) | browser | — | off-topic | | | | | | |
+| 15 | Song the organization never purchased (click and guide only) | browser | org 480113 (DEMO-1001) | subscription | | | | | | |
+| 16 | Expired rental, no rental credits left, callback with billing | browser | org 714318 (DEMO-1006) | subscription | | | | | | |
+| 17 | Cloud Pro payment past due, still in grace period | browser | org 829455 (DEMO-1007) | subscription | | | | | | |
+| 18 | Team member without Playback Team Sharing permission (songs download for the leader, not for them) | browser | DEMO-1005 (email) | song-loading | | | | | | |
+| 19 | Signed into the wrong (empty personal) organization | browser | DEMO-1008 (email) | song-loading | | | | | | |
 
 ## Results
 
-- Intent accuracy: _ / 14 = _
-- Containment: _ / 14 = _
+- Intent accuracy: _ / 19 = _
+- Containment: _ / 19 = _
 - In-scope containment (denominator = in-scope calls): _ / _ = _
 
 ## Failures and retests

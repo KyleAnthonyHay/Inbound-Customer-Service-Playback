@@ -1,0 +1,9 @@
+{
+  "name": "wrong-organization",
+  "expectedIntent": "song-loading",
+  "lines": [
+    "My library in Playback is completely empty, none of our church's songs are there.",
+    "I don't have the app in front of me, my email is olivia dot brennan at example dot org.",
+    "Oh! I probably picked my own name instead of Northgate when I logged in. Let me switch. Thanks, bye."
+  ]
+}

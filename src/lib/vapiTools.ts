@@ -54,14 +54,27 @@ export function buildToolDefinitions(opts: { serverUrl: string; secret?: string 
     ),
     fn(
       "lookup_demo_customer",
-      "Look up a demo customer record by customer ID, email, or name to check subscription status and entitlements. This is simulated demo data, not real MultiTracks accounts, and is not identity verification.",
+      "Look up a demo account: the organization's subscription (plan, active / past-due / expired / none), the caller's role and Playback Team Sharing permission, any other organizations they belong to, and the organization's song library. Returns a diagnosis with a 'next' hint; follow it. Prefer orgId (the six-digit Organization ID shown in Playback under Settings > About); fall back to the account email. Simulated demo data, not real MultiTracks accounts, and not identity verification.",
       {
-        customerId: { type: "string", description: "Demo customer ID like DEMO-1001." },
-        email: { type: "string" },
+        orgId: { type: "string", description: "Six-digit Organization ID from Playback Settings > About, digits only, e.g. 480113." },
+        email: { type: "string", description: "Email on the MultiTracks account, if the caller does not have the app open." },
+        customerId: { type: "string", description: "Demo customer ID like DEMO-1001, if the caller gives one." },
         name: { type: "string" },
       },
       [],
       "Let me pull up that account."
+    ),
+    fn(
+      "check_song_access",
+      "Check whether the caller's organization can load the tracks for a specific song: purchased, active rental, rental expired, click-and-guide only (not purchased), not in the library at all, or blocked by a missing Team Sharing permission. Call this BEFORE troubleshooting a download when a song shows 'Unlock with Rental Credit', has no tracks option, is greyed out, or the caller is unsure the song was bought. Returns a 'next' hint; follow it.",
+      {
+        songTitle: { type: "string", description: "Song title in the caller's words, e.g. 'Way Maker'." },
+        orgId: { type: "string", description: "Six-digit Organization ID, if known." },
+        email: { type: "string", description: "Account email, if the organization ID is not known." },
+        customerId: { type: "string" },
+      },
+      ["songTitle"],
+      "Let me check whether that song is in your library."
     ),
     fn(
       "check_team_availability",
