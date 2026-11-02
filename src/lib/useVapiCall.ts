@@ -121,8 +121,13 @@ export function friendlyEndedReason(reason: string): string {
 let idCounter = 0;
 const nextId = () => `${Date.now()}-${idCounter++}`;
 
-/** After a successful simulated handoff, end the demo call if the model has not. */
-const HANDOFF_END_BACKSTOP_MS = 12_000;
+/**
+ * After a successful simulated handoff the transfer cue plays and the demo
+ * call ends: the "transfer" is not real, so there is nothing to stay on the
+ * line for. If the model is still speaking its goodbye, this cuts it off on
+ * purpose. The pause lets the cue finish before the hang-up tone.
+ */
+const HANDOFF_END_DELAY_MS = 400;
 
 export type Handoff = { team: string; at: number };
 
@@ -230,12 +235,14 @@ export function useVapiCall() {
             if (parsed?.ok) {
               setHandoff({ team: parsed.team, at: Date.now() });
               pushEvent({ kind: "transfer", label: "Transfer sound (browser)", status: "succeeded" });
-              void playCue("transfer");
               if (backstopRef.current) clearTimeout(backstopRef.current);
-              backstopRef.current = setTimeout(() => {
-                pushEvent({ kind: "call", label: "Ending demo call after handoff", status: "succeeded" });
-                vapiRef.current?.stop();
-              }, HANDOFF_END_BACKSTOP_MS);
+              void playCue("transfer").then(() => {
+                backstopRef.current = setTimeout(() => {
+                  backstopRef.current = null;
+                  pushEvent({ kind: "call", label: "Ending demo call after handoff", status: "succeeded" });
+                  vapiRef.current?.stop();
+                }, HANDOFF_END_DELAY_MS);
+              });
             }
           }
           setEvents((prev) =>

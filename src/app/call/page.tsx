@@ -57,6 +57,7 @@ export default function CallPage() {
         onStart={call.start}
         onEnd={call.stop}
         onToggleMute={call.toggleMute}
+        onViewLog={() => setPanelOpen(true)}
         handoff={call.handoff}
       />
       </PhoneFrame>

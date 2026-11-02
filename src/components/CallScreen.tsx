@@ -19,6 +19,8 @@ type Props = {
   onStart: () => void;
   onEnd: () => void;
   onToggleMute: () => void;
+  /** Opens the call log after a call has ended. */
+  onViewLog?: () => void;
   onKeypadDigit?: (digit: string) => void;
   /** Set after a successful simulated handoff; shows the transferring state. */
   handoff?: { team: string; at: number } | null;
@@ -198,10 +200,11 @@ function Keypad({ onDigit }: { onDigit: (d: string) => void }) {
 /* ---------- Screen ---------- */
 
 export function CallScreen({
-  status, label, subtitle, startedAt, muted, onStart, onEnd, onToggleMute, onKeypadDigit, handoff,
+  status, label, subtitle, startedAt, muted, onStart, onEnd, onToggleMute, onViewLog, onKeypadDigit, handoff,
 }: Props) {
   const elapsed = useElapsed(startedAt, status === "active");
   const inCall = status === "active" || status === "connecting";
+  const over = status === "ended" || status === "error";
   const [keypadOpen, setKeypadOpen] = useState(false);
   const [typed, setTyped] = useState("");
 
@@ -250,7 +253,32 @@ export function CallScreen({
           {transferring && (
             <p className="absolute inset-x-0 top-[192px] text-center text-[22px] leading-[27px] text-[#8b8b8f]">{handoff.team}</p>
           )}
+          {over && handoff && (
+            <p className="absolute inset-x-0 top-[192px] px-6 text-center text-[22px] leading-[27px] text-[#8b8b8f]">
+              Passed off to {handoff.team}
+            </p>
+          )}
         </>
+      )}
+
+      {over && !keypadOpen && (
+        <div className="absolute inset-x-0 top-[730px] flex flex-col items-center gap-[14px] px-[40px]">
+          <button
+            type="button"
+            onClick={onStart}
+            className="flex h-[56px] w-full items-center justify-center rounded-full bg-[#30d158] text-[17px] font-semibold text-white transition-colors active:brightness-110"
+          >
+            Start new call
+          </button>
+          <button
+            type="button"
+            onClick={onViewLog}
+            disabled={!onViewLog}
+            className="flex h-[56px] w-full items-center justify-center rounded-full bg-white/[0.09] text-[17px] font-semibold text-white shadow-[inset_0_0_0_1.5px_rgba(255,255,255,0.28)] transition-colors active:bg-white/15 disabled:opacity-40"
+          >
+            View call log
+          </button>
+        </div>
       )}
 
       {keypadOpen ? (
@@ -269,7 +297,7 @@ export function CallScreen({
             Hide Keypad
           </button>
         </>
-      ) : (
+      ) : over ? null : (
         <>
           <Control
             x={88} y={827} label="Mute" icon={<MuteIcon dark={muted} />}
