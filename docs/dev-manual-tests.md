@@ -1,3 +1,5 @@
+**Current concise caller sheet:** [Jordan’s ten calls](jordan-voice-tests.md). The developer notes below retain the earlier setup fixtures.
+
 # Development voice test sheet
 
 Use the browser's **Start Call** button at `http://localhost:3000/call`. It uses the development saved assistant and development Convex backend. The displayed inbound telephone number belongs to production; these dev changes are tested with the browser call.

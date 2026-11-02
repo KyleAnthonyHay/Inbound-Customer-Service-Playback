@@ -1,0 +1,266 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "caseId": "04-false-expired",
+  "variant": 1,
+  "testId": "text-poc-4ac1bd58-9a31-4e6f-8989-ab843fe0dcc0",
+  "configurationHash": "a9200758e1cf98333116bea87f9b9c55bec8a890e36ccd33f7b535eed562845d",
+  "toolRuntime": "deployed-development",
+  "fixture": {
+    "id": "04-false-expired",
+    "intent": "version",
+    "handling": "agent",
+    "openings": [
+      "We paid for this, but Playback keeps saying Cloud Pro expired."
+    ],
+    "reviewOnly": {
+      "facts": "Caller reports installed version 8.6.1 when asked; this overrides the synthetic record's last-known 8.6.2 note. Active status is verified through the demo lookup. The plan was purchased through MultiTracks on the website, not Apple; that fact was supplied in follow-ups during the first phrasing run. Version 8.6.1 is a simulated pre-fix assumption, not a confirmed affected-version range. Device: iPad Air 5; iPadOS 18; org 480113. Restore Purchases already failed if asked to try it.",
+      "expected": "Check simulated account status and installed version; retrieve documented false-expiration fix introduced in 8.6.3, consider live current-version metadata/coverage gaps, recommend a safe targeted update and obtain simulated caller confirmation. Do not renew or charge the customer."
+    }
+  },
+  "failure": null,
+  "done": true,
+  "cleanupComplete": true,
+  "reportedTextCost": 0.0218,
+  "turns": [
+    {
+      "input": "We paid for this, but Playback keeps saying Cloud Pro expired.",
+      "chatId": "67721b6d-286e-4286-a591-65a0507f4159",
+      "reply": "I can check whether there’s a billing or access issue in the demo record; what’s the six-digit Organization ID shown in Playback under Settings, then About?",
+      "tools": [],
+      "reportedCost": 0.0071
+    },
+    {
+      "input": "480113.",
+      "chatId": "d9158fa5-dd66-4e3f-9a1d-e06b197afd42",
+      "reply": "Let me pull up that account.\n\nAbsolutely, let me pull that up. One moment please.\n\nI’ve confirmed the demo organization’s Cloud Pro plan is active through March 2027. What device are you running Playback on?",
+      "tools": [
+        {
+          "name": "lookup_demo_customer",
+          "arguments": {
+            "orgId": "480113"
+          },
+          "result": {
+            "diagnosis": {
+              "code": "active",
+              "next": "The subscription is active. This alone does not establish the cause of a conflicting app message or access to every song. Use caller facts and applicable documentation to choose useful diagnostic evidence; release history can explain behavior left unexplained by account or configuration facts.",
+              "summary": "Cloud Pro is active and renews on 2027-03-14."
+            },
+            "library": {
+              "count": 8,
+              "songs": [
+                {
+                  "artist": "Elevation Worship",
+                  "kind": "purchased",
+                  "status": "active",
+                  "title": "Graves Into Gardens"
+                },
+                {
+                  "artist": "Elevation Worship",
+                  "kind": "purchased",
+                  "status": "active",
+                  "title": "Do It Again"
+                },
+                {
+                  "artist": "Hillsong Worship",
+                  "kind": "purchased",
+                  "status": "active",
+                  "title": "What A Beautiful Name"
+                },
+                {
+                  "artist": "Bethel Music",
+                  "kind": "purchased",
+                  "status": "active",
+                  "title": "Goodness of God"
+                },
+                {
+                  "artist": "All Sons & Daughters",
+                  "kind": "purchased",
+                  "status": "active",
+                  "title": "Great Are You Lord"
+                },
+                {
+                  "artist": "Brandon Lake",
+                  "kind": "purchased",
+                  "status": "active",
+                  "title": "Gratitude"
+                },
+                {
+                  "artist": "Phil Wickham",
+                  "kind": "purchased",
+                  "status": "active",
+                  "title": "House of the Lord"
+                },
+                {
+                  "artist": "Riverbend Worship",
+                  "kind": "cloud-song",
+                  "status": "active",
+                  "title": "Riverbend Benediction"
+                }
+              ]
+            },
+            "next": "The subscription is active. This alone does not establish the cause of a conflicting app message or access to every song. Use caller facts and applicable documentation to choose useful diagnostic evidence; release history can explain behavior left unexplained by account or configuration facts.",
+            "ok": true,
+            "organization": {
+              "name": "Riverbend Community Church (demo)",
+              "notes": "Healthy Cloud Pro org. Used for the 'active subscriber sees Cloud Pro expired' software-bug scenario.",
+              "orgId": "480113",
+              "plan": "Cloud Pro",
+              "renewsAt": "2027-03-14",
+              "simulated": true,
+              "subscriptionStatus": "active",
+              "teamSharingSeats": {
+                "total": 10,
+                "used": 4
+              }
+            },
+            "otherOrganizations": [],
+            "source": "simulated"
+          }
+        },
+        {
+          "name": "search_playback_docs",
+          "arguments": {
+            "query": "Playback says Cloud Pro expired despite active subscription expired message troubleshooting organization subscription refresh login",
+            "category": "setup"
+          },
+          "result": {
+            "ok": true,
+            "source": "documentation",
+            "provider": "MultiTracks Help Center (bounded snapshot)",
+            "snapshotRetrievedAt": "2026-10-31",
+            "query": "Playback says Cloud Pro expired despite active subscription expired message troubleshooting organization subscription refresh login",
+            "found": 3,
+            "results": [],
+            "note": "No documented article matched. Do not invent steps; offer a handoff or ask a clarifying question.",
+            "manual": {
+              "ok": true,
+              "source": "manual",
+              "provider": "Playback User Guide (MultiTracks help center, snapshot in Pinecone)",
+              "query": "Playback says Cloud Pro expired despite active subscription expired message troubleshooting organization subscription refresh login",
+              "found": 3,
+              "results": [
+                {
+                  "id": "playback-user-guide:login-requirements-organizational-content-permissions:1",
+                  "score": 0.354,
+                  "sectionPath": "Playback User Guide > App Overview > Login Requirements > Organizational Content Permissions",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_247f735c64",
+                  "category": "setup",
+                  "scope": "in-scope",
+                  "part": 1,
+                  "parts": 1,
+                  "imageIds": [
+                    "img-03"
+                  ],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "If you are logging into your own organization, then you are ready to start downloading your organization’s purchased content or Rental credits immediately. When logging into another organization, certain permission subscriptions need to be added to your account in order for you to access purchased tracks, spend Rental credits, or save Cloud changes to setlists, song arrangements, and MIDI Cues.\n\nFor more information about managing your organization’s team members, subscriptions, and content permissions, check out: 📖 Managing Roles and Permissions\n\nOnce logged in, you’re ready to start building a setlist!",
+                  "steps": [],
+                  "hasDisruptiveSteps": false
+                },
+                {
+                  "id": "playback-user-guide:playback-settings-about-tab:1",
+                  "score": 0.383,
+                  "sectionPath": "Playback User Guide > Playback Settings > About Tab",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide",
+                  "category": "subscription",
+                  "scope": "adjacent",
+                  "part": 1,
+                  "parts": 1,
+                  "imageIds": [
+                    "img-41",
+                    "img-42"
+                  ],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "- Restore Purchases: If an iTunes subscription is expired or not being confirmed by Playback, reconcile any issues with payment info in the App Store and Tap Restore Purchases to reconnect your In-App Subscription.\n- Manage Subscription: Explore the paid versions of Playback and what features they have to offer. Learn More Here.\n- Manual: opens up this user guide.\n- Reset Tool Tips: If a new feature seems confusing, Tap to reset and see the tool tip tour again.\n- Contact Support: will send an email to support with all of the currently-opened setlist details and device information helpful for troubleshooting any potential issues.\n- Become a Beta Tester: Interested in early access to upcoming new features? Apply to become a Playback beta tester.\n- Acknowledgments: Playback software acknowledgments.\n- Playback Version and build information is listed at the very bottom.",
+                  "steps": [
+                    {
+                      "n": 1,
+                      "text": "Restore Purchases: If an iTunes subscription is expired or not being confirmed by Playback, reconcile any issues with payment info in the App Store and Tap Restore Purchases to reconnect your In-App Subscription.",
+                      "disruptive": true,
+                      "kind": "update",
+                      "caution": "Updating the app closes Playback and takes a few minutes; don't do this during a service."
+                    },
+                    {
+                      "n": 2,
+                      "text": "Manage Subscription: Explore the paid versions of Playback and what features they have to offer. Learn More Here.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 3,
+                      "text": "Manual: opens up this user guide.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 4,
+                      "text": "Reset Tool Tips: If a new feature seems confusing, Tap to reset and see the tool tip tour again.",
+                      "disruptive": true,
+                      "kind": "settings-change",
+                      "caution": "Changing this setting takes effect immediately and can cut audio for a moment."
+                    },
+                    {
+                      "n": 5,
+                      "text": "Contact Support: will send an email to support with all of the currently-opened setlist details and device information helpful for troubleshooting any potential issues.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 6,
+                      "text": "Become a Beta Tester: Interested in early access to upcoming new features? Apply to become a Playback beta tester.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 7,
+                      "text": "Acknowledgments: Playback software acknowledgments.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 8,
+                      "text": "Playback Version and build information is listed at the very bottom.",
+                      "disruptive": false
+                    }
+                  ],
+                  "hasDisruptiveSteps": true
+                },
+                {
+                  "id": "playback-user-guide:login-requirements-organizations-vs-users:1",
+                  "score": 0.294,
+                  "sectionPath": "Playback User Guide > App Overview > Login Requirements > Organizations vs. Users",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_c5f931c9b1",
+                  "category": "setup",
+                  "scope": "in-scope",
+                  "part": 1,
+                  "parts": 1,
+                  "imageIds": [],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "An organization in the MultiTracks.com ecosystem is the umbrella under which content can be purchased, users can be added, and subscriptions can be shared. When an 'account' is created using the \"Sign Up\" flow, an organization and a user is created simultaneously and the user is set as the owner of the organization. When logging into Playback, there is an organization selection prompt, to select which organization to log into. If you are a user belonging only to the organization created when you built your account, then select that organization. However, a user can be added to other existing MultiTracks.com organizations and have access to content belonging to those organizations in Playback. Every organization that you've been added to will be available at this login screen.",
+                  "steps": [],
+                  "hasDisruptiveSteps": false
+                }
+              ],
+              "outOfScope": [
+                {
+                  "id": "playback-user-guide:cloud-song-sections-edit-mode-video-overview:1",
+                  "sectionPath": "Playback User Guide > Customizing Setlists > Cloud Song Sections Edit Mode > Video Overview",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_29d220d044"
+                },
+                {
+                  "id": "playback-user-guide:midi-cues-edit-mode-who-can-save-midi-cues-to-the-cloud:1",
+                  "sectionPath": "Playback User Guide > Customizing Setlists > MIDI Cues Edit Mode > Who can save MIDI Cues to the Cloud?",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_704273450f"
+                },
+                {
+                  "id": "playback-user-guide:setlist-song-map-edit-mode-edit-song-menu:5",
+                  "sectionPath": "Playback User Guide > Customizing Setlists > Setlist / Song Map Edit Mode > Edit Song Menu",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_e417d5f647"
+                }
+              ],
+              "note": "Manual sections describe how the app works; give only steps that appear in the text, and cite 'the Playback User Guide'. Sections listed under outOfScope are documented but outside this agent's support scope: name the topic and offer a handoff, do not troubleshoot them."
+            }
+          }
+        }
+      ],
+      "reportedCost": 0.0147
+    }
+  ],
+  "reviewStatus": "exploratory-only; Chat request-start rendering changed between phases; excluded from final pass counts"
+}

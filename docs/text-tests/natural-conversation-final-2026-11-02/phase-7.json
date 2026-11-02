@@ -1,0 +1,22 @@
+[
+  {
+    "run": "01-click-guide-v1",
+    "input": "Yes, I see Click and Guide."
+  },
+  {
+    "run": "01-click-guide-v2",
+    "input": "No, that's everything."
+  },
+  {
+    "run": "03-audio-device-v1",
+    "input": "Yes, we can hear it now."
+  },
+  {
+    "run": "04-false-expired-v1",
+    "input": "iPadOS 18."
+  },
+  {
+    "run": "03-audio-device-v2",
+    "done": true
+  }
+]

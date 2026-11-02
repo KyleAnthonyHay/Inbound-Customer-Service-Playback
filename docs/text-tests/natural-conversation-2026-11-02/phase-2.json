@@ -1,0 +1,34 @@
+[
+  {
+    "run": "01-click-guide-v1",
+    "input": "Uh, I'm on a Mac."
+  },
+  {
+    "run": "01-click-guide-v2",
+    "input": "It's on a Mac."
+  },
+  {
+    "run": "03-audio-device-v1",
+    "input": "I'm on a Mac."
+  },
+  {
+    "run": "03-audio-device-v2",
+    "input": "It's plugged into a Focusrite 4i4."
+  },
+  {
+    "run": "04-false-expired-v1",
+    "input": "480113."
+  },
+  {
+    "run": "08-permission-v1",
+    "input": "Yes, please."
+  },
+  {
+    "run": "09-loading-recovery-v1",
+    "input": "Graves Into Gardens."
+  },
+  {
+    "run": "11-human-control-v1",
+    "done": true
+  }
+]

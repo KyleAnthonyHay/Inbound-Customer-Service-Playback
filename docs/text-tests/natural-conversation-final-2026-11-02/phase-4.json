@@ -1,0 +1,26 @@
+[
+  {
+    "run": "01-click-guide-v1",
+    "input": "I mean on our sound desk. The click and guide are coming through one channel in our ears."
+  },
+  {
+    "run": "01-click-guide-v2",
+    "input": "It's a Focusrite 4i4."
+  },
+  {
+    "run": "03-audio-device-v1",
+    "input": "It's a Focusrite 4i4 connected with a USB cable."
+  },
+  {
+    "run": "03-audio-device-v2",
+    "input": "It says MacBook Speakers."
+  },
+  {
+    "run": "04-false-expired-v1",
+    "input": "Riverbend Community Church."
+  },
+  {
+    "run": "09-loading-recovery-v1",
+    "input": "It loaded now, thanks."
+  }
+]

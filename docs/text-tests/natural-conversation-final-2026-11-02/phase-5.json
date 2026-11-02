@@ -1,0 +1,26 @@
+[
+  {
+    "run": "01-click-guide-v1",
+    "input": "I'm on a Mac."
+  },
+  {
+    "run": "01-click-guide-v2",
+    "input": "Yes, I can see Click and Guide."
+  },
+  {
+    "run": "03-audio-device-v1",
+    "input": "Give me a second, I'm still looking. Please stay on."
+  },
+  {
+    "run": "03-audio-device-v2",
+    "input": "Yes, we can hear it now."
+  },
+  {
+    "run": "04-false-expired-v1",
+    "input": "8.6.1."
+  },
+  {
+    "run": "09-loading-recovery-v1",
+    "input": "No, that's everything."
+  }
+]

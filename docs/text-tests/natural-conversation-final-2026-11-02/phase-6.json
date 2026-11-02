@@ -1,0 +1,26 @@
+[
+  {
+    "run": "01-click-guide-v1",
+    "input": "It's a Focusrite 4i4."
+  },
+  {
+    "run": "01-click-guide-v2",
+    "input": "Yes, they're separate now."
+  },
+  {
+    "run": "03-audio-device-v1",
+    "input": "It says MacBook Speakers."
+  },
+  {
+    "run": "03-audio-device-v2",
+    "input": "No, that's everything."
+  },
+  {
+    "run": "04-false-expired-v1",
+    "input": "An iPad Air 5."
+  },
+  {
+    "run": "09-loading-recovery-v1",
+    "done": true
+  }
+]

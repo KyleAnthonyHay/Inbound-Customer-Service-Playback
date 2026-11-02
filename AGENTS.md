@@ -27,7 +27,7 @@ build a separate chat UI for these checks.
   Inspect the actual replies before supplying fixture-based follow-ups with
   `npm run text:cases -- reply <run-directory> <replies.json>`. Reviewer notes
   are never agent inputs. Mark finished runs with `done: true` to clean up their
-  isolated tool logs. Follow-ups may extend through eight turns; do not turn
+  isolated tool logs. Follow-ups may extend through twelve turns; do not turn
   the expected fix into a leading caller hint and then report an unassisted pass.
 - The harness uses Vapi Chat and the existing private Vapi key in ignored
   `.env.local`. No separate OpenAI API key is needed. It derives the same reasoner

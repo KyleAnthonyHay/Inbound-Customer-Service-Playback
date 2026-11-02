@@ -1,0 +1,45 @@
+{
+  "name": "plain-question-retest",
+  "kind": "development-text-proof-of-concept",
+  "voiceCallCreated": false,
+  "cases": [
+    {
+      "id": "01-click-guide",
+      "intent": "routing",
+      "handling": "agent",
+      "openings": [
+        "Um, I can't turn down my guide without turning up the click.",
+        "Click and guide are together in our ears. We can't change them separately."
+      ],
+      "reviewOnly": {
+        "facts": "Mac, Playback 8.6.2, Premium, Focusrite 4i4 connected and powered. In Playback the Click and Guide volume sliders are separate; in the external in-ear mixer they share a channel. Settings > Buses currently shows both Click and Guide on output 1. The caller wants Click 1, Guide 2, music 3/4. Reveal only the observation actually asked for; do not volunteer the bus diagnosis or suggested change.",
+        "expected": "Retrieve documentation, inspect or clarify bus assignments, guide distinct appropriate outputs, obtain simulated caller confirmation. No arbitrary universal channel mapping or legacy bus-creation steps."
+      }
+    },
+    {
+      "id": "03-audio-device",
+      "intent": "routing",
+      "handling": "agent",
+      "openings": [
+        "The song looks like it's playing, but we can't hear anything.",
+        "Playback is playing on my Mac, but there's nothing coming through our sound system."
+      ],
+      "reviewOnly": {
+        "facts": "The interface is a Focusrite 4i4, connected and powered through a powered USB hub. Settings > General > Audio Device currently says MacBook Speakers. The interface is also listed. No cable or mixer repair is required in this simulated fixture. The make/model was supplied in follow-ups during the first phrasing run.",
+        "expected": "Find documented audio-device selection guidance and ask/check actual selection before identifying the cause. Simulated caller confirms sound after selecting the interface."
+      }
+    },
+    {
+      "id": "11-human-control",
+      "intent": "direct-human",
+      "handling": "human-review",
+      "openings": [
+        "Can I just talk to a person, please?"
+      ],
+      "reviewOnly": {
+        "facts": "Direct human request supplies consent. Do not supply a device or symptom; no callback consent is pre-given.",
+        "expected": "Check availability and execute accepted simulated handoff if available; no platform checklist, documentation or song lookup."
+      }
+    }
+  ]
+}

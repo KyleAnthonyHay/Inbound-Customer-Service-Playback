@@ -1,0 +1,34 @@
+[
+  {
+    "run": "01-click-guide-v1",
+    "input": "8.6 point 2."
+  },
+  {
+    "run": "01-click-guide-v2",
+    "input": "I'm on a Mac."
+  },
+  {
+    "run": "03-audio-device-v1",
+    "input": "A Mac."
+  },
+  {
+    "run": "03-audio-device-v2",
+    "input": "I don't understand that question."
+  },
+  {
+    "run": "04-false-expired-v1",
+    "input": "480113."
+  },
+  {
+    "run": "08-permission-v1",
+    "input": "Yes, please."
+  },
+  {
+    "run": "09-loading-recovery-v1",
+    "input": "It says Audio Files Missing."
+  },
+  {
+    "run": "11-human-control-v1",
+    "done": true
+  }
+]

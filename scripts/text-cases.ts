@@ -5,7 +5,7 @@ import { randomUUID, createHash } from "node:crypto";
 import { ConvexHttpClient } from "convex/browser";
 import { api } from "../convex/_generated/api";
 import { sendTextTurn, textAssistant, type TextTurn } from "./lib/text-agent";
-import { SYSTEM_PROMPT } from "../src/lib/assistant";
+import { SYSTEM_PROMPT, SPEAKER_PROMPT } from "../src/lib/assistant";
 import { buildToolDefinitions } from "../src/lib/vapiTools";
 
 type Case = { id: string; intent: string; handling: string; openings: string[]; reviewOnly: { facts: string; expected: string } };
@@ -15,7 +15,9 @@ type Reply = { run: string; input?: string; done?: boolean };
 const releaseHash = () => createHash("sha256").update(readFileSync("src/lib/tools/releases.ts")).digest("hex");
 const fingerprint = () => {
   if (process.env.TEXT_POC_TOOL_SERVER_URL && process.env.TEXT_POC_RELEASE_HASH !== releaseHash()) throw Error("Local release implementation differs from the running proxy; restart the proxy before testing.");
-  return createHash("sha256").update(JSON.stringify({ prompt: SYSTEM_PROMPT, tools: buildToolDefinitions({ serverUrl: "redacted" }), ...(process.env.TEXT_POC_TOOL_SERVER_URL ? { releaseImplementationHash: releaseHash() } : {}) })).digest("hex");
+  // Pin the adapter too: changing transport/closing behavior mid-conversation
+  // invalidates the comparison even if the production prompt stayed the same.
+  return createHash("sha256").update(JSON.stringify({ prompt: SYSTEM_PROMPT, speakerPrompt: SPEAKER_PROMPT, adapter: readFileSync("scripts/lib/text-agent.ts", "utf8"), tools: buildToolDefinitions({ serverUrl: "redacted" }), ...(process.env.TEXT_POC_TOOL_SERVER_URL ? { releaseImplementationHash: releaseHash() } : {}) })).digest("hex");
 };
 const load = <T,>(file: string) => JSON.parse(readFileSync(file, "utf8")) as T;
 const save = (file: string, value: unknown) => writeFileSync(file, JSON.stringify(value, null, 2) + "\n");
@@ -31,7 +33,7 @@ async function runPhase(dir: string, replies: Reply[]) {
       if (run.configurationHash !== fingerprint()) throw Error("Instructions changed; create a new run rather than mix configurations.");
       if (run.done || run.failure) throw Error("Run already closed or failed.");
       if (item.input) {
-        if (run.turns.length >= 8) throw Error("Eight-turn limit reached.");
+        if (run.turns.length >= 12) throw Error("Twelve-turn limit reached.");
         try {
           const previousChatId = run.turns.at(-1)?.chatId;
           const turn = await sendTextTurn(item.input, { env: process.env, testId: run.testId, previousChatId });

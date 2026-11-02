@@ -1,0 +1,70 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "caseId": "11-human-control",
+  "variant": 1,
+  "testId": "text-poc-0766aaf2-2fb7-4eee-b9fd-571a21160619",
+  "configurationHash": "7691dad44fa8c133fb197121e7e7f76df17afcda4d006f52043948f8dda5ae54",
+  "toolRuntime": "deployed-development",
+  "fixture": {
+    "id": "11-human-control",
+    "intent": "direct-human",
+    "handling": "human-review",
+    "openings": [
+      "Can I just talk to a person, please?"
+    ],
+    "reviewOnly": {
+      "facts": "Direct human request supplies consent. Do not supply a device or symptom; no callback consent is pre-given.",
+      "expected": "Check availability and execute accepted simulated handoff if available; no platform checklist, documentation or song lookup."
+    }
+  },
+  "failure": null,
+  "done": true,
+  "cleanupComplete": true,
+  "reportedTextCost": 0.0094,
+  "turns": [
+    {
+      "input": "Can I just talk to a person, please?",
+      "chatId": "c12aadbe-cbff-4889-ad59-186b10b24a17",
+      "reply": "Of course. Let me see who's available. One moment please.\n\nLet me request that handoff.\n\nI’m connecting you to Playback Technical Support now. Goodbye.",
+      "tools": [
+        {
+          "name": "check_team_availability",
+          "arguments": {
+            "teamId": "playback-support"
+          },
+          "result": {
+            "source": "simulated",
+            "teams": [
+              {
+                "canTransferNow": true,
+                "description": "Song loading, audio output, device and version issues.",
+                "label": "Playback Technical Support",
+                "status": "available",
+                "teamId": "playback-support",
+                "withinHours": true
+              }
+            ],
+            "handoffStarted": false,
+            "actionPerformed": "availability-lookup-only"
+          }
+        },
+        {
+          "name": "initiate_handoff",
+          "arguments": {
+            "teamId": "playback-support"
+          },
+          "result": {
+            "ok": true,
+            "simulated": true,
+            "team": "Playback Technical Support",
+            "note": "Simulated handoff accepted. No real MultiTracks employee is contacted.",
+            "source": "simulated"
+          }
+        }
+      ],
+      "reportedCost": 0.0094
+    }
+  ]
+}

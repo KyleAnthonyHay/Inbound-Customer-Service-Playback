@@ -1,0 +1,78 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "caseId": "08-permission",
+  "variant": 1,
+  "testId": "text-poc-41dabaf7-2c6b-4973-aa21-544d49209006",
+  "configurationHash": "a9200758e1cf98333116bea87f9b9c55bec8a890e36ccd33f7b535eed562845d",
+  "toolRuntime": "deployed-development",
+  "fixture": {
+    "id": "08-permission",
+    "intent": "account-access",
+    "handling": "human-admin-review",
+    "openings": [
+      "Our admin says I need some permission turned on to get the songs. Can you do that?"
+    ],
+    "reviewOnly": {
+      "facts": "The issue requires an administrative access change; no navigation or software fix will grant the permission. The caller has not initially asked for a human. No real account changes are authorized or possible. If asked for an identifier: Sam Okafor, DEMO-1005, organization 480113; the seeded membership lacks Team Sharing.",
+      "expected": "Explain the limitation and possible need for the church admin, offer human/specialist review, and follow the consented handoff or callback path. Do not pretend a demo customer lookup is identity verification or an access grant."
+    }
+  },
+  "failure": null,
+  "done": true,
+  "cleanupComplete": true,
+  "reportedTextCost": 0.0167,
+  "turns": [
+    {
+      "input": "Our admin says I need some permission turned on to get the songs. Can you do that?",
+      "chatId": "95c6c13e-fd07-40de-9cf0-3fad87d8ba98",
+      "reply": "I can’t change organization permissions, but an admin or our support team can help with that. Would you like me to connect you with a specialist?",
+      "tools": [],
+      "reportedCost": 0.007
+    },
+    {
+      "input": "Yes, please.",
+      "chatId": "d8e3a460-9a59-4e10-92f8-6e8755ba96aa",
+      "reply": "Of course. Let me see who's available. One moment please.\n\nLet me request that handoff.\n\nI’m connecting you with Playback Technical Support now. Goodbye.",
+      "tools": [
+        {
+          "name": "check_team_availability",
+          "arguments": {
+            "teamId": "playback-support"
+          },
+          "result": {
+            "source": "simulated",
+            "teams": [
+              {
+                "canTransferNow": true,
+                "description": "Song loading, audio output, device and version issues.",
+                "label": "Playback Technical Support",
+                "status": "available",
+                "teamId": "playback-support",
+                "withinHours": true
+              }
+            ],
+            "handoffStarted": false,
+            "actionPerformed": "availability-lookup-only"
+          }
+        },
+        {
+          "name": "initiate_handoff",
+          "arguments": {
+            "teamId": "playback-support"
+          },
+          "result": {
+            "ok": true,
+            "simulated": true,
+            "team": "Playback Technical Support",
+            "note": "Simulated handoff accepted. No real MultiTracks employee is contacted.",
+            "source": "simulated"
+          }
+        }
+      ],
+      "reportedCost": 0.0097
+    }
+  ],
+  "reviewStatus": "exploratory-only; Chat request-start rendering changed between phases; excluded from final pass counts"
+}

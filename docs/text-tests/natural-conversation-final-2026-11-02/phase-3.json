@@ -1,0 +1,30 @@
+[
+  {
+    "run": "01-click-guide-v1",
+    "input": "I don't understand your question."
+  },
+  {
+    "run": "01-click-guide-v2",
+    "input": "Yeah."
+  },
+  {
+    "run": "03-audio-device-v1",
+    "input": "I don't know what that means."
+  },
+  {
+    "run": "03-audio-device-v2",
+    "input": "It's plugged into a Focusrite 4i4."
+  },
+  {
+    "run": "04-false-expired-v1",
+    "input": "We paid on the website, not Apple."
+  },
+  {
+    "run": "09-loading-recovery-v1",
+    "input": "I've pressed it once already."
+  },
+  {
+    "run": "08-permission-v1",
+    "done": true
+  }
+]

@@ -1,0 +1,18 @@
+[
+  {
+    "run": "01-click-guide-v1",
+    "input": "They both say 1."
+  },
+  {
+    "run": "01-click-guide-v2",
+    "input": "Yes, that's separated them."
+  },
+  {
+    "run": "03-audio-device-v1",
+    "input": "Yes, we can hear it now."
+  },
+  {
+    "run": "03-audio-device-v2",
+    "done": true
+  }
+]

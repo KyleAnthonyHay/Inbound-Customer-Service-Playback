@@ -1,0 +1,43 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "caseId": "09-loading-recovery",
+  "variant": 1,
+  "testId": "text-poc-fa8c8c5d-1e35-4437-ae5f-0c0f2c32ff98",
+  "configurationHash": "a9200758e1cf98333116bea87f9b9c55bec8a890e36ccd33f7b535eed562845d",
+  "toolRuntime": "deployed-development",
+  "fixture": {
+    "id": "09-loading-recovery",
+    "intent": "song-loading",
+    "handling": "agent",
+    "openings": [
+      "One of our songs just won't load."
+    ],
+    "reviewOnly": {
+      "facts": "Song is Graves Into Gardens. Exact message is Audio Files Missing. Playback 8.6.4. Caller has tapped Try Again once. Reveal facts only in response to relevant questions. The simulation reports recovery after the documented third retry, not after an arbitrary unrelated instruction. If an account check is relevant: Jordan Avery, DEMO-1001, organization 480113. The seeded synthetic library marks this song purchased.",
+      "expected": "Retrieve applicable official guidance, distinguish this error from generic Download Error, use helpful real demo service context without assuming ownership, guide the documented retry count, and confirm caller-reported recovery."
+    }
+  },
+  "failure": null,
+  "done": true,
+  "cleanupComplete": true,
+  "reportedTextCost": 0.0132,
+  "turns": [
+    {
+      "input": "One of our songs just won't load.",
+      "chatId": "d51e6d7f-abff-4a2a-a47f-4a1adefe7c08",
+      "reply": "What song title won’t load in Playback?",
+      "tools": [],
+      "reportedCost": 0.0065
+    },
+    {
+      "input": "Graves Into Gardens.",
+      "chatId": "e7fcd2ae-266f-48ee-8df6-7f0503b9393a",
+      "reply": "What’s your six-digit Organization ID from Playback’s Settings > About?",
+      "tools": [],
+      "reportedCost": 0.0067
+    }
+  ],
+  "reviewStatus": "exploratory-only; Chat request-start rendering changed between phases; excluded from final pass counts"
+}

@@ -49,7 +49,7 @@ Read-only hashes verified the production saved assistant did not change. No prod
 
 ## Test now
 
-[Open the ten-case manual voice test sheet](../dev-manual-tests.md). It provides the opening question, hidden caller facts and expected handling for each selected conversation. There are also optional synthetic-account cases and two short AI-disclosure/direct-human voice checks. Use the browser Call button on localhost for development; the displayed inbound telephone number remains production.
+[Open the current concise ten-case manual voice test sheet](../jordan-voice-tests.md). It provides the opening question, hidden caller facts and expected handling for each selected conversation. There are also optional synthetic-account cases and two short AI-disclosure/direct-human voice checks. Use the browser Call button on localhost for development; the displayed inbound telephone number remains production.
 
 **No setup commands are left for development.** Production Pinecone configuration remains separate and was not executed here. The supplied `convex env set --prod …` commands are production setup, not a prerequisite for the localhost/dev test.
 

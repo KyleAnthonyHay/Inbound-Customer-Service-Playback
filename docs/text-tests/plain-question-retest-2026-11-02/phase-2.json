@@ -1,0 +1,22 @@
+[
+  {
+    "run": "01-click-guide-v1",
+    "input": "I'm on a Mac."
+  },
+  {
+    "run": "01-click-guide-v2",
+    "input": "I'm not sure what you mean."
+  },
+  {
+    "run": "03-audio-device-v1",
+    "input": "A Mac."
+  },
+  {
+    "run": "03-audio-device-v2",
+    "input": "A Focusrite 4i4."
+  },
+  {
+    "run": "11-human-control-v1",
+    "done": true
+  }
+]

@@ -1,0 +1,558 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "caseId": "01-click-guide",
+  "variant": 1,
+  "testId": "text-poc-9cc3f332-6b6e-4346-9b96-ef0f9ce36bd5",
+  "configurationHash": "a9200758e1cf98333116bea87f9b9c55bec8a890e36ccd33f7b535eed562845d",
+  "toolRuntime": "deployed-development",
+  "fixture": {
+    "id": "01-click-guide",
+    "intent": "routing",
+    "handling": "agent",
+    "openings": [
+      "Um, I can't turn down my guide without turning up the click.",
+      "Click and guide are together in our ears. We can't change them separately."
+    ],
+    "reviewOnly": {
+      "facts": "Mac, Playback 8.6.2, Premium, Focusrite 4i4 connected and powered. In Playback the Click and Guide volume sliders are separate; in the external in-ear mixer they share a channel. Settings > Buses currently shows both Click and Guide on output 1. The caller wants Click 1, Guide 2, music 3/4. Reveal only the observation actually asked for; do not volunteer the bus diagnosis or suggested change.",
+      "expected": "Retrieve documentation, inspect or clarify bus assignments, guide distinct appropriate outputs, obtain simulated caller confirmation. No arbitrary universal channel mapping or legacy bus-creation steps."
+    }
+  },
+  "failure": null,
+  "done": true,
+  "cleanupComplete": true,
+  "reportedTextCost": 0.0571,
+  "turns": [
+    {
+      "input": "Um, I can't turn down my guide without turning up the click.",
+      "chatId": "9bc9d10a-3b2c-4813-9392-bf4f868e64f7",
+      "reply": "Hold on a sec\n\nWhat device are you running Playback on?",
+      "tools": [
+        {
+          "name": "search_playback_docs",
+          "arguments": {
+            "query": "Playback guide volume changing also changes click volume separate guide and click buses routing",
+            "category": "audio-output"
+          },
+          "result": {
+            "ok": true,
+            "source": "documentation",
+            "provider": "MultiTracks Help Center (bounded snapshot)",
+            "snapshotRetrievedAt": "2026-10-31",
+            "query": "Playback guide volume changing also changes click volume separate guide and click buses routing",
+            "found": 6,
+            "results": [
+              {
+                "id": "route-click-guide-to-separate-busses",
+                "title": "How To | Route Click & Guide to Separate Busses in Playback (legacy, pre-7.6)",
+                "category": "audio-output",
+                "url": "https://helpcenter.multitracks.com/en/articles/5224107-how-to-route-click-guide-to-separate-busses-in-playback",
+                "retrievedAt": "2026-10-30",
+                "appliesTo": [],
+                "summary": "The article itself states these steps are no longer relevant for Playback 7.6 and newer, where Click and Guide are separated by default. Kept for the routing pattern: rename a spare bus, move Guide tracks to it in Settings > Tracks, then assign each bus to an interface output in Settings > Buses. Buses require a Playback Pro (Premium) subscription and an interface with more than 2 outputs.",
+                "steps": [
+                  {
+                    "n": 1,
+                    "text": "Free up a bus: swipe left on the Aux bus, tap Edit, rename it to 'Guide'. Then in Settings > Tracks move any instrument parts still routed to it to another bus (tap the cell, choose a bus, tap Done).",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 2,
+                    "text": "In the Tracks tab, move Guide (Dynamic) and Guide (Non-Dynamic) out of the Click & Guide bus into the Guide bus.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 3,
+                    "text": "In Settings > Buses, tap the Click and Guide bus cells and select an output for each (example: Click to output 1, Guide to output 2).",
+                    "disruptive": false
+                  }
+                ],
+                "hasDisruptiveSteps": false,
+                "relevance": 22
+              },
+              {
+                "id": "track-and-bus-routing-in-playback",
+                "title": "How To | Track & Bus Routing in Playback",
+                "category": "audio-output",
+                "url": "https://helpcenter.multitracks.com/en/articles/4439220-how-to-track-bus-routing-in-playback",
+                "retrievedAt": "2026-10-30",
+                "appliesTo": [],
+                "summary": "Bus routing and MultiOuts require a Playback Premium subscription. Playback groups 150+ instruments into 16 buses plus a dedicated SMPTE bus; each bus can go to any available output on the selected audio device, mono or stereo. The Pad bus cannot be re-routed. Track routing is saved per device and applies globally to that track; it is not saved with setlists or named arrangements.",
+                "steps": [
+                  {
+                    "n": 1,
+                    "text": "Route tracks to buses: Settings > Tracks tab, assign each track to a bus (defaults are preset and can be overwritten).",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 2,
+                    "text": "Route buses to outputs: Settings > Buses tab, tap a bus row and choose an available output.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 3,
+                    "text": "Route several buses at once: tap 'Assign Multiple Busses' in the bottom-right, select buses, assign one output.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 4,
+                    "text": "Rename a bus: drag its row to the left to reveal Edit.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 5,
+                    "text": "Greyed-out output: the SMPTE bus is probably using it. Disable SMPTE in the General tab or set the SMPTE bus to 'None'.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 6,
+                    "text": "Alternative from the main interface: open the 'Busses' layer (bottom right next to the master fader, or cycle layers with the button beside it), tap Edit (top right) to enter Setlist/Song Map edit mode, tap a bus name and select the output.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 7,
+                    "text": "Bus mixes are song-specific by default; disable Song Specific Buses in Settings for a global mix. Solo/mute on a bus affects all tracks routed to it.",
+                    "disruptive": false
+                  }
+                ],
+                "hasDisruptiveSteps": false,
+                "relevance": 15
+              },
+              {
+                "id": "click-in-both-channels-with-autopan",
+                "title": "Why do I hear the click track in both left and right channels while Playback has AutoPan enabled?",
+                "category": "audio-output",
+                "url": "https://helpcenter.multitracks.com/en/articles/4502692-why-do-i-hear-the-click-track-in-both-left-and-right-channels-while-playback-has-autopan-enabled",
+                "retrievedAt": "2026-10-30",
+                "appliesTo": [
+                  "iOS",
+                  "iPadOS"
+                ],
+                "summary": "With AutoPan on, click and guide go left and tracks go right. Bleed into the wrong channel is most often caused by audio routing on the device or cabling rather than Playback. The most common cause named is iOS Mono Audio being enabled.",
+                "steps": [
+                  {
+                    "n": 1,
+                    "text": "Disable Mono Audio on iOS: Settings > Accessibility > Audio & Visual > turn off 'Mono Audio'.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 2,
+                    "text": "Test the splitter cable: connect only the Right (tracks) channel to the sound system, solo the Click Track in Playback, and listen. If you hear click, the cable may have a grounding problem; reseat or move it.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 3,
+                    "text": "Check DI box grounding and that the Ground switch is enabled.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 4,
+                    "text": "Plug headphones directly into the device's headphone jack with AutoPan on and listen for bleed.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 5,
+                    "text": "Play a stereo audio test video (e.g. on YouTube) with the same headphones. If bleed persists, the headphone port hardware may be faulty; the article recommends a USB audio interface in that case.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 6,
+                    "text": "If using an interface, move output cables to different outputs to see if the crosstalk follows the cable or the channel. If it persists, contact technical support via the chat button in the bottom-right of the website.",
+                    "disruptive": false
+                  }
+                ],
+                "hasDisruptiveSteps": false,
+                "relevance": 12
+              }
+            ],
+            "note": "Only give steps that appear in these results. Give non-disruptive steps first. Say a disruptive step's caution once per call, in one short sentence, unless the caller already told you their timing; then act on what they said and skip the caution.",
+            "manual": {
+              "ok": true,
+              "source": "manual",
+              "provider": "Playback User Guide (MultiTracks help center, snapshot in Pinecone)",
+              "query": "Playback guide volume changing also changes click volume separate guide and click buses routing",
+              "found": 3,
+              "results": [
+                {
+                  "id": "playback-user-guide:playback-settings-tracks-settings-tab:1",
+                  "score": 0.412,
+                  "sectionPath": "Playback User Guide > Playback Settings > Tracks Settings Tab",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide",
+                  "category": "audio-output",
+                  "scope": "in-scope",
+                  "part": 1,
+                  "parts": 1,
+                  "imageIds": [
+                    "img-38"
+                  ],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "Tracks Outputs\n\nThe Tracks Settings tab is where the default bus routing of every instrument part in the MultiTracks.com catalog can be adjusted. Scroll to any instrument part, Tap the row, and select the new bus that this track will be routed to.\n\nTrack routing in Playback is device specific, and is global for that track. So changing the routing for a track name \"Electric guitar 3\" will change that track's routing across all songs and setlists on that device.",
+                  "steps": [],
+                  "hasDisruptiveSteps": false
+                },
+                {
+                  "id": "playback-user-guide:playback-settings-buses-settings-tab:1",
+                  "score": 0.406,
+                  "sectionPath": "Playback User Guide > Playback Settings > Buses Settings Tab",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide",
+                  "category": "audio-output",
+                  "scope": "in-scope",
+                  "part": 1,
+                  "parts": 1,
+                  "imageIds": [
+                    "img-39"
+                  ],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "Bus Outputs\n\nThe Bus Settings tab is where Buses can be customized and outputs can be re-routed. Playback has 16 default buses with default SmartRouting that automatically route the related instrument tracks to each of the buses. However, Bus routing and naming is completely customizable and saved by audio device.\n\nQuick Tip: Renaming Playback Buses in Bus Settings\n\n- Swipe Left on any bus cell to Edit the name and abbreviation\n- Name: Change the name of a Playback bus\n- Abbreviation: Change the bus name shown under the fader in the Buses mixer\n- Emojis are supported for bus names 😉\n\nNote: For an in-depth overview of Playback bus routing and features, see:\n​📖Bus Routing in Playback\n\nChange Bus Routing\n\nBus Routing is saved and recalled based on the connected audio device and dependent on the number of supported outputs. If an audio interface has 10 outputs, then those 16 are available for routing.\n\n- Tap the bus cell to open the routing menu\n- Choose which output to route the bus to and press Done\n\nNote: if a particular output is greyed-out, it's possible that the SMPTE bus is enabled and routed to that output. Either change the SMPTE output routing, or disable SMPTE output from the General Settings Tab if not intending to use it.",
+                  "steps": [
+                    {
+                      "n": 1,
+                      "text": "Swipe Left on any bus cell to Edit the name and abbreviation",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 2,
+                      "text": "Name: Change the name of a Playback bus",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 3,
+                      "text": "Abbreviation: Change the bus name shown under the fader in the Buses mixer",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 4,
+                      "text": "Emojis are supported for bus names 😉",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 5,
+                      "text": "Tap the bus cell to open the routing menu",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 6,
+                      "text": "Choose which output to route the bus to and press Done",
+                      "disruptive": false
+                    }
+                  ],
+                  "hasDisruptiveSteps": false
+                },
+                {
+                  "id": "playback-user-guide:live-performance-tracks-buses-mixer-controlling-your-tracks:1",
+                  "score": 0.394,
+                  "sectionPath": "Playback User Guide > Live Performance > Tracks/Buses Mixer: Controlling Your Tracks",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_05f3cacae5",
+                  "category": "audio-output",
+                  "scope": "adjacent",
+                  "part": 1,
+                  "parts": 3,
+                  "imageIds": [],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "Create your own mix of every song’s tracks in the tracks/buses mixer pane. The Tracks Mixer is where volume control of each track in a song can be set.\n\nToggle between Mixer Views\n\n- Tap the top button in the console to toggle between views in the mixer pane: Tracks Mixer, Bus Mixer, and Pad Player\n\nMixing Faders\n\nUnderstand each way to interact with the faders for complete control of your mix.\n\n- Change Volume: Press and hold any fader to raise or lower the volume of that track or bus.\n- Mute the fader: Tap the track or bus name to mute the instrument. Muting a Bus fader will automatically mute all tracks routed to that bus.\n\nReminder: The bus fader mix can be song specific or global. Change this in General Settings.",
+                  "steps": [
+                    {
+                      "n": 1,
+                      "text": "Tap the top button in the console to toggle between views in the mixer pane: Tracks Mixer, Bus Mixer, and Pad Player",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 2,
+                      "text": "Change Volume: Press and hold any fader to raise or lower the volume of that track or bus.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 3,
+                      "text": "Mute the fader: Tap the track or bus name to mute the instrument. Muting a Bus fader will automatically mute all tracks routed to that bus.",
+                      "disruptive": false
+                    }
+                  ],
+                  "hasDisruptiveSteps": false
+                }
+              ],
+              "outOfScope": [
+                {
+                  "id": "playback-user-guide:playback-settings-midi-settings-tab:1",
+                  "sectionPath": "Playback User Guide > Playback Settings > MIDI Settings Tab",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide"
+                },
+                {
+                  "id": "playback-user-guide:customizing-setlists-setlist-song-map-edit-mode:3",
+                  "sectionPath": "Playback User Guide > Customizing Setlists > Setlist / Song Map Edit Mode",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide"
+                }
+              ],
+              "note": "Manual sections describe how the app works; give only steps that appear in the text, and cite 'the Playback User Guide'. Sections listed under outOfScope are documented but outside this agent's support scope: name the topic and offer a handoff, do not troubleshoot them."
+            }
+          }
+        }
+      ],
+      "reportedCost": 0.0228
+    },
+    {
+      "input": "Uh, I'm on a Mac.",
+      "chatId": "999693bf-3d53-4489-8dd5-f008e7b457b1",
+      "reply": "Absolutely, let me pull that up. One moment please.\n\nOn Mac, they may be sharing a Click & Guide bus. In Playback’s Buses mixer, do you see one fader labeled “Click & Guide,” or separate Click and Guide faders?",
+      "tools": [
+        {
+          "name": "search_playback_docs",
+          "arguments": {
+            "query": "macOS Playback click guide separate volume faders guide click bus",
+            "category": "audio-output",
+            "platform": "macOS"
+          },
+          "result": {
+            "ok": true,
+            "source": "documentation",
+            "provider": "MultiTracks Help Center (bounded snapshot)",
+            "snapshotRetrievedAt": "2026-10-31",
+            "query": "macOS Playback click guide separate volume faders guide click bus",
+            "found": 6,
+            "results": [
+              {
+                "id": "route-click-guide-to-separate-busses",
+                "title": "How To | Route Click & Guide to Separate Busses in Playback (legacy, pre-7.6)",
+                "category": "audio-output",
+                "url": "https://helpcenter.multitracks.com/en/articles/5224107-how-to-route-click-guide-to-separate-busses-in-playback",
+                "retrievedAt": "2026-10-30",
+                "appliesTo": [],
+                "summary": "The article itself states these steps are no longer relevant for Playback 7.6 and newer, where Click and Guide are separated by default. Kept for the routing pattern: rename a spare bus, move Guide tracks to it in Settings > Tracks, then assign each bus to an interface output in Settings > Buses. Buses require a Playback Pro (Premium) subscription and an interface with more than 2 outputs.",
+                "steps": [
+                  {
+                    "n": 1,
+                    "text": "Free up a bus: swipe left on the Aux bus, tap Edit, rename it to 'Guide'. Then in Settings > Tracks move any instrument parts still routed to it to another bus (tap the cell, choose a bus, tap Done).",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 2,
+                    "text": "In the Tracks tab, move Guide (Dynamic) and Guide (Non-Dynamic) out of the Click & Guide bus into the Guide bus.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 3,
+                    "text": "In Settings > Buses, tap the Click and Guide bus cells and select an output for each (example: Click to output 1, Guide to output 2).",
+                    "disruptive": false
+                  }
+                ],
+                "hasDisruptiveSteps": false,
+                "relevance": 19
+              },
+              {
+                "id": "track-and-bus-routing-in-playback",
+                "title": "How To | Track & Bus Routing in Playback",
+                "category": "audio-output",
+                "url": "https://helpcenter.multitracks.com/en/articles/4439220-how-to-track-bus-routing-in-playback",
+                "retrievedAt": "2026-10-30",
+                "appliesTo": [],
+                "summary": "Bus routing and MultiOuts require a Playback Premium subscription. Playback groups 150+ instruments into 16 buses plus a dedicated SMPTE bus; each bus can go to any available output on the selected audio device, mono or stereo. The Pad bus cannot be re-routed. Track routing is saved per device and applies globally to that track; it is not saved with setlists or named arrangements.",
+                "steps": [
+                  {
+                    "n": 1,
+                    "text": "Route tracks to buses: Settings > Tracks tab, assign each track to a bus (defaults are preset and can be overwritten).",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 2,
+                    "text": "Route buses to outputs: Settings > Buses tab, tap a bus row and choose an available output.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 3,
+                    "text": "Route several buses at once: tap 'Assign Multiple Busses' in the bottom-right, select buses, assign one output.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 4,
+                    "text": "Rename a bus: drag its row to the left to reveal Edit.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 5,
+                    "text": "Greyed-out output: the SMPTE bus is probably using it. Disable SMPTE in the General tab or set the SMPTE bus to 'None'.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 6,
+                    "text": "Alternative from the main interface: open the 'Busses' layer (bottom right next to the master fader, or cycle layers with the button beside it), tap Edit (top right) to enter Setlist/Song Map edit mode, tap a bus name and select the output.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 7,
+                    "text": "Bus mixes are song-specific by default; disable Song Specific Buses in Settings for a global mix. Solo/mute on a bus affects all tracks routed to it.",
+                    "disruptive": false
+                  }
+                ],
+                "hasDisruptiveSteps": false,
+                "relevance": 12
+              },
+              {
+                "id": "how-to-use-playback-with-your-sound-system",
+                "title": "How to Use Playback with Your Sound System",
+                "category": "audio-output",
+                "url": "https://helpcenter.multitracks.com/en/articles/4649709-how-to-use-playback-with-your-sound-system",
+                "retrievedAt": "2026-10-30",
+                "appliesTo": [
+                  "iOS",
+                  "iPadOS",
+                  "macOS"
+                ],
+                "summary": "Three documented ways to get audio out of Playback: the built-in headphone port with Auto-Pan (2 channels: click/guide left, tracks right), a USB audio interface (up to 32 outputs, grouped into mono or stereo buses), and networked audio such as Dante or SoundGrid (iPad/iPhone limited to two channels; macOS can route up to 32 via Dante Virtual Soundcard). Bluetooth, subscription tiers, and menu paths are not covered here.",
+                "steps": [
+                  {
+                    "n": 1,
+                    "text": "Option 1 - headphone port: Auto-Pan is on by default. Use a 1/8\" TRS to dual 1/4\" TS cable, a stereo DI (or two mono DIs) to convert to XLR, then XLR to the stage box. Devices without a headphone jack can use a Lightning-to-3.5mm or USB-C-to-3.5mm adapter. Left channel feeds in-ears (click/guide); right feeds the house mix.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 2,
+                    "text": "Option 2 - USB audio interface: up to 32 outputs via a supported class-compliant interface. Lightning devices need an Apple Lightning Digital AV Adapter; USB-C devices need an Apple USB-C Digital AV Multiport Adapter. Add a powered USB hub if the interface is bus-powered. Outputs are grouped into custom buses, mono or stereo.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 3,
+                    "text": "Option 3 - networked audio (Dante, SoundGrid): connect the Playback device to a network running that protocol. iPad and iPhone support only two channels over networked audio; macOS apps like Dante Virtual Soundcard can route up to 32 channels.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 4,
+                    "text": "Use an in-ear monitoring solution so click and guide are not heard by the congregation. Accompaniment tracks do not include click and guide.",
+                    "disruptive": false
+                  }
+                ],
+                "hasDisruptiveSteps": false,
+                "relevance": 9
+              }
+            ],
+            "note": "Only give steps that appear in these results. Give non-disruptive steps first. Say a disruptive step's caution once per call, in one short sentence, unless the caller already told you their timing; then act on what they said and skip the caution.",
+            "manual": {
+              "ok": true,
+              "source": "manual",
+              "provider": "Playback User Guide (MultiTracks help center, snapshot in Pinecone)",
+              "query": "macOS Playback click guide separate volume faders guide click bus",
+              "found": 3,
+              "results": [
+                {
+                  "id": "playback-user-guide:playback-settings-general-settings-tab:3",
+                  "score": 0.512,
+                  "sectionPath": "Playback User Guide > Playback Settings > General Settings Tab",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide",
+                  "category": "audio-output",
+                  "scope": "in-scope",
+                  "part": 3,
+                  "parts": 4,
+                  "imageIds": [],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "- Metronome Style VU: Enable the Click volume meters to flash like a metronome (enabled) or reflect the real-time volume output (disabled)\n- Song Specific Master Fader: When enabled, each song has a separate master fader volume. Disable for a global master fader volume across every song.\n- Fader Default Level at 80%: When enabled, a song is added to Playback with all faders preset at 80%. This provides headroom for increasing track volumes if needed. Disable to load a song with all track faders at 100% volume.\n- Power Saver: Enable to improve performance on older devices and decrease battery consumption. Power Saver disables fader VU meters, Fader multi-touch, and reduces waveform scrolling feedback.\n- MIDI Out: Enables the MIDI Out engine by default. Disable if not using MIDI Out; this will improve Playback performance and decrease battery consumption.",
+                  "steps": [
+                    {
+                      "n": 1,
+                      "text": "Metronome Style VU: Enable the Click volume meters to flash like a metronome (enabled) or reflect the real-time volume output (disabled)",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 2,
+                      "text": "Song Specific Master Fader: When enabled, each song has a separate master fader volume. Disable for a global master fader volume across every song.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 3,
+                      "text": "Fader Default Level at 80%: When enabled, a song is added to Playback with all faders preset at 80%. This provides headroom for increasing track volumes if needed. Disable to load a song with all track faders at 100% volume.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 4,
+                      "text": "Power Saver: Enable to improve performance on older devices and decrease battery consumption. Power Saver disables fader VU meters, Fader multi-touch, and reduces waveform scrolling feedback.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 5,
+                      "text": "MIDI Out: Enables the MIDI Out engine by default. Disable if not using MIDI Out; this will improve Playback performance and decrease battery consumption.",
+                      "disruptive": false
+                    }
+                  ],
+                  "hasDisruptiveSteps": false
+                },
+                {
+                  "id": "playback-user-guide:live-performance-tracks-buses-mixer-controlling-your-tracks:2",
+                  "score": 0.476,
+                  "sectionPath": "Playback User Guide > Live Performance > Tracks/Buses Mixer: Controlling Your Tracks",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_05f3cacae5",
+                  "category": "audio-output",
+                  "scope": "adjacent",
+                  "part": 2,
+                  "parts": 3,
+                  "imageIds": [],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "Reference Track Fader and controls\n\n- The reference track is muted by default.\n- Soloing the reference track with the circle \"S\" button will solo the reference track and mute all tracks, including the click and guide.\n- Tapping on the \"reference\" track name will unmute the reference track, and mute all instrument tracks, but keep the click and guide track with the reference.\n\nMaster Fader\n\nTake full control of all audience-facing audio with the master track fader. This fader controls the overall volume output of all instrument tracks + buses, as well as the pad player.\n\nReminder: The master fader volume is globally set by default. For song specific master volume, enable this in General Settings.\n\n- Tip: Do you need to perform a factory reset of Playback for any reason? Triple-Tap the master fader label to initiate a factory reset, wiping all downloaded data and logging out.",
+                  "steps": [
+                    {
+                      "n": 1,
+                      "text": "The reference track is muted by default.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 2,
+                      "text": "Soloing the reference track with the circle \"S\" button will solo the reference track and mute all tracks, including the click and guide.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 3,
+                      "text": "Tapping on the \"reference\" track name will unmute the reference track, and mute all instrument tracks, but keep the click and guide track with the reference.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 4,
+                      "text": "Tip: Do you need to perform a factory reset of Playback for any reason? Triple-Tap the master fader label to initiate a factory reset, wiping all downloaded data and logging out.",
+                      "disruptive": true,
+                      "kind": "settings-change",
+                      "caution": "Changing this setting takes effect immediately and can cut audio for a moment."
+                    }
+                  ],
+                  "hasDisruptiveSteps": true
+                },
+                {
+                  "id": "playback-user-guide:live-performance-tracks-buses-mixer-controlling-your-tracks:3",
+                  "score": 0.451,
+                  "sectionPath": "Playback User Guide > Live Performance > Tracks/Buses Mixer: Controlling Your Tracks",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_05f3cacae5",
+                  "category": "audio-output",
+                  "scope": "adjacent",
+                  "part": 3,
+                  "parts": 3,
+                  "imageIds": [],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "Click Track Subdivisions\n\nWhen the selected Click Track preset is in the Built-In category, click subdivisions are available for more detailed control over the click track mix.\n\nNote: Click Track Accents and subdivisions will only be available when using a BUILT IN Click sound from the \"Click Sound\" setting in the \"General\" settings tab. The Downloaded click sound option will not include click subdivision or accent settings and will just play the pre-engineered click audio file.\n\n- With a built-in click sound selected, Tap and Hold the Click fader to expand the subdivisions.\n- Control the mix of Accent, ¼ note, 1/8 note, and 1/16 note subdivisions.\n\nNote: Built-In Click Track mixes are Song Specific.",
+                  "steps": [
+                    {
+                      "n": 1,
+                      "text": "With a built-in click sound selected, Tap and Hold the Click fader to expand the subdivisions.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 2,
+                      "text": "Control the mix of Accent, ¼ note, 1/8 note, and 1/16 note subdivisions.",
+                      "disruptive": false
+                    }
+                  ],
+                  "hasDisruptiveSteps": false
+                }
+              ],
+              "outOfScope": [
+                {
+                  "id": "playback-user-guide:playback-sync-live-navigation-console-buttons:1",
+                  "sectionPath": "Playback User Guide > Playback Sync > Live Navigation: Console Buttons",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_1699c8f3d7"
+                }
+              ],
+              "note": "Manual sections describe how the app works; give only steps that appear in the text, and cite 'the Playback User Guide'. Sections listed under outOfScope are documented but outside this agent's support scope: name the topic and offer a handoff, do not troubleshoot them."
+            }
+          }
+        }
+      ],
+      "reportedCost": 0.0343
+    }
+  ],
+  "reviewStatus": "exploratory-only; Chat request-start rendering changed between phases; excluded from final pass counts"
+}

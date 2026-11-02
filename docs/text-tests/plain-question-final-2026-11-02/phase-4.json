@@ -1,0 +1,18 @@
+[
+  {
+    "run": "01-click-guide-v1",
+    "input": "Yes, but I mean what we hear through our sound desk. They're coming through one channel in our ears."
+  },
+  {
+    "run": "01-click-guide-v2",
+    "input": "Which number should I choose?"
+  },
+  {
+    "run": "03-audio-device-v1",
+    "input": "Give me a second, I'm still looking. Please stay on."
+  },
+  {
+    "run": "03-audio-device-v2",
+    "input": "Yes, we can hear it now."
+  }
+]

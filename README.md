@@ -193,9 +193,13 @@ voice sessions, adds no UI, and needs no separate OpenAI key. Text token usage
 still applies. Reports under `docs/text-tests/` are reasoning POCs, not voice-test
 results; the user will manually test the ten selected presentation conversations later.
 See [the testing workflow](docs/conversation-test-plan.md).
+The [conversation-friction review](docs/text-tests/conversation-friction-review.md)
+records the current clarification/holding/closing changes and the remaining voice checks.
 
-The [curated caller worksheet](docs/curated-caller-worksheet.md) contains the ten
-selected cases and two opening phrasings each. `npm run text:cases -- start <dir>`
+Jordan and Alex can use the [concise ten-call sheet](docs/jordan-voice-tests.md):
+natural opening, labeled facts to give only when asked, and a concrete success
+check beside each case. The [curated caller worksheet](docs/curated-caller-worksheet.md)
+contains developer notes and two opening phrasings each. `npm run text:cases -- start <dir>`
 starts the twenty text conversations; review actual replies before submitting
 fixture-based follow-ups with `npm run text:cases -- reply <dir> <replies.json>`.
 Reviewer facts are never sent to the support agent. The
