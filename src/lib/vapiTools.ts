@@ -121,7 +121,7 @@ export function buildToolDefinitions(opts: { serverUrl: string; secret?: string 
     ),
     fn(
       "initiate_handoff",
-      "Use when the caller has requested or accepted a human transfer and check_team_availability confirms the selected team can transfer now. Starts the simulated handoff and returns success or failure, rechecking availability. Success must be confirmed before announcing a connection; this demo never connects to real staff.",
+      "Use when the caller has requested or accepted a human transfer and check_team_availability confirms the selected team can transfer now. Starts the simulated handoff and returns success or failure, rechecking availability. Success completes this demo's support workflow and returns endCallRequired=true; failure leaves the conversation open. Success must be confirmed before announcing a connection; this demo never connects to real staff.",
       { teamId: { type: "string", enum: ["playback-support", "billing"] } },
       ["teamId"],
       "Let me request that handoff."

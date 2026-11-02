@@ -31,10 +31,13 @@ export function formatCallerNumber(number: string): string {
 }
 
 /** What the tools tell the model about the live call. callerNumber is set on phone calls only. */
-export type CallInfo = { callId: string; callerNumber?: string; callType?: string };
+export type CallInfo = { callId: string; callerNumber?: string; callType?: string; controlUrl?: string };
 
 /** Reads the call fields Vapi attaches to every server message and tool webhook. */
-export function callInfoOf(call: { id?: string; type?: string; customer?: { number?: string } } | undefined): CallInfo {
+export function callInfoOf(call: { id?: string; type?: string; customer?: { number?: string }; monitor?: { controlUrl?: string } } | undefined): CallInfo {
   const number = call?.customer?.number?.trim();
-  return { callId: call?.id ?? "unknown", callType: call?.type, callerNumber: number || undefined };
+  return { callId: call?.id ?? "unknown", callType: call?.type, callerNumber: number || undefined,
+    // Ephemeral server-only capability from the authenticated webhook, never a tool argument/result.
+    ...(call?.monitor?.controlUrl ? { controlUrl: call.monitor.controlUrl } : {}),
+  };
 }

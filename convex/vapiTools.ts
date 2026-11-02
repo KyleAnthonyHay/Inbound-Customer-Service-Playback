@@ -1,5 +1,5 @@
 import type { ActionCtx } from "./_generated/server";
-import { api } from "./_generated/api";
+import { api, internal } from "./_generated/api";
 import type { Id } from "./_generated/dataModel";
 import { searchDocs } from "../src/lib/tools/kb";
 import { searchManual } from "../src/lib/tools/manual";
@@ -8,6 +8,7 @@ import { getRelevantChangesSinceVersion } from "../src/lib/tools/releases";
 import { getPlanningCenterServiceContext } from "../src/lib/tools/planningCenter";
 import { TOOL_META } from "../src/lib/tools/meta";
 import { lastFour, wantsCallerId, type CallInfo } from "../src/lib/tools/callerId";
+import { validControlUrl } from "./lib/handoffEnding";
 
 /**
  * Server-side tool implementations, dispatched by the Vapi webhook in http.ts.
@@ -124,17 +125,33 @@ export const tools: Record<string, ToolDef> = {
   initiate_handoff: {
     source: "simulated",
     label: TOOL_META.initiate_handoff.label,
-    run: async (a, ctx) => {
+    run: async (a, ctx, call) => {
       const teamId = str(a.teamId) ?? "playback-support";
       const avail = await ctx.runQuery(api.teams.availability, { teamId });
       const team = avail.teams[0];
       if (!team) return { ok: false, reason: "team-not-found", source: "simulated" };
       if (!team.canTransferNow)
         return { ok: false, reason: "team-unavailable", team: team.label, source: "simulated", next: "Offer a callback instead." };
+      const controlUrl = validControlUrl(call.callId, call.controlUrl);
+      let fallbackScheduled = false;
+      if (controlUrl) {
+        try {
+          fallbackScheduled = await ctx.runMutation(internal.handoff.scheduleEnd, {
+            callId: call.callId, ...(call.callType ? { callType: call.callType } : {}), controlUrl,
+          });
+        } catch {
+          // Do not turn an accepted handoff into a failed transfer or expose its private control URL.
+          console.warn("Could not schedule simulated handoff call ending");
+        }
+      }
       return {
         ok: true,
         simulated: true,
         team: team.label,
+        conversationComplete: true,
+        endCallRequired: true,
+        nextAction: "endCall",
+        callEndingFallbackScheduled: fallbackScheduled,
         note: "Simulated handoff accepted. No real MultiTracks employee is contacted.",
         source: "simulated",
       };

@@ -13,7 +13,7 @@ import { callInfoOf } from "../src/lib/tools/callerId";
  */
 const http = httpRouter();
 
-type CallFields = { id?: string; type?: string; startedAt?: string; customer?: { number?: string } };
+type CallFields = { id?: string; type?: string; startedAt?: string; customer?: { number?: string }; monitor?: { controlUrl?: string } };
 
 type ToolCall = { id: string; function?: { name?: string; arguments?: unknown }; name?: string; arguments?: unknown };
 

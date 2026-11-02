@@ -125,6 +125,8 @@ export default defineSchema({
     status: v.union(v.literal("ringing"), v.literal("in-progress"), v.literal("ended")),
     /** From Vapi speech-update, so the web phone can show Speaking / Listening for a remote call. */
     assistantSpeaking: v.optional(v.boolean()),
+    /** Successful simulated handoff has scheduled its one server-side hang-up fallback. */
+    handoffEndScheduledAt: v.optional(v.number()),
     startedAt: v.number(), // epoch ms
     endedAt: v.optional(v.number()),
     endedReason: v.optional(v.string()),

@@ -1,0 +1,64 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "caseId": "human-unavailable",
+  "variant": 1,
+  "testId": "text-poc-217039bb-9c6f-4f99-ae43-a0b6c0df9566",
+  "configurationHash": "94a684ee208082a8c8a657bc98106a4b57e6999b90607cd42faf2e75b0e68d66",
+  "toolRuntime": "deployed-development",
+  "fixture": {
+    "id": "human-unavailable",
+    "intent": "human-request",
+    "handling": "availability-fallback",
+    "openings": [
+      "Could I speak to someone, please?"
+    ],
+    "reviewOnly": {
+      "facts": "Run separately with dev simulated support set busy and restored afterwards. Decline callback. No phone call is created.",
+      "expected": "Check availability immediately; only after unavailable result offer callback. No initiate_handoff, no booking without consent. Text ending does not prove live hang-up."
+    }
+  },
+  "failure": null,
+  "done": true,
+  "cleanupComplete": true,
+  "reportedTextCost": 0.015099999999999999,
+  "turns": [
+    {
+      "input": "Could I speak to someone, please?",
+      "chatId": "fbb46e6b-a2d0-4238-88d8-a0849a873cc3",
+      "reply": "Of course. Let me see who's available. One moment please.\n\nNo Playback specialist is available right now, but I can schedule a callback. When are you next available?",
+      "tools": [
+        {
+          "name": "check_team_availability",
+          "arguments": {
+            "teamId": "playback-support"
+          },
+          "result": {
+            "source": "simulated",
+            "teams": [
+              {
+                "canTransferNow": false,
+                "description": "Song loading, audio output, device and version issues.",
+                "label": "Playback Technical Support",
+                "status": "busy",
+                "teamId": "playback-support",
+                "withinHours": true
+              }
+            ],
+            "handoffStarted": false,
+            "actionPerformed": "availability-lookup-only"
+          }
+        }
+      ],
+      "reportedCost": 0.0083
+    },
+    {
+      "input": "No, I don’t want a callback.",
+      "chatId": "385c2e42-cdd4-4932-93f8-2d3f57e18b30",
+      "reply": "Understood. I can still help with Playback song-loading or audio-output issues here—what’s happening today?",
+      "tools": [],
+      "reportedCost": 0.0068
+    }
+  ]
+}

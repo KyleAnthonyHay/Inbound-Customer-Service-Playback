@@ -124,10 +124,12 @@ const nextId = () => `${Date.now()}-${idCounter++}`;
 /**
  * After a successful simulated handoff the transfer cue plays and the demo
  * call ends: the "transfer" is not real, so there is nothing to stay on the
- * line for. If the model is still speaking its goodbye, this cuts it off on
- * purpose. The pause lets the cue finish before the hang-up tone.
+ * line for. Native endCall should follow the goodbye; the delayed SDK stop
+ * is a fallback if the model fails to end, leaving room for the farewell.
  */
-const HANDOFF_END_DELAY_MS = 400;
+// Leave room for the simulated-handoff announcement and branded goodbye.
+// Native endCall normally disconnects first; this also covers SDK-only calls.
+const HANDOFF_END_DELAY_MS = 15_000;
 
 export type Handoff = { team: string; at: number };
 
