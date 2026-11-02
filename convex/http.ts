@@ -129,7 +129,7 @@ http.route({
           await ctx.runMutation(api.calls.appendTranscript, { callId, role: m.role, text: m.transcript, callType: m.call?.type });
         break;
       case "speech-update":
-        await ctx.runMutation(api.calls.touch, { callId, callType: m.call?.type, callerNumber });
+        await ctx.runMutation(api.calls.touch, { callId, callType: m.call?.type, callerNumber, role: m.role, speechStatus: m.status });
         break;
       case "conversation-update": {
         if (m.call?.type === "webCall") break;

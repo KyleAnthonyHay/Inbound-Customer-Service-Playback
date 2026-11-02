@@ -5,7 +5,7 @@ import path from "node:path";
 import { parseArticle } from "./manual/parse-article";
 import { chunkSections, sectionize } from "./manual/chunk";
 import { classifySection } from "../src/lib/manual/types";
-import { bodyOf, manualCategoriesFor, searchManual, stepsOf } from "../src/lib/tools/manual";
+import { bodyOf, manualCategoriesFor, rankWithCategoryPreference, readManualEnv, searchManual, stepsOf } from "../src/lib/tools/manual";
 
 const dir = path.join("docs", "source-snapshots", "playback-user-guide");
 const html = readFileSync(path.join(dir, "raw", "article.html"), "utf8");
@@ -113,7 +113,8 @@ test("manual search shapes Pinecone hits, classifies steps and separates out-of-
   assert.ok(r.ok);
   if (!r.ok) return;
   assert.equal(calls[0].url, "https://x.svc.pinecone.io/records/namespaces/ns/search");
-  assert.deepEqual((calls[0].body as { query: { filter: unknown } }).query.filter, { category: { $in: ["audio-output"] } });
+  assert.equal((calls[0].body as { query: { filter?: unknown } }).query.filter, undefined, "category is a preference, never a hard filter");
+  assert.equal((calls[0].body as { query: { top_k: number } }).query.top_k, 8);
   assert.equal(r.found, 2);
   assert.ok(r.results.every((x) => x.scope !== "out-of-scope"));
   assert.equal(r.outOfScope.length, 1);
@@ -140,4 +141,29 @@ test("helpers", () => {
   const steps = stepsOf("- Tap Restore Purchases\n- Update the app from the App Store\nplain line");
   assert.equal(steps.length, 2);
   assert.equal(steps[1].disruptive, true);
+});
+
+test("manual env is read per key, so a non-enumerable process.env (Convex) still configures the search", async () => {
+  // Convex's process.env has the values but Object.keys() is empty, so a spread drops everything.
+  const convexLike = new Proxy({} as Record<string, string | undefined>, {
+    get: (_t, k) => ({ PINECONE_API_KEY: "k", PINECONE_INDEX_HOST: "https://h.svc.pinecone.io/" } as Record<string, string>)[String(k)],
+    ownKeys: () => [],
+  });
+  assert.deepEqual({ ...convexLike }, {}, "spread sees nothing");
+  const env = readManualEnv({}, convexLike);
+  assert.equal(env.PINECONE_API_KEY, "k");
+  assert.equal(env.PINECONE_INDEX_HOST, "https://h.svc.pinecone.io/");
+  assert.deepEqual(readManualEnv({ PINECONE_NAMESPACE: "ns" }, convexLike).PINECONE_NAMESPACE, "ns", "override wins");
+  assert.equal(readManualEnv({ PINECONE_API_KEY: "" }, convexLike).PINECONE_API_KEY, "", "an explicit empty override disables it");
+});
+
+test("category preference nudges matching sections but never hides a clearly better one", () => {
+  const hit = (id: string, category: string, _score: number) => ({ _id: id, _score, fields: { category } });
+  // "Where is Settings" tagged setup: the Settings section (audio-output) must survive and stay on top.
+  const hits = [hit("side-menu", "audio-output", 0.611), hit("playback-settings", "general", 0.568), hit("app-overview", "setup", 0.539), hit("transport", "setup", 0.406)];
+  assert.deepEqual(rankWithCategoryPreference(hits, ["setup"]).map((h) => h._id), ["side-menu", "app-overview", "playback-settings", "transport"]);
+  // Near-ties go to the requested category.
+  const tie = [hit("a", "general", 0.50), hit("b", "song-loading", 0.48)];
+  assert.deepEqual(rankWithCategoryPreference(tie, ["song-loading"]).map((h) => h._id), ["b", "a"]);
+  assert.deepEqual(rankWithCategoryPreference(tie, undefined).map((h) => h._id), ["a", "b"]);
 });

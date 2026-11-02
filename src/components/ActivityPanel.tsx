@@ -715,7 +715,7 @@ function HistoryView({ calls, currentId, busy, onOpen, onClear, reduce }: { call
               <ul>
                 {g.items.map((c) => {
                   const current = c.callId === currentId;
-                  const live = c.status === "in-progress";
+                  const live = c.status === "in-progress" || c.status === "ringing";
                   return (
                     <li key={c._id} className="border-t border-white/[0.05]">
                       <button
@@ -800,8 +800,9 @@ function HistoryView({ calls, currentId, busy, onOpen, onClear, reduce }: { call
 function View({ open, onToggle, callId, status: browserStatus, startedAt: browserStartedAt, assistantSpeaking, handoff, clientEvents, transcript, onOpenPastCall, serverEvents, pastCalls, callRow, storedTranscript, onClearHistory }: Props & ViewData) {
   const reduce = useReducedMotion();
   // A call on another channel (phone, harness) that the agent is on right now: show it as live.
-  const remoteLive = browserStatus !== "active" && browserStatus !== "connecting" && !!callRow && callRow.status === "in-progress" && clientEvents.length === 0;
-  const status: CallStatus = remoteLive ? "active" : browserStatus;
+  const remoteLive =
+    browserStatus !== "active" && browserStatus !== "connecting" && !!callRow && (callRow.status === "in-progress" || callRow.status === "ringing") && clientEvents.length === 0;
+  const status: CallStatus = remoteLive ? (callRow.status === "ringing" ? "connecting" : "active") : browserStatus;
   const startedAt = remoteLive && callRow ? callRow.startedAt : browserStartedAt;
   const [cardOpen, setCardOpen] = useState(true);
   const [view, setView] = useState<"activity" | "history">("activity");
