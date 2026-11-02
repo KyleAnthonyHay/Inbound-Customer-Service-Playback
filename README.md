@@ -109,6 +109,24 @@ goodbye does not end the call, so the `endCall` tool is attached.
   The handoff is therefore spoken only, then `endCall`. This limitation is
   stated rather than worked around.
 
+## Opening, "are you a robot?", and no unexplained silence
+
+- The greeting introduces the agent as an AI and asks why the caller is calling. The reasoner prompt
+  has an OPENING block ("are you a robot?" is answered honestly every time; "can I just speak to a
+  human?" goes straight to the handoff flow with no troubleshooting first) and a COMMON CONCERNS block
+  (live in service, losing songs or setlists, "I already tried that", cost/subscription, "can you see
+  my screen?", "is this recorded?").
+- GPT-Live's speaker must say one short transition line before every delegate/tool call ("Absolutely,
+  let me pull that up. One moment please.", "Of course. Let me see who's available. One moment
+  please." for human requests) and then stay quiet until the reasoner answers. The transfer line is
+  "I'll transfer you to our support team now. One moment please. Thanks for calling!" followed by
+  `endCall`. Tool `request-start` messages carry the same phrases; in voice calls GPT-Live does not
+  speak them (only the speaker's line is heard), in the text test both appear.
+- `scripts/voice-test.ts` prints a per-turn timing analysis (silence before the agent's first words,
+  whether that was a transition line, the gap after it, and tool-call offsets). Runs on 2026-11-02
+  (`docs/voice-tests/2026-11-02T19-4*` to `20-0*`) measured 0.2 to 0.6 s of silence after each caller
+  turn (one 1.6 s), with the transition line covering the 1 to 4 s until the reasoner's answer.
+
 ## Call sounds and idle handling
 
 Button cues (connected, mute, unmute, hang-up) are synthesized with the Web
