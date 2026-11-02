@@ -1,5 +1,6 @@
 import { mutation, query, type MutationCtx } from "./_generated/server";
 import { v } from "convex/values";
+import { assistantSpeakingAfter, isLiveStatus, REMOTE_STALE_MS, storedStatusOf, type StoredCallStatus } from "../src/lib/tools/callState";
 
 /**
  * Call history for the activity panel's "Past calls" list. Rows are written by Vapi's
@@ -16,7 +17,11 @@ const channelOf = (t?: string): "browser" | "phone" | "harness" | "unknown" => {
 };
 
 /** Find-or-create the call row (shared with the tool webhook, which may fire before status-update). */
-export async function ensureCall(ctx: MutationCtx, callId: string, patch?: { channel?: string; startedAt?: number; callerNumber?: string }) {
+export async function ensureCall(
+  ctx: MutationCtx,
+  callId: string,
+  patch?: { channel?: string; startedAt?: number; callerNumber?: string; status?: StoredCallStatus }
+) {
   const existing = await ctx.db.query("calls").withIndex("by_callId", (q) => q.eq("callId", callId)).unique();
   if (existing) {
     if (patch?.channel && existing.channel === "unknown") await ctx.db.patch(existing._id, { channel: channelOf(patch.channel) });
@@ -28,7 +33,7 @@ export async function ensureCall(ctx: MutationCtx, callId: string, patch?: { cha
     callId,
     channel: channelOf(patch?.channel),
     callerNumber: patch?.callerNumber,
-    status: "in-progress",
+    status: patch?.status ?? "in-progress",
     startedAt: patch?.startedAt ?? Date.now(),
     toolCount: 0,
     transcriptCount: 0,
@@ -38,8 +43,15 @@ export async function ensureCall(ctx: MutationCtx, callId: string, patch?: { cha
 export const statusUpdate = mutation({
   args: { callId: v.string(), status: v.string(), callType: v.optional(v.string()), endedReason: v.optional(v.string()), startedAt: v.optional(v.string()), callerNumber: v.optional(v.string()) },
   handler: async (ctx, a) => {
-    const id = await ensureCall(ctx, a.callId, { channel: a.callType, startedAt: a.startedAt ? Date.parse(a.startedAt) : undefined, callerNumber: a.callerNumber });
-    if (a.status === "ended") await ctx.db.patch(id, { status: "ended", endedAt: Date.now(), endedReason: a.endedReason });
+    const next = storedStatusOf(a.status);
+    const id = await ensureCall(ctx, a.callId, {
+      channel: a.callType, startedAt: a.startedAt ? Date.parse(a.startedAt) : undefined, callerNumber: a.callerNumber,
+      status: next ?? undefined,
+    });
+    const row = (await ctx.db.get(id))!;
+    if (next === "ended") await ctx.db.patch(id, { status: "ended", endedAt: Date.now(), endedReason: a.endedReason, assistantSpeaking: false });
+    // ringing -> in-progress only moves forward; an ended row never reopens.
+    else if (next === "in-progress" && row.status === "ringing") await ctx.db.patch(id, { status: "in-progress" });
     return { ok: true };
   },
 });
@@ -88,6 +100,7 @@ export const endOfCallReport = mutation({
     }
     await ctx.db.patch(id, {
       status: "ended",
+      assistantSpeaking: false,
       endedAt: a.endedAt ? Date.parse(a.endedAt) : Date.now(),
       endedReason: a.endedReason,
       summary: a.summary,
@@ -99,11 +112,23 @@ export const endOfCallReport = mutation({
   },
 });
 
-/** Mark a call as in progress (speech-update), creating the row if the tool webhook hasn't yet. */
+/**
+ * speech-update: someone is talking, so the call is in progress (creating the row if the tool
+ * webhook hasn't yet) and the assistant's speaking state is recorded for the web phone.
+ */
 export const touch = mutation({
-  args: { callId: v.string(), callType: v.optional(v.string()), callerNumber: v.optional(v.string()) },
+  args: {
+    callId: v.string(), callType: v.optional(v.string()), callerNumber: v.optional(v.string()),
+    role: v.optional(v.string()), speechStatus: v.optional(v.string()),
+  },
   handler: async (ctx, a) => {
-    await ensureCall(ctx, a.callId, { channel: a.callType, callerNumber: a.callerNumber });
+    const id = await ensureCall(ctx, a.callId, { channel: a.callType, callerNumber: a.callerNumber });
+    const row = (await ctx.db.get(id))!;
+    const speaking = assistantSpeakingAfter(a.role, a.speechStatus);
+    const patch: { status?: "in-progress"; assistantSpeaking?: boolean } = {};
+    if (row.status === "ringing") patch.status = "in-progress";
+    if (speaking !== undefined && row.status !== "ended" && speaking !== row.assistantSpeaking) patch.assistantSpeaking = speaking;
+    if (Object.keys(patch).length) await ctx.db.patch(id, patch);
     return { ok: true };
   },
 });
@@ -140,15 +165,15 @@ export const list = query({
 });
 
 /**
- * The one call the agent is on right now (newest in-progress, started within 15 min), from any
- * channel. The demo runs a single agent instance, so the website follows this call live.
+ * The one call the agent is on right now (newest ringing or in-progress, started within 15 min),
+ * from any channel. The demo runs a single agent instance, so the website follows this call live.
  */
 export const current = query({
   args: {},
   handler: async (ctx) => {
     const recent = await ctx.db.query("calls").withIndex("by_startedAt").order("desc").take(10);
-    const cutoff = Date.now() - 15 * 60 * 1000;
-    return recent.find((c) => c.status === "in-progress" && c.startedAt > cutoff) ?? null;
+    const cutoff = Date.now() - REMOTE_STALE_MS;
+    return recent.find((c) => isLiveStatus(c.status) && c.startedAt > cutoff) ?? null;
   },
 });
 
@@ -181,7 +206,7 @@ export const clearAll = mutation({
     const calls = await ctx.db.query("calls").collect();
     let removed = 0;
     for (const c of calls) {
-      if (c.status === "in-progress" && Date.now() - c.startedAt < 15 * 60 * 1000) continue;
+      if (isLiveStatus(c.status) && Date.now() - c.startedAt < REMOTE_STALE_MS) continue;
       for (const t of await ctx.db.query("transcripts").withIndex("by_call", (q) => q.eq("callId", c.callId)).collect()) await ctx.db.delete(t._id);
       for (const e of await ctx.db.query("callEvents").withIndex("by_call", (q) => q.eq("callId", c.callId)).collect()) await ctx.db.delete(e._id);
       await ctx.db.delete(c._id);

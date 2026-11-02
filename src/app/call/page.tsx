@@ -6,11 +6,40 @@ import { ArrowLeft } from "lucide-react";
 import { CallScreen } from "@/components/CallScreen";
 import { PhoneFrame } from "@/components/PhoneFrame";
 import { ActivityPanel } from "@/components/ActivityPanel";
+import { useConvexReady } from "@/components/ConvexClientProvider";
 import { config, isVapiConfigured } from "@/lib/config";
-import { useVapiCall } from "@/lib/useVapiCall";
+import { useVapiCall, type CallStatus } from "@/lib/useVapiCall";
+import { NO_REMOTE_CALL, useRemoteCall, type RemoteCall } from "@/lib/useRemoteCall";
+import { formatCallerNumber } from "@/lib/tools/callerId";
+
+/**
+ * The page needs Convex to follow calls the agent takes on the phone line. The provider only
+ * exists in the browser, so the hook that subscribes is mounted behind useConvexReady().
+ */
 export default function CallPage() {
+  const ready = useConvexReady();
+  return ready ? <CallPageWithRemote /> : <CallPageView remote={NO_REMOTE_CALL} />;
+}
+
+function CallPageWithRemote() {
+  const [browserStatus, setBrowserStatus] = useState<CallStatus>("idle");
+  const remote = useRemoteCall(browserStatus);
+  return <CallPageView remote={remote} onBrowserStatus={setBrowserStatus} />;
+}
+
+function CallPageView({ remote, onBrowserStatus }: { remote: RemoteCall; onBrowserStatus?: (s: CallStatus) => void }) {
   const call = useVapiCall();
   const configured = isVapiConfigured();
+  useEffect(() => onBrowserStatus?.(call.status), [call.status, onBrowserStatus]);
+  // Phone line calls show the dialed number, who is calling, and the live state from Convex.
+  const phone = remote.following
+    ? {
+        status: remote.status as CallStatus,
+        subtitle: remote.callerNumber ? `from ${formatCallerNumber(remote.callerNumber)}` : `${remote.row?.channel ?? "remote"} call`,
+        startedAt: remote.startedAt,
+        handoff: null,
+      }
+    : { status: call.status, subtitle: "MultiTracks", startedAt: call.startedAt, handoff: call.handoff };
   const [panelOpen, setPanelOpen] = useState(false);
   // Dev aid: /call?callId=<id> shows the logged events of a past call in the panel.
   const [callIdOverride, setCallIdOverride] = useState<string | null>(null);
@@ -48,24 +77,26 @@ export default function CallPage() {
 
       <PhoneFrame>
       <CallScreen
-        status={call.status}
+        status={phone.status}
         label={config.inboundNumber || config.callerLabel}
-        subtitle="MultiTracks"
-        startedAt={call.startedAt}
+        subtitle={phone.subtitle}
+        startedAt={phone.startedAt}
         muted={call.muted}
         assistantSpeaking={call.assistantSpeaking}
         onStart={call.start}
         onEnd={call.stop}
         onToggleMute={call.toggleMute}
         onViewLog={() => setPanelOpen(true)}
-        handoff={call.handoff}
+        handoff={phone.handoff}
+        remote={remote.following}
+        speaking={remote.assistantSpeaking}
       />
       </PhoneFrame>
 
       <ActivityPanel
         open={panelOpen}
         onToggle={() => setPanelOpen((o) => !o)}
-        callId={call.callId ?? callIdOverride}
+        callId={call.callId ?? remote.callId ?? callIdOverride}
         status={call.status}
         startedAt={call.startedAt}
         assistantSpeaking={call.assistantSpeaking}
