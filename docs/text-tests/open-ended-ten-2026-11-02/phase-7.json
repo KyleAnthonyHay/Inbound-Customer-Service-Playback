@@ -1,0 +1,38 @@
+[
+  {
+    "run": "01-click-guide-v1",
+    "input": "It's working now, thanks."
+  },
+  {
+    "run": "02-reconnect-v1",
+    "input": "Five and six."
+  },
+  {
+    "run": "03-audio-device-v1",
+    "input": "No, that's everything."
+  },
+  {
+    "run": "04-false-expired-v1",
+    "input": "I don't know. How do I check that?"
+  },
+  {
+    "run": "05-supported-setup-v1",
+    "input": "That makes sense, thanks."
+  },
+  {
+    "run": "07-organization-v1",
+    "input": "Yes, the songs are there now."
+  },
+  {
+    "run": "06-borrowed-mixer-v1",
+    "done": true
+  },
+  {
+    "run": "09-loading-recovery-v1",
+    "done": true
+  },
+  {
+    "run": "10-loading-unresolved-v1",
+    "done": true
+  }
+]

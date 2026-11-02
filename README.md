@@ -191,20 +191,22 @@ conversation through Vapi Chat using the voice agent's shared reasoner definitio
 and tools. A scenario file can be passed for scripted text turns. This creates no
 voice sessions, adds no UI, and needs no separate OpenAI key. Text token usage
 still applies. Reports under `docs/text-tests/` are reasoning POCs, not voice-test
-results; the user will manually test the ten selected presentation conversations later.
+results. Jordan’s usability try-out is separate from the ten developer conversations.
 See [the testing workflow](docs/conversation-test-plan.md).
 The [conversation-friction review](docs/text-tests/conversation-friction-review.md)
 records the current clarification/holding/closing changes and the remaining voice checks.
 
-Jordan and Alex can use the [concise ten-call sheet](docs/jordan-voice-tests.md):
-natural opening, labeled facts to give only when asked, and a concrete success
-check beside each case. The [curated caller worksheet](docs/curated-caller-worksheet.md)
-contains developer notes and two opening phrasings each. `npm run text:cases -- start <dir>`
-starts the twenty text conversations; review actual replies before submitting
-fixture-based follow-ups with `npm run text:cases -- reply <dir> <replies.json>`.
-Reviewer facts are never sent to the support agent. The
-[November 2 phrasing audit](docs/text-tests/curated-phrasing-review.md) records
-the completed runs and remaining consistency issues; it is not a voice pass rate.
+Jordan and Alex can use the [single quick try-out](docs/jordan-voice-tests.md).
+The [updated ten-call sheet](docs/ten-call-scenarios.md) provides ordinary openings,
+private background and clear success criteria without a fixed dialogue script.
+The [latest test review](docs/text-tests/open-ended-review.md) records outcomes and
+remaining quality findings.
+The [open-ended test method](docs/open-ended-test-method.md) keeps the ten developer
+situations conversational, with private caller goals, known/findable facts and
+genuine unknowns. [Developer backgrounds](docs/curated-caller-worksheet.md) are
+reviewer material, not a script to read to the agent. Start ten text conversations
+with `npm run text:cases -- start <dir> scripts/text-cases/curated.json --first-opening`;
+omit the flag for both phrasings. Inspect actual replies before adaptive follow-ups.
 
 The combined `dev` build includes the structured version/update assessment,
 shared Planning Center personalization, synthetic organization/song-access tools,

@@ -1,3 +1,5 @@
+**Current workflow:** [Open-ended developer conversations](../open-ended-test-method.md), with [the completed ten-conversation review](open-ended-review.md). The findings below are historical; Jordan now has one informal usability try-out, not a ten-call script.
+
 # Text reasoning proof-of-concept review
 
 These are actual Vapi **Chat API** responses using a transient text configuration

@@ -1,0 +1,532 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "caseId": "07-organization",
+  "variant": 1,
+  "testId": "text-poc-f4aec999-485e-4b2c-bb89-2a902ae99d26",
+  "configurationHash": "61c8be52878e98c90c0938646213637e7eeb266a60d72d06a9f96d5bb6bb912b",
+  "toolRuntime": "deployed-development",
+  "fixture": {
+    "id": "07-organization",
+    "intent": "account-access",
+    "handling": "agent",
+    "openings": [
+      "I can get in, but none of our church's songs are there.",
+      "Our leader can see the songs, but I can't find any when I open it."
+    ],
+    "reviewOnly": {
+      "facts": "Playback 8.6.4. Caller Olivia Brennan (DEMO-1008) is in personal organization 931027; the picker also lists Northgate Worship Collective (demo), 362990. Existing membership has the necessary access. These are synthetic MultiTracks organization facts, separate from the shared Planning Center demo. No role or seat change is required. Device is iPad.",
+      "expected": "Use documentation to guide checking/switching organization. Do not assume missing permissions, change privileges, link the real church, or force a handoff before checking the documented navigation.",
+      "callerProfile": {
+        "goal": "Find the church songs already available to this account.",
+        "knows": [
+          "Name Olivia Brennan.",
+          "Can sign in.",
+          "Worship leader can see the songs using this membership.",
+          "Does not know what organization selection means."
+        ],
+        "canReadWithHelp": {
+          "Playback About": "8.6.4",
+          "Current Organization ID": "931027",
+          "Current account selection": "Personal account.",
+          "Organization picker": "Personal account and Northgate Worship Collective, 362990.",
+          "Customer ID if independently requested": "DEMO-1008"
+        },
+        "cannotVerify": [
+          "Cannot grant roles or seats.",
+          "Does not know the navigation to switch organization until guided."
+        ],
+        "scriptedOutcome": "Report the songs appear only after selecting the existing Northgate organization; do not suggest the organization switch to the agent."
+      }
+    }
+  },
+  "failure": null,
+  "done": true,
+  "cleanupComplete": true,
+  "reportedTextCost": 0.082,
+  "turns": [
+    {
+      "input": "I can get in, but none of our church's songs are there.",
+      "chatId": "84dc24e8-67ce-4fc6-90a2-4fd80ea1c85b",
+      "reply": "Absolutely, let me pull that up. One moment please.\n\nWhen you signed in, what organization name did you select in Playback?",
+      "tools": [
+        {
+          "name": "search_playback_docs",
+          "arguments": {
+            "query": "Playback songs missing after login organization selection song library",
+            "category": "song-loading"
+          },
+          "result": {
+            "ok": true,
+            "source": "documentation",
+            "provider": "MultiTracks Help Center (bounded snapshot)",
+            "snapshotRetrievedAt": "2026-10-31",
+            "query": "Playback songs missing after login organization selection song library",
+            "found": 6,
+            "results": [
+              {
+                "id": "troubleshooting-playback-download-errors",
+                "title": "Troubleshooting Playback Download Errors",
+                "category": "song-loading",
+                "url": "https://helpcenter.multitracks.com/en/articles/13452943-troubleshooting-playback-download-errors",
+                "retrievedAt": "2026-10-30",
+                "appliesTo": [],
+                "summary": "Covers four named download error messages in Playback (Error Authorizing, Audio Files Missing, Insufficient Storage, generic Download Error) plus a catch-all. MultiTracks says download errors are rare and asks users who see the same error repeatedly to report it through the website chat. The article does not name a platform; it refers only to 'the device' and 'the Playback app'.",
+                "steps": [
+                  {
+                    "n": 1,
+                    "text": "'Error Authorizing': the download failed a security check (your network may be blocking Playback from verifying the device). Follow the separate article 'Playback Download Error (Download Unauthorized)'.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 2,
+                    "text": "'Audio Files Missing': tap Try Again at least three times. On the third attempt Playback runs a different recovery routine automatically.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 3,
+                    "text": "'Audio Files Missing' (if three attempts fail on a song you recently downloaded in past setlists): open the setlist menu, scroll to the bottom, and select 'Delete All Setlists from Device'. Last resort only: it removes all local downloads and every current setlist must be downloaded again.",
+                    "disruptive": true,
+                    "kind": "delete-content",
+                    "caution": "This removes the song from the device and re-downloads it, so only do it when you have time before you play."
+                  },
+                  {
+                    "n": 4,
+                    "text": "'Insufficient Storage': remove past setlists with 'Delete all setlists from device' at the bottom of the setlist menu. If the error persists, check the device's storage; it may be too full. A typical song is roughly 40 MB to 1 GB, so a full setlist can be several GB.",
+                    "disruptive": true,
+                    "kind": "delete-content",
+                    "caution": "This removes the song from the device and re-downloads it, so only do it when you have time before you play."
+                  },
+                  {
+                    "n": 5,
+                    "text": "'Download Error' (generic): tap Try Again at least two times. If it continues and you are short on time, use Contact Support in the About tab of Playback Settings, then try the quick fixes.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 6,
+                    "text": "Quick fix 1 - remove and re-add the song: tap Edit, tap the red minus icon on the song, tap '+ Add Song', find the song again, and load it.",
+                    "disruptive": true,
+                    "kind": "delete-content",
+                    "caution": "This removes the song from the device and re-downloads it, so only do it when you have time before you play."
+                  },
+                  {
+                    "n": 7,
+                    "text": "Quick fix 2 - download in another key and transpose locally: before loading, change the song's key in song settings to a key close to the one you need; after the download, open song settings in edit mode and change the key back.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 8,
+                    "text": "Quick fix 3 - clear local data (last resort): contact support first from the About tab, then open the setlist menu (top-right) and select 'Delete All Setlists from Device' at the bottom. All setlists must be redownloaded afterward.",
+                    "disruptive": true,
+                    "kind": "delete-content",
+                    "caution": "This removes the song from the device and re-downloads it, so only do it when you have time before you play."
+                  },
+                  {
+                    "n": 9,
+                    "text": "Any other error: contact MultiTracks.com through the website messenger or 'Contact Support' in the About tab of the Playback app.",
+                    "disruptive": false
+                  }
+                ],
+                "hasDisruptiveSteps": true,
+                "relevance": 10
+              },
+              {
+                "id": "playback-download-error-download-unauthorized",
+                "title": "Playback Download Error (Download Unauthorized)",
+                "category": "song-loading",
+                "url": "https://helpcenter.multitracks.com/en/articles/8295507-playback-download-error-download-unauthorized",
+                "retrievedAt": "2026-10-30",
+                "appliesTo": [],
+                "summary": "Explains the message 'There was an error while authorizing the download of [song]', which means the download URL has expired or is unauthorized on the current network. Listed causes are a VPN on the Playback device, network administrator settings (multiple WAN uplinks, blocked domains or ports), or the network/IP address changing mid-download. The fix is to retry on a different connection or change the network's settings, ideally with a network admin or ISP.",
+                "steps": [
+                  {
+                    "n": 1,
+                    "text": "iCloud Private Relay (Apple): set the 'IP Address Location' option to 'Use Country & Time Zone'. The article warns that 'Maintain General Location' can cause this error.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 2,
+                    "text": "Turn off any VPN or VPN software on the device. Examples named in the article: Accountable2You, CovenantEyes, NordVPN, Surfshark.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 3,
+                    "text": "Try downloading on a different internet network from a different provider.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 4,
+                    "text": "Advanced (IT/network admin) - multiple WAN uplinks: the download request may leave through one uplink while the content download tries another. Pin requests to a specific WAN uplink in the advanced traffic network preferences, or adjust the WAN uplink settings. Contact support for help pinning requests.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 5,
+                    "text": "Advanced - other network settings: MultiTracks.com sends all traffic over port 443 (SSL); make sure it is not blocked. A static IP is not required, but if a download request uses a specific IP address, the same IP must complete the download.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 6,
+                    "text": "Still stuck: use the messenger in the bottom right of MultiTracks.com or email Support@MultiTracks.com.",
+                    "disruptive": false
+                  }
+                ],
+                "hasDisruptiveSteps": false,
+                "relevance": 4
+              },
+              {
+                "id": "playback-setlists-menu",
+                "title": "Playback Setlists & Setlists Menu",
+                "category": "song-loading",
+                "url": "https://helpcenter.multitracks.com/en/articles/5189112-playback-setlists-setlists-menu",
+                "retrievedAt": "2026-10-30",
+                "appliesTo": [],
+                "summary": "Describes the Setlists menu (music note icon, top-right of the main screen): creating/opening setlists, Planning Center import, Save To Cloud, Restore From Cloud, Save As New, and Delete All Setlists From Device. Also explains how to download a setlist or a single song from the Open Setlist menu without opening it, and that cloud changes sync manually via an 'Update Available' prompt. The article does not address offline behavior or what happens when a different user signs in.",
+                "steps": [
+                  {
+                    "n": 1,
+                    "text": "Download a whole setlist without opening it: in the Open Setlist menu, tap the cloud download icon next to the setlist name.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 2,
+                    "text": "Download a single song: tap the cloud download icon next to that song.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 3,
+                    "text": "Save local changes: choose 'Save To Cloud' in the Setlists menu; a blue check confirms success. Saving overwrites the setlist data on that device and in the cloud.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 4,
+                    "text": "Revert local changes to the saved cloud version: choose 'Restore From Cloud' in the Setlists menu (can be used at any point).",
+                    "disruptive": true,
+                    "kind": "settings-change",
+                    "caution": "Changing this setting takes effect immediately and can cut audio for a moment."
+                  },
+                  {
+                    "n": 5,
+                    "text": "Free local space or troubleshoot: 'Delete all setlists from the device' at the bottom of the Setlists menu removes every setlist from the device.",
+                    "disruptive": true,
+                    "kind": "delete-content",
+                    "caution": "This removes the song from the device and re-downloads it, so only do it when you have time before you play."
+                  },
+                  {
+                    "n": 6,
+                    "text": "Remove one setlist's audio from the device: open the setlist details menu (from the setlist menu) and choose the option to remove the Setlist audio files. The setlist details menu also lets you edit name/date or delete the setlist from your account.",
+                    "disruptive": true,
+                    "kind": "delete-content",
+                    "caution": "This removes the song from the device and re-downloads it, so only do it when you have time before you play."
+                  },
+                  {
+                    "n": 7,
+                    "text": "Another device not showing your changes: look for an 'Update Available' option in the setlist details inside the setlist menu. Devices with push notifications show a red icon above the setlist menu when an update is available; tapping it shows who saved, when, and their comment.",
+                    "disruptive": true,
+                    "kind": "update",
+                    "caution": "Updating the app closes Playback and takes a few minutes; don't do this during a service."
+                  }
+                ],
+                "hasDisruptiveSteps": true,
+                "relevance": 4
+              }
+            ],
+            "note": "Only give steps that appear in these results. Give non-disruptive steps first. Say a disruptive step's caution once per call, in one short sentence, unless the caller already told you their timing; then act on what they said and skip the caution.",
+            "manual": {
+              "ok": true,
+              "source": "manual",
+              "provider": "Playback User Guide (MultiTracks help center, snapshot in Pinecone)",
+              "query": "Playback songs missing after login organization selection song library",
+              "found": 3,
+              "results": [
+                {
+                  "id": "playback-user-guide:adding-a-song-in-playback-options-in-the-add-a-song-menu:1",
+                  "score": 0.372,
+                  "sectionPath": "Playback User Guide > Building a Setlist > Adding A Song in Playback > Options in the Add a Song menu",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_6fab64b231",
+                  "category": "song-loading",
+                  "scope": "in-scope",
+                  "part": 1,
+                  "parts": 2,
+                  "imageIds": [],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "- 1) Search\n   This quick search option will filter through every single song in the MultiTracks.com catalog and your organization’s Library of purchased songs and uploaded Cloud songs.\n- 2) All Songs\n   Discover new songs in the MultiTracks.com catalog. Search by New Releases, Top Songs, and more.\n  - Why don't I see this? The All Songs catalog in Playback is available for users with a Playback Rentals subscription or a Cloud Pro subscription.\n     ​Note: If your organization has a Cloud Pro subscription or Playback Rentals, the Click and Guide of any catalog song can be added to your setlist without tracks.\n- 3) Library\n   Every song with any purchased content, active rentals, and Cloud Songs are all included in your Library. Sort by songs, artists, themes, and more.\n- 4) Click & Pad\n   Add a Click & Pad to your setlist for creating extended moments. Give it a name, assign an ambient pad for the Pad Player to play, and determine the tempo/time signature of the click track.",
+                  "steps": [
+                    {
+                      "n": 1,
+                      "text": "1) Search",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 2,
+                      "text": "2) All Songs",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 3,
+                      "text": "Why don't I see this? The All Songs catalog in Playback is available for users with a Playback Rentals subscription or a Cloud Pro subscription.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 4,
+                      "text": "3) Library",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 5,
+                      "text": "4) Click & Pad",
+                      "disruptive": false
+                    }
+                  ],
+                  "hasDisruptiveSteps": false
+                },
+                {
+                  "id": "playback-user-guide:login-requirements-organizational-content-permissions:1",
+                  "score": 0.41,
+                  "sectionPath": "Playback User Guide > App Overview > Login Requirements > Organizational Content Permissions",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_247f735c64",
+                  "category": "setup",
+                  "scope": "in-scope",
+                  "part": 1,
+                  "parts": 1,
+                  "imageIds": [
+                    "img-03"
+                  ],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "If you are logging into your own organization, then you are ready to start downloading your organization’s purchased content or Rental credits immediately. When logging into another organization, certain permission subscriptions need to be added to your account in order for you to access purchased tracks, spend Rental credits, or save Cloud changes to setlists, song arrangements, and MIDI Cues.\n\nFor more information about managing your organization’s team members, subscriptions, and content permissions, check out: 📖 Managing Roles and Permissions\n\nOnce logged in, you’re ready to start building a setlist!",
+                  "steps": [],
+                  "hasDisruptiveSteps": false
+                },
+                {
+                  "id": "playback-user-guide:login-requirements-organizations-vs-users:1",
+                  "score": 0.382,
+                  "sectionPath": "Playback User Guide > App Overview > Login Requirements > Organizations vs. Users",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_c5f931c9b1",
+                  "category": "setup",
+                  "scope": "in-scope",
+                  "part": 1,
+                  "parts": 1,
+                  "imageIds": [],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "An organization in the MultiTracks.com ecosystem is the umbrella under which content can be purchased, users can be added, and subscriptions can be shared. When an 'account' is created using the \"Sign Up\" flow, an organization and a user is created simultaneously and the user is set as the owner of the organization. When logging into Playback, there is an organization selection prompt, to select which organization to log into. If you are a user belonging only to the organization created when you built your account, then select that organization. However, a user can be added to other existing MultiTracks.com organizations and have access to content belonging to those organizations in Playback. Every organization that you've been added to will be available at this login screen.",
+                  "steps": [],
+                  "hasDisruptiveSteps": false
+                }
+              ],
+              "outOfScope": [
+                {
+                  "id": "playback-user-guide:cloud-song-sections-edit-mode-saving-cloud-song-section-mark:1",
+                  "sectionPath": "Playback User Guide > Customizing Setlists > Cloud Song Sections Edit Mode > Saving Cloud Song Section Markers",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_11c52d6151"
+                },
+                {
+                  "id": "playback-user-guide:playback-named-arrangements-restoring-named-arrangements:1",
+                  "sectionPath": "Playback User Guide > Playback Named Arrangements > Restoring Named Arrangements",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_67783f5c46"
+                },
+                {
+                  "id": "playback-user-guide:playback-named-arrangements-loading-named-arrangements:1",
+                  "sectionPath": "Playback User Guide > Playback Named Arrangements > Loading Named Arrangements",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_48bf1fd4c8"
+                }
+              ],
+              "note": "Manual sections describe how the app works; give only steps that appear in the text, and cite 'the Playback User Guide'. Sections listed under outOfScope are documented but outside this agent's support scope: name the topic and offer a handoff, do not troubleshoot them."
+            }
+          }
+        }
+      ],
+      "reportedCost": 0.0156
+    },
+    {
+      "input": "I didn't pick anything. I just logged in.",
+      "chatId": "5032690e-5590-4b96-91b6-831db7b2de9d",
+      "reply": "After you log in, Playback should prompt you to choose an organization; what name do you see selected now?",
+      "tools": [],
+      "reportedCost": 0.0132
+    },
+    {
+      "input": "I don't know where to see that.",
+      "chatId": "4a43ebcc-dc73-4a3d-ad52-e6c541ebe1e0",
+      "reply": "On the main Playback screen, open Settings and look for the organization name shown there—what does it say?",
+      "tools": [],
+      "reportedCost": 0.0072
+    },
+    {
+      "input": "It looks like my personal account.",
+      "chatId": "a380fbe1-252a-4b1c-8519-747f965bb716",
+      "reply": "That likely explains it—your church’s songs are tied to its organization. What is the name of the church organization you need to access?",
+      "tools": [],
+      "reportedCost": 0.0078
+    },
+    {
+      "input": "Northgate Worship Collective.",
+      "chatId": "404c6377-0721-4b65-9eca-36142d09e131",
+      "reply": "Absolutely, let me pull that up. One moment please.\n\nOpen Playback’s side menu and choose “Switch Organizations”; does Northgate Worship Collective appear in that list?",
+      "tools": [
+        {
+          "name": "search_playback_docs",
+          "arguments": {
+            "query": "Playback switch organization after login select organization Settings organization selection",
+            "category": "setup"
+          },
+          "result": {
+            "ok": true,
+            "source": "documentation",
+            "provider": "MultiTracks Help Center (bounded snapshot)",
+            "snapshotRetrievedAt": "2026-10-31",
+            "query": "Playback switch organization after login select organization Settings organization selection",
+            "found": 3,
+            "results": [],
+            "note": "No documented article matched. Do not invent steps; offer a handoff or ask a clarifying question.",
+            "manual": {
+              "ok": true,
+              "source": "manual",
+              "provider": "Playback User Guide (MultiTracks help center, snapshot in Pinecone)",
+              "query": "Playback switch organization after login select organization Settings organization selection",
+              "found": 3,
+              "results": [
+                {
+                  "id": "playback-user-guide:login-requirements-organizations-vs-users:1",
+                  "score": 0.507,
+                  "sectionPath": "Playback User Guide > App Overview > Login Requirements > Organizations vs. Users",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_c5f931c9b1",
+                  "category": "setup",
+                  "scope": "in-scope",
+                  "part": 1,
+                  "parts": 1,
+                  "imageIds": [],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "An organization in the MultiTracks.com ecosystem is the umbrella under which content can be purchased, users can be added, and subscriptions can be shared. When an 'account' is created using the \"Sign Up\" flow, an organization and a user is created simultaneously and the user is set as the owner of the organization. When logging into Playback, there is an organization selection prompt, to select which organization to log into. If you are a user belonging only to the organization created when you built your account, then select that organization. However, a user can be added to other existing MultiTracks.com organizations and have access to content belonging to those organizations in Playback. Every organization that you've been added to will be available at this login screen.",
+                  "steps": [],
+                  "hasDisruptiveSteps": false
+                },
+                {
+                  "id": "playback-user-guide:login-requirements-organizational-content-permissions:1",
+                  "score": 0.454,
+                  "sectionPath": "Playback User Guide > App Overview > Login Requirements > Organizational Content Permissions",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_247f735c64",
+                  "category": "setup",
+                  "scope": "in-scope",
+                  "part": 1,
+                  "parts": 1,
+                  "imageIds": [
+                    "img-03"
+                  ],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "If you are logging into your own organization, then you are ready to start downloading your organization’s purchased content or Rental credits immediately. When logging into another organization, certain permission subscriptions need to be added to your account in order for you to access purchased tracks, spend Rental credits, or save Cloud changes to setlists, song arrangements, and MIDI Cues.\n\nFor more information about managing your organization’s team members, subscriptions, and content permissions, check out: 📖 Managing Roles and Permissions\n\nOnce logged in, you’re ready to start building a setlist!",
+                  "steps": [],
+                  "hasDisruptiveSteps": false
+                },
+                {
+                  "id": "playback-user-guide:playback-settings-side-menu-settings-and-features:1",
+                  "score": 0.479,
+                  "sectionPath": "Playback User Guide > Playback Settings > Side Menu: Settings & Features",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide",
+                  "category": "audio-output",
+                  "scope": "in-scope",
+                  "part": 1,
+                  "parts": 1,
+                  "imageIds": [
+                    "img-36"
+                  ],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "Playback's side menu has the following features:\n\n- Main Settings Menu\n- Waveform Size: adjustment\n- Notifications: To toggle in-app notifications on or off.\n- Playback Sync: To enable or disable Playback Sync broadcast from the Playback device.\n- Playback Remote: The main Playback Remote menu to initiate a Playback Remote session, and/or connect a remote Playback device to a host Playback device. (📖Learn More)\n- Network: the area to select which specific IP Address or network Playback Sync and Playback Remote broadcast through on host devices. (When utilizing multiple IP addresses or networks on a MacOS device).\n- User Name, Organization Name, and Organization ID Number.\n- Switch Organizations to switch between available organizations the signed-in user has access to.\n- Log Out to log out the currently signed-in user of Playback.\n\nOpening \"Settings\" in Playback's side menu will reveal the main Settings menu with the five settings' tabs; General, Tacks, Buses, MIDI, and About.",
+                  "steps": [
+                    {
+                      "n": 1,
+                      "text": "Main Settings Menu",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 2,
+                      "text": "Waveform Size: adjustment",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 3,
+                      "text": "Notifications: To toggle in-app notifications on or off.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 4,
+                      "text": "Playback Sync: To enable or disable Playback Sync broadcast from the Playback device.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 5,
+                      "text": "Playback Remote: The main Playback Remote menu to initiate a Playback Remote session, and/or connect a remote Playback device to a host Playback device. (📖Learn More)",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 6,
+                      "text": "Network: the area to select which specific IP Address or network Playback Sync and Playback Remote broadcast through on host devices. (When utilizing multiple IP addresses or networks on a MacOS device).",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 7,
+                      "text": "User Name, Organization Name, and Organization ID Number.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 8,
+                      "text": "Switch Organizations to switch between available organizations the signed-in user has access to.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 9,
+                      "text": "Log Out to log out the currently signed-in user of Playback.",
+                      "disruptive": true,
+                      "kind": "sign-out",
+                      "caution": "Signing out can interrupt cloud access until you sign back in."
+                    }
+                  ],
+                  "hasDisruptiveSteps": true
+                }
+              ],
+              "outOfScope": [
+                {
+                  "id": "playback-user-guide:midi-cues-edit-mode-who-can-save-midi-cues-to-the-cloud:1",
+                  "sectionPath": "Playback User Guide > Customizing Setlists > MIDI Cues Edit Mode > Who can save MIDI Cues to the Cloud?",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_704273450f"
+                },
+                {
+                  "id": "playback-user-guide:customizing-setlists-setlist-song-map-edit-mode:3",
+                  "sectionPath": "Playback User Guide > Customizing Setlists > Setlist / Song Map Edit Mode",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide"
+                },
+                {
+                  "id": "playback-user-guide:playback-named-arrangements-loading-named-arrangements:1",
+                  "sectionPath": "Playback User Guide > Playback Named Arrangements > Loading Named Arrangements",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_48bf1fd4c8"
+                }
+              ],
+              "note": "Manual sections describe how the app works; give only steps that appear in the text, and cite 'the Playback User Guide'. Sections listed under outOfScope are documented but outside this agent's support scope: name the topic and offer a handoff, do not troubleshoot them."
+            }
+          }
+        }
+      ],
+      "reportedCost": 0.013
+    },
+    {
+      "input": "Yes, I can see Northgate in there.",
+      "chatId": "49c05f53-c299-4b87-ab04-370b29930e30",
+      "reply": "Select Northgate Worship Collective, then check whether your church’s songs appear in the Library. Did they show up?",
+      "tools": [],
+      "reportedCost": 0.0103
+    },
+    {
+      "input": "Yes, the songs are there now.",
+      "chatId": "cc9a25f1-e751-4254-b872-9e159eaecf14",
+      "reply": "Great, that confirms you were in your personal organization. Is there anything else I can help with?",
+      "tools": [],
+      "reportedCost": 0.0075
+    },
+    {
+      "input": "No, that's everything.",
+      "chatId": "63320299-5d2d-443a-961b-39ee898367c5",
+      "reply": "Glad we got it sorted—goodbye.",
+      "tools": [],
+      "reportedCost": 0.0074
+    }
+  ]
+}

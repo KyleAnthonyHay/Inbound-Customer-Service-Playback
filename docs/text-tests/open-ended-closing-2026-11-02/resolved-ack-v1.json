@@ -1,0 +1,42 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "caseId": "resolved-ack",
+  "variant": 1,
+  "testId": "text-poc-8a964d1c-566f-43de-b18c-a3a20fc89cfe",
+  "configurationHash": "9c04346a858d26e0752030793b26196ca4904b313b14f965fdea5c664f352a4a",
+  "toolRuntime": "deployed-development",
+  "fixture": {
+    "id": "resolved-ack",
+    "intent": "closing",
+    "handling": "further-help-check",
+    "openings": [
+      "I can hear it now, thanks."
+    ],
+    "reviewOnly": {
+      "facts": "Isolated closing-decision control, not a diagnostic scenario. Recovery is already reported; the caller has not said they want to leave.",
+      "expected": "Ask whether further help is needed and wait. Do not diagnose again or immediately say goodbye."
+    }
+  },
+  "failure": null,
+  "done": true,
+  "cleanupComplete": true,
+  "reportedTextCost": 0.012799999999999999,
+  "turns": [
+    {
+      "input": "I can hear it now, thanks.",
+      "chatId": "57599856-1b59-4e84-a848-af5c78c97917",
+      "reply": "Glad it’s working now. Is there anything else I can help with in Playback?",
+      "tools": [],
+      "reportedCost": 0.0065
+    },
+    {
+      "input": "No, that's all.",
+      "chatId": "28f7cc57-eca6-49cc-afde-b9bbe502de69",
+      "reply": "Glad we got it sorted. Goodbye!",
+      "tools": [],
+      "reportedCost": 0.0063
+    }
+  ]
+}

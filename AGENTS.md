@@ -24,7 +24,11 @@ build a separate chat UI for these checks.
   `scripts/text-cases/curated.json`; `docs/curated-caller-worksheet.md` is the
   human-readable worksheet. For a full phrasing audit, `npm run text:cases --
   start <empty-output-directory>` starts twenty isolated text conversations.
-  Inspect the actual replies before supplying fixture-based follow-ups with
+  Add `scripts/text-cases/curated.json --first-opening` after the output directory
+  for ten conversations. Use the private caller profiles: known facts, facts
+  readable with guidance, and genuine unknowns. Do not make novice callers
+  remember versions or supply technical diagnoses. Read `docs/open-ended-test-method.md`.
+  Inspect the actual replies before supplying adaptive follow-ups with
   `npm run text:cases -- reply <run-directory> <replies.json>`. Reviewer notes
   are never agent inputs. Mark finished runs with `done: true` to clean up their
   isolated tool logs. Follow-ups may extend through twelve turns; do not turn
@@ -56,8 +60,10 @@ build a separate chat UI for these checks.
 - Text POCs validate reasoning/tools, not GPT-Live speaker delegation, audio,
   timing, interruptions, recognition or voice call lifecycle. Do not claim voice
   parity or count these as the ten presentation voice conversations.
-- The user will manually test the voice agent and curate ten presentation cases
-  across roughly five intents later. Do not launch `voice:test`,
+- Jordan has one simple usability try-out, separate from the ten developer
+  conversations across five intents. Detailed text coverage belongs to the coding
+  agent; it must be labeled text POC evidence. Voice checks remain manual.
+  Do not launch `voice:test`,
   `voice:test:prod`, `scripts/voice-test-all.sh`, or paid voice simulations unless
   the user explicitly authorizes those runs. Production changes require separate
   authorization; current activation/testing is development-only.

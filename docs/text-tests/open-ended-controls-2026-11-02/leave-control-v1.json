@@ -1,0 +1,35 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "caseId": "leave-control",
+  "variant": 1,
+  "testId": "text-poc-6caec2d7-7f97-4dc6-8f9c-8d0840a0e58e",
+  "configurationHash": "61c8be52878e98c90c0938646213637e7eeb266a60d72d06a9f96d5bb6bb912b",
+  "toolRuntime": "deployed-development",
+  "fixture": {
+    "id": "leave-control",
+    "intent": "closing",
+    "handling": "end",
+    "openings": [
+      "Sorry, I called by mistake. I've got to go—bye."
+    ],
+    "reviewOnly": {
+      "facts": "Explicit leave/goodbye request. Do not turn this into troubleshooting or require an anything-else question.",
+      "expected": "Brief goodbye without lookup or further questions. Text cannot prove native endCall."
+    }
+  },
+  "failure": null,
+  "done": true,
+  "cleanupComplete": true,
+  "reportedTextCost": 0.0063,
+  "turns": [
+    {
+      "input": "Sorry, I called by mistake. I've got to go—bye.",
+      "chatId": "0bea5459-c138-49c6-ba87-1914878c024e",
+      "reply": "No problem—goodbye.",
+      "tools": [],
+      "reportedCost": 0.0063
+    }
+  ]
+}

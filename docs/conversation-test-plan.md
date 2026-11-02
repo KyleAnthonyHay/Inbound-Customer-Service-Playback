@@ -1,11 +1,13 @@
+**Current method:** [Open-ended developer conversations](open-ended-test-method.md), with an [updated ten-call sheet](ten-call-scenarios.md). Jordan has a separate [one-call usability try-out](jordan-voice-tests.md). The earlier planning/history follows; it does not require Jordan to run ten scripted calls.
+
 **Current activated fixtures and voice prompts:** [Development manual test sheet](dev-manual-tests.md). The original planning/review history follows.
 
 # Regal Playback conversation test plan
 
 Updated November 2, 2026. During implementation, use lightweight **text reasoning
-proofs of concept** to validate behavior quickly. The user will manually test
-the voice agent later, curating ten presentation conversations across roughly
-five intents. No automated voice sessions are requested or authorized. No text
+proofs of concept** to validate behavior quickly. The ten selected situations now provide developer text coverage across five
+intents. Jordan’s informal check is separate; actual voice behavior still needs
+manual verification. No automated voice sessions are requested or authorized. No text
 testing page or other UI was added.
 
 ## Fast development checks through text
@@ -36,7 +38,7 @@ It is useful POC evidence, not proof that spoken behavior is identical. See
 
 Reports are labeled `text-reasoner-proof-of-concept` under `docs/text-tests/`.
 They explicitly say no voice call was created and are not presentation voice
-evidence. Do not count them as the user's ten manually tested voice conversations.
+evidence. Keep the text simulations distinct from any actual manual voice calls.
 
 The first checks and prompt retests are complete; see the
 [text POC review and source transcripts](text-tests/README.md). They identified

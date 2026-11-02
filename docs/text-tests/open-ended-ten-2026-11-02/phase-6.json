@@ -1,0 +1,38 @@
+[
+  {
+    "run": "01-click-guide-v1",
+    "input": "It shows 2 now."
+  },
+  {
+    "run": "02-reconnect-v1",
+    "input": "That one already says three and four."
+  },
+  {
+    "run": "03-audio-device-v1",
+    "input": "Yes, we can hear it now."
+  },
+  {
+    "run": "04-false-expired-v1",
+    "input": "8.6.1."
+  },
+  {
+    "run": "05-supported-setup-v1",
+    "input": "I was just asking whether the equipment can work. I'm not trying to set it up right now."
+  },
+  {
+    "run": "06-borrowed-mixer-v1",
+    "input": "Yes, please."
+  },
+  {
+    "run": "07-organization-v1",
+    "input": "Yes, I can see Northgate in there."
+  },
+  {
+    "run": "09-loading-recovery-v1",
+    "input": "No, that's everything."
+  },
+  {
+    "run": "10-loading-unresolved-v1",
+    "input": "I'd rather get help. I can't risk removing anything right now."
+  }
+]

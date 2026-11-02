@@ -1,0 +1,35 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "caseId": "explicit-leave",
+  "variant": 1,
+  "testId": "text-poc-3960d10c-3e56-496e-8ea1-9ab892fbeb7a",
+  "configurationHash": "9c04346a858d26e0752030793b26196ca4904b313b14f965fdea5c664f352a4a",
+  "toolRuntime": "deployed-development",
+  "fixture": {
+    "id": "explicit-leave",
+    "intent": "closing",
+    "handling": "end",
+    "openings": [
+      "Sorry, I called by mistake. I've got to go—bye."
+    ],
+    "reviewOnly": {
+      "facts": "Explicit request to leave; the normal completion check must not trap the caller.",
+      "expected": "Brief goodbye without lookup or another closing question. Text cannot prove native disconnect."
+    }
+  },
+  "failure": null,
+  "done": true,
+  "cleanupComplete": true,
+  "reportedTextCost": 0.0063,
+  "turns": [
+    {
+      "input": "Sorry, I called by mistake. I've got to go—bye.",
+      "chatId": "f7233c5a-d519-465e-9cb8-2047da5397f3",
+      "reply": "No problem—goodbye.",
+      "tools": [],
+      "reportedCost": 0.0063
+    }
+  ]
+}

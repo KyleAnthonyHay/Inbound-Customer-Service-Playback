@@ -1,0 +1,26 @@
+[
+  {
+    "run": "02-reconnect-v1",
+    "input": "The Bass row says three and four now."
+  },
+  {
+    "run": "04-false-expired-v1",
+    "input": "It says 18."
+  },
+  {
+    "run": "07-organization-v1",
+    "input": "No, that's everything."
+  },
+  {
+    "run": "01-click-guide-v1",
+    "done": true
+  },
+  {
+    "run": "03-audio-device-v1",
+    "done": true
+  },
+  {
+    "run": "05-supported-setup-v1",
+    "done": true
+  }
+]

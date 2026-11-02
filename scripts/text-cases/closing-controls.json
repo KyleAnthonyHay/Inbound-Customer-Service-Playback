@@ -1,0 +1,35 @@
+{
+  "name": "normal-completion-controls",
+  "cases": [
+    {
+      "id": "resolved-ack",
+      "intent": "closing",
+      "handling": "further-help-check",
+      "openings": ["I can hear it now, thanks."],
+      "reviewOnly": {
+        "facts": "Isolated closing-decision control, not a diagnostic scenario. Recovery is already reported; the caller has not said they want to leave.",
+        "expected": "Ask whether further help is needed and wait. Do not diagnose again or immediately say goodbye."
+      }
+    },
+    {
+      "id": "advice-complete",
+      "intent": "definition",
+      "handling": "answer-and-check",
+      "openings": ["What does Guide mean in Playback?"],
+      "reviewOnly": {
+        "facts": "The caller only wants a word explained. No configuration or device facts are needed unless an actual applicability issue emerges.",
+        "expected": "Give a documented plain-language answer, then check for further help; no unsolicited setup walkthrough. A clear finished reply can close naturally."
+      }
+    },
+    {
+      "id": "explicit-leave",
+      "intent": "closing",
+      "handling": "end",
+      "openings": ["Sorry, I called by mistake. I've got to go—bye."],
+      "reviewOnly": {
+        "facts": "Explicit request to leave; the normal completion check must not trap the caller.",
+        "expected": "Brief goodbye without lookup or another closing question. Text cannot prove native disconnect."
+      }
+    }
+  ]
+}

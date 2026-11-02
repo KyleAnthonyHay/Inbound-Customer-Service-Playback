@@ -8,7 +8,8 @@ import { sendTextTurn, textAssistant, type TextTurn } from "./lib/text-agent";
 import { SYSTEM_PROMPT, SPEAKER_PROMPT } from "../src/lib/assistant";
 import { buildToolDefinitions } from "../src/lib/vapiTools";
 
-type Case = { id: string; intent: string; handling: string; openings: string[]; reviewOnly: { facts: string; expected: string } };
+type CallerProfile = { goal: string; knows: string[]; canReadWithHelp: Record<string, string>; cannotVerify: string[]; scriptedOutcome: string };
+type Case = { id: string; intent: string; handling: string; openings: string[]; reviewOnly: { facts: string; expected: string; callerProfile?: CallerProfile } };
 type Run = { kind: string; voiceCallCreated: false; presentationVoiceEvidence: false; caseId: string; variant: number; testId: string; configurationHash: string; toolRuntime?: string; releaseImplementationHash?: string; fixture: Case; failure: string | null; done: boolean; cleanupComplete: boolean; reportedTextCost: number; turns: Array<TextTurn & { input: string }> };
 type Reply = { run: string; input?: string; done?: boolean };
 
@@ -63,14 +64,15 @@ async function runPhase(dir: string, replies: Reply[]) {
 
 async function main() {
   textAssistant(process.env, "text-poc-batch-preflight"); // Existing development/credential guard; no request.
-  const [command, dirArg, repliesFile] = process.argv.slice(2);
+  const [command, dirArg, repliesFile, variation] = process.argv.slice(2);
   if (command === "start") {
     const suite = load<{ cases: Case[] }>(repliesFile ?? "scripts/text-cases/curated.json");
     const dir = dirArg ?? join("docs/text-tests/curated-variations", new Date().toISOString().replace(/[:.]/g, "-"));
     mkdirSync(dir, { recursive: true });
     if (readdirSync(dir).length) throw Error("Start requires an empty output directory.");
     const replies: Reply[] = [];
-    for (const fixture of suite.cases) for (const [i, input] of fixture.openings.entries()) {
+    if (variation && variation !== "--first-opening") throw Error("Unknown opening option.");
+    for (const fixture of suite.cases) for (const [i, input] of (variation === "--first-opening" ? fixture.openings.slice(0, 1) : fixture.openings).entries()) {
       const name = `${fixture.id}-v${i + 1}`;
       if (!safeName(name)) throw Error("Invalid fixture name.");
       const run: Run = { kind: "text-reasoner-proof-of-concept", voiceCallCreated: false, presentationVoiceEvidence: false, caseId: fixture.id, variant: i + 1, testId: `text-poc-${randomUUID()}`, configurationHash: fingerprint(), toolRuntime: process.env.TEXT_POC_TOOL_SERVER_URL ? "local-release-helper-with-development-proxy" : "deployed-development", ...(process.env.TEXT_POC_TOOL_SERVER_URL ? { releaseImplementationHash: releaseHash() } : {}), fixture, failure: null, done: false, cleanupComplete: false, reportedTextCost: 0, turns: [] };
@@ -81,7 +83,7 @@ async function main() {
     await runPhase(dir, replies);
   } else if (command === "reply" && dirArg && repliesFile) {
     await runPhase(dirArg, load<Reply[]>(repliesFile));
-  } else throw Error("Use start [empty-output-directory] [suite.json] or reply <run-directory> <replies.json>.");
+  } else throw Error("Use start [empty-output-directory] [suite.json] [--first-opening] or reply <run-directory> <replies.json>.");
 }
 
 main().catch(error => { console.error(error instanceof Error ? error.message : "Text batch failed."); process.exitCode = 1; });

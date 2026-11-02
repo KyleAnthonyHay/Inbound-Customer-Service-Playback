@@ -1,0 +1,42 @@
+[
+  {
+    "run": "01-click-guide-v1",
+    "input": "The sound desk. Both sounds are coming through that one channel in our ears."
+  },
+  {
+    "run": "02-reconnect-v1",
+    "input": "A Mac."
+  },
+  {
+    "run": "03-audio-device-v1",
+    "input": "Through the sound system. There's a small sound box plugged into the Mac."
+  },
+  {
+    "run": "04-false-expired-v1",
+    "input": "480113."
+  },
+  {
+    "run": "05-supported-setup-v1",
+    "input": "I'm not sure what I'm looking for. I can see Focusrite written on it."
+  },
+  {
+    "run": "06-borrowed-mixer-v1",
+    "input": "It says Mackie ProFX12v3."
+  },
+  {
+    "run": "07-organization-v1",
+    "input": "I don't know where to see that."
+  },
+  {
+    "run": "08-permission-v1",
+    "input": "It's all our church songs. Our admin checked the church account was right and said Team Sharing needs to be turned on for me."
+  },
+  {
+    "run": "09-loading-recovery-v1",
+    "input": "It says Audio Files Missing."
+  },
+  {
+    "run": "10-loading-unresolved-v1",
+    "input": "I've already done it three times. It still won't open."
+  }
+]

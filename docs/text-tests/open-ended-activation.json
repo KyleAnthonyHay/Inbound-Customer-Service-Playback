@@ -1,0 +1,12 @@
+{
+  "environment": "development",
+  "savedDevMatchesSource": true,
+  "speakerPromptHash": "9244726ef120292074967c4a5dc001a64c0937451995b1f49dd8bab6d5049376",
+  "reasonerPromptHash": "a572dbe3cee5f73f282e4f4bc341e800ab4ec5ebc46bbb25d3aa6de0847e5788",
+  "nativeEndCallAttached": true,
+  "localhostStatus": 200,
+  "productionWriteCommands": 0,
+  "automatedVoiceCallsPlaced": 0,
+  "newVoiceClosingBehaviorVerified": false,
+  "verifiedAt": "2026-11-02T22:38:44.478Z"
+}

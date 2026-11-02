@@ -1,0 +1,62 @@
+{
+  "kind": "manually-steered-open-ended-text-review",
+  "voiceEvidence": false,
+  "mainConversations": 10,
+  "agentHandled": 7,
+  "callerReportedRecoveries": 6,
+  "capabilityAdviceAnswers": 1,
+  "successfulSimulatedHandoffs": 3,
+  "normalFurtherHelpChecks": 7,
+  "closingControlsPassed": 3,
+  "directRequestControlsPassed": 2,
+  "allQualityChecksPerfect": false,
+  "groups": [
+    {
+      "directory": "open-ended-ten-2026-11-02",
+      "conversations": 10,
+      "turns": 72,
+      "reportedTextCost": 0.8351,
+      "configurationHashes": [
+        "61c8be52878e98c90c0938646213637e7eeb266a60d72d06a9f96d5bb6bb912b"
+      ],
+      "allClosed": true,
+      "allCleaned": true,
+      "requestFailures": 0
+    },
+    {
+      "directory": "open-ended-controls-2026-11-02",
+      "conversations": 2,
+      "turns": 2,
+      "reportedTextCost": 0.0162,
+      "configurationHashes": [
+        "61c8be52878e98c90c0938646213637e7eeb266a60d72d06a9f96d5bb6bb912b"
+      ],
+      "allClosed": true,
+      "allCleaned": true,
+      "requestFailures": 0
+    },
+    {
+      "directory": "open-ended-closing-2026-11-02",
+      "conversations": 3,
+      "turns": 5,
+      "reportedTextCost": 0.0559,
+      "configurationHashes": [
+        "9c04346a858d26e0752030793b26196ca4904b313b14f965fdea5c664f352a4a"
+      ],
+      "allClosed": true,
+      "allCleaned": true,
+      "requestFailures": 0
+    }
+  ],
+  "totalReportedTextCost": 0.9072,
+  "totalTextTurns": 79,
+  "automatedVoiceCallsPlaced": 0,
+  "productionWriteCommands": 0,
+  "remainingFindings": [
+    "Compound questions and occasional unexplained terminology",
+    "Borrowed mixer offered alternate connection advice before specialist offer",
+    "Unnecessary service-plan lookup in permission investigation",
+    "Unrequested full setlist recital in song-loading reply",
+    "Retry count assumed before caller clarified actual attempts"
+  ]
+}

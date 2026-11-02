@@ -1,0 +1,42 @@
+[
+  {
+    "run": "01-click-guide-v1",
+    "input": "That says 1 too."
+  },
+  {
+    "run": "02-reconnect-v1",
+    "input": "I can see Drums, Bass, Keys and Guitars. I'm not really sure what to change first."
+  },
+  {
+    "run": "03-audio-device-v1",
+    "input": "It says MacBook Speakers. I can also see Focusrite in the list."
+  },
+  {
+    "run": "04-false-expired-v1",
+    "input": "I tried that already and it didn't help. We bought it on the website, not Apple."
+  },
+  {
+    "run": "05-supported-setup-v1",
+    "input": "It's plugged in through a little hub that's got its own power plugged into the wall."
+  },
+  {
+    "run": "06-borrowed-mixer-v1",
+    "input": "It has USB-C. I'm not comfortable figuring out all these connections myself."
+  },
+  {
+    "run": "07-organization-v1",
+    "input": "Northgate Worship Collective."
+  },
+  {
+    "run": "09-loading-recovery-v1",
+    "input": "It opened this time."
+  },
+  {
+    "run": "10-loading-unresolved-v1",
+    "input": "I don't know when it downloaded. I can't delete our other songs\u2014we're about to start."
+  },
+  {
+    "run": "08-permission-v1",
+    "done": true
+  }
+]

@@ -1,4 +1,4 @@
-**Current concise caller sheet:** [Jordan’s ten calls](jordan-voice-tests.md). The developer notes below retain the earlier setup fixtures.
+**Current caller try-out:** [Jordan’s one simple conversation](jordan-voice-tests.md). The ten scenarios below are older developer reference material; use [the open-ended method](open-ended-test-method.md) for current tests.
 
 # Development voice test sheet
 

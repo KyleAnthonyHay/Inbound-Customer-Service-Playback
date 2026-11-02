@@ -1,0 +1,25 @@
+{
+  "name": "open-ended-routing-controls",
+  "cases": [
+    {
+      "id": "human-control",
+      "intent": "direct-human",
+      "handling": "human-review",
+      "openings": ["Can I speak to a person, please?"],
+      "reviewOnly": {
+        "facts": "Direct human request supplies consent. No symptom or device information is needed. Availability still needs verification.",
+        "expected": "Check availability and execute the simulated handoff if possible, without diagnostic or personalization detours."
+      }
+    },
+    {
+      "id": "leave-control",
+      "intent": "closing",
+      "handling": "end",
+      "openings": ["Sorry, I called by mistake. I've got to go—bye."],
+      "reviewOnly": {
+        "facts": "Explicit leave/goodbye request. Do not turn this into troubleshooting or require an anything-else question.",
+        "expected": "Brief goodbye without lookup or further questions. Text cannot prove native endCall."
+      }
+    }
+  ]
+}

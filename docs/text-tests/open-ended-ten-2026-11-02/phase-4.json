@@ -1,0 +1,42 @@
+[
+  {
+    "run": "01-click-guide-v1",
+    "input": "It says 1."
+  },
+  {
+    "run": "02-reconnect-v1",
+    "input": "PlayAUDIO12."
+  },
+  {
+    "run": "03-audio-device-v1",
+    "input": "It says Focusrite 4i4."
+  },
+  {
+    "run": "04-false-expired-v1",
+    "input": "An iPad."
+  },
+  {
+    "run": "05-supported-setup-v1",
+    "input": "It says 4i4."
+  },
+  {
+    "run": "06-borrowed-mixer-v1",
+    "input": "We want the band to hear the ticking and talking separately from the music. I don't understand the USB stuff\u2014I'm stuck figuring out whether this mixer can do that."
+  },
+  {
+    "run": "07-organization-v1",
+    "input": "It looks like my personal account."
+  },
+  {
+    "run": "08-permission-v1",
+    "input": "Yes, that would help."
+  },
+  {
+    "run": "09-loading-recovery-v1",
+    "input": "I've hit it once already. Do I need to keep trying?"
+  },
+  {
+    "run": "10-loading-unresolved-v1",
+    "input": "I don't know about older setlists. Does that mean I'd have to delete anything?"
+  }
+]

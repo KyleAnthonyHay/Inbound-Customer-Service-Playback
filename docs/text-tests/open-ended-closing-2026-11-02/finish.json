@@ -1,0 +1,16 @@
+[
+  {
+    "run": "resolved-ack-v1",
+    "input": "No, that's all.",
+    "done": true
+  },
+  {
+    "run": "advice-complete-v1",
+    "input": "Thanks, that answers my question.",
+    "done": true
+  },
+  {
+    "run": "explicit-leave-v1",
+    "done": true
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "run": "01-click-guide-v1",
+    "input": "A Mac and a Focusrite 4i4, going into our sound desk."
+  },
+  {
+    "run": "02-reconnect-v1",
+    "input": "Different instruments are showing up on different desk channels. They used to all come in together on the pair we call three and four."
+  },
+  {
+    "run": "03-audio-device-v1",
+    "input": "I'm on a Mac."
+  },
+  {
+    "run": "04-false-expired-v1",
+    "input": "It says Cloud Pro expired, inside the app."
+  },
+  {
+    "run": "05-supported-setup-v1",
+    "input": "We want the band to hear the ticking and the voice telling us what comes next. The people in the room should just hear the music."
+  },
+  {
+    "run": "06-borrowed-mixer-v1",
+    "input": "I don't know. Where would I look for that?"
+  },
+  {
+    "run": "07-organization-v1",
+    "input": "I didn't pick anything. I just logged in."
+  },
+  {
+    "run": "08-permission-v1",
+    "input": "480113."
+  },
+  {
+    "run": "09-loading-recovery-v1",
+    "input": "Graves Into Gardens."
+  },
+  {
+    "run": "10-loading-unresolved-v1",
+    "input": "It says Audio Files Missing."
+  }
+]
