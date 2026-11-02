@@ -48,6 +48,18 @@ type VapiMessage = {
   [key: string]: unknown;
 };
 
+/**
+ * Daily (Vapi's WebRTC layer) reports the server closing the room as an error
+ * ("Meeting ended due to ejection: Meeting has ended"). That is how every
+ * assistant-side hang-up arrives in the browser: endCall, maxDurationSeconds,
+ * the idle hooks, or a server-side failure. It is the end of the call, not a
+ * client fault, so it is handled as a remote hang-up; the real reason comes in
+ * the status-update / end-of-call-report (shown on the "Call ended" row).
+ */
+export function isRemoteHangup(raw: string): boolean {
+  return /ejection|meeting has ended|ejected/i.test(raw);
+}
+
 /** Turns browser/SDK error strings into something a tester can act on. */
 export function friendlyCallError(raw: string): string {
   if (/permission denied|notallowederror|not allowed/i.test(raw))
@@ -69,6 +81,8 @@ export function useVapiCall() {
   const toolStartTimes = useRef<Map<string, number>>(new Map());
   const toolNames = useRef<Map<string, string>>(new Map());
   const backstopRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  /** Vapi's status-update "ended" usually lands before Daily's left-meeting, so keep the reason for the "Call ended" row. */
+  const endedReasonRef = useRef<string | null>(null);
   const [handoff, setHandoff] = useState<Handoff | null>(null);
   const [status, setStatus] = useState<CallStatus>("idle");
   const [error, setError] = useState<string | null>(null);
@@ -120,6 +134,7 @@ export function useVapiCall() {
         case "status-update": {
           // call-start / call-end already produce rows; only surface an ended reason.
           if (m.status === "ended" && m.endedReason) {
+            endedReasonRef.current = String(m.endedReason);
             setEvents((prev) =>
               prev.map((e) => (e.kind === "call" && e.label === "Call ended" ? { ...e, detail: String(m.endedReason) } : e))
             );
@@ -210,6 +225,7 @@ export function useVapiCall() {
     setEvents([]);
     setCallId(null);
     setHandoff(null);
+    endedReasonRef.current = null;
     primeCues();
     setStatus("connecting");
     pushEvent({ kind: "call", label: "Connecting", status: "running" });
@@ -232,7 +248,7 @@ export function useVapiCall() {
         void playCue("hangup");
         setStatus("ended");
         setAssistantSpeaking(false);
-        pushEvent({ kind: "call", label: "Call ended" });
+        pushEvent({ kind: "call", label: "Call ended", detail: endedReasonRef.current ?? undefined });
       });
       vapi.on("speech-start", () => setAssistantSpeaking(true));
       vapi.on("speech-end", () => setAssistantSpeaking(false));
@@ -245,6 +261,12 @@ export function useVapiCall() {
             : (e as { message?: string; error?: { message?: string } })?.message ??
               (e as { error?: { message?: string } })?.error?.message ??
               "Call error";
+        if (isRemoteHangup(raw)) {
+          // The assistant (or Vapi) hung up; "call-end" follows from Daily's left-meeting.
+          pushEvent({ kind: "call", label: "Ended by the assistant", detail: "The call was closed from the server side; see the ended reason below." });
+          setStatus((s) => (s === "active" || s === "connecting" ? "ended" : s));
+          return;
+        }
         const msg = friendlyCallError(raw);
         setError(msg);
         setStatus("error");
