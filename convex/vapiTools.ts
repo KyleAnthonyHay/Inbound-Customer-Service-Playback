@@ -6,6 +6,7 @@ import { searchManual } from "../src/lib/tools/manual";
 import { getCurrentPlaybackAppInfo } from "../src/lib/tools/apple";
 import { getRelevantChangesSinceVersion } from "../src/lib/tools/releases";
 import { TOOL_META } from "../src/lib/tools/meta";
+import { lastFour, wantsCallerId, type CallInfo } from "../src/lib/tools/callerId";
 
 /**
  * Server-side tool implementations, dispatched by the Vapi webhook in http.ts.
@@ -16,8 +17,11 @@ export type ToolSource = "live" | "simulated" | "internal";
 export type ToolDef = {
   source: ToolSource;
   label: string;
-  run: (args: Record<string, unknown>, ctx: ActionCtx, callId: string) => Promise<unknown>;
+  run: (args: Record<string, unknown>, ctx: ActionCtx, call: CallInfo) => Promise<unknown>;
 };
+
+/** Appended to reserve_callback's success so the reasoner wraps the call up instead of lingering. */
+const CALLBACK_WRAP_UP = "Confirm the callback in one sentence, wish the caller a good day, then call endCall.";
 
 const str = (v: unknown) => (typeof v === "string" ? v : undefined);
 
@@ -60,31 +64,41 @@ export const tools: Record<string, ToolDef> = {
   get_callback_slots: {
     source: "simulated",
     label: TOOL_META.get_callback_slots.label,
-    run: async (a, ctx) =>
-      ctx.runQuery(api.callbacks.availableSlots, {
+    run: async (a, ctx, call) => {
+      const out = await ctx.runQuery(api.callbacks.availableSlots, {
         teamId: str(a.teamId) ?? "playback-support",
         fromIso: str(a.fromIso),
         preferredDate: str(a.preferredDate),
         preferredTime: str(a.preferredTime),
         timeZone: str(a.timeZone),
         limit: 4,
-      }),
+      });
+      // Phone callers do not have to read a number out: offer the one they are calling from.
+      return call.callerNumber
+        ? { ...out, callerId: { number: call.callerNumber, lastFour: lastFour(call.callerNumber), note: "The caller is on the phone from this number. Offer to call them back on it (say only the last four digits) and pass callbackNumber 'caller-id' if they agree." } }
+        : out;
+    },
   },
   reserve_callback: {
     source: "simulated",
     label: TOOL_META.reserve_callback.label,
-    run: async (a, ctx, callId) => {
+    run: async (a, ctx, call) => {
       const slotId = str(a.slotId);
       if (!slotId) return { ok: false, reason: "missing-slotId", source: "simulated" };
-      return ctx.runMutation(api.callbacks.reserve, {
+      const given = str(a.callbackNumber);
+      const useCallerId = wantsCallerId(given);
+      if (useCallerId && !call.callerNumber)
+        return { ok: false, reason: "missing-number", source: "simulated", next: "This call has no caller ID (browser call). Ask the caller for the best number to reach them." };
+      const out = await ctx.runMutation(api.callbacks.reserve, {
         slotId: slotId as Id<"callbackSlots">,
         callerName: str(a.callerName) ?? "Caller",
-        callbackNumber: str(a.callbackNumber) ?? "",
+        callbackNumber: useCallerId ? call.callerNumber! : given!.trim(),
         timeZone: str(a.timeZone) ?? "unknown",
         reason: str(a.reason) ?? "Playback support follow-up",
         customerId: str(a.customerId),
-        callId,
+        callId: call.callId,
       });
+      return out.ok ? { ...out, usedCallerId: useCallerId, next: CALLBACK_WRAP_UP } : out;
     },
   },
   initiate_handoff: {

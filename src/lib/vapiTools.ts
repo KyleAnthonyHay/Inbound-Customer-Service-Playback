@@ -85,11 +85,11 @@ export function buildToolDefinitions(opts: { serverUrl: string; secret?: string 
     ),
     fn(
       "reserve_callback",
-      "Reserve a callback slot after the caller has explicitly confirmed the time, time zone, and callback number. Use the slotId that get_callback_slots returned for the time the caller agreed to. Only say the callback is confirmed if this returns ok=true; read back its 'local' time. If it fails or the slot was taken, explain and offer another slot.",
+      "Reserve a callback slot after the caller has explicitly confirmed the time, time zone, and callback number. Use the slotId that get_callback_slots returned for the time the caller agreed to. Only say the callback is confirmed if this returns ok=true; read back its 'local' time, wish the caller a good day, and end the call. If it fails or the slot was taken, explain and offer another slot.",
       {
         slotId: { type: "string", description: "slotId from get_callback_slots." },
         callerName: { type: "string" },
-        callbackNumber: { type: "string" },
+        callbackNumber: { type: "string", description: "The number to call back, or exactly 'caller-id' to use the number the caller is calling from (phone calls only; get_callback_slots returns callerId when it is known)." },
         timeZone: { type: "string", description: "Caller's time zone, e.g. America/Chicago or 'Central'." },
         reason: { type: "string", description: "One-line summary of the issue for the team." },
         customerId: { type: "string" },

@@ -2,6 +2,7 @@ import { httpRouter } from "convex/server";
 import { httpAction } from "./_generated/server";
 import { api } from "./_generated/api";
 import { tools, summarize } from "./vapiTools";
+import { callInfoOf } from "../src/lib/tools/callerId";
 
 /**
  * Vapi tool webhook, served straight from the Convex deployment at
@@ -11,6 +12,8 @@ import { tools, summarize } from "./vapiTools";
  * { results: [{ toolCallId, result | error }] } with HTTP 200.
  */
 const http = httpRouter();
+
+type CallFields = { id?: string; type?: string; startedAt?: string; customer?: { number?: string } };
 
 type ToolCall = { id: string; function?: { name?: string; arguments?: unknown }; name?: string; arguments?: unknown };
 
@@ -41,10 +44,13 @@ http.route({
     const secret = process.env.VAPI_TOOL_SECRET;
     if (secret && request.headers.get("x-demo-secret") !== secret) return json({ error: "unauthorized" }, 401);
 
-    const body = (await request.json().catch(() => ({}))) as { message?: { type?: string; toolCallList?: ToolCall[]; call?: { id?: string } } };
+    const body = (await request.json().catch(() => ({}))) as { message?: { type?: string; toolCallList?: ToolCall[]; call?: CallFields } };
     const msg = body.message;
     if (!msg || msg.type !== "tool-calls" || !Array.isArray(msg.toolCallList)) return json({ results: [] });
-    const callId = msg.call?.id ?? "unknown";
+    // Phone calls carry the caller's number (caller ID) on every webhook; browser calls do not.
+    const call = callInfoOf(msg.call);
+    const callId = call.callId;
+    if (call.callerNumber) await ctx.runMutation(api.calls.touch, { callId, callType: call.callType, callerNumber: call.callerNumber });
 
     const results = await Promise.all(
       msg.toolCallList.map(async (tc) => {
@@ -58,7 +64,7 @@ http.route({
         const started = Date.now();
         await ctx.runMutation(api.callEvents.log, { callId, kind: "tool-start", tool: name, toolCallId: tc.id, label: def.label, status: "running", source: def.source, args: clip(args, 800) });
         try {
-          const out = await def.run(args, ctx, callId);
+          const out = await def.run(args, ctx, call);
           const durationMs = Date.now() - started;
           const ok = !(out && typeof out === "object" && "ok" in out && (out as { ok: unknown }).ok === false);
           await ctx.runMutation(api.callEvents.log, {
@@ -88,7 +94,7 @@ type ServerMessage = {
   role?: "user" | "assistant" | "system";
   transcriptType?: string;
   transcript?: string;
-  call?: { id?: string; type?: string; startedAt?: string };
+  call?: CallFields;
   analysis?: { summary?: string };
   summary?: string;
   artifact?: { messages?: Array<{ role?: string; message?: string; time?: number; secondsFromStart?: number }> };
@@ -110,10 +116,11 @@ http.route({
     const m = body.message;
     const callId = m?.call?.id;
     if (!m || !callId) return json({ ok: true });
+    const callerNumber = callInfoOf(m.call).callerNumber;
     console.log(`vapi event ${m.type} call=${callId}` + (m.type === "end-of-call-report" ? ` keys=${Object.keys(m).join(",")} msgs=${m.artifact?.messages?.length ?? 0}` : ""));
     switch (m.type) {
       case "status-update":
-        await ctx.runMutation(api.calls.statusUpdate, { callId, status: m.status ?? "", callType: m.call?.type, endedReason: m.endedReason, startedAt: m.call?.startedAt });
+        await ctx.runMutation(api.calls.statusUpdate, { callId, status: m.status ?? "", callType: m.call?.type, endedReason: m.endedReason, startedAt: m.call?.startedAt, callerNumber });
         break;
       case "transcript":
         // Browser calls are mirrored by the web client itself (ActivityPanel), so skip server copies for them.
@@ -122,7 +129,7 @@ http.route({
           await ctx.runMutation(api.calls.appendTranscript, { callId, role: m.role, text: m.transcript, callType: m.call?.type });
         break;
       case "speech-update":
-        await ctx.runMutation(api.calls.touch, { callId, callType: m.call?.type });
+        await ctx.runMutation(api.calls.touch, { callId, callType: m.call?.type, callerNumber });
         break;
       case "conversation-update": {
         if (m.call?.type === "webCall") break;
@@ -137,7 +144,7 @@ http.route({
       }
       case "end-of-call-report":
         await ctx.runMutation(api.calls.endOfCallReport, {
-          callId, callType: m.call?.type, endedReason: m.endedReason, summary: m.analysis?.summary ?? m.summary,
+          callId, callType: m.call?.type, callerNumber, endedReason: m.endedReason, summary: m.analysis?.summary ?? m.summary,
           durationSeconds: m.durationSeconds, startedAt: m.startedAt, endedAt: m.endedAt,
           // Fallback transcript from the report's artifact, used only if no live transcript lines were stored.
           messages: (m.artifact?.messages ?? [])
