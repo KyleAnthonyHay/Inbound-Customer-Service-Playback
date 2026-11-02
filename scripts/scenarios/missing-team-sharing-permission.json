@@ -1,0 +1,9 @@
+{
+  "name": "missing-team-sharing-permission",
+  "expectedIntent": "song-loading",
+  "lines": [
+    "I'm on our worship team and I can see the setlist for Sunday but none of the songs will download for me, they work fine on the leader's iPad.",
+    "My email is sam dot okafor at example dot org.",
+    "Ah, so it's a permission thing, not my app. I'll ask Jordan to add me. Thanks, bye."
+  ]
+}

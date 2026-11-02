@@ -1,0 +1,9 @@
+{
+  "name": "song-not-purchased",
+  "expectedIntent": "subscription",
+  "lines": [
+    "Hi, I added Way Maker to our setlist but there's no tracks option, it only shows click and guide.",
+    "Sure, our organization ID is 4 8 0 1 1 3.",
+    "Oh, so we never actually bought it. Okay, I'll get our admin to purchase it. Thanks, bye."
+  ]
+}

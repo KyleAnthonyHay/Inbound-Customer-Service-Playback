@@ -54,7 +54,17 @@ export const tools: Record<string, ToolDef> = {
   lookup_demo_customer: {
     source: "simulated",
     label: TOOL_META.lookup_demo_customer.label,
-    run: async (a, ctx) => ctx.runQuery(api.customers.lookup, { customerId: str(a.customerId), email: str(a.email), name: str(a.name) }),
+    run: async (a, ctx) =>
+      ctx.runQuery(api.customers.lookup, { orgId: str(a.orgId), customerId: str(a.customerId), email: str(a.email), name: str(a.name) }),
+  },
+  check_song_access: {
+    source: "simulated",
+    label: TOOL_META.check_song_access.label,
+    run: async (a, ctx) => {
+      const songTitle = str(a.songTitle)?.trim();
+      if (!songTitle) return { ok: false, reason: "missing-songTitle", source: "simulated" };
+      return ctx.runQuery(api.customers.songAccess, { orgId: str(a.orgId), customerId: str(a.customerId), email: str(a.email), name: str(a.name), songTitle });
+    },
   },
   check_team_availability: {
     source: "simulated",
@@ -131,6 +141,8 @@ export function summarize(out: unknown): string | undefined {
   if (typeof o.found === "number") return `${o.found} result(s)`;
   if (o.app && typeof o.app === "object") return `v${(o.app as { currentVersion?: string }).currentVersion}`;
   if (Array.isArray(o.documentedReleasesBetween)) return `${(o.relevantChanges as unknown[])?.length ?? 0} relevant change(s)`;
+  if (typeof o.access === "string") return String(o.access);
+  if (o.diagnosis && typeof o.diagnosis === "object") return String((o.diagnosis as { code?: string }).code ?? "found");
   if (o.customer && typeof o.customer === "object") return String((o.customer as { subscriptionStatus?: string }).subscriptionStatus ?? "found");
   if (Array.isArray(o.teams)) return (o.teams as { label: string; canTransferNow: boolean }[]).map((t) => `${t.label}: ${t.canTransferNow ? "available" : "unavailable"}`).join("; ");
   if (Array.isArray(o.slots)) {

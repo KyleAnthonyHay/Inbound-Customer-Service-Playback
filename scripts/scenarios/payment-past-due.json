@@ -1,0 +1,9 @@
+{
+  "name": "payment-past-due",
+  "expectedIntent": "subscription",
+  "lines": [
+    "Playback keeps showing a warning about our Cloud Pro payment, is our account about to get shut off?",
+    "Our organization ID is 8 2 9 4 5 5.",
+    "Okay, so I have until the eleventh. I'll update the card myself. Thanks, bye."
+  ]
+}

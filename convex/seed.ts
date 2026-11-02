@@ -1,58 +1,14 @@
 import { internalMutation } from "./_generated/server";
 import { localToUtcMs, partsIn, WEEKEND, weekdayIn } from "./time";
+import { customers, organizations, orgSongs } from "../src/lib/demo/accounts";
 
 /**
  * Seeds clearly synthetic demo data. Safe to re-run: it wipes and re-inserts.
  * Run with: npx convex run seed:run
+ *
+ * Organizations, customers and their song libraries live in
+ * src/lib/demo/accounts.ts so the lookup logic can be unit-tested on the same data.
  */
-
-const customers = [
-  {
-    customerId: "DEMO-1001",
-    name: "Jordan Avery",
-    email: "jordan.avery@example.org",
-    organization: "Riverbend Community Church (demo)",
-    plan: "Cloud Pro" as const,
-    subscriptionStatus: "active" as const,
-    renewsAt: "2027-03-14",
-    entitlements: ["cloud-sync", "playback-pro-features", "multitrack-downloads"],
-    notes:
-      "Active Cloud Pro subscriber. Reports a 'Cloud Pro expired' message in Playback despite an active plan. Last known Playback version 8.6.2 (iPad).",
-  },
-  {
-    customerId: "DEMO-1002",
-    name: "Priya Natarajan",
-    email: "priya.n@example.org",
-    organization: "Harbor Light Fellowship (demo)",
-    plan: "Cloud Pro" as const,
-    subscriptionStatus: "expired" as const,
-    expiredAt: "2026-09-02",
-    entitlements: [],
-    notes:
-      "Cloud Pro subscription genuinely expired on 2026-09-02. Sees 'Cloud Pro expired' message; a software update will not resolve this.",
-  },
-  {
-    customerId: "DEMO-1003",
-    name: "Marcus Bell",
-    email: "marcus.bell@example.org",
-    organization: "Northgate Worship Collective (demo)",
-    plan: "Cloud" as const,
-    subscriptionStatus: "active" as const,
-    renewsAt: "2027-01-20",
-    entitlements: ["cloud-sync", "multitrack-downloads"],
-    notes: "Reports no audio from the right channel when using a USB interface on iPhone.",
-  },
-  {
-    customerId: "DEMO-1004",
-    name: "Elena Cruz",
-    email: "elena.cruz@example.org",
-    organization: "Grace Chapel (demo)",
-    plan: "none" as const,
-    subscriptionStatus: "none" as const,
-    entitlements: [],
-    notes: "No subscription on file. Uses Playback with purchased songs only.",
-  },
-];
 
 const teams = [
   {
@@ -102,14 +58,16 @@ function buildSlots(now: Date) {
 export const run = internalMutation({
   args: {},
   handler: async (ctx) => {
-    for (const table of ["callbacks", "callbackSlots", "teams", "customers"] as const) {
+    for (const table of ["callbacks", "callbackSlots", "teams", "customers", "organizations", "orgSongs"] as const) {
       const rows = await ctx.db.query(table).collect();
       for (const row of rows) await ctx.db.delete(row._id);
     }
+    for (const o of organizations) await ctx.db.insert("organizations", o);
     for (const c of customers) await ctx.db.insert("customers", c);
+    for (const s of orgSongs) await ctx.db.insert("orgSongs", s);
     for (const t of teams) await ctx.db.insert("teams", t);
     const slots = buildSlots(new Date());
     for (const s of slots) await ctx.db.insert("callbackSlots", s);
-    return { customers: customers.length, teams: teams.length, slots: slots.length };
+    return { organizations: organizations.length, customers: customers.length, songs: orgSongs.length, teams: teams.length, slots: slots.length };
   },
 });
