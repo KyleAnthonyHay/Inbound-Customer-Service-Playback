@@ -34,10 +34,24 @@ export async function ensureCall(ctx: MutationCtx, callId: string, patch?: { cha
 }
 
 export const statusUpdate = mutation({
-  args: { callId: v.string(), status: v.string(), callType: v.optional(v.string()), endedReason: v.optional(v.string()), startedAt: v.optional(v.string()) },
+  args: {
+    callId: v.string(), status: v.string(), callType: v.optional(v.string()), endedReason: v.optional(v.string()),
+    startedAt: v.optional(v.string()), callerNumber: v.optional(v.string()),
+  },
   handler: async (ctx, a) => {
     const id = await ensureCall(ctx, a.callId, { channel: a.callType, startedAt: a.startedAt ? Date.parse(a.startedAt) : undefined });
+    if (a.callerNumber && !(await ctx.db.get(id))?.callerNumber) await ctx.db.patch(id, { callerNumber: a.callerNumber });
     if (a.status === "ended") await ctx.db.patch(id, { status: "ended", endedAt: Date.now(), endedReason: a.endedReason });
+    return { ok: true };
+  },
+});
+
+/** Records the caller ID on the call row; the tool webhook may see it before the first status-update. */
+export const noteCaller = mutation({
+  args: { callId: v.string(), callerNumber: v.string(), callType: v.optional(v.string()) },
+  handler: async (ctx, a) => {
+    const id = await ensureCall(ctx, a.callId, { channel: a.callType });
+    if (!(await ctx.db.get(id))?.callerNumber) await ctx.db.patch(id, { callerNumber: a.callerNumber });
     return { ok: true };
   },
 });

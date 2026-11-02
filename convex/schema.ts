@@ -71,6 +71,8 @@ export default defineSchema({
     startedAt: v.number(), // epoch ms
     endedAt: v.optional(v.number()),
     endedReason: v.optional(v.string()),
+    /** Caller ID on phone calls (Vapi call.customer.number); absent for browser calls. */
+    callerNumber: v.optional(v.string()),
     /** First thing the caller said, trimmed; the list's row title. */
     title: v.optional(v.string()),
     /** Vapi's end-of-call analysis summary, when present. */

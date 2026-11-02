@@ -13,10 +13,13 @@ import { TOOL_META } from "../src/lib/tools/meta";
  */
 export type ToolSource = "live" | "simulated" | "internal";
 
+/** Per-call context from the Vapi webhook. callerNumber is the caller ID on phone calls, absent on browser calls. */
+export type CallMeta = { callerNumber?: string };
+
 export type ToolDef = {
   source: ToolSource;
   label: string;
-  run: (args: Record<string, unknown>, ctx: ActionCtx, callId: string) => Promise<unknown>;
+  run: (args: Record<string, unknown>, ctx: ActionCtx, callId: string, meta: CallMeta) => Promise<unknown>;
 };
 
 const str = (v: unknown) => (typeof v === "string" ? v : undefined);
@@ -73,13 +76,16 @@ export const tools: Record<string, ToolDef> = {
   reserve_callback: {
     source: "simulated",
     label: TOOL_META.reserve_callback.label,
-    run: async (a, ctx, callId) => {
+    run: async (a, ctx, callId, meta) => {
       const slotId = str(a.slotId);
       if (!slotId) return { ok: false, reason: "missing-slotId", source: "simulated" };
+      // On phone calls the caller ID is the default; a vague value like "this number" also falls back to it.
+      const given = str(a.callbackNumber)?.trim() ?? "";
+      const callbackNumber = /\d{7,}/.test(given.replace(/\D/g, "")) ? given : meta.callerNumber ?? given;
       return ctx.runMutation(api.callbacks.reserve, {
         slotId: slotId as Id<"callbackSlots">,
         callerName: str(a.callerName) ?? "Caller",
-        callbackNumber: str(a.callbackNumber) ?? "",
+        callbackNumber,
         timeZone: str(a.timeZone) ?? "unknown",
         reason: str(a.reason) ?? "Playback support follow-up",
         customerId: str(a.customerId),

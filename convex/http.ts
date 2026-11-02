@@ -41,10 +41,14 @@ http.route({
     const secret = process.env.VAPI_TOOL_SECRET;
     if (secret && request.headers.get("x-demo-secret") !== secret) return json({ error: "unauthorized" }, 401);
 
-    const body = (await request.json().catch(() => ({}))) as { message?: { type?: string; toolCallList?: ToolCall[]; call?: { id?: string } } };
+    const body = (await request.json().catch(() => ({}))) as {
+      message?: { type?: string; toolCallList?: ToolCall[]; call?: { id?: string; type?: string; customer?: { number?: string } } };
+    };
     const msg = body.message;
     if (!msg || msg.type !== "tool-calls" || !Array.isArray(msg.toolCallList)) return json({ results: [] });
     const callId = msg.call?.id ?? "unknown";
+    const callerNumber = msg.call?.customer?.number || undefined;
+    if (callerNumber) await ctx.runMutation(api.calls.noteCaller, { callId, callerNumber, callType: msg.call?.type });
 
     const results = await Promise.all(
       msg.toolCallList.map(async (tc) => {
@@ -58,7 +62,7 @@ http.route({
         const started = Date.now();
         await ctx.runMutation(api.callEvents.log, { callId, kind: "tool-start", tool: name, toolCallId: tc.id, label: def.label, status: "running", source: def.source, args: clip(args, 800) });
         try {
-          const out = await def.run(args, ctx, callId);
+          const out = await def.run(args, ctx, callId, { callerNumber });
           const durationMs = Date.now() - started;
           const ok = !(out && typeof out === "object" && "ok" in out && (out as { ok: unknown }).ok === false);
           await ctx.runMutation(api.callEvents.log, {
@@ -88,7 +92,7 @@ type ServerMessage = {
   role?: "user" | "assistant" | "system";
   transcriptType?: string;
   transcript?: string;
-  call?: { id?: string; type?: string; startedAt?: string };
+  call?: { id?: string; type?: string; startedAt?: string; customer?: { number?: string } };
   analysis?: { summary?: string };
   summary?: string;
   artifact?: { messages?: Array<{ role?: string; message?: string; time?: number; secondsFromStart?: number }> };
@@ -113,7 +117,10 @@ http.route({
     console.log(`vapi event ${m.type} call=${callId}` + (m.type === "end-of-call-report" ? ` keys=${Object.keys(m).join(",")} msgs=${m.artifact?.messages?.length ?? 0}` : ""));
     switch (m.type) {
       case "status-update":
-        await ctx.runMutation(api.calls.statusUpdate, { callId, status: m.status ?? "", callType: m.call?.type, endedReason: m.endedReason, startedAt: m.call?.startedAt });
+        await ctx.runMutation(api.calls.statusUpdate, {
+          callId, status: m.status ?? "", callType: m.call?.type, endedReason: m.endedReason, startedAt: m.call?.startedAt,
+          callerNumber: m.call?.customer?.number || undefined,
+        });
         break;
       case "transcript":
         // Browser calls are mirrored by the web client itself (ActivityPanel), so skip server copies for them.
