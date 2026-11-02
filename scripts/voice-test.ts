@@ -45,9 +45,12 @@ async function main() {
   console.log(`Scenario: ${scenario.name} (expected intent: ${scenario.expectedIntent})`);
   const clips = scenario.lines.map((l, i) => tts(l, i));
 
-  const res = await fetch("https://api.vapi.ai/call", {
+  const development = process.env.CONVEX_DEPLOYMENT === "dev:ceaseless-rhinoceros-106";
+  if (!development && process.env.CONVEX_DEPLOYMENT !== "prod:earnest-alpaca-725") throw Error("Unrecognized call environment");
+  const endpoint = development ? "https://ceaseless-rhinoceros-106.convex.site/dev-call/websocket" : "https://api.vapi.ai/call";
+  const res = await fetch(endpoint, {
     method: "POST",
-    headers: { Authorization: `Bearer ${KEY}`, "Content-Type": "application/json" },
+    headers: { ...(development ? { "x-demo-secret": process.env.VAPI_TOOL_SECRET ?? "" } : { Authorization: `Bearer ${KEY}` }), "Content-Type": "application/json" },
     body: JSON.stringify({
       assistantId: ASSISTANT,
       transport: { provider: "vapi.websocket", audioFormat: { format: "pcm_s16le", container: "raw", sampleRate: RATE } },

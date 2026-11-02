@@ -103,6 +103,8 @@ export function errorText(e: unknown): string {
 
 /** Turns browser/SDK error strings into something a tester can act on. */
 export function friendlyCallError(raw: string): string {
+  if (/keep capacity available for production/i.test(raw))
+    return "Development calling is temporarily unavailable to keep capacity available for production. Please try again later.";
   if (/permission denied|notallowederror|not allowed/i.test(raw))
     return "Microphone access was denied. Allow the mic for this site, or open the page in Chrome; embedded browser panes block it.";
   if (/notfounderror|no microphone|device not found/i.test(raw)) return "No microphone was found. Connect one and try again.";
@@ -292,7 +294,9 @@ export function useVapiCall() {
 
     try {
       const { default: VapiCtor } = await import("@vapi-ai/web");
-      const vapi = new VapiCtor(config.vapiPublicKey);
+      const vapi = new VapiCtor(config.vapiPublicKey,
+        config.convexSiteUrl === "https://ceaseless-rhinoceros-106.convex.site"
+          ? `${config.convexSiteUrl}/dev-call` : undefined);
       vapiRef.current = vapi;
 
       vapi.on("call-start", () => {

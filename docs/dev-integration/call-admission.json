@@ -1,0 +1,31 @@
+{
+  "date": "2026-11-02",
+  "kind": "call-admission-no-voice-check",
+  "parallelReservations": 8,
+  "admitted": 1,
+  "rejected": 7,
+  "httpChecks": [
+    {
+      "path": "/dev-call/call/web",
+      "authenticated": true,
+      "status": 429
+    },
+    {
+      "path": "/dev-call/websocket",
+      "authenticated": true,
+      "status": 429
+    },
+    {
+      "path": "/dev-call/call/web",
+      "authenticated": false,
+      "status": 401
+    },
+    {
+      "path": "/dev-call/websocket",
+      "authenticated": false,
+      "status": 401
+    }
+  ],
+  "corsStatus": 204,
+  "voiceCallsCreated": 0
+}
