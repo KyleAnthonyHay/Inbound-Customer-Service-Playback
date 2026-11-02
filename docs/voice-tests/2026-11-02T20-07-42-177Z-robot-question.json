@@ -1,0 +1,80 @@
+{
+  "scenario": "robot-question",
+  "expectedIntent": "song-loading",
+  "callId": "01a19dde-663c-7000-8cc7-90b82c4c7c0e",
+  "endedReason": "customer-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "search_playback_docs",
+    "delegate"
+  ],
+  "timing": {
+    "turns": [
+      {
+        "caller": "Wait. Are you a robot? Am I talking to a real person right",
+        "silenceS": 0,
+        "firstHeard": "Yes,",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [],
+        "summary": "\"Wait. Are you a robot? Am I talking to a\" -> 0s silence, then answer: \"Yes,\""
+      },
+      {
+        "caller": "now",
+        "silenceS": 0,
+        "firstHeard": "I'm an AI assistant for MultiTracks Playback support. I can help you fix song-loading and audio-output problems, or get you to a person. What's going on today?",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [],
+        "summary": "\"now\" -> 0s silence, then answer: \"I'm an AI assistant for MultiTracks Playback suppo\""
+      },
+      {
+        "caller": "Okay. My song won't download in Playback. It just spins. I'm on an iPad, version eight-point-six-point-four, and I have time",
+        "silenceS": 0.4,
+        "firstHeard": "Got it, give me just a second to",
+        "transition": true,
+        "gapAfterTransitionS": 0,
+        "tools": [
+          "delegate@+0.0s",
+          "search_playback_docs@+1.8s"
+        ],
+        "summary": "\"Okay. My song won't download in Playback\" -> 0.4s silence, then transition: \"Got it, give me just a second to\" -> 0s gap -> \"look into that.\" [delegate@+0.0s, search_playback_docs@+1.8s]"
+      },
+      {
+        "caller": "Yeah, that fixed it. Thanks. Bye",
+        "silenceS": 0.4,
+        "firstHeard": "Okay, glad to hear it. Just a moment",
+        "transition": true,
+        "gapAfterTransitionS": 0,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"Yeah, that fixed it. Thanks. Bye\" -> 0.4s silence, then transition: \"Okay, glad to hear it. Just a moment\" -> 0s gap -> \"before you go. Glad it's working again. \" [delegate@+0.0s]"
+      }
+    ],
+    "longestSilenceS": 0.4,
+    "longestGapAfterTransitionS": 0
+  },
+  "convexToolEvents": [
+    "search_playback_docs succeeded 444ms 6 result(s)"
+  ],
+  "liveEvents": [
+    "60.1s TOOL-CALLS delegate({})",
+    "61.9s TOOL-CALLS search_playback_docs({\"query\":\"iPad song download spins indefinitely Playback version 8.6.4\",\"category\":\"song-loading\",\"platform\":\"iPadOS\"})",
+    "80.5s TOOL-CALLS delegate({})"
+  ],
+  "transcript": [
+    "AGENT: Hi, thanks for calling MultiTracks Playback support. I'm an AI assistant. Are you having trouble with a song loading, or with audio output?",
+    "CALLER: Wait. Are you a robot? Am I talking to a real person right",
+    "AGENT: Yes,",
+    "CALLER: now",
+    "AGENT: I'm an AI assistant for MultiTracks Playback support. I can help you fix song-loading and audio-output problems, or get you to a person. What's going on today?",
+    "CALLER: Okay. My song won't download in Playback. It just spins. I'm on an iPad, version eight-point-six-point-four, and I have time",
+    "AGENT: Got it, give me just a second to",
+    "AGENT: look into that.",
+    "AGENT: Do you see any error message with the spinning download? Or is it only spinning?",
+    "CALLER: Yeah, that fixed it. Thanks. Bye",
+    "AGENT: Okay, glad to hear it. Just a moment",
+    "AGENT: before you go. Glad it's working again. Thanks for calling, and have a great day!"
+  ]
+}
