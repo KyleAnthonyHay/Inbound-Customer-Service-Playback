@@ -66,6 +66,7 @@ async function main() {
   let lastAssistantTranscriptAt = 0;
   let lastToolCallAt = 0;
   let assistantTextSinceSend = "";
+  let assistantFinalsSinceSend = 0;
   // Set when the last caller clip finished streaming. Transcript finals that belong to the
   // previous agent turn can arrive after that (the greeting's "?" once ended a wait early
   // and the next caller lines talked over the agent), so only agent speech heard after the
@@ -105,7 +106,10 @@ async function main() {
           if (countsForThisTurn) assistantEverSpoke = true;
         }
         if (m.transcriptType === "final") {
-          if (countsForThisTurn) assistantTextSinceSend += " " + String(m.transcript);
+          if (countsForThisTurn) {
+            assistantTextSinceSend += " " + String(m.transcript);
+            assistantFinalsSinceSend++;
+          }
           transcript.push(`${stamp()} ${String(m.role).toUpperCase()}: ${m.transcript}`);
           console.log(`  ${String(m.role).toUpperCase()}: ${m.transcript}`);
         }
@@ -151,7 +155,12 @@ async function main() {
       const askedSinceTool = lastToolCallAt < lastAssistantTranscriptAt && /\?/.test(assistantTextSinceSend);
       const toolPending = now - lastToolCallAt < 15000 && !askedSinceTool;
       const turnLooksComplete = /\?/.test(assistantTextSinceSend) || quietFor > 7000;
-      if (assistantEverSpoke && quietFor > 2500 && turnLooksComplete && !toolPending) return;
+      // Final transcripts can trail the audio by several seconds. Returning before the turn's
+      // final arrived let it land during the next turn (the greeting's "?" then ended that wait
+      // early and the caller talked over the agent), so wait for at least one final unless the
+      // agent has been quiet for a long time.
+      const finalArrived = assistantFinalsSinceSend > 0 || quietFor > 15000;
+      if (assistantEverSpoke && quietFor > 2500 && turnLooksComplete && finalArrived && !toolPending) return;
       await sleep(100);
     }
   };
@@ -173,6 +182,7 @@ async function main() {
     console.log(`  CALLER (sent): ${scenario.lines[i]}`);
     assistantEverSpoke = false;
     assistantTextSinceSend = "";
+    assistantFinalsSinceSend = 0;
     await sendClip(clips[i]);
     await waitForAssistantToFinish(scenario.maxTurnWaitMs ?? 45000);
   }
