@@ -139,6 +139,15 @@ Callback scheduling is deliberately strict so the agent cannot substitute a time
 - Team hours are defined in the team's own zone (`hours: { timeZone, start, end }` in `convex/seed.ts`); slots are generated from those, 30 minutes apart, weekdays only, with a few pre-reserved so "slot taken" is testable. Re-seed with `npx convex run seed:run`.
 - The reasoner prompt requires: no "that works" before the tool confirms; if the requested time is unavailable, say so and why *before* offering alternatives.
 
+## Caller ID on phone calls
+
+On inbound phone calls Vapi attaches the caller's number to every webhook as `message.call.customer.number` and exposes it to the prompt as `{{customer.number}}`; browser calls have neither.
+
+- The reasoner prompt has a "THIS CALL" block (`Channel: {{call.type}}. Caller ID: {{customer.number}}`) so the model knows which number it is talking to. Vapi fills the variables at call time; on web calls they render empty and the prompt says to ask for a number.
+- `convex/http.ts` reads the number with `callInfoOf()` (`src/lib/tools/callerId.ts`) and passes it to every tool. `get_callback_slots` adds `callerId: { number, lastFour }` so the model can offer "the number you're calling from, ending in 4992"; `reserve_callback` accepts `callbackNumber: "caller-id"` and books that number. A browser call that tries "caller-id" gets `missing-number` and is told to ask.
+- The number is stored on the call row (`calls.callerNumber`) and shown in Past calls and the live pill as "from +1 (929) 404-4992".
+- After `reserve_callback` returns `ok=true` the result carries `next: "Confirm the callback ... then call endCall"` and the prompt tells the reasoner to confirm, wish the caller a good day, and hang up in the same turn. Transfers keep their own handoff flow.
+
 ## Tool visibility in the activity panel
 
 Every tool row in the agent-activity panel can be expanded (click) to show the exact function name, the arguments Vapi sent, and the JSON the webhook returned (both truncated server-side, logged in `callEvents.args` / `callEvents.output`). Tool calls also appear inline in the live transcript at the moment they happened, so a transcript like "Agent: the next available slot is…" shows which tool produced it.

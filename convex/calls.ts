@@ -16,16 +16,18 @@ const channelOf = (t?: string): "browser" | "phone" | "harness" | "unknown" => {
 };
 
 /** Find-or-create the call row (shared with the tool webhook, which may fire before status-update). */
-export async function ensureCall(ctx: MutationCtx, callId: string, patch?: { channel?: string; startedAt?: number }) {
+export async function ensureCall(ctx: MutationCtx, callId: string, patch?: { channel?: string; startedAt?: number; callerNumber?: string }) {
   const existing = await ctx.db.query("calls").withIndex("by_callId", (q) => q.eq("callId", callId)).unique();
   if (existing) {
     if (patch?.channel && existing.channel === "unknown") await ctx.db.patch(existing._id, { channel: channelOf(patch.channel) });
     if (patch?.startedAt && patch.startedAt < existing.startedAt) await ctx.db.patch(existing._id, { startedAt: patch.startedAt });
+    if (patch?.callerNumber && !existing.callerNumber) await ctx.db.patch(existing._id, { callerNumber: patch.callerNumber });
     return existing._id;
   }
   return ctx.db.insert("calls", {
     callId,
     channel: channelOf(patch?.channel),
+    callerNumber: patch?.callerNumber,
     status: "in-progress",
     startedAt: patch?.startedAt ?? Date.now(),
     toolCount: 0,
@@ -34,9 +36,9 @@ export async function ensureCall(ctx: MutationCtx, callId: string, patch?: { cha
 }
 
 export const statusUpdate = mutation({
-  args: { callId: v.string(), status: v.string(), callType: v.optional(v.string()), endedReason: v.optional(v.string()), startedAt: v.optional(v.string()) },
+  args: { callId: v.string(), status: v.string(), callType: v.optional(v.string()), endedReason: v.optional(v.string()), startedAt: v.optional(v.string()), callerNumber: v.optional(v.string()) },
   handler: async (ctx, a) => {
-    const id = await ensureCall(ctx, a.callId, { channel: a.callType, startedAt: a.startedAt ? Date.parse(a.startedAt) : undefined });
+    const id = await ensureCall(ctx, a.callId, { channel: a.callType, startedAt: a.startedAt ? Date.parse(a.startedAt) : undefined, callerNumber: a.callerNumber });
     if (a.status === "ended") await ctx.db.patch(id, { status: "ended", endedAt: Date.now(), endedReason: a.endedReason });
     return { ok: true };
   },
@@ -66,10 +68,11 @@ export const endOfCallReport = mutation({
     durationSeconds: v.optional(v.number()),
     startedAt: v.optional(v.string()),
     endedAt: v.optional(v.string()),
+    callerNumber: v.optional(v.string()),
     messages: v.optional(v.array(v.object({ role: v.union(v.literal("user"), v.literal("assistant")), text: v.string(), at: v.number() }))),
   },
   handler: async (ctx, a) => {
-    const id = await ensureCall(ctx, a.callId, { channel: a.callType, startedAt: a.startedAt ? Date.parse(a.startedAt) : undefined });
+    const id = await ensureCall(ctx, a.callId, { channel: a.callType, startedAt: a.startedAt ? Date.parse(a.startedAt) : undefined, callerNumber: a.callerNumber });
     const call = (await ctx.db.get(id))!;
     let transcriptCount = call.transcriptCount;
     let title = call.title;
@@ -98,9 +101,9 @@ export const endOfCallReport = mutation({
 
 /** Mark a call as in progress (speech-update), creating the row if the tool webhook hasn't yet. */
 export const touch = mutation({
-  args: { callId: v.string(), callType: v.optional(v.string()) },
+  args: { callId: v.string(), callType: v.optional(v.string()), callerNumber: v.optional(v.string()) },
   handler: async (ctx, a) => {
-    await ensureCall(ctx, a.callId, { channel: a.callType });
+    await ensureCall(ctx, a.callId, { channel: a.callType, callerNumber: a.callerNumber });
     return { ok: true };
   },
 });

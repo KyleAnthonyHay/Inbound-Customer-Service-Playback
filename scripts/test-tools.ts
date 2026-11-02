@@ -148,3 +148,32 @@ test("Vapi error events always become readable strings and remote hang-ups are r
   assert.equal(typeof errorText({ weird: 1 }), "string");
   assert.match(friendlyEndedReason("silence-timed-out"), /silence/);
 });
+
+import { callInfoOf, formatCallerNumber, lastFour, wantsCallerId } from "../src/lib/tools/callerId";
+
+test("caller ID: phone calls expose the caller's number to tools, browser calls do not", () => {
+  const phone = callInfoOf({ id: "c1", type: "inboundPhoneCall", customer: { number: "+19294044992" } });
+  assert.deepEqual(phone, { callId: "c1", callType: "inboundPhoneCall", callerNumber: "+19294044992" });
+  const web = callInfoOf({ id: "c2", type: "webCall" });
+  assert.equal(web.callerNumber, undefined);
+  assert.equal(callInfoOf(undefined).callId, "unknown");
+  assert.equal(callInfoOf({ id: "c3", customer: { number: "  " } }).callerNumber, undefined);
+});
+
+test("caller ID: 'caller-id' and friends mean the number the caller is on; real numbers do not", () => {
+  for (const w of ["caller-id", "caller id", "callerid", "same number", "this number", "the number I'm calling from", "", undefined]) assert.equal(wantsCallerId(w), true, String(w));
+  for (const w of ["929-404-4992", "+1 929 404 4992", "(929) 404-4992"]) assert.equal(wantsCallerId(w), false, w);
+  assert.equal(lastFour("+19294044992"), "4992");
+  assert.equal(formatCallerNumber("+19294044992"), "+1 (929) 404-4992");
+  assert.equal(formatCallerNumber("9294044992"), "(929) 404-4992");
+  assert.equal(formatCallerNumber("+442071234567"), "+442071234567");
+});
+
+import { SYSTEM_PROMPT } from "../src/lib/assistant";
+
+test("prompt: the reasoner sees the caller ID variable and wraps up after a booked callback", () => {
+  assert.match(SYSTEM_PROMPT, /Caller ID: \{\{customer\.number\}\}/);
+  assert.match(SYSTEM_PROMPT, /callbackNumber "caller-id"/);
+  assert.match(SYSTEM_PROMPT, /After reserve_callback returns ok=true[^\n]*call endCall/);
+  assert.match(SYSTEM_PROMPT, /After a transfer \(initiate_handoff\) follow the handoff rule/);
+});
