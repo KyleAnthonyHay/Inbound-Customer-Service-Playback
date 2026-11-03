@@ -48,7 +48,8 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useMutation, useQuery, usePaginatedQuery } from "convex/react";
 import { AnimatePresence, MotionConfig, motion, useReducedMotion } from "motion/react";
-import { ChevronLeft, ChevronRight, Activity, AlertTriangle, History, Archive, ArchiveRestore, Trash2, Wrench, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Activity, AlertTriangle, History, Archive, ArchiveRestore, Trash2, Wrench, X, Headset, User } from "lucide-react";
+import { PERSONA_NAME } from "@/lib/voicePolicy";
 import { api } from "../../convex/_generated/api";
 import type { Doc } from "../../convex/_generated/dataModel";
 import { useConvexReady } from "./ConvexClientProvider";
@@ -646,17 +647,44 @@ function Rail({ steps }: { steps: Step[] }) {
 
 type Marker = { id: string; at: number; tool: string; status: Step["status"]; detail?: string };
 
-/** Transcript lines with the tool calls the agent made, interleaved where they happened. */
+/** Gap before a "… later" divider between two timeline entries. */
+const LATER_GAP_MS = 8000;
+
+/** Call-relative clock for the timeline's time column, e.g. 1:07. */
+function callClock(at: number, start: number): string {
+  const s = Math.max(0, Math.round((at - start) / 1000));
+  return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+}
+
+function laterText(ms: number): string {
+  const s = Math.round(ms / 1000);
+  return s < 90 ? `${s} seconds later…` : `${Math.round(s / 60)} minutes later…`;
+}
+
+/**
+ * Transcript as a timeline: a time column, an icon on a vertical rail, a heading per
+ * speaker turn or tool call, the spoken words in a card, and "… later" dividers on long pauses.
+ */
 function LiveTranscript({ transcript, markers, reduce }: { transcript: TranscriptLine[]; markers: Marker[]; reduce: boolean }) {
   const boxRef = useRef<HTMLDivElement>(null);
   const last = transcript[transcript.length - 1];
   const rows = useMemo(() => {
-    const merged: Array<{ kind: "line"; t: TranscriptLine; at: number } | { kind: "tool"; m: Marker; at: number }> = [
+    const merged: Array<{ kind: "line"; t: TranscriptLine; at: number; last?: string } | { kind: "tool"; m: Marker; at: number; last?: string }> = [
       ...transcript.map((t) => ({ kind: "line" as const, t, at: t.at })),
       ...markers.map((m) => ({ kind: "tool" as const, m, at: m.at })),
     ];
-    return merged.sort((a, b) => a.at - b.at);
+    merged.sort((a, b) => a.at - b.at);
+    // Back-to-back lines from the same speaker read as one turn: one heading, one card.
+    const out: typeof merged = [];
+    for (const r of merged) {
+      const prev = out[out.length - 1];
+      if (r.kind === "line" && prev?.kind === "line" && prev.t.role === r.t.role && r.at - prev.at < LATER_GAP_MS)
+        out[out.length - 1] = { ...prev, t: { ...prev.t, text: `${prev.t.text} ${r.t.text}`, final: r.t.final }, last: r.t.id };
+      else out.push(r.kind === "line" ? { ...r, last: r.t.id } : r);
+    }
+    return out;
   }, [transcript, markers]);
+  const start = rows[0]?.at ?? 0;
   useEffect(() => {
     const el = boxRef.current;
     if (!el) return;
@@ -664,37 +692,55 @@ function LiveTranscript({ transcript, markers, reduce }: { transcript: Transcrip
   }, [rows.length, last?.text, reduce]);
   return (
     <div className="mt-4">
-      <p className="mb-1.5 text-[11px] font-medium uppercase tracking-wide text-white/35">Live transcript</p>
-      <div ref={boxRef} className="max-h-[240px] overflow-y-auto overscroll-contain rounded-xl border border-white/[0.07] bg-white/[0.02] px-3.5 py-3 [scrollbar-width:thin]">
-        <ul className="space-y-2">
-          {rows.map((r) => {
-            if (r.kind === "tool") {
-              const m = r.m;
-              const color = m.status === "failed" ? "text-[#ff8a8f]" : "text-[#7ab8ff]";
-              return (
-                <motion.li key={`tool-${m.id}`} initial={reduce ? false : BLUR_IN} animate={SHARP} transition={{ duration: reduce ? 0 : REVEAL, ease: EASE }} className="flex items-center gap-1.5 font-mono text-[11px]">
-                  <Wrench size={10} aria-hidden className={cn("shrink-0", color)} />
-                  <span className={color}>{m.tool}</span>
-                  {m.status === "running" ? <Spinner size={10} className="text-[#7ab8ff]" /> : m.detail ? <span className="truncate text-white/35">· {m.detail}</span> : null}
-                </motion.li>
-              );
-            }
-            const t = r.t;
-            const isLast = t === last;
+      <div className="mb-2 flex items-baseline justify-between">
+        <p className="text-[13px] font-medium text-white/85">Conversation</p>
+        <p className="text-[11px] text-white/35">Times from call start</p>
+      </div>
+      <div ref={boxRef} className="max-h-[440px] overflow-y-auto overscroll-contain pr-1 [scrollbar-width:thin]">
+        <ol className="relative">
+          {rows.map((r, i) => {
+            const prev = rows[i - 1];
+            const gap = prev ? r.at - prev.at : 0;
+            const isLastRow = i === rows.length - 1;
+            const key = r.kind === "tool" ? `tool-${r.m.id}` : r.t.id;
+            const agent = r.kind === "line" && r.t.role === "assistant";
+            const failed = r.kind === "tool" && r.m.status === "failed";
+            const Icon = r.kind === "tool" ? Wrench : agent ? Headset : User;
+            const badge = r.kind === "tool"
+              ? failed ? "bg-[#ff8a8f]/15 text-[#ff8a8f]" : "bg-[#7ab8ff]/15 text-[#7ab8ff]"
+              : agent ? "bg-[#c2a4ff]/15 text-[#c2a4ff]" : "bg-white/[0.08] text-white/70";
             return (
-              <motion.li
-                key={t.id}
-                initial={reduce ? false : BLUR_IN}
-                animate={SHARP}
-                transition={{ duration: reduce ? 0 : REVEAL, ease: EASE }}
-                className={cn("text-[13px] leading-snug", t.role === "assistant" ? "text-white/90" : "text-white/50")}
-              >
-                <span className="mr-1.5 text-[10px] uppercase tracking-wide text-white/35">{t.role === "assistant" ? "Agent" : "Caller"}</span>
-                {isLast && t.role === "assistant" ? <StreamText text={t.text} /> : t.text}
+              <motion.li key={key} initial={reduce ? false : BLUR_IN} animate={SHARP} transition={{ duration: reduce ? 0 : REVEAL, ease: EASE }}
+                className="relative grid grid-cols-[38px_24px_1fr] gap-x-2.5">
+                {prev && gap >= LATER_GAP_MS && (
+                  <p className="col-start-3 -mt-1 mb-2.5 text-[11.5px] text-white/35">{laterText(gap)}</p>
+                )}
+                {/* rail from this icon down to the next entry */}
+                {!isLastRow && <span aria-hidden className="absolute bottom-0 left-[59px] top-[22px] w-px bg-white/[0.1]" />}
+                <span className="col-start-1 pt-[3px] text-right font-mono text-[11px] tabular-nums text-white/40">{callClock(r.at, start)}</span>
+                <span className={cn("relative z-[1] col-start-2 flex h-6 w-6 items-center justify-center rounded-md", badge)}>
+                  <Icon size={12} aria-hidden />
+                </span>
+                <div className="col-start-3 min-w-0 pb-3.5">
+                  {r.kind === "tool" ? (
+                    <div className="flex min-h-6 items-center gap-2 text-[12.5px]">
+                      <span className={cn("font-mono", failed ? "text-[#ff8a8f]" : "text-white/80")}>{r.m.tool}</span>
+                      {r.m.status === "running" ? <Spinner size={10} className="text-[#7ab8ff]" /> : r.m.detail ? <span className="truncate text-white/40">{r.m.detail}</span> : null}
+                    </div>
+                  ) : (
+                    <>
+                      <p className="flex min-h-6 items-center text-[13px] font-medium text-white/90">{agent ? PERSONA_NAME : "Caller"}</p>
+                      <div className={cn("mt-1.5 rounded-xl border px-3.5 py-2.5 text-[13.5px] leading-relaxed",
+                        agent ? "border-white/[0.08] bg-white/[0.035] text-white/90" : "border-white/[0.06] bg-transparent text-white/75")}>
+                        {r.last === last?.id && agent ? <StreamText text={r.t.text} /> : r.t.text}
+                      </div>
+                    </>
+                  )}
+                </div>
               </motion.li>
             );
           })}
-        </ul>
+        </ol>
       </div>
     </div>
   );
