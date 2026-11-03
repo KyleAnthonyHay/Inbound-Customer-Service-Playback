@@ -240,7 +240,7 @@ async function main() {
   console.log("Vapi tool calls:", report.vapiToolCalls);
   console.log("Timing (per caller turn):");
   for (const t of timing.turns) console.log(`  ${t.summary}`);
-  console.log(`Longest silence after a caller turn: ${timing.longestSilenceS}s; longest gap after a transition line: ${timing.longestGapAfterTransitionS}s`);
+  console.log(`Longest silence after a caller turn: ${timing.longestSilenceS}s; longest gap after a transition line: ${timing.longestGapAfterTransitionS}s; turns with a repeated acknowledgement: ${timing.repeatedAckTurns}`);
   console.log("Convex tool events:", report.convexToolEvents);
   console.log("saved:", out);
 }
@@ -262,7 +262,8 @@ function analyzeTiming(messages: VapiMsg[]) {
   };
   const isTransition = (text: string) => /\b(one moment|one second|just a (second|sec|moment)|hold on|let me (check|pull|see|look|take)|bear with me|give me a (second|moment))\b/i.test(text) && text.split(/\s+/).length <= 16;
   const timeline = messages.filter((m) => m.role === "user" || m.role === "bot" || m.role === "tool_calls").sort((a, b) => (a.secondsFromStart ?? 0) - (b.secondsFromStart ?? 0));
-  const turns: Array<{ caller: string; silenceS: number | null; firstHeard: string; transition: boolean; gapAfterTransitionS: number | null; tools: string[]; summary: string }> = [];
+  const isAck = (text: string) => /^\W*(okay|ok|got it|thanks|thank you|alright|all right|sure|hmm|mm|ah|i see|i can help with that|i'll help with that|let me (check|take a look|look))\b/i.test(text.trim());
+  const turns: Array<{ caller: string; silenceS: number | null; firstHeard: string; transition: boolean; gapAfterTransitionS: number | null; repeatedAck: boolean; tools: string[]; summary: string }> = [];
   for (let i = 0; i < timeline.length; i++) {
     const m = timeline[i];
     if (m.role !== "user") continue;
@@ -276,12 +277,16 @@ function analyzeTiming(messages: VapiMsg[]) {
     const transition = !!first && isTransition(first.message ?? "");
     const second = bots[1];
     const gapAfterTransitionS = transition && second ? +((second.secondsFromStart ?? 0) - endOf(first)).toFixed(1) : null;
-    const summary = `"${(m.message ?? "").slice(0, 40)}" -> ${silenceS === null ? "no reply" : `${silenceS}s silence`}, then ${transition ? "transition" : "answer"}: "${(first?.message ?? "").slice(0, 50)}"${gapAfterTransitionS !== null ? ` -> ${gapAfterTransitionS}s gap -> "${(second?.message ?? "").slice(0, 40)}"` : ""}${tools.length ? ` [${tools.join(", ")}]` : ""}`;
-    turns.push({ caller: m.message ?? "", silenceS, firstHeard: first?.message ?? "", transition, gapAfterTransitionS, tools, summary });
+    // Repeated acknowledgement: the speaker said "Got it" and the next line (usually the
+    // reasoner's reply) opened with another "Thanks"/"Okay"/"Got it" instead of the substance.
+    const repeatedAck = bots.length >= 2 && bots.slice(0, -1).some((b, k) => isAck(b.message ?? "") && isAck(bots[k + 1].message ?? ""));
+    const summary = `"${(m.message ?? "").slice(0, 40)}" -> ${silenceS === null ? "no reply" : `${silenceS}s silence`}, then ${transition ? "transition" : "answer"}: "${(first?.message ?? "").slice(0, 50)}"${gapAfterTransitionS !== null ? ` -> ${gapAfterTransitionS}s gap -> "${(second?.message ?? "").slice(0, 40)}"` : ""}${tools.length ? ` [${tools.join(", ")}]` : ""}${repeatedAck ? " [REPEATED ACK]" : ""}`;
+    turns.push({ caller: m.message ?? "", silenceS, firstHeard: first?.message ?? "", transition, gapAfterTransitionS, repeatedAck, tools, summary });
   }
   const longestSilenceS = Math.max(0, ...turns.map((t) => t.silenceS ?? 0));
   const longestGapAfterTransitionS = Math.max(0, ...turns.map((t) => t.gapAfterTransitionS ?? 0));
-  return { turns, longestSilenceS, longestGapAfterTransitionS };
+  const repeatedAckTurns = turns.filter((t) => t.repeatedAck).length;
+  return { turns, longestSilenceS, longestGapAfterTransitionS, repeatedAckTurns };
 }
 
 main().catch((e) => {
