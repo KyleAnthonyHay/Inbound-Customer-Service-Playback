@@ -10,7 +10,8 @@ import { StatTile } from "./CallMetrics";
 export type DemoCallsData = FunctionReturnType<typeof api.demoCalls.get>;
 const button = "min-h-[32px] rounded-lg border border-white/10 px-2.5 text-[12px] text-white/75 transition-colors hover:bg-white/[0.06] hover:text-white disabled:cursor-not-allowed disabled:opacity-40";
 const primary = "min-h-[32px] rounded-lg bg-white px-2.5 text-[12px] font-medium text-black transition-colors hover:bg-white/85 disabled:cursor-not-allowed disabled:opacity-40";
-const date = (at: number) => new Date(at).toLocaleString();
+/** Date and time only, e.g. "Nov 3, 11:44 AM". */
+const date = (at: number) => new Date(at).toLocaleString(undefined, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
 
 export function DemoCallsPanel({ data, busy, onOpen }: { data: DemoCallsData | undefined; busy: boolean; onOpen: (id: string) => void }) {
   const [picker, setPicker] = useState<string | null>(null);
