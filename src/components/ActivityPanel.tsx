@@ -647,7 +647,7 @@ function Rail({ steps }: { steps: Step[] }) {
 
 type Marker = { id: string; at: number; tool: string; status: Step["status"]; detail?: string };
 
-/** Gap before a "… later" divider between two timeline entries. */
+/** Same-speaker lines closer than this merge into one timeline entry. */
 const LATER_GAP_MS = 8000;
 
 /** Call-relative clock for the timeline's time column, e.g. 1:07. */
@@ -656,14 +656,9 @@ function callClock(at: number, start: number): string {
   return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
 }
 
-function laterText(ms: number): string {
-  const s = Math.round(ms / 1000);
-  return s < 90 ? `${s} seconds later…` : `${Math.round(s / 60)} minutes later…`;
-}
-
 /**
  * Transcript as a timeline: a time column, an icon on a vertical rail, a heading per
- * speaker turn or tool call, the spoken words in a card, and "… later" dividers on long pauses.
+ * speaker turn or tool call, the spoken words in a card.
  */
 function LiveTranscript({ transcript, markers, reduce }: { transcript: TranscriptLine[]; markers: Marker[]; reduce: boolean }) {
   const boxRef = useRef<HTMLDivElement>(null);
@@ -699,8 +694,6 @@ function LiveTranscript({ transcript, markers, reduce }: { transcript: Transcrip
       <div ref={boxRef} className="max-h-[440px] overflow-y-auto overscroll-contain pr-1 [scrollbar-width:thin]">
         <ol className="relative">
           {rows.map((r, i) => {
-            const prev = rows[i - 1];
-            const gap = prev ? r.at - prev.at : 0;
             const isLastRow = i === rows.length - 1;
             const key = r.kind === "tool" ? `tool-${r.m.id}` : r.t.id;
             const agent = r.kind === "line" && r.t.role === "assistant";
@@ -712,9 +705,6 @@ function LiveTranscript({ transcript, markers, reduce }: { transcript: Transcrip
             return (
               <motion.li key={key} initial={reduce ? false : BLUR_IN} animate={SHARP} transition={{ duration: reduce ? 0 : REVEAL, ease: EASE }}
                 className="relative grid grid-cols-[38px_24px_1fr] gap-x-2.5">
-                {prev && gap >= LATER_GAP_MS && (
-                  <p className="col-start-3 -mt-1 mb-2.5 text-[11.5px] text-white/35">{laterText(gap)}</p>
-                )}
                 {/* rail from this icon down to the next entry */}
                 {!isLastRow && <span aria-hidden className="absolute bottom-0 left-[59px] top-[22px] w-px bg-white/[0.1]" />}
                 <span className="col-start-1 pt-[3px] text-right font-mono text-[11px] tabular-nums text-white/40">{callClock(r.at, start)}</span>
