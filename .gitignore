@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Private call-history snapshots may include caller details and full transcripts.
+/docs/call-history/private/
+
+# Raw Vapi call exports include recording URLs of real callers.
+/docs/call-reviews/*.raw.json

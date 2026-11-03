@@ -52,7 +52,7 @@ export function useRemoteCall(browserStatus: CallStatus): RemoteCall {
   const transcript = useQuery(api.calls.transcriptByCall, args) ?? [];
   const following = !browserLive && !!followedId && !!row;
 
-  if (!following || !row) return NO_REMOTE_CALL;
+  if (!following || !row || row.archivedAt !== undefined) return NO_REMOTE_CALL;
   return {
     following,
     callId: followedId,

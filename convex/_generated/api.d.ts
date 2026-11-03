@@ -9,15 +9,24 @@
  */
 
 import type * as callAdmission from "../callAdmission.js";
+import type * as callAnalytics from "../callAnalytics.js";
 import type * as callEvents from "../callEvents.js";
 import type * as callbacks from "../callbacks.js";
 import type * as calls from "../calls.js";
+import type * as closing from "../closing.js";
 import type * as customers from "../customers.js";
+import type * as evaluationRuns from "../evaluationRuns.js";
 import type * as handoff from "../handoff.js";
 import type * as http from "../http.js";
+import type * as lib_accountContext from "../lib/accountContext.js";
 import type * as lib_callAdmission from "../lib/callAdmission.js";
+import type * as lib_callClosing from "../lib/callClosing.js";
+import type * as lib_callHistory from "../lib/callHistory.js";
+import type * as lib_callMetricValidators from "../lib/callMetricValidators.js";
+import type * as lib_evaluationRunValidators from "../lib/evaluationRunValidators.js";
 import type * as lib_handoffEnding from "../lib/handoffEnding.js";
 import type * as lib_seedAccounts from "../lib/seedAccounts.js";
+import type * as lib_speakerContext from "../lib/speakerContext.js";
 import type * as seed from "../seed.js";
 import type * as teams from "../teams.js";
 import type * as time from "../time.js";
@@ -31,15 +40,24 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   callAdmission: typeof callAdmission;
+  callAnalytics: typeof callAnalytics;
   callEvents: typeof callEvents;
   callbacks: typeof callbacks;
   calls: typeof calls;
+  closing: typeof closing;
   customers: typeof customers;
+  evaluationRuns: typeof evaluationRuns;
   handoff: typeof handoff;
   http: typeof http;
+  "lib/accountContext": typeof lib_accountContext;
   "lib/callAdmission": typeof lib_callAdmission;
+  "lib/callClosing": typeof lib_callClosing;
+  "lib/callHistory": typeof lib_callHistory;
+  "lib/callMetricValidators": typeof lib_callMetricValidators;
+  "lib/evaluationRunValidators": typeof lib_evaluationRunValidators;
   "lib/handoffEnding": typeof lib_handoffEnding;
   "lib/seedAccounts": typeof lib_seedAccounts;
+  "lib/speakerContext": typeof lib_speakerContext;
   seed: typeof seed;
   teams: typeof teams;
   time: typeof time;
