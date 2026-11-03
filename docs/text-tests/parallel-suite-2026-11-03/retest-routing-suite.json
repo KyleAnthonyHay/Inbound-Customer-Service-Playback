@@ -1,0 +1,106 @@
+{
+  "name": "open-ended-ten-caller-situations",
+  "kind": "development-text-proof-of-concept",
+  "voiceCallCreated": false,
+  "cases": [
+    {
+      "id": "01-click-guide",
+      "intent": "routing",
+      "handling": "agent",
+      "openings": [
+        "We're getting ready for rehearsal, but when we turn down the spoken guide in our ears, the click gets quieter too.",
+        "In our ears, when I turn down the talking, the ticking changes too."
+      ],
+      "reviewOnly": {
+        "facts": "Mac, Playback 8.6.2, Premium, Focusrite 4i4 connected and powered. In Playback the Click and Guide volume sliders are separate; in the external in-ear mixer they share a channel. Settings > Buses currently shows both Click and Guide on output 1. The caller wants Click 1, Guide 2, music 3/4. Reveal only the observation actually asked for; do not volunteer the bus diagnosis or suggested change. Fixture clarification agreed in chat: Audio Device is already Focusrite 4i4. Do not substitute Script 3's MacBook Speakers setting. Additional fixed readouts defined BEFORE retest: actual Click tracks route to Click bus, actual spoken-guide tracks route to the existing Guide bus. Guide output selector shows Output1 selected and an enabled mono Output2; Output2 is not greyed out or reserved for SMPTE. No exhaustive menu labels are assumed.",
+        "expected": "Retrieve documentation, inspect or clarify bus assignments, guide distinct appropriate outputs, obtain simulated caller confirmation. No arbitrary universal channel mapping or legacy bus-creation steps.",
+        "callerProfile": {
+          "goal": "Change the spoken cues without changing the ticking in the in-ear mix.",
+          "knows": [
+            "Using a Mac.",
+            "The problem is what the band hears through the sound desk, not linked volume sliders inside the app.",
+            "The sound box says Focusrite 4i4."
+          ],
+          "canReadWithHelp": {
+            "Playback About": "8.6.2",
+            "Playback plan": "Premium",
+            "Settings > Buses": "Click output 1; Guide output 1; music 3/4. Outputs 1 and 2 feed separate desk channels.",
+            "Settings > General > Audio Device": "Focusrite 4i4 selected.",
+            "Settings > Tracks": "Click tracks assigned to Click bus; spoken-guide tracks assigned to existing Guide bus.",
+            "Guide bus output selector": "Output1 is selected; mono Output2 is visible and enabled.",
+            "Output2 availability": "Not greyed out; no SMPTE reservation on Output2."
+          },
+          "cannotVerify": [
+            "Does not know the word fader, bus, or why the sounds share a channel.",
+            "Cannot diagnose hardware faults."
+          ],
+          "scriptedOutcome": "Only after applicable guidance separates Click and Guide onto the connected outputs 1 and 2, report independent control; otherwise report what the provided instruction actually changes."
+        }
+      }
+    },
+    {
+      "id": "02-reconnect",
+      "intent": "routing",
+      "handling": "agent-target",
+      "openings": [
+        "I unplugged our sound interface and connected it again. Now different instruments are coming through different channels. All our music normally goes through 3 and 4.",
+        "I unplugged the box we use for sound and put it back. Now everything's in the wrong place."
+      ],
+      "reviewOnly": {
+        "facts": "Playback 8.6.4. Audio Device is PlayAUDIO12. Current Buses: Drums 3/4, Bass 5/6, Keys 7/8, Guitars 9/10. Intended music feed is 3/4. This is a simulated routing state; no verified explanation for why reconnecting changed it. Interface means the caller's 'sound box'; only give model or routing numbers when asked. Device is Mac; plan Premium.",
+        "expected": "Check the selected device/current bus assignments, retrieve applicable guidance, restore the caller's stated music routing without claiming the reset cause or reconfiguring third-party hardware.",
+        "callerProfile": {
+          "goal": "Put all music back on the one stereo desk feed, keeping the band-only sounds separate.",
+          "knows": [
+            "Using a Mac.",
+            "Before reconnecting, all music arrived together on the pair labeled 3/4.",
+            "The ticking and talking should remain separate from the music."
+          ],
+          "canReadWithHelp": {
+            "Box label": "PlayAUDIO12",
+            "Playback About": "8.6.4",
+            "Selected Audio Device": "PlayAUDIO12",
+            "Settings > Buses": "Drums 3/4; Bass 5/6; Keys 7/8; Guitars 9/10; Click 1; Guide 2.",
+            "Playback plan": "Premium"
+          },
+          "cannotVerify": [
+            "Cannot explain why reconnecting changed the routing.",
+            "Cannot change third-party mixer or network configuration."
+          ],
+          "scriptedOutcome": "Report normal music only after applicable instructions restore the music buses to 3/4 without mixing Click/Guide into them."
+        }
+      }
+    },
+    {
+      "id": "03-audio-device",
+      "intent": "routing",
+      "handling": "agent",
+      "openings": [
+        "The song looks like it's playing in Playback, but we can't hear anything through the church sound system.",
+        "It's doing its thing on the screen, but we can't hear anything."
+      ],
+      "reviewOnly": {
+        "facts": "The interface is a Focusrite 4i4, connected and powered through a powered USB hub. Settings > General > Audio Device currently says MacBook Speakers. The interface is also listed. No cable or mixer repair is required in this simulated fixture. The make/model was supplied in follow-ups during the first phrasing run. Device is Mac; Playback 8.6.4.",
+        "expected": "Find documented audio-device selection guidance and ask/check actual selection before identifying the cause. Simulated caller confirms sound after selecting the interface.",
+        "callerProfile": {
+          "goal": "Hear the playing song through the church sound system.",
+          "knows": [
+            "Using a Mac.",
+            "A small powered USB sound box connects the Mac to the desk.",
+            "The song appears to be playing."
+          ],
+          "canReadWithHelp": {
+            "Box label": "Focusrite 4i4",
+            "Playback About": "8.6.4",
+            "Settings > General > Audio Device": "MacBook Speakers selected; Focusrite 4i4 also listed."
+          },
+          "cannotVerify": [
+            "Cannot tell the interface meter state.",
+            "Does not know the term audio interface or where Playback chooses its output."
+          ],
+          "scriptedOutcome": "Report sound only after selecting the listed Focusrite instead of MacBook Speakers; do not volunteer that wrong selection in the opening."
+        }
+      }
+    }
+  ]
+}

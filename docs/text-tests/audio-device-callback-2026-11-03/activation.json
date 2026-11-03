@@ -1,0 +1,8 @@
+{
+  "kind": "development-audio-device-callback-activation",
+  "speakerMatches": true,
+  "reasonerMatches": true,
+  "toolDescriptionsMatch": true,
+  "artifactPlanPreserved": true,
+  "productionUnchanged": true
+}

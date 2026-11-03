@@ -1,0 +1,7 @@
+{
+  "developmentOnly": true,
+  "speakerMatchesSource": true,
+  "reasonerMatchesSource": true,
+  "toolDescriptionMatches": true,
+  "productionModelUnchanged": true
+}

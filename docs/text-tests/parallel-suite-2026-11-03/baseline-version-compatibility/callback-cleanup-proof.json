@@ -1,0 +1,17 @@
+{
+  "kind": "isolated-text-booking-cleanup",
+  "proof": [
+    {
+      "run": "06-borrowed-mixer-v1",
+      "bookingConfirmed": true,
+      "isolatedBookingRemoved": 1,
+      "slotReopened": true
+    },
+    {
+      "run": "06-borrowed-mixer-v2",
+      "bookingConfirmed": true,
+      "isolatedBookingRemoved": 1,
+      "slotReopened": true
+    }
+  ]
+}

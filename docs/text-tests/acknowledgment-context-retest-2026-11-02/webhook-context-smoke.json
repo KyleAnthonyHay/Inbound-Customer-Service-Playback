@@ -1,0 +1,6 @@
+{
+  "developmentWebhook": true,
+  "textOnlyNoVoiceControl": true,
+  "latestTwoMessagesMatch": true,
+  "systemTextExcluded": true
+}

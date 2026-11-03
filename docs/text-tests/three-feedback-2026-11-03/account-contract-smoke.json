@@ -1,0 +1,89 @@
+{
+  "developmentOnly": true,
+  "readOnly": true,
+  "checks": [
+    {
+      "input": {
+        "orgId": "480113"
+      },
+      "ok": true,
+      "accountContext": {
+        "identityVerified": false,
+        "scope": "organization_only"
+      },
+      "organizationResolution": {
+        "status": "resolved"
+      },
+      "memberResolution": {
+        "status": "not_checked"
+      },
+      "organizationStatus": "active",
+      "hasCustomer": false,
+      "hasMembership": false,
+      "diagnosisScope": "organization"
+    },
+    {
+      "input": {
+        "orgId": "480113",
+        "name": "Sam Okafor"
+      },
+      "ok": true,
+      "accountContext": {
+        "identityVerified": false,
+        "scope": "organization_and_member"
+      },
+      "organizationResolution": {
+        "status": "resolved"
+      },
+      "memberResolution": {
+        "status": "matched"
+      },
+      "organizationStatus": "active",
+      "hasCustomer": true,
+      "hasMembership": true,
+      "diagnosisScope": "member"
+    },
+    {
+      "input": {
+        "orgId": "480113",
+        "name": "Olivia Brennan"
+      },
+      "ok": true,
+      "accountContext": {
+        "identityVerified": false,
+        "scope": "organization_only"
+      },
+      "organizationResolution": {
+        "status": "resolved"
+      },
+      "memberResolution": {
+        "status": "person_found_not_member"
+      },
+      "organizationStatus": "active",
+      "hasCustomer": false,
+      "hasMembership": false,
+      "diagnosisScope": "organization"
+    },
+    {
+      "input": {
+        "orgId": "480113",
+        "name": "Unmatched Caller"
+      },
+      "ok": true,
+      "accountContext": {
+        "identityVerified": false,
+        "scope": "organization_only"
+      },
+      "organizationResolution": {
+        "status": "resolved"
+      },
+      "memberResolution": {
+        "status": "person_not_found"
+      },
+      "organizationStatus": "active",
+      "hasCustomer": false,
+      "hasMembership": false,
+      "diagnosisScope": "organization"
+    }
+  ]
+}

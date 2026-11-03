@@ -1,0 +1,83 @@
+{
+  "kind": "isolated-development-text-retest-cleanup",
+  "voiceCallsCreated": false,
+  "frozenSourceHashesVerified": true,
+  "totalReportedCost": 1.4157000000000002,
+  "configurationHashes": [
+    "0c3d127c0adf851f7751cbb8f915fc2522bffcc6f85ea28a7df93b33b2f1d7ab"
+  ],
+  "proof": [
+    {
+      "run": "07-organization-v1.json",
+      "reportedCost": 0.1454,
+      "turns": 5,
+      "toolLogsCleaned": true,
+      "verifiedOwnBookings": 0,
+      "removedOwnBookings": 0,
+      "slotOpenAgain": null
+    },
+    {
+      "run": "07-organization-v2.json",
+      "reportedCost": 0.17099999999999999,
+      "turns": 6,
+      "toolLogsCleaned": true,
+      "verifiedOwnBookings": 0,
+      "removedOwnBookings": 0,
+      "slotOpenAgain": null
+    },
+    {
+      "run": "08-permission-v1.json",
+      "reportedCost": 0.1704,
+      "turns": 7,
+      "toolLogsCleaned": true,
+      "verifiedOwnBookings": 1,
+      "removedOwnBookings": 1,
+      "slotOpenAgain": true
+    },
+    {
+      "run": "08-permission-v2.json",
+      "reportedCost": 0.1855,
+      "turns": 7,
+      "toolLogsCleaned": true,
+      "verifiedOwnBookings": 1,
+      "removedOwnBookings": 1,
+      "slotOpenAgain": true
+    },
+    {
+      "run": "09-loading-recovery-v1.json",
+      "reportedCost": 0.13369999999999999,
+      "turns": 5,
+      "toolLogsCleaned": true,
+      "verifiedOwnBookings": 0,
+      "removedOwnBookings": 0,
+      "slotOpenAgain": null
+    },
+    {
+      "run": "09-loading-recovery-v2.json",
+      "reportedCost": 0.1296,
+      "turns": 5,
+      "toolLogsCleaned": true,
+      "verifiedOwnBookings": 0,
+      "removedOwnBookings": 0,
+      "slotOpenAgain": null
+    },
+    {
+      "run": "10-loading-unresolved-v1.json",
+      "reportedCost": 0.2109,
+      "turns": 7,
+      "toolLogsCleaned": true,
+      "verifiedOwnBookings": 1,
+      "removedOwnBookings": 1,
+      "slotOpenAgain": true
+    },
+    {
+      "run": "10-loading-unresolved-v2.json",
+      "reportedCost": 0.2692,
+      "turns": 9,
+      "toolLogsCleaned": true,
+      "verifiedOwnBookings": 1,
+      "removedOwnBookings": 1,
+      "slotOpenAgain": true
+    }
+  ]
+}

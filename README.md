@@ -4,6 +4,8 @@ Inbound AI voice support demo for MultiTracks **Playback**: helps callers fix
 song-loading and audio-output problems before rehearsal or service. Built for
 the Regal AI Product Specialist take-home. Not affiliated with MultiTracks.com.
 
+Development call history now includes [per-call intent, outcome and operational measurements](docs/call-metrics.md). Select an expected scenario in **Call measurements** to score primary intent accuracy. Phone audio timing remains distinct from transcript-based latency estimates.
+
 ## Stack
 
 - Next.js 16 (App Router, TypeScript, Tailwind 4)
@@ -97,15 +99,15 @@ Pipeline (all under `scripts/manual/`, outputs in `docs/source-snapshots/playbac
 
 Verified against Vapi docs (2026-10-30): GPT-Live does not support knowledge
 bases or the Query tool; transfers are unsupported on browser calls; a spoken
-goodbye does not end the call, so the `endCall` tool is attached.
+goodbye does not end the call. Development now uses a [guarded closing function](docs/call-closing.md) that waits for farewell and speech-completion evidence before requesting disconnect.
 
 ## Handoff and transfer sound, per channel
 
 - **Browser**: when `initiate_handoff` succeeds, the page plays a short transfer
   tone locally (Web Audio, `src/lib/cues.ts`: two beeps, then US ringback) and shows
   "Transferring…" on the phone screen. The assistant then says goodbye and
-  calls `endCall`; if it has not ended the call 12 s after the handoff, the
-  page ends it. Verified with the dev simulation at `/call?demo=1`.
+  requests guarded closing. The server waits for the farewell and completed speech;
+  the browser no longer stops the call on a fixed handoff timer.
 - **Phone**: Vapi cannot play an audio file into a GPT-Live call and real
   transfers are blind-only on Twilio/Vapi SIP, which this demo does not use.
   The handoff is therefore spoken only, then `endCall`. This limitation is
@@ -118,12 +120,10 @@ goodbye does not end the call, so the `endCall` tool is attached.
   human?" goes straight to the handoff flow with no troubleshooting first) and a COMMON CONCERNS block
   (live in service, losing songs or setlists, "I already tried that", cost/subscription, "can you see
   my screen?", "is this recorded?").
-- GPT-Live's speaker must say one short transition line before every delegate/tool call ("Absolutely,
-  let me pull that up. One moment please.", "Of course. Let me see who's available. One moment
-  please." for human requests) and then stay quiet until the reasoner answers. The transfer line is
-  "I'll transfer you to our support team now. One moment please. Thanks for calling!" followed by
-  `endCall`. Tool `request-start` messages carry the same phrases; in voice calls GPT-Live does not
-  speak them (only the speaker's line is heard), in the text test both appear.
+- The development speaker can delegate silently and goes directly to useful content.
+  It checks recent speech before adding an acknowledgment; a slow lookup may receive
+  one truthful holding line. The reasoner starts with the answer or question, rather
+  than another acknowledgment. See [closing and recent-speech policy](docs/call-closing.md).
 - `scripts/voice-test.ts` prints a per-turn timing analysis (silence before the agent's first words,
   whether that was a transition line, the gap after it, and tool-call offsets). Runs on 2026-11-02
   (`docs/voice-tests/2026-11-02T19-4*` to `20-0*`) measured 0.2 to 0.6 s of silence after each caller
@@ -239,7 +239,7 @@ Every tool row in the agent-activity panel can be expanded (click) to show the e
 
 ## Call history (Past calls)
 
-The activity panel ends with a collapsed **Past calls** section, modeled on a chat app's conversation list: newest first, grouped by day, six rows before "Show all", a capped scroll area, and a two-step **Clear past calls** (confirm, then delete) that removes the calls, their transcripts and their tool events. Opening a row replays that call in the panel: its tool rail, stored transcript, and the end-of-call summary when Vapi produced one. Rows are disabled while a call is in progress.
+**Past calls** has **In this panel** and **Archive** views. Each finished call has an archive control; **Clear panel** archives all finished entries. Archived calls have **Restore to panel** and **Delete permanently** actions. Permanent deletion requires confirmation and erases the app's saved call, transcript, activity and measurements; delayed events cannot recreate it. Archive is paginated and reopens the original tool rail, transcript and available summary. Live and unarchived calls are protected from permanent deletion. See [retention policy and preservation checkpoint](docs/call-history/README.md).
 
 Data comes from Vapi's assistant-level server messages, not the browser, so phone and harness calls are listed too. `buildAssistant()` sets `server.url` to `{CONVEX_SITE_URL}/vapi/events` with `serverMessages: ["status-update", "transcript[transcriptType=\"final\"]", "end-of-call-report"]`; `convex/http.ts` writes them to the `calls` and `transcripts` tables (`convex/calls.ts`). The tool webhook bumps each call's `toolCount`. A call row's title is the first thing the caller said.
 

@@ -1,0 +1,48 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "caseId": "resolved-ack",
+  "variant": 1,
+  "testId": "text-poc-a2615e11-3caf-472f-8264-e4ce28c2c026",
+  "configurationHash": "3120292301be8e428f0a7b51543c5b4e964d18ac2c492375530fcf5f26a53729",
+  "toolRuntime": "deployed-development",
+  "fixture": {
+    "id": "resolved-ack",
+    "intent": "closing",
+    "handling": "further-help-check",
+    "openings": [
+      "I can hear it now, thanks."
+    ],
+    "reviewOnly": {
+      "facts": "Isolated closing-decision control, not a diagnostic scenario. Recovery is already reported; the caller has not said they want to leave.",
+      "expected": "Ask whether further help is needed and wait. Do not diagnose again or immediately say goodbye."
+    }
+  },
+  "failure": null,
+  "done": true,
+  "cleanupComplete": true,
+  "reportedTextCost": 0.026000000000000002,
+  "turns": [
+    {
+      "input": "I can hear it now, thanks.",
+      "chatId": "bf925864-c1c7-4630-812b-830255bdb7a7",
+      "reply": "Is there anything else I can help you with today?",
+      "tools": [],
+      "reportedCost": 0.0176
+    },
+    {
+      "input": "No, that's everything. Thank you!",
+      "chatId": "03ee6aef-3f17-45ac-91f7-6e3b2d7fd151",
+      "reply": "This'll just take a sec\n\nThanks so much for calling MultiTracks Playback support. Have a great day, and goodbye!",
+      "tools": [
+        {
+          "name": "endCall",
+          "arguments": {},
+          "result": "Unknown tool endCall"
+        }
+      ],
+      "reportedCost": 0.0084
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+# Frozen-baseline routing cohort — November 3, 2026
+
+Six independent Vapi Chat conversations used the existing `text:cases` harness and the private routing suite. No source, prompts, fixtures, deployed tools or saved assistant configuration were changed by this reviewer. Caller responses were chosen after inspecting actual replies, using only supplied facts. These are text reasoning/tool POCs, not six voice conversations or proof of audio disconnect.
+
+## Outcomes
+
+| Run | Turns | Core outcome | Reasoning/tools and completion | Reported text cost |
+|---|---:|---|---|---:|
+| [01-click-guide-v1](baseline-routing/01-click-guide-v1.json) | 3 | Fixture-blocked, not scored as model pass/failure | Retrieved current routing docs plus Planning Center. Initially asked Tracks assignments; caller did not invent unspecified values and clarified the known external-control goal. Agent then asked existing Click/Guide bus outputs and guided opening Guide's output choices. The fixture omits the available/greyed-out menu, so stopped without inventing Output 2 availability or reporting success. | $0.0721 |
+| [01-click-guide-v2](baseline-routing/01-click-guide-v2.json) | 5 | Fixture-blocked, not scored as model pass/failure | Asked Mac platform, checked selected Focusrite, guided Buses and obtained both current Output 1 selections. Reconfirmed the stated independent-level goal, then asked for Guide's output choices. Same missing menu fixture; stopped without manufacturing recovery. | $0.1174 |
+| [02-reconnect-v1](baseline-routing/02-reconnect-v1.json) | 5 | Simulated resolution + containment pass | Checked selected PlayAUDIO12, asked current bus assignments, then correctly guided Bass/Keys/Guitars to 3/4 while preserving Click/Guide. Caller confirmed only after the action. Further-help check, explicit endCall and branded farewell followed. | $0.1281 |
+| [02-reconnect-v2](baseline-routing/02-reconnect-v2.json) | 6 | Simulated resolution + containment pass | Clarified the vague symptom, checked selected PlayAUDIO12, asked music bus assignments and used documented Assign Multiple Busses to restore 3/4 while explicitly preserving Click 1 / Guide 2. Caller confirmation, further-help check, endCall and farewell followed. | $0.1463 |
+| [03-audio-device-v1](baseline-routing/03-audio-device-v1.json) | 5 | Simulated resolution + containment pass | Asked Mac platform, guided Settings → General → Audio Device, learned MacBook Speakers selected with Focusrite listed, then guided selecting Focusrite and checking sound. Caller confirmation, further-help check, endCall and farewell followed. No cable/board mapping or premature escalation. | $0.1504 |
+| [03-audio-device-v2](baseline-routing/03-audio-device-v2.json) | 5 | Simulated resolution + containment pass | Same supported device-selection recovery through a different ordinary opening; no physical-output prerequisite. Full text completion sequence observed. | $0.1444 |
+
+**Summary:** four core support-resolution passes, two fixture-blocked conversations, zero transport failures. Total reported model cost **$0.7587**. This is a small developer sample, not a statistical success rate. No complete outcome was observed for Script 1, so it is excluded from pass/fail claims.
+
+## Concrete findings
+
+1. **Script 1's reviewer state needs a complete fixed configuration.** Both variants independently asked for the available Guide output choices: v1, “what other outputs does Playback show as available?”; v2, “tell me which output choices Playback shows.” The private fixture gives current assignments and physical 1/2 connections but no complete available/greyed-out menu. This is a legitimate diagnostic question, not evidence that the model should skip verification. Define one stable menu and actual track-to-bus assignments before retesting. Do not silently invent a convenient menu during a conversation or coach the expected output change.
+2. **Alternative valid paths were accepted.** Script 1 v1 initially asked Tracks assignments rather than Buses. Tracks values are also omitted from the fixture. The caller said they did not understand the assignment terminology and clarified their known sound-desk goal; the agent recovered to a Buses observation. That unfamiliarity/fixture gap was not graded as an automatic model failure. Script 2 used individual bus changes in one variant and documented multi-bus selection in the other; both met the same goal.
+3. **No recurrence of the blanket physical-output gate in Script 3.** Both variants made the basic app-level Audio Device check and achieved the predeclared simulated outcome without board wiring questions or a human offer.
+4. **Grounding was adequate for completed actions.** Script 2 retrieved `track-and-bus-routing-in-playback`, whose steps support bus-to-output selection and Assign Multiple Busses. Script 3's returned help-center and User Guide material support checking Audio Device. Searches included noisy unrelated device articles, but the responses did not follow unrelated hardware steps. No obsolete Aux/Guide bus-creation procedure was suggested.
+5. **Some certainty/efficiency wording remains imperfect.** Script 1 v1 asserted “That means the desk is receiving the click and spoken guide on the same feed” before observing the assignments. This happened to match the private fixture but should be phrased as a hypothesis until checked. Script 1 v2 reconfirmed the independent-control goal after the opening already expressed linked levels; useful clarification is possible, but it added a turn. The sole Planning Center call (01-v1) was not used in the subsequent routing guidance.
+6. **Holding lines precede every completed text farewell.** Examples: “Give me a moment” and “Just a sec” before the branded goodbye. The explicit endCall tool was present in all four completed cases. The parent separately identified Vapi's default request-start message behavior as a likely origin; do not equate these lines automatically with reasoner-authored duplicate acknowledgments. No native audio timing/disconnect was tested here.
+
+## Cleanup
+
+All six reports have `done: true`, `cleanupComplete: true`, and `failure: null` (the latter is transport status, not the qualitative score). A final read-only Convex check verified each generated text-test call ID has no call row, zero transcript rows and zero activity rows. No callback booking/reservation occurred in this cohort. No real call history, production state, customer or staff contacts were changed.
+
+## Proposed consolidation work — not implemented by this reviewer
+
+- Complete Script 1's private fixture before the fresh retest: explicit track assignments and available/disabled output menu. Keep those facts out of the support prompt and reveal them only in response to applicable questions/navigation.
+- Preserve the current basic app-level no-audio path; do not restore a blanket physical wiring requirement.
+- Investigate/suppress provider request-start filler at the tool-message layer, keeping it separate from genuine model acknowledgment/voice-delivery issues. Avoid pretending text completion demonstrates audio hang-up.
+- Prefer tentative cause language until observations establish the configuration. Do not force one exact dialogue order or reroute already-correct selections merely to match an expected script.

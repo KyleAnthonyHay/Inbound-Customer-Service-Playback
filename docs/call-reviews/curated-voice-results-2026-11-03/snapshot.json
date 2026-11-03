@@ -1,0 +1,243 @@
+{
+  "id": "kh7043221zr8rgbf49j6v9r4rd8hgfxy",
+  "key": "manual-voice-initial-ten-2026-11-03",
+  "label": "Initial ten curated browser voice conversations — November 3, 2026",
+  "createdAt": 1793704862715,
+  "definitionVersion": "curated-manual-voice-v1",
+  "selectionCutoffAt": 1793704670897,
+  "sourceStartAt": 1793700417960,
+  "sourceEndAt": 1793703345149,
+  "modality": "voice",
+  "channels": [
+    "browser"
+  ],
+  "counts": {
+    "callbacks": 3,
+    "contained": 7,
+    "escalated": 3,
+    "handoffs": 0,
+    "intentMatches": 10,
+    "noHumanEscalation": 7,
+    "primaryOnlyMatches": 9,
+    "resolved": 7,
+    "reviewed": 10,
+    "total": 10,
+    "unknownResolution": 0
+  },
+  "metrics": {
+    "containment": {
+      "denominator": 10,
+      "numerator": 7,
+      "percent": 70
+    },
+    "intentAccuracy": {
+      "denominator": 10,
+      "numerator": 10,
+      "percent": 100
+    },
+    "primaryOnlyIntentAccuracy": {
+      "denominator": 10,
+      "numerator": 9,
+      "percent": 90
+    },
+    "resolution": {
+      "denominator": 10,
+      "numerator": 7,
+      "percent": 70
+    },
+    "resolutionAmongNoEscalation": {
+      "denominator": 7,
+      "numerator": 7,
+      "percent": 100
+    }
+  },
+  "definitions": {
+    "containment": "Caller-confirmed resolution of all substantive requests with no requested or completed human escalation / all selected calls. Abandonment is not containment.",
+    "evidence": "Model-inferred post-call labels checked against role-play dialogue and tool results. Scripted caller success is not physical-device telemetry; closing quality is separate. Browser voice calls are not telephone trials.",
+    "intentAccuracy": "Calls matching the independently assigned scenario's accepted intent combination / all selected calls. Script 6 accepts compatibility primary, or routing primary with compatibility secondary.",
+    "resolution": "Calls with all substantive requests resolved or an accepted supported information answer / all selected calls. A callback or transfer alone is not resolution. Unknown outcomes remain in the denominator.",
+    "resolutionAmongNoEscalation": "Resolved calls with no human escalation / calls with no requested or completed human escalation. This conditional rate uses its own denominator, not the full cohort."
+  },
+  "note": "Ten explicitly labeled manual browser voice role-plays recorded November 3 before the latest three-feedback changes. Scored with the agreed compatibility/routing alternative for scenario 6; raw predictions preserved. Simulated callbacks are not technical resolutions. Closing/audio-disconnect quality is separate. Text POCs, harness calls and unlabeled calls excluded.",
+  "calls": [
+    {
+      "callId": "01a1a0e0-48cd-7000-8035-95aee867ec14",
+      "scenarioId": "01-click-guide",
+      "startedAt": 1793700417960,
+      "channel": "browser",
+      "reviewSource": "native-post-call",
+      "expectedPrimary": "routing",
+      "primaryIntent": "routing",
+      "secondaryIntents": [],
+      "intentMatch": true,
+      "primaryIntentMatch": true,
+      "resolved": true,
+      "contained": true,
+      "escalation": "none",
+      "endedReason": "customer-ended-call"
+    },
+    {
+      "callId": "01a1a0e2-b475-7000-abfc-b9af17557af9",
+      "scenarioId": "02-reconnect",
+      "startedAt": 1793700576693,
+      "channel": "browser",
+      "reviewSource": "native-post-call",
+      "expectedPrimary": "routing",
+      "primaryIntent": "routing",
+      "secondaryIntents": [],
+      "intentMatch": true,
+      "primaryIntentMatch": true,
+      "resolved": true,
+      "contained": true,
+      "escalation": "none",
+      "endedReason": "customer-ended-call"
+    },
+    {
+      "callId": "01a1a0e5-ea6f-7000-8956-0867632fd003",
+      "scenarioId": "03-audio-device",
+      "startedAt": 1793700786729,
+      "channel": "browser",
+      "reviewSource": "native-post-call",
+      "expectedPrimary": "routing",
+      "primaryIntent": "routing",
+      "secondaryIntents": [],
+      "intentMatch": true,
+      "primaryIntentMatch": true,
+      "resolved": true,
+      "contained": true,
+      "escalation": "none",
+      "endedReason": "customer-ended-call"
+    },
+    {
+      "callId": "01a1a0eb-2bcf-7887-b320-d63b618b1ae2",
+      "scenarioId": "04-false-expired",
+      "startedAt": 1793701131289,
+      "channel": "browser",
+      "reviewSource": "native-post-call",
+      "expectedPrimary": "version",
+      "primaryIntent": "version",
+      "secondaryIntents": [
+        "account-access"
+      ],
+      "intentMatch": true,
+      "primaryIntentMatch": true,
+      "resolved": true,
+      "contained": true,
+      "escalation": "none",
+      "endedReason": "customer-ended-call"
+    },
+    {
+      "callId": "01a1a0f6-3f46-7559-bc51-efb123ac803f",
+      "scenarioId": "05-supported-setup",
+      "startedAt": 1793701857712,
+      "channel": "browser",
+      "reviewSource": "native-post-call",
+      "expectedPrimary": "compatibility",
+      "primaryIntent": "compatibility",
+      "secondaryIntents": [
+        "routing"
+      ],
+      "intentMatch": true,
+      "primaryIntentMatch": true,
+      "resolved": true,
+      "contained": true,
+      "escalation": "none",
+      "endedReason": "customer-ended-call"
+    },
+    {
+      "callId": "01a1a0f8-29b1-7000-aa6b-5069c61a70b2",
+      "scenarioId": "06-borrowed-mixer",
+      "startedAt": 1793701982578,
+      "channel": "browser",
+      "reviewSource": "native-post-call",
+      "expectedPrimary": "compatibility",
+      "primaryIntent": "routing",
+      "secondaryIntents": [
+        "compatibility",
+        "callback",
+        "human-request"
+      ],
+      "intentMatch": true,
+      "primaryIntentMatch": false,
+      "resolved": false,
+      "contained": false,
+      "escalation": "callback",
+      "endedReason": "customer-ended-call"
+    },
+    {
+      "callId": "01a1a0fc-4bf7-7559-bcf7-355039e6dc1a",
+      "scenarioId": "07-organization",
+      "startedAt": 1793702253709,
+      "channel": "browser",
+      "reviewSource": "native-post-call",
+      "expectedPrimary": "account-access",
+      "primaryIntent": "account-access",
+      "secondaryIntents": [
+        "song-loading"
+      ],
+      "intentMatch": true,
+      "primaryIntentMatch": true,
+      "resolved": true,
+      "contained": true,
+      "escalation": "none",
+      "endedReason": "customer-ended-call"
+    },
+    {
+      "callId": "01a1a0fe-03aa-799c-ba9a-6c74588ea615",
+      "scenarioId": "08-permission",
+      "startedAt": 1793702366478,
+      "channel": "browser",
+      "reviewSource": "native-post-call",
+      "expectedPrimary": "account-access",
+      "primaryIntent": "account-access",
+      "secondaryIntents": [
+        "song-loading",
+        "callback",
+        "human-request"
+      ],
+      "intentMatch": true,
+      "primaryIntentMatch": true,
+      "resolved": false,
+      "contained": false,
+      "escalation": "callback",
+      "endedReason": "customer-ended-call"
+    },
+    {
+      "callId": "01a1a102-7a4f-7887-b600-12ab2dba0343",
+      "scenarioId": "09-loading-recovery",
+      "startedAt": 1793702659145,
+      "channel": "browser",
+      "reviewSource": "native-post-call",
+      "expectedPrimary": "song-loading",
+      "primaryIntent": "song-loading",
+      "secondaryIntents": [
+        "service-plan"
+      ],
+      "intentMatch": true,
+      "primaryIntentMatch": true,
+      "resolved": true,
+      "contained": true,
+      "escalation": "none",
+      "endedReason": "customer-ended-call"
+    },
+    {
+      "callId": "01a1a109-b911-7eee-b107-39d44b1d4e20",
+      "scenarioId": "10-loading-unresolved",
+      "startedAt": 1793703133464,
+      "channel": "browser",
+      "reviewSource": "native-post-call",
+      "expectedPrimary": "song-loading",
+      "primaryIntent": "song-loading",
+      "secondaryIntents": [
+        "callback",
+        "human-request"
+      ],
+      "intentMatch": true,
+      "primaryIntentMatch": true,
+      "resolved": false,
+      "contained": false,
+      "escalation": "callback",
+      "endedReason": "customer-ended-call"
+    }
+  ]
+}

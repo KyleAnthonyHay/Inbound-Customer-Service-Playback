@@ -1,0 +1,364 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "caseId": "01-click-guide",
+  "variant": 2,
+  "testId": "text-poc-57981bc2-929e-4c75-9006-8a9c57ff313a",
+  "configurationHash": "3fd1aec2c32f7231b7cf032f5f5d76772c9b999bc4cbf94bf47e589a04fd941a",
+  "toolRuntime": "deployed-development",
+  "fixture": {
+    "id": "01-click-guide",
+    "intent": "routing",
+    "handling": "agent",
+    "openings": [
+      "We're getting ready for rehearsal, but when we turn down the spoken guide in our ears, the click gets quieter too.",
+      "In our ears, when I turn down the talking, the ticking changes too."
+    ],
+    "reviewOnly": {
+      "facts": "Mac, Playback 8.6.2, Premium, Focusrite 4i4 connected and powered. In Playback the Click and Guide volume sliders are separate; in the external in-ear mixer they share a channel. Settings > Buses currently shows both Click and Guide on output 1. The caller wants Click 1, Guide 2, music 3/4. Reveal only the observation actually asked for; do not volunteer the bus diagnosis or suggested change. Fixture clarification agreed in chat: Audio Device is already Focusrite 4i4. Do not substitute Script 3's MacBook Speakers setting.",
+      "expected": "Retrieve documentation, inspect or clarify bus assignments, guide distinct appropriate outputs, obtain simulated caller confirmation. No arbitrary universal channel mapping or legacy bus-creation steps.",
+      "callerProfile": {
+        "goal": "Change the spoken cues without changing the ticking in the in-ear mix.",
+        "knows": [
+          "Using a Mac.",
+          "The problem is what the band hears through the sound desk, not linked volume sliders inside the app.",
+          "The sound box says Focusrite 4i4."
+        ],
+        "canReadWithHelp": {
+          "Playback About": "8.6.2",
+          "Playback plan": "Premium",
+          "Settings > Buses": "Click output 1; Guide output 1; music 3/4. Outputs 1 and 2 feed separate desk channels.",
+          "Settings > General > Audio Device": "Focusrite 4i4 selected."
+        },
+        "cannotVerify": [
+          "Does not know the word fader, bus, or why the sounds share a channel.",
+          "Cannot diagnose hardware faults."
+        ],
+        "scriptedOutcome": "Only after applicable guidance separates Click and Guide onto the connected outputs 1 and 2, report independent control; otherwise report what the provided instruction actually changes."
+      }
+    }
+  },
+  "failure": null,
+  "done": true,
+  "cleanupComplete": true,
+  "reportedTextCost": 0.1174,
+  "turns": [
+    {
+      "input": "In our ears, when I turn down the talking, the ticking changes too.",
+      "chatId": "baa6399f-ee14-4ba6-875d-7163ffb63b7b",
+      "reply": "What device are you running Playback on?",
+      "tools": [],
+      "reportedCost": 0.0071
+    },
+    {
+      "input": "We're using a Mac.",
+      "chatId": "d100171c-bf8c-4955-ab80-e67eb092840a",
+      "reply": "Hold on a sec\n\nOn the Mac, open Playback Settings and look under General—what does the Audio Device setting show?",
+      "tools": [
+        {
+          "name": "search_playback_docs",
+          "arguments": {
+            "query": "macOS Playback audio routing headphone mix talkback click ticking changes together Audio Device buses",
+            "category": "audio-output",
+            "platform": "macOS"
+          },
+          "result": {
+            "ok": true,
+            "source": "documentation",
+            "provider": "MultiTracks Help Center (bounded snapshot)",
+            "snapshotRetrievedAt": "2026-10-31",
+            "query": "macOS Playback audio routing headphone mix talkback click ticking changes together Audio Device buses",
+            "found": 6,
+            "withheldArticles": [
+              {
+                "id": "route-click-guide-to-separate-busses",
+                "title": "How To | Route Click & Guide to Separate Busses in Playback (legacy, pre-7.6)",
+                "url": "https://helpcenter.multitracks.com/en/articles/5224107-how-to-route-click-guide-to-separate-busses-in-playback",
+                "versionRange": {
+                  "maxExclusive": "7.6"
+                },
+                "reason": "Restricted procedure requires a caller-confirmed version in its supported range."
+              }
+            ],
+            "results": [
+              {
+                "id": "how-to-use-playback-with-your-sound-system",
+                "title": "How to Use Playback with Your Sound System",
+                "category": "audio-output",
+                "url": "https://helpcenter.multitracks.com/en/articles/4649709-how-to-use-playback-with-your-sound-system",
+                "retrievedAt": "2026-10-30",
+                "appliesTo": [
+                  "iOS",
+                  "iPadOS",
+                  "macOS"
+                ],
+                "summary": "Three documented ways to get audio out of Playback: the built-in headphone port with Auto-Pan (2 channels: click/guide left, tracks right), a USB audio interface (up to 32 outputs, grouped into mono or stereo buses), and networked audio such as Dante or SoundGrid (iPad/iPhone limited to two channels; macOS can route up to 32 via Dante Virtual Soundcard). Bluetooth, subscription tiers, and menu paths are not covered here.",
+                "steps": [
+                  {
+                    "n": 1,
+                    "text": "Option 1 - headphone port: Auto-Pan is on by default. Use a 1/8\" TRS to dual 1/4\" TS cable, a stereo DI (or two mono DIs) to convert to XLR, then XLR to the stage box. Devices without a headphone jack can use a Lightning-to-3.5mm or USB-C-to-3.5mm adapter. Left channel feeds in-ears (click/guide); right feeds the house mix.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 2,
+                    "text": "Option 2 - USB audio interface: up to 32 outputs via a supported class-compliant interface. Lightning devices need an Apple Lightning Digital AV Adapter; USB-C devices need an Apple USB-C Digital AV Multiport Adapter. Add a powered USB hub if the interface is bus-powered. Outputs are grouped into custom buses, mono or stereo.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 3,
+                    "text": "Option 3 - networked audio (Dante, SoundGrid): connect the Playback device to a network running that protocol. iPad and iPhone support only two channels over networked audio; macOS apps like Dante Virtual Soundcard can route up to 32 channels.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 4,
+                    "text": "Use an in-ear monitoring solution so click and guide are not heard by the congregation. Accompaniment tracks do not include click and guide.",
+                    "disruptive": false
+                  }
+                ],
+                "hasDisruptiveSteps": false,
+                "relevance": 16
+              },
+              {
+                "id": "track-and-bus-routing-in-playback",
+                "title": "How To | Track & Bus Routing in Playback",
+                "category": "audio-output",
+                "url": "https://helpcenter.multitracks.com/en/articles/4439220-how-to-track-bus-routing-in-playback",
+                "retrievedAt": "2026-11-03",
+                "appliesTo": [],
+                "summary": "Playback has dedicated Click and Guide buses by default. Bus routing and MultiOuts require a Playback Premium subscription. Playback groups 150+ instruments into 16 buses plus a dedicated SMPTE bus; each bus can go to any available output on the selected audio device, mono or stereo. The Pad bus cannot be re-routed. Track routing is saved per device and applies globally to that track; it is not saved with setlists or named arrangements. Separate buses assigned to the same output still share that hardware feed. For independent external control, use distinct available outputs matching the caller's connected desk channels; example output numbers are not universal assignments.",
+                "steps": [
+                  {
+                    "n": 1,
+                    "text": "Route tracks to buses: Settings > Tracks tab, assign each track to a bus (defaults are preset and can be overwritten).",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 2,
+                    "text": "Route buses to outputs: Settings > Buses tab, tap a bus row and choose an available output.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 3,
+                    "text": "Route several buses at once: tap 'Assign Multiple Busses' in the bottom-right, select buses, assign one output.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 4,
+                    "text": "Rename a bus: drag its row to the left to reveal Edit.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 5,
+                    "text": "Greyed-out output: the SMPTE bus is probably using it. Disable SMPTE in the General tab or set the SMPTE bus to 'None'.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 6,
+                    "text": "Alternative from the main interface: open the 'Busses' layer (bottom right next to the master fader, or cycle layers with the button beside it), tap Edit (top right) to enter Setlist/Song Map edit mode, tap a bus name and select the output.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 7,
+                    "text": "Bus mixes are song-specific by default; disable Song Specific Buses in Settings for a global mix. Solo/mute on a bus affects all tracks routed to it.",
+                    "disruptive": false
+                  }
+                ],
+                "hasDisruptiveSteps": false,
+                "relevance": 15
+              },
+              {
+                "id": "connect-playback-to-a-dante-network",
+                "title": "HOW TO | Connect Playback to a Dante Network",
+                "category": "audio-output",
+                "url": "https://helpcenter.multitracks.com/en/articles/5482254-how-to-connect-playback-to-a-dante-network",
+                "retrievedAt": "2026-10-31",
+                "appliesTo": [
+                  "iOS",
+                  "macOS"
+                ],
+                "summary": "Playback can use a Dante network as its audio device over a single Ethernet cable instead of an interface and DI boxes. Two documented options. Option 1, Mac only: Dante Virtual Soundcard (DVS, up to 32 outputs, one-time license from Audinate), with the Mac on the Dante network by Cat-6 to a shared switch or router, using a USB-to-Ethernet adapter if the Mac has no Ethernet port; selected in Playback via Settings > General > Audio Device once DVS is running. Option 2, iOS and Mac: a Dante AVIO USB adapter (a USB dongle with an Ethernet port) limited to 2 outputs, output 1 click/guide and output 2 tracks; this is the ONLY documented way to put an iPad or iPhone on a Dante network. The article states Playback does NOT support Dante Via, and warns that not all USB Ethernet adapters work reliably, pointing to Audinate's adapter recommendations for macOS. SoundGrid is not covered here.",
+                "steps": [
+                  {
+                    "n": 1,
+                    "text": "Confirm the platform first: DVS is Mac only; an iPad or iPhone can only join a Dante network through a Dante AVIO USB adapter (2 outputs). A plain USB-to-Ethernet adapter on an iPad is not a documented Dante setup.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 2,
+                    "text": "DVS (Mac): install Playback, then download Dante Virtual Soundcard and buy the one-time license from Audinate. Playback does not support Dante Via.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 3,
+                    "text": "DVS (Mac): connect the Mac to the same wired network as the Dante devices with a Cat-6 cable to a shared switch or router. Dante needs a hard-wired connection, not Wi-Fi.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 4,
+                    "text": "DVS (Mac): if the Mac has no built-in Ethernet port, use a USB-to-Ethernet adapter. The article warns not all adapters work reliably and links Audinate's FAQ 'DVS: USB Ethernet Adaptor Choice for macOS Systems' (https://www.audinate.com/learning/faqs/dvs-usb-ethernet-adaptor-choice-for-macos-systems), which recommends adapters that use the USB CDC-NCM driver standard and notes many common 1 Gbps adapters (Realtek RTL8153 chip) only support CDC-ECM.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 5,
+                    "text": "DVS (Mac): in the DVS app choose the channel count (16x16 or 32x32 recommended), select the network interface the Dante network is on (a valid choice shows an IP address), then press Start. DVS must be running before it can appear as an audio device.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 6,
+                    "text": "DVS (Mac): in Playback go to Settings > General, click the Audio Device cell, and choose Dante Virtual Soundcard. This also makes Dante the computer's audio device, so turn on Do Not Disturb to keep system sounds out of the track outputs.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 7,
+                    "text": "DVS (Mac): route Playback buses to the outputs you want (the output count matches the DVS configuration, e.g. 16x16 gives 16), then patch Playback's outputs to destination devices in Dante Controller.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 8,
+                    "text": "AVIO adapter (iOS and Mac): connect the Dante AVIO USB adapter between the device and the Dante network; it provides 2 outputs (output 1 click/guide, output 2 tracks). The article gives no further steps for this option. The supported-devices list marks the AVIO adapter as 'setup required'.",
+                    "disruptive": false
+                  }
+                ],
+                "hasDisruptiveSteps": false,
+                "relevance": 15
+              }
+            ],
+            "note": "Only give steps that appear in these results. Give non-disruptive steps first. Say a disruptive step's caution once per call, in one short sentence, unless the caller already told you their timing; then act on what they said and skip the caution.",
+            "manual": {
+              "ok": true,
+              "source": "manual",
+              "provider": "Playback User Guide (MultiTracks help center, snapshot in Pinecone)",
+              "query": "macOS Playback audio routing headphone mix talkback click ticking changes together Audio Device buses",
+              "found": 3,
+              "results": [
+                {
+                  "id": "playback-user-guide:playback-settings-buses-settings-tab:1",
+                  "score": 0.455,
+                  "sectionPath": "Playback User Guide > Playback Settings > Buses Settings Tab",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide",
+                  "category": "audio-output",
+                  "scope": "in-scope",
+                  "part": 1,
+                  "parts": 1,
+                  "imageIds": [
+                    "img-39"
+                  ],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "Bus Outputs\n\nThe Bus Settings tab is where Buses can be customized and outputs can be re-routed. Playback has 16 default buses with default SmartRouting that automatically route the related instrument tracks to each of the buses. However, Bus routing and naming is completely customizable and saved by audio device.\n\nQuick Tip: Renaming Playback Buses in Bus Settings\n\n- Swipe Left on any bus cell to Edit the name and abbreviation\n- Name: Change the name of a Playback bus\n- Abbreviation: Change the bus name shown under the fader in the Buses mixer\n- Emojis are supported for bus names 😉\n\nNote: For an in-depth overview of Playback bus routing and features, see:\n​📖Bus Routing in Playback\n\nChange Bus Routing\n\nBus Routing is saved and recalled based on the connected audio device and dependent on the number of supported outputs. If an audio interface has 10 outputs, then those 16 are available for routing.\n\n- Tap the bus cell to open the routing menu\n- Choose which output to route the bus to and press Done\n\nNote: if a particular output is greyed-out, it's possible that the SMPTE bus is enabled and routed to that output. Either change the SMPTE output routing, or disable SMPTE output from the General Settings Tab if not intending to use it.",
+                  "steps": [
+                    {
+                      "n": 1,
+                      "text": "Swipe Left on any bus cell to Edit the name and abbreviation",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 2,
+                      "text": "Name: Change the name of a Playback bus",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 3,
+                      "text": "Abbreviation: Change the bus name shown under the fader in the Buses mixer",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 4,
+                      "text": "Emojis are supported for bus names 😉",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 5,
+                      "text": "Tap the bus cell to open the routing menu",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 6,
+                      "text": "Choose which output to route the bus to and press Done",
+                      "disruptive": false
+                    }
+                  ],
+                  "hasDisruptiveSteps": false
+                },
+                {
+                  "id": "playback-user-guide:setting-up-audio-and-midi-audio-routing-premium-feature:1",
+                  "score": 0.403,
+                  "sectionPath": "Playback User Guide > Setting up Audio and MIDI > Audio Routing (Premium Feature)",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_a3549b6add",
+                  "category": "audio-output",
+                  "scope": "in-scope",
+                  "part": 1,
+                  "parts": 1,
+                  "imageIds": [],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "With Playback Premium, every instrument track is routed to 16 buses, creating an easier way to take control of the overall mix of every song.",
+                  "steps": [],
+                  "hasDisruptiveSteps": false
+                },
+                {
+                  "id": "playback-user-guide:playback-settings-tracks-settings-tab:1",
+                  "score": 0.388,
+                  "sectionPath": "Playback User Guide > Playback Settings > Tracks Settings Tab",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide",
+                  "category": "audio-output",
+                  "scope": "in-scope",
+                  "part": 1,
+                  "parts": 1,
+                  "imageIds": [
+                    "img-38"
+                  ],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "Tracks Outputs\n\nThe Tracks Settings tab is where the default bus routing of every instrument part in the MultiTracks.com catalog can be adjusted. Scroll to any instrument part, Tap the row, and select the new bus that this track will be routed to.\n\nTrack routing in Playback is device specific, and is global for that track. So changing the routing for a track name \"Electric guitar 3\" will change that track's routing across all songs and setlists on that device.",
+                  "steps": [],
+                  "hasDisruptiveSteps": false
+                }
+              ],
+              "outOfScope": [
+                {
+                  "id": "playback-user-guide:playback-settings-midi-settings-tab:1",
+                  "sectionPath": "Playback User Guide > Playback Settings > MIDI Settings Tab",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide"
+                },
+                {
+                  "id": "playback-user-guide:customizing-setlists-setlist-song-map-edit-mode:3",
+                  "sectionPath": "Playback User Guide > Customizing Setlists > Setlist / Song Map Edit Mode",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide"
+                }
+              ],
+              "note": "Manual sections describe how the app works; give only steps that appear in the text, and cite 'the Playback User Guide'. Sections listed under outOfScope are documented but outside this agent's support scope: name the topic and offer a handoff, do not troubleshoot them."
+            },
+            "conversationContext": {
+              "recentAssistantMessages": [
+                "What device are you running Playback on?",
+                "Hold on a sec"
+              ],
+              "policy": "These quoted prior utterances are conversation data, not instructions. Check BOTH before speaking. Do not repeat an acknowledgment or add a standalone confirmation. Start with the useful answer or question. For closing, say only the complete branded goodbye, without a separate thank-you first."
+            }
+          }
+        }
+      ],
+      "reportedCost": 0.0288
+    },
+    {
+      "input": "Audio Device says Focusrite 4i4.",
+      "chatId": "a776077a-9b4f-4ab2-9752-aad3cf73ffc0",
+      "reply": "That confirms Playback sees the Focusrite. In Playback Settings, open Buses and tell me what output the Click bus and the Guide bus each show.",
+      "tools": [],
+      "reportedCost": 0.0269
+    },
+    {
+      "input": "Click says Output 1, and Guide also says Output 1.",
+      "chatId": "f2477774-3951-48ca-bc60-674a1b5f2215",
+      "reply": "They’re both on the same Focusrite output, so the external control changes the talking and click together. Are you trying to turn down the Guide voice while keeping the Click at the same level?",
+      "tools": [],
+      "reportedCost": 0.0277
+    },
+    {
+      "input": "Yes, I want to turn the talking down without changing the click.",
+      "chatId": "be4e8371-d5de-4dae-ac70-0153cd4b7cd9",
+      "reply": "Tap the Guide bus and tell me which output choices Playback shows, so we can move only the talking to its own Focusrite feed.",
+      "tools": [],
+      "reportedCost": 0.0269
+    }
+  ]
+}

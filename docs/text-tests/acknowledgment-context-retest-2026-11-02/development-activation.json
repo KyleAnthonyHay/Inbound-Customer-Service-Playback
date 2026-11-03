@@ -1,0 +1,8 @@
+{
+  "developmentOnly": true,
+  "speakerMatchesSource": true,
+  "reasonerMatchesSource": true,
+  "guardedClosingTool": true,
+  "authenticatedControl": true,
+  "productionModelUnchanged": true
+}

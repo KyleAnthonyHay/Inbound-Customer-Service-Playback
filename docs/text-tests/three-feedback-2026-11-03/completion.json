@@ -1,0 +1,64 @@
+{
+  "kind": "three-feedback-completion",
+  "checkedAt": "2026-11-03T11:08:41.893Z",
+  "developmentOnly": true,
+  "focusedTextConversations": 5,
+  "turns": 26,
+  "toolCalls": 21,
+  "reportedTextCost": 0.8405,
+  "transportFailures": 0,
+  "requestedRegressionsPassed": true,
+  "abbreviatedBrowserNumberReadbackQualification": true,
+  "sourceHashesMatch": true,
+  "localTestsPassed": 166,
+  "typecheckPassed": true,
+  "lintPassed": true,
+  "metricsServerRenderPassed": true,
+  "deployedAccountContractsPassed": 4,
+  "actualHistoricalMixedReviewAccepted": true,
+  "storedLabelsRewritten": false,
+  "developmentActivationVerified": true,
+  "productionAssistantUnchanged": true,
+  "automatedVoiceCallsCreated": false,
+  "configuredSecretValueMatches": 0,
+  "runs": [
+    {
+      "file": "docs/text-tests/three-feedback-2026-11-03/account/04-false-expired-v1.json",
+      "turns": 7,
+      "toolCalls": 5,
+      "reportedTextCost": 0.2097,
+      "done": true,
+      "cleanupComplete": true
+    },
+    {
+      "file": "docs/text-tests/three-feedback-2026-11-03/callbacks/06-borrowed-mixer-v1.json",
+      "turns": 7,
+      "toolCalls": 6,
+      "reportedTextCost": 0.3054,
+      "done": true,
+      "cleanupComplete": true
+    },
+    {
+      "file": "docs/text-tests/three-feedback-2026-11-03/callbacks/10-loading-unresolved-v1.json",
+      "turns": 8,
+      "toolCalls": 6,
+      "reportedTextCost": 0.2395,
+      "done": true,
+      "cleanupComplete": true
+    },
+    {
+      "file": "docs/text-tests/2026-11-03T11-04-50-177Z-callback-consent.json",
+      "turns": 2,
+      "toolCalls": 2,
+      "reportedTextCost": 0.0495,
+      "scriptedRunnerCleanupCompleted": true
+    },
+    {
+      "file": "docs/text-tests/2026-11-03T11-06-36-261Z-known-member-no-redundant-email.json",
+      "turns": 2,
+      "toolCalls": 2,
+      "reportedTextCost": 0.0364,
+      "scriptedRunnerCleanupCompleted": true
+    }
+  ]
+}

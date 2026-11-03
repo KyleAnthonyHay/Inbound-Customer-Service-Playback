@@ -1,0 +1,22 @@
+{
+  "checkedAt": "2026-11-03T07:26:46.010Z",
+  "sourceHashesMatchFocusedFreeze": true,
+  "canonicalFixtureMatchesTestedSuite": true,
+  "attempts": 63,
+  "evaluableConversations": 62,
+  "reportedTextCost": 10.9348,
+  "allHarnessCleanupComplete": true,
+  "developmentAssistantVerified": true,
+  "productionAssistantUnchanged": true,
+  "checks": {
+    "tests": 157,
+    "typecheck": true,
+    "lint": true,
+    "diffWhitespace": true
+  },
+  "reportSecretValueScan": {
+    "developmentMatches": 0,
+    "productionMatches": 0
+  },
+  "automatedVoiceCallsCreated": false
+}

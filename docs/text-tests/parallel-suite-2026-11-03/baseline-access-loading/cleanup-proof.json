@@ -1,0 +1,82 @@
+{
+  "kind": "isolated-development-text-cleanup",
+  "voiceCallsCreated": false,
+  "totalReportedCost": 1.367,
+  "configurationHashes": [
+    "3fd1aec2c32f7231b7cf032f5f5d76772c9b999bc4cbf94bf47e589a04fd941a"
+  ],
+  "proof": [
+    {
+      "run": "07-organization-v1.json",
+      "reportedCost": 0.0964,
+      "turns": 4,
+      "toolLogsCleaned": true,
+      "verifiedOwnBookings": 0,
+      "removedOwnBookings": 0,
+      "slotOpenAgain": null
+    },
+    {
+      "run": "07-organization-v2.json",
+      "reportedCost": 0.1987,
+      "turns": 7,
+      "toolLogsCleaned": true,
+      "verifiedOwnBookings": 0,
+      "removedOwnBookings": 0,
+      "slotOpenAgain": null
+    },
+    {
+      "run": "08-permission-v1.json",
+      "reportedCost": 0.24180000000000001,
+      "turns": 9,
+      "toolLogsCleaned": true,
+      "verifiedOwnBookings": 1,
+      "removedOwnBookings": 1,
+      "slotOpenAgain": true
+    },
+    {
+      "run": "08-permission-v2.json",
+      "reportedCost": 0.1548,
+      "turns": 6,
+      "toolLogsCleaned": true,
+      "verifiedOwnBookings": 0,
+      "removedOwnBookings": 0,
+      "slotOpenAgain": null
+    },
+    {
+      "run": "09-loading-recovery-v1.json",
+      "reportedCost": 0.1313,
+      "turns": 5,
+      "toolLogsCleaned": true,
+      "verifiedOwnBookings": 0,
+      "removedOwnBookings": 0,
+      "slotOpenAgain": null
+    },
+    {
+      "run": "09-loading-recovery-v2.json",
+      "reportedCost": 0.1496,
+      "turns": 6,
+      "toolLogsCleaned": true,
+      "verifiedOwnBookings": 0,
+      "removedOwnBookings": 0,
+      "slotOpenAgain": null
+    },
+    {
+      "run": "10-loading-unresolved-v1.json",
+      "reportedCost": 0.1323,
+      "turns": 5,
+      "toolLogsCleaned": true,
+      "verifiedOwnBookings": 0,
+      "removedOwnBookings": 0,
+      "slotOpenAgain": null
+    },
+    {
+      "run": "10-loading-unresolved-v2.json",
+      "reportedCost": 0.2621,
+      "turns": 9,
+      "toolLogsCleaned": true,
+      "verifiedOwnBookings": 1,
+      "removedOwnBookings": 1,
+      "slotOpenAgain": true
+    }
+  ]
+}

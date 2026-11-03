@@ -1,0 +1,49 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "caseId": "05-supported-setup",
+  "variant": 2,
+  "testId": "text-poc-42f4d72f-3248-47bf-8739-7eab24266b8e",
+  "configurationHash": "63e891d2c9181d1e1bf764004cc9b8055476121519452c2c024533d3a1a32dc2",
+  "toolRuntime": "deployed-development",
+  "fixture": {
+    "id": "05-supported-setup",
+    "intent": "compatibility",
+    "handling": "agent",
+    "openings": [
+      "Can you help me check whether our iPad and Focusrite will work with Playback? We want the band to hear click and spoken cues while the audience hears the music.",
+      "We've got an iPad and one of those little sound boxes. We want to use tracks at church."
+    ],
+    "reviewOnly": {
+      "facts": "The official tested-device list names Focusrite 4i4, four outputs, powered USB hub required. USB-C iPad, iPadOS 18, Premium, Apple adapter and powered hub are private background. The caller's stated goal is band-only counting/spoken cues and music for the room; do not impose a secret fixed channel count or independent cue-control requirement. This is capability advice, not a setup walkthrough. Fixed role-play connection state: this is capability advice before using/connecting this configuration, not a current no-audio fault. Do not volunteer a repair problem or a request for setup.",
+      "expected": "Retrieve applicable documentation, clarify the listening goal and give supported capability advice with relevant conditions. Do not claim the complete setup is verified, launch an unrequested configuration walkthrough, or force escalation for a simple unfamiliar label.",
+      "callerProfile": {
+        "goal": "Learn whether the equipment can give the band counting/spoken cues while the audience hears only music. Advice only; no setup walkthrough requested.",
+        "knows": [
+          "Using an iPad.",
+          "Focusrite is written on the small sound box.",
+          "Wants the band to hear the ticking and voice that tells them what comes next, and the room to hear music."
+        ],
+        "canReadWithHelp": {
+          "Box label": "Focusrite 4i4",
+          "iPad connector": "USB-C",
+          "Accessories": "Official Apple adapter and a powered USB hub plugged into wall power.",
+          "Playback plan": "Premium",
+          "Playback About": "8.6.4",
+          "iPad Settings > General > About": "iPadOS 18"
+        },
+        "cannotVerify": [
+          "Does not know technical routing terms, USB class compliance, or versions from memory.",
+          "No output menu is open because this is advice, not a simulated repair."
+        ],
+        "scriptedOutcome": "Once documented capabilities/conditions answer the goal, say that makes sense or thank you. Decline any optional setup walkthrough without volunteering a goodbye; let the agent check for further help."
+      }
+    }
+  },
+  "failure": "fetch failed",
+  "done": true,
+  "cleanupComplete": true,
+  "reportedTextCost": 0,
+  "turns": []
+}

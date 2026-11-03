@@ -1,0 +1,12 @@
+{
+  "kind": "isolated-transport-replacement-map",
+  "caseId": "05-supported-setup",
+  "logicalVariant": 2,
+  "failedOriginal": "final-version-compatibility/05-supported-setup-v2.json",
+  "replacement": "final-version-compatibility-replacement05v2/05-supported-setup-v1.json",
+  "exactOpeningPreserved": true,
+  "privateFactsPreserved": true,
+  "configurationPreserved": true,
+  "originalFailureRetained": true,
+  "reportedFailureCostAvailable": false
+}

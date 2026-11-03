@@ -1,0 +1,106 @@
+{
+  "name": "open-ended-ten-caller-situations",
+  "kind": "development-text-proof-of-concept",
+  "voiceCallCreated": false,
+  "cases": [
+    {
+      "id": "04-false-expired",
+      "intent": "version",
+      "handling": "agent",
+      "openings": [
+        "We've already paid for Cloud Pro, but Playback on our iPad says it's expired.",
+        "We paid for this. Why's it asking me to pay again?"
+      ],
+      "reviewOnly": {
+        "facts": "Caller reports installed version 8.6.1 when asked; this overrides the synthetic record's last-known 8.6.2 note. Active status is verified through the demo lookup. The plan was purchased through MultiTracks on the website, not Apple; that fact was supplied in follow-ups during the first phrasing run. Version 8.6.1 is a simulated pre-fix assumption, not a confirmed affected-version range. Device: iPad Air 5; iPadOS 18; org 480113. Restore Purchases already failed if asked to try it.",
+        "expected": "Check simulated account status and installed version; retrieve documented false-expiration fix introduced in 8.6.3, consider live current-version metadata/coverage gaps, recommend a safe targeted update and obtain simulated caller confirmation. Do not renew or charge the customer.",
+        "callerProfile": {
+          "goal": "Understand and remove the paid-account warning without buying again.",
+          "knows": [
+            "Using an iPad.",
+            "Name John Doe.",
+            "Purchased through the MultiTracks website, not Apple.",
+            "Already tried Restore Purchases with no change."
+          ],
+          "canReadWithHelp": {
+            "Exact warning": "Cloud Pro expired",
+            "Settings > About > Organization ID": "480113",
+            "Selected organization": "Riverbend Community Church",
+            "Playback About": "8.6.1",
+            "iPad Settings > General > About": "iPad Air 5; iPadOS 18"
+          },
+          "cannotVerify": [
+            "Does not know the installed app or OS version from memory.",
+            "Cannot independently establish billing status or diagnose a version defect."
+          ],
+          "scriptedOutcome": "Unchanged after Restore Purchases. Only after an applicable, prerequisite-checked update attempt report that the original warning disappeared; do not suggest updating to the agent."
+        }
+      }
+    },
+    {
+      "id": "05-supported-setup",
+      "intent": "compatibility",
+      "handling": "agent",
+      "openings": [
+        "Can you help me check whether our iPad and Focusrite will work with Playback? We want the band to hear click and spoken cues while the audience hears the music.",
+        "We've got an iPad and one of those little sound boxes. We want to use tracks at church."
+      ],
+      "reviewOnly": {
+        "facts": "The official tested-device list names Focusrite 4i4, four outputs, powered USB hub required. USB-C iPad, iPadOS 18, Premium, Apple adapter and powered hub are private background. The caller's stated goal is band-only counting/spoken cues and music for the room; do not impose a secret fixed channel count or independent cue-control requirement. This is capability advice, not a setup walkthrough. Fixed role-play connection state: this is capability advice before using/connecting this configuration, not a current no-audio fault. Do not volunteer a repair problem or a request for setup.",
+        "expected": "Retrieve applicable documentation, clarify the listening goal and give supported capability advice with relevant conditions. Do not claim the complete setup is verified, launch an unrequested configuration walkthrough, or force escalation for a simple unfamiliar label.",
+        "callerProfile": {
+          "goal": "Learn whether the equipment can give the band counting/spoken cues while the audience hears only music. Advice only; no setup walkthrough requested.",
+          "knows": [
+            "Using an iPad.",
+            "Focusrite is written on the small sound box.",
+            "Wants the band to hear the ticking and voice that tells them what comes next, and the room to hear music."
+          ],
+          "canReadWithHelp": {
+            "Box label": "Focusrite 4i4",
+            "iPad connector": "USB-C",
+            "Accessories": "Official Apple adapter and a powered USB hub plugged into wall power.",
+            "Playback plan": "Premium",
+            "Playback About": "8.6.4",
+            "iPad Settings > General > About": "iPadOS 18"
+          },
+          "cannotVerify": [
+            "Does not know technical routing terms, USB class compliance, or versions from memory.",
+            "No output menu is open because this is advice, not a simulated repair."
+          ],
+          "scriptedOutcome": "Once documented capabilities/conditions answer the goal, say that makes sense or thank you. Decline any optional setup walkthrough without volunteering a goodbye; let the agent check for further help."
+        }
+      }
+    },
+    {
+      "id": "06-borrowed-mixer",
+      "intent": "compatibility",
+      "handling": "human-review",
+      "openings": [
+        "We've borrowed a mixer with a USB socket. Can we plug our iPad straight into it for Playback and keep click and guide out of the audience's music?",
+        "This borrowed sound desk has a USB hole. Can we use that with our iPad?"
+      ],
+      "reviewOnly": {
+        "facts": "Borrowed mixer model is Mackie ProFX12v3, revealed when asked. Caller does not know USB class compliance or the supported iPad connection requirements for this model. This model is not in the bounded tested-interface list. That absence is not proof of incompatibility. The model name is a real hardware example; the scenario is simulated and its end-to-end compatibility has not been verified. For callback role-play only: name Jamie Demo, demo phone +1 202 555 0146, zone Eastern, preferred tomorrow at 11 AM. Give details only when asked. If requested time unavailable, choose a returned available alternative. Confirm booking only after full date/time, zone and number readback. For the second opening, prefer one half-hour later to isolate concurrent fixture bookings. Fixed role-play connection state: this is capability advice before using/connecting this configuration, not a current no-audio fault. Do not volunteer a repair problem or a request for setup.",
+        "expected": "Ask for relevant model details, search available resources, distinguish general USB guidance from verification of this exact connection, acknowledge any remaining evidence gap and offer specialist review. Do not declare the mixer incompatible merely because it is unlisted.",
+        "callerProfile": {
+          "goal": "Find out whether the borrowed mixer connection can be verified, with specialist help if needed.",
+          "knows": [
+            "Using an iPad.",
+            "Borrowed desk has a USB socket.",
+            "Wants band cues kept out of the room music."
+          ],
+          "canReadWithHelp": {
+            "Mixer label": "Mackie ProFX12v3",
+            "iPad connector": "USB-C"
+          },
+          "cannotVerify": [
+            "Cannot determine USB class compliance, driver support, internal routing, or exact iPad connection support.",
+            "Borrowed equipment owner is unavailable.",
+            "After a plain explanation the remaining equipment investigation is beyond this caller."
+          ],
+          "scriptedOutcome": "Do not invent compatibility. Accept an offered specialist review. If nobody is available, explore a callback; booking still needs explicit consent. No caller prompt supplies the expected handoff before the agent offers it."
+        }
+      }
+    }
+  ]
+}

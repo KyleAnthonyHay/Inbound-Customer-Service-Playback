@@ -1,17 +1,7 @@
 # Jordan’s quick try-out
 
-Open [the public demo](https://playback-support.vercel.app/call). Try one natural conversation; no technical script is needed.
+Use the [single guided demo script](reviewer-demo-script.md). It supplies one fictional song-loading story, exact caller replies and all needed background; no Playback knowledge or real equipment is required.
 
-**Start:** “We’ve got an iPad and a little Focusrite sound box. We want to use tracks at church.”
+This replaces the earlier unscripted equipment-advice try-out. Jordan and final reviewers use the same single sample. The ten developer conversations remain separate and are not expanded into alternate versions of this script.
 
-**Your goal:** The band should hear the counting and spoken cues. The audience should hear the music.
-
-The box is a **Focusrite 4i4**. You don’t have Playback open; if asked something you don’t know, say so. You’re asking about the idea, not pretending to change settings.
-
-Once the explanation answers your question, respond naturally. When asked whether you need anything else, say “No, that’s everything.”
-
-**Ending:** It should ask “Is there anything else I can help you with today?” and wait. When you decline, it should say “Thanks so much for calling MultiTracks Playback support. Have a great day, and goodbye!” and disconnect.
-
-**Feedback:** Was it easy to understand? Did it help or explain when a specialist was needed? Did you hear the whole closing line before disconnect?
-
-Transfers are simulated. The ten detailed developer scenarios are separate; you do not need to run them.
+Check the script’s delivery status before sharing a demo link: development text validation does not establish production voice behavior. During the human try-out, note whether the guidance is easy to follow, whether the caller can answer the questions, and whether the full goodbye finishes before disconnect.

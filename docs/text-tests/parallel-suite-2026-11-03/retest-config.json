@@ -1,0 +1,22 @@
+{
+  "kind": "frozen-development-text-retest",
+  "voiceCallsAuthorized": false,
+  "caseCount": 10,
+  "openingCount": 20,
+  "files": {
+    "src/lib/assistant.ts": "70e65e5461261b8ec864ad1dedd5d34ab5e129ee5e9c0ec6110e5308fd76ba45",
+    "src/lib/vapiTools.ts": "ccfcfd4e33d47d587b078992f07fee2319e2708f14a6375f3c43954601714b04",
+    "scripts/lib/text-agent.ts": "5ecf7db31b758b530a5a3ff3f03b731bfae0203de670eef045f9b05efb1ab6ec",
+    "scripts/text-cases.ts": "21f30edad6c0f8960e3696227d7e3d3674e4f75303239941407584382a9498c1",
+    "convex/vapiTools.ts": "0cbf8e84571e70d9bfd0bbce7ab4354b0abd72656deba79a412afba91dd6d26a",
+    "convex/callbacks.ts": "3b978907b2d9a262345a6a7928f814a868ae5bf44598de26d0e7f0cb644bae67",
+    "src/lib/tools/kb.ts": "64a709d168e3f6ae7d2e36f47010a9854eed2e6e5e2a973e0dee6fb26738a617",
+    "src/knowledge/playback-kb.json": "4048a3dc7fe9ae6a0d9ed6f1c6daac72428f9273709db648cd3bde857af19ba1",
+    "src/lib/tools/releases.ts": "5f77ed5df7d6a1e6bf0c4e8210be0b29baf796830837d03227f91098c2d90875",
+    "src/lib/tools/manual.ts": "d8aae21651e1efb599c1a5a31201c77f28d8730c96b6a9059085568a2f46b486"
+  },
+  "fixtureChanges": [
+    "Script1 actual track-to-bus assignments and selectable Output2 defined before retest",
+    "Advice cases5/6 explicitly not currently connected/no active fault"
+  ]
+}

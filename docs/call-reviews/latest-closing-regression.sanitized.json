@@ -1,0 +1,183 @@
+{
+  "id": "01a19f89-f396-7cc6-abba-458e93b56631",
+  "environment": "development",
+  "createdAt": "2026-11-03T03:53:00.566Z",
+  "status": "ended",
+  "endedReason": "assistant-ended-call",
+  "assistantVersion": "v36",
+  "dialogue": [
+    {
+      "role": "bot",
+      "text": "Hi there! Thank you for calling MultiTracks Playback support. I'm Penny, your virtual AI support assistant. How can I have the pleasure of helping you today?",
+      "seconds": 1
+    },
+    {
+      "role": "user",
+      "text": "So, I'm start, I'm getting ready for rehearsal on our iPad, but Graves Into Gardens won't",
+      "seconds": 11.8
+    },
+    {
+      "role": "bot",
+      "text": "Okay, got it",
+      "seconds": 17.2
+    },
+    {
+      "role": "user",
+      "text": "open",
+      "seconds": 17.6
+    },
+    {
+      "role": "bot",
+      "text": ".",
+      "seconds": 17.6
+    },
+    {
+      "role": "user",
+      "text": "I've pressed try again. Six. And it still stuck",
+      "seconds": 18.2
+    },
+    {
+      "role": "bot",
+      "text": "Let me check that.",
+      "seconds": 22.4
+    },
+    {
+      "role": "bot",
+      "text": "I see why you need that ready. What exact message shows above the Try Again button?",
+      "seconds": 28.4
+    },
+    {
+      "role": "user",
+      "text": "It says audio files are missing",
+      "seconds": 36
+    },
+    {
+      "role": "bot",
+      "text": "Thanks.",
+      "seconds": 39.6
+    },
+    {
+      "role": "bot",
+      "text": "Thanks, that's helpful. Was this song recently downloaded in an earlier setlist on this iPad?",
+      "seconds": 42.2
+    },
+    {
+      "role": "user",
+      "text": "Wait, say that again",
+      "seconds": 57.6
+    },
+    {
+      "role": "bot",
+      "text": "Sure.",
+      "seconds": 58.2
+    },
+    {
+      "role": "user",
+      "text": ", please",
+      "seconds": 58.6
+    },
+    {
+      "role": "bot",
+      "text": "Was this song recently downloaded in an earlier setlist on this iPad?",
+      "seconds": 58.6
+    },
+    {
+      "role": "user",
+      "text": "I don't know",
+      "seconds": 65.2
+    },
+    {
+      "role": "bot",
+      "text": "Okay.",
+      "seconds": 66.8
+    },
+    {
+      "role": "bot",
+      "text": "I'm not able to verify that. And the next documented step would remove every downloaded setlist from this iPad before re-downloading them. Would you like me to connect you with a Playback specialist?",
+      "seconds": 70.2
+    },
+    {
+      "role": "user",
+      "text": "Sure",
+      "seconds": 83.2
+    },
+    {
+      "role": "bot",
+      "text": "Okay.",
+      "seconds": 84.2
+    },
+    {
+      "role": "bot",
+      "text": "No one's available for a transfer right now, but I can schedule a callback with Playback Support. When are you next available?",
+      "seconds": 87.8
+    },
+    {
+      "role": "user",
+      "text": "Ah, never mind. It's okay",
+      "seconds": 96.4
+    },
+    {
+      "role": "bot",
+      "text": "Okay.",
+      "seconds": 97.8
+    },
+    {
+      "role": "bot",
+      "text": "No problem. Is there anything else I can help you with today?",
+      "seconds": 100
+    },
+    {
+      "role": "user",
+      "text": "Nope",
+      "seconds": 105.6
+    },
+    {
+      "role": "bot",
+      "text": "Okay.",
+      "seconds": 106.4
+    }
+  ],
+  "lastToolEvents": [
+    {
+      "role": "tool_call_result",
+      "seconds": 84.4,
+      "result": "Nobody is available for a transfer right now, but I can schedule a callback with Playback Support. When are you next available?"
+    },
+    {
+      "role": "tool_calls",
+      "seconds": 97.6,
+      "names": [
+        "delegate"
+      ]
+    },
+    {
+      "role": "tool_call_result",
+      "seconds": 98,
+      "result": "No problem. Is there anything else I can help you with today?"
+    },
+    {
+      "role": "tool_calls",
+      "seconds": 105.8,
+      "names": [
+        "delegate"
+      ]
+    },
+    {
+      "role": "tool_calls",
+      "seconds": 106.6,
+      "names": [
+        "endCall"
+      ]
+    },
+    {
+      "role": "tool_call_result",
+      "seconds": 106.6,
+      "result": "The call is ending."
+    },
+    {
+      "role": "tool_call_result",
+      "seconds": 106.6,
+      "result": "The assistant ended the call."
+    }
+  ]
+}

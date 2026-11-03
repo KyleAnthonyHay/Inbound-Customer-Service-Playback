@@ -1,3 +1,5 @@
+**Current caller reference:** [Developer caller backgrounds](curated-caller-worksheet.md) and [parallel text audit](text-tests/parallel-suite-2026-11-03/review.md) supersede the older script details below. Use the current fixed observations and caller-stated goals; do not add hidden channel-count requirements. This page remains historical context.
+
 **Current caller try-out:** [Jordan’s one simple conversation](jordan-voice-tests.md). The ten scenarios below are older developer reference material; use [the open-ended method](open-ended-test-method.md) for current tests.
 
 # Development voice test sheet

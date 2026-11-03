@@ -1,6 +1,6 @@
 **Current method:** [Open-ended developer conversations](open-ended-test-method.md), with an [updated ten-call sheet](ten-call-scenarios.md). Jordan has a separate [one-call usability try-out](jordan-voice-tests.md). The earlier planning/history follows; it does not require Jordan to run ten scripted calls.
 
-**Current activated fixtures and voice prompts:** [Development manual test sheet](dev-manual-tests.md). The original planning/review history follows.
+**Current caller fixtures and development evidence:** [Developer caller backgrounds](curated-caller-worksheet.md) and [parallel text audit](text-tests/parallel-suite-2026-11-03/review.md). Earlier manual sheets and the original planning/review history follow.
 
 # Regal Playback conversation test plan
 

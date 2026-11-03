@@ -1,0 +1,45 @@
+{
+  "scenario": "production-weekday-callback-smoke",
+  "expectedIntent": "callback",
+  "callId": "01a1992d-5f70-7991-819f-220eeb9d7278",
+  "endedReason": "assistant-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "check_team_availability",
+    "delegate",
+    "get_callback_slots",
+    "delegate",
+    "reserve_callback",
+    "endCall"
+  ],
+  "convexToolEvents": [
+    "check_team_availability succeeded 28ms Billing & Accounts: unavailable",
+    "get_callback_slots succeeded 285ms requested time not available (unparseable)",
+    "reserve_callback succeeded 39ms confirmed"
+  ],
+  "liveEvents": [
+    "24.4s TOOL-CALLS delegate({})",
+    "25.6s TOOL-CALLS check_team_availability({\"teamId\":\"billing\"})",
+    "37.5s TOOL-CALLS delegate({})",
+    "39.9s TOOL-CALLS get_callback_slots({\"teamId\":\"billing\",\"preferredDate\":\"Monday, November 2nd\",\"preferredTime\":\"11 AM\",\"timeZone\":\"Eastern\"})",
+    "73.3s TOOL-CALLS delegate({})",
+    "75.0s TOOL-CALLS reserve_callback({\"teamId\":\"billing\",\"slotId\":\"j97adzxqpdggae1r2rrnx0etwd8hc3tg\",\"reason\":\"Caller requests billing and accounts assistance regarding a refund.\",\"timeZone\":\"Eastern\",\"callerName\":\"Priyanada Rajan\",\"callbackNumber\":\"2025550177\"})",
+    "77.1s TOOL-CALLS endCall({})",
+    "77.8s STATUS ended assistant-ended-call",
+    "77.8s hangup"
+  ],
+  "transcript": [
+    "AGENT: Hi, thanks for calling MultiTracks Playback support. I'm an AI assistant. Are you having trouble with a song loading or with audio output?",
+    "CALLER: I need to speak to billing and accounts about a refund. If they are busy, I would like a callback please",
+    "CALLER: Monday",
+    "CALLER: , November",
+    "CALLER: 2nd at 11 AM Eastern",
+    "CALLER: Time, please",
+    "AGENT: Sure,",
+    "CALLER: . My name is Priyanada Rajan and my callback number is 202 555 ,0 1 7 7",
+    "AGENT: One moment.",
+    "AGENT: Thanks, I couldn’t lock in that exact time. The nearest slots are 10, 10:30, 11, or 11:30 a.m. Eastern. Do any of those work?",
+    "CALLER: Yes, I confirm. Please book that callback for Monday, November 2nd at 11 AM Eastern at 202 ,555 ,0 1 7 7. Yes, that is correct. Thank you. Goodbye",
+    "AGENT: OK, thanks."
+  ]
+}

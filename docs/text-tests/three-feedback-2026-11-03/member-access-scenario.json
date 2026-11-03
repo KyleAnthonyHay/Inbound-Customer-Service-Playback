@@ -1,0 +1,9 @@
+{
+  "name": "known-member-no-redundant-email",
+  "expectedIntent": "account-access",
+  "lines": [
+    "My name is Sam Okafor. Our Organization ID is 480113. I can sign in to Playback, but the church's songs are locked for me. Can you check whether my account has the right access?",
+    "I'll contact our church admin about that. That's everything, goodbye."
+  ],
+  "expect": "Resolve the provided org and unique member, interpret actual Team Sharing restriction without asking for email again or claiming caller authentication. Explain admin boundary and offer help; honor the caller choosing their own admin. No permission writes or callback bookings."
+}

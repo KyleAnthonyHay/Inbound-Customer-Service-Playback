@@ -1,0 +1,679 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "caseId": "06-borrowed-mixer",
+  "variant": 1,
+  "testId": "text-poc-486722a6-d362-4a5c-a057-6f6ab376161b",
+  "configurationHash": "63e891d2c9181d1e1bf764004cc9b8055476121519452c2c024533d3a1a32dc2",
+  "toolRuntime": "deployed-development",
+  "fixture": {
+    "id": "06-borrowed-mixer",
+    "intent": "compatibility",
+    "handling": "human-review",
+    "openings": [
+      "We've borrowed a mixer with a USB socket. Can we plug our iPad straight into it for Playback and keep click and guide out of the audience's music?",
+      "This borrowed sound desk has a USB hole. Can we use that with our iPad?"
+    ],
+    "reviewOnly": {
+      "facts": "Borrowed mixer model is Mackie ProFX12v3, revealed when asked. Caller does not know USB class compliance or the supported iPad connection requirements for this model. This model is not in the bounded tested-interface list. That absence is not proof of incompatibility. The model name is a real hardware example; the scenario is simulated and its end-to-end compatibility has not been verified. For callback role-play only: name Jamie Demo, demo phone +1 202 555 0146, zone Eastern, preferred tomorrow at 11 AM. Give details only when asked. If requested time unavailable, choose a returned available alternative. Confirm booking only after full date/time, zone and number readback. For the second opening, prefer one half-hour later to isolate concurrent fixture bookings. Fixed role-play connection state: this is capability advice before using/connecting this configuration, not a current no-audio fault. Do not volunteer a repair problem or a request for setup.",
+      "expected": "Ask for relevant model details, search available resources, distinguish general USB guidance from verification of this exact connection, acknowledge any remaining evidence gap and offer specialist review. Do not declare the mixer incompatible merely because it is unlisted.",
+      "callerProfile": {
+        "goal": "Find out whether the borrowed mixer connection can be verified, with specialist help if needed.",
+        "knows": [
+          "Using an iPad.",
+          "Borrowed desk has a USB socket.",
+          "Wants band cues kept out of the room music."
+        ],
+        "canReadWithHelp": {
+          "Mixer label": "Mackie ProFX12v3",
+          "iPad connector": "USB-C"
+        },
+        "cannotVerify": [
+          "Cannot determine USB class compliance, driver support, internal routing, or exact iPad connection support.",
+          "Borrowed equipment owner is unavailable.",
+          "After a plain explanation the remaining equipment investigation is beyond this caller."
+        ],
+        "scriptedOutcome": "Do not invent compatibility. Accept an offered specialist review. If nobody is available, explore a callback; booking still needs explicit consent. No caller prompt supplies the expected handoff before the agent offers it."
+      }
+    }
+  },
+  "failure": null,
+  "done": true,
+  "cleanupComplete": true,
+  "reportedTextCost": 0.2009,
+  "turns": [
+    {
+      "input": "We've borrowed a mixer with a USB socket. Can we plug our iPad straight into it for Playback and keep click and guide out of the audience's music?",
+      "chatId": "12284004-1876-45c9-b36e-4629c164d570",
+      "reply": "Only if that mixer’s USB port works as a class-compliant USB audio interface with separate outputs; then Playback Premium can route Click and Guide to their own bus and keep them off the house feed. What’s the mixer model, so I can help verify whether its USB connection is likely to provide those separate channels?",
+      "tools": [
+        {
+          "name": "search_playback_docs",
+          "arguments": {
+            "query": "iPad connect directly to a mixer USB socket Playback separate outputs click guide audience USB audio interface compatibility and routing",
+            "category": "audio-output",
+            "platform": "iPadOS"
+          },
+          "result": {
+            "ok": true,
+            "source": "documentation",
+            "provider": "MultiTracks Help Center (bounded snapshot)",
+            "snapshotRetrievedAt": "2026-10-31",
+            "query": "iPad connect directly to a mixer USB socket Playback separate outputs click guide audience USB audio interface compatibility and routing",
+            "found": 6,
+            "withheldArticles": [
+              {
+                "id": "route-click-guide-to-separate-busses",
+                "title": "How To | Route Click & Guide to Separate Busses in Playback (legacy, pre-7.6)",
+                "url": "https://helpcenter.multitracks.com/en/articles/5224107-how-to-route-click-guide-to-separate-busses-in-playback",
+                "versionRange": {
+                  "maxExclusive": "7.6"
+                },
+                "reason": "Restricted procedure requires a caller-confirmed version in its supported range."
+              }
+            ],
+            "results": [
+              {
+                "id": "how-to-use-playback-with-your-sound-system",
+                "title": "How to Use Playback with Your Sound System",
+                "category": "audio-output",
+                "url": "https://helpcenter.multitracks.com/en/articles/4649709-how-to-use-playback-with-your-sound-system",
+                "retrievedAt": "2026-10-30",
+                "appliesTo": [
+                  "iOS",
+                  "iPadOS",
+                  "macOS"
+                ],
+                "summary": "Three documented ways to get audio out of Playback: the built-in headphone port with Auto-Pan (2 channels: click/guide left, tracks right), a USB audio interface (up to 32 outputs, grouped into mono or stereo buses), and networked audio such as Dante or SoundGrid (iPad/iPhone limited to two channels; macOS can route up to 32 via Dante Virtual Soundcard). Bluetooth, subscription tiers, and menu paths are not covered here.",
+                "requirements": [
+                  {
+                    "text": "Using independent bus routing and MultiOuts is a Playback Premium feature. The hardware output count alone does not establish that this feature is unlocked. This condition applies to the MultiOuts method, not every basic two-feed Auto-Pan goal.",
+                    "sourceUrl": "https://helpcenter.multitracks.com/en/articles/4439220-how-to-track-bus-routing-in-playback"
+                  }
+                ],
+                "steps": [
+                  {
+                    "n": 1,
+                    "text": "Option 1 - headphone port: Auto-Pan is on by default. Use a 1/8\" TRS to dual 1/4\" TS cable, a stereo DI (or two mono DIs) to convert to XLR, then XLR to the stage box. Devices without a headphone jack can use a Lightning-to-3.5mm or USB-C-to-3.5mm adapter. Left channel feeds in-ears (click/guide); right feeds the house mix.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 2,
+                    "text": "Option 2 - USB audio interface: up to 32 outputs via a supported class-compliant interface. Lightning devices need an Apple Lightning Digital AV Adapter; USB-C devices need an Apple USB-C Digital AV Multiport Adapter. Add a powered USB hub if the interface is bus-powered. Outputs are grouped into custom buses, mono or stereo.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 3,
+                    "text": "Option 3 - networked audio (Dante, SoundGrid): connect the Playback device to a network running that protocol. iPad and iPhone support only two channels over networked audio; macOS apps like Dante Virtual Soundcard can route up to 32 channels.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 4,
+                    "text": "Use an in-ear monitoring solution so click and guide are not heard by the congregation. Accompaniment tracks do not include click and guide.",
+                    "disruptive": false
+                  }
+                ],
+                "hasDisruptiveSteps": false,
+                "relevance": 22
+              },
+              {
+                "id": "connect-usb-audio-interface-to-playback",
+                "title": "How do I connect my USB audio interface to Playback?",
+                "category": "audio-output",
+                "url": "https://helpcenter.multitracks.com/en/articles/4466444-how-do-i-connect-my-usb-audio-interface-to-playback",
+                "retrievedAt": "2026-10-30",
+                "appliesTo": [
+                  "iOS",
+                  "iPadOS"
+                ],
+                "summary": "iOS-focused guide for connecting a USB audio interface, directly via an official Apple adapter or through a powered USB hub (required when also using a MIDI controller or Ethernet MIDI). Playback recognizes the interface as its audio device once connected. The article states Playback sends up to 10 individual outputs with instrument tracks routed to 10 buses; note that other articles (Track & Bus Routing, Sound System) cite 16 buses and up to 32 outputs, so this figure may be dated.",
+                "steps": [
+                  {
+                    "n": 1,
+                    "text": "Direct: connect the iOS device to an approved interface with an official Apple adapter (Lightning: Apple USB 3 to Lightning camera adapter; USB-C: Apple USB-C AV adapter). These allow charging while connected.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 2,
+                    "text": "Via powered hub: connect the hub to the device with the Apple adapter, then connect the interface to the hub. Playback recognizes the interface as its audio device. Hubs the article confirms: 7-port Anker (1 charge port), 7-port Plugable (2 charge ports), 7-port StarTech.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 3,
+                    "text": "Keep USB runs short: 16 ft max (USB 2.0), 3 m / 9 ft max (USB 3.0). Powered extenders: repeater needs external power; 25 m (USB 2.0) / 15 m (USB 3.0) max.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 4,
+                    "text": "Hub must be powered and have no more than 7 accessory ports.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 5,
+                    "text": "Further problems: see Troubleshooting Playback Audio Issues.",
+                    "disruptive": false
+                  }
+                ],
+                "hasDisruptiveSteps": false,
+                "relevance": 22
+              },
+              {
+                "id": "track-and-bus-routing-in-playback",
+                "title": "How To | Track & Bus Routing in Playback",
+                "category": "audio-output",
+                "url": "https://helpcenter.multitracks.com/en/articles/4439220-how-to-track-bus-routing-in-playback",
+                "retrievedAt": "2026-11-03",
+                "appliesTo": [],
+                "summary": "Playback has dedicated Click and Guide buses by default. Bus routing and MultiOuts require a Playback Premium subscription. Playback groups 150+ instruments into 16 buses plus a dedicated SMPTE bus; each bus can go to any available output on the selected audio device, mono or stereo. The Pad bus cannot be re-routed. Track routing is saved per device and applies globally to that track; it is not saved with setlists or named arrangements. Separate buses assigned to the same output still share that hardware feed. For independent external control, use distinct available outputs matching the caller's connected desk channels; example output numbers are not universal assignments.",
+                "steps": [
+                  {
+                    "n": 1,
+                    "text": "Route tracks to buses: Settings > Tracks tab, assign each track to a bus (defaults are preset and can be overwritten).",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 2,
+                    "text": "Route buses to outputs: Settings > Buses tab, tap a bus row and choose an available output.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 3,
+                    "text": "Route several buses at once: tap 'Assign Multiple Busses' in the bottom-right, select buses, assign one output.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 4,
+                    "text": "Rename a bus: drag its row to the left to reveal Edit.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 5,
+                    "text": "Greyed-out output: the SMPTE bus is probably using it. Disable SMPTE in the General tab or set the SMPTE bus to 'None'.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 6,
+                    "text": "Alternative from the main interface: open the 'Busses' layer (bottom right next to the master fader, or cycle layers with the button beside it), tap Edit (top right) to enter Setlist/Song Map edit mode, tap a bus name and select the output.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 7,
+                    "text": "Bus mixes are song-specific by default; disable Song Specific Buses in Settings for a global mix. Solo/mute on a bus affects all tracks routed to it.",
+                    "disruptive": false
+                  }
+                ],
+                "hasDisruptiveSteps": false,
+                "relevance": 20
+              }
+            ],
+            "note": "Use only steps whose source section, named error, version and setup conditions match the caller's facts. A less disruptive step is not automatically applicable. Prefer applicable non-disruptive steps. Explain a disruptive step's effect briefly once and honor constraints already stated; if no applicable safe step remains, offer specialist review.",
+            "manual": {
+              "ok": true,
+              "source": "manual",
+              "provider": "Playback User Guide (MultiTracks help center, snapshot in Pinecone)",
+              "query": "iPad connect directly to a mixer USB socket Playback separate outputs click guide audience USB audio interface compatibility and routing",
+              "found": 3,
+              "results": [
+                {
+                  "id": "playback-user-guide:setting-up-audio-and-midi-choosing-an-audio-interface:1",
+                  "score": 0.515,
+                  "sectionPath": "Playback User Guide > Setting up Audio and MIDI > Choosing an Audio Interface",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_5c7f9ec59b",
+                  "category": "audio-output",
+                  "scope": "in-scope",
+                  "part": 1,
+                  "parts": 1,
+                  "imageIds": [],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "Playback is compatible with most class-compliant USB audio interfaces for sending multiple outputs of tracks. However, some require additional routing and setup.\n\nHere is a list of USB audio interfaces tested and confirmed for support with Playback.\n\nLearn More: Supported Audio Devices",
+                  "steps": [],
+                  "hasDisruptiveSteps": false
+                },
+                {
+                  "id": "playback-user-guide:playback-user-guide-setting-up-audio-and-midi:1",
+                  "score": 0.415,
+                  "sectionPath": "Playback User Guide > Setting up Audio and MIDI",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_e8eb314b55",
+                  "category": "audio-output",
+                  "scope": "in-scope",
+                  "part": 1,
+                  "parts": 1,
+                  "imageIds": [],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "There are two main ways to send audio out of Playback.\n\n· Auto Pan: Send click and tracks from Playback using the headphone port without any additional audio hardware. Learn how to use Auto Pan with Playback.\n\n· MultiOuts: With a Premium subscription, Playback can send up to 32 outputs can be accessed using compatible audio devices.\n\nNote: For more info on audio routing see:\n- 📖Setting up Playback with a sound system\n- 📖Connecting to a USB Interface\n- 📖Troubleshooting Playback Audio Issues",
+                  "steps": [
+                    {
+                      "n": 1,
+                      "text": "📖Setting up Playback with a sound system",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 2,
+                      "text": "📖Connecting to a USB Interface",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 3,
+                      "text": "📖Troubleshooting Playback Audio Issues",
+                      "disruptive": false
+                    }
+                  ],
+                  "hasDisruptiveSteps": false
+                },
+                {
+                  "id": "playback-user-guide:playback-settings-general-settings-tab:1",
+                  "score": 0.392,
+                  "sectionPath": "Playback User Guide > Playback Settings > General Settings Tab",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide",
+                  "category": "audio-output",
+                  "scope": "in-scope",
+                  "part": 1,
+                  "parts": 4,
+                  "imageIds": [
+                    "img-37"
+                  ],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "- Auto-Pan: When enabled, Auto Pan routes the click & guide through the left and all tracks through the right outputs of the iOS device’s stereo output. Auto Pan makes it possible to run tracks from Playback through the headphone output without using an audio interface. Learn about setting up Playback for Auto Pan.\n- Click Sound: Choose your favorite Click sound from a variety of built-in Click Track presets. Upload your own custom Click & Guide samples for use in Playback as well.\n- Count Into Each Section: Enable to add a 1-bar count-in to every song section marker. Disable to only hear the section cue 1 bar ahead of the marker.\n- Song Section Pre-roll: (Playback Premium) Pressing play from the beginning of any section marker will provide a 1-bar count in as well as automatically fade in the tracks. (📖Learn More)",
+                  "steps": [
+                    {
+                      "n": 1,
+                      "text": "Auto-Pan: When enabled, Auto Pan routes the click & guide through the left and all tracks through the right outputs of the iOS device’s stereo output. Auto Pan makes it possible to run tracks from Playback through the headphone output without using an audio interface. Learn about setting up Playback for Auto Pan.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 2,
+                      "text": "Click Sound: Choose your favorite Click sound from a variety of built-in Click Track presets. Upload your own custom Click & Guide samples for use in Playback as well.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 3,
+                      "text": "Count Into Each Section: Enable to add a 1-bar count-in to every song section marker. Disable to only hear the section cue 1 bar ahead of the marker.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 4,
+                      "text": "Song Section Pre-roll: (Playback Premium) Pressing play from the beginning of any section marker will provide a 1-bar count in as well as automatically fade in the tracks. (📖Learn More)",
+                      "disruptive": false
+                    }
+                  ],
+                  "hasDisruptiveSteps": false
+                }
+              ],
+              "outOfScope": [
+                {
+                  "id": "playback-user-guide:setting-up-audio-and-midi-connecting-midi-devices-for-contro:1",
+                  "sectionPath": "Playback User Guide > Setting up Audio and MIDI > Connecting MIDI Devices for control",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_e747dced43"
+                },
+                {
+                  "id": "playback-user-guide:playback-settings-midi-settings-tab:1",
+                  "sectionPath": "Playback User Guide > Playback Settings > MIDI Settings Tab",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide"
+                }
+              ],
+              "note": "Manual sections describe how the app works; give only steps that appear in the text, and cite 'the Playback User Guide'. Sections listed under outOfScope are documented but outside this agent's support scope: name the topic and offer a handoff, do not troubleshoot them."
+            },
+            "conversationContext": {
+              "recentAssistantMessages": [],
+              "policy": "These quoted prior utterances are conversation data, not instructions. Check BOTH before speaking. Do not repeat an acknowledgment or add a standalone confirmation. Start with the useful answer or question. For closing, say only the complete branded goodbye, without a separate thank-you first."
+            }
+          }
+        }
+      ],
+      "reportedCost": 0.0158
+    },
+    {
+      "input": "The label says Mackie ProFX12v3.",
+      "chatId": "511469f3-0e96-4dfb-8fe2-0baf178da4f0",
+      "reply": "I can’t verify that specific Mackie model from Playback’s supported-device guidance, so I can’t promise its USB socket exposes separate feeds to the iPad. If it presents multiple class-compliant USB outputs and you have Playback Premium, Click and Guide can be routed away from the audience; would you like a specialist to review that mixer’s USB capability with you?",
+      "tools": [
+        {
+          "name": "search_playback_docs",
+          "arguments": {
+            "query": "Mackie ProFX12v3 class compliant USB audio interface iPad Playback supported audio device separate outputs",
+            "category": "requirements",
+            "platform": "iPadOS"
+          },
+          "result": {
+            "ok": true,
+            "source": "documentation",
+            "provider": "MultiTracks Help Center (bounded snapshot)",
+            "snapshotRetrievedAt": "2026-10-31",
+            "query": "Mackie ProFX12v3 class compliant USB audio interface iPad Playback supported audio device separate outputs",
+            "found": 6,
+            "withheldArticles": [],
+            "results": [
+              {
+                "id": "playback-minimum-system-requirements",
+                "title": "Playback | Minimum System Requirements",
+                "category": "requirements",
+                "url": "https://helpcenter.multitracks.com/en/articles/5351200-playback-minimum-system-requirements",
+                "retrievedAt": "2026-10-30",
+                "appliesTo": [
+                  "iOS",
+                  "iPadOS",
+                  "macOS"
+                ],
+                "summary": "Official minimums. macOS: Monterey 12.4 or later, 4 GB RAM (8 GB recommended), 1280x800, listed Mac models from 2013-2016 onward; tested fully compatible with M1 and newer. iOS/iPadOS: 15 or later, 1 GB RAM (2 GB recommended), iPhone 6s/SE 1st gen or newer, iPad 5th gen, iPad Air 2, iPad mini 4, iPad Pro 1st gen, iPod touch 7th gen. No Windows requirements are listed. Article shows 'Written by Trevor, August 4, 2026'.",
+                "steps": [],
+                "hasDisruptiveSteps": false,
+                "relevance": 9
+              },
+              {
+                "id": "should-i-update-my-playback-device-to-the-latest-os",
+                "title": "Should I update my Playback device to the latest OS?",
+                "category": "requirements",
+                "url": "https://helpcenter.multitracks.com/en/articles/4626407-should-i-update-my-playback-device-to-the-latest-os",
+                "retrievedAt": "2026-10-30",
+                "appliesTo": [
+                  "iOS",
+                  "iPadOS",
+                  "macOS"
+                ],
+                "summary": "A regularly updated compatibility list of OS releases MultiTracks has tested with Playback and ChartBuilder. As fetched: iOS/iPadOS 26 fully compatible; iOS/iPadOS 17 and 18 currently supported; macOS 26 (Tahoe) fully compatible; macOS 14 and 15 currently supported. No versions are explicitly listed as unsupported and Windows is not mentioned. Article dated October 14, 2025.",
+                "steps": [],
+                "hasDisruptiveSteps": false,
+                "relevance": 7
+              },
+              {
+                "id": "playback-product-page",
+                "title": "Playback product page (multitracks.com)",
+                "category": "requirements",
+                "url": "https://www.multitracks.com/products/playback/",
+                "retrievedAt": "2026-10-30",
+                "appliesTo": [
+                  "iOS",
+                  "iPadOS",
+                  "macOS"
+                ],
+                "summary": "Marketing page. States the latest version runs on any device supporting iOS/iPadOS 12.4 or above (iPhone 5s+, iPad Gen 5+, iPad Air 1+, iPad Mini 2+, iPad Pro 1+) and macOS Monterey 12 or later; this conflicts with the help center minimum requirements article (iOS 15, macOS 12.4) and with the 8.5.5 release notes that raised the minimum to iOS 15, so treat the help center as authoritative. Tiers: Intro (free, no MultiOuts) and Premium ($9.99/mo paid annually: Remote, up to 32 MultiOuts with buses, Playback for Mac, SMPTE/LTC). Two device logins, a third with Premium. Windows is not mentioned.",
+                "steps": [],
+                "hasDisruptiveSteps": false,
+                "relevance": 7
+              }
+            ],
+            "note": "Use only steps whose source section, named error, version and setup conditions match the caller's facts. A less disruptive step is not automatically applicable. Prefer applicable non-disruptive steps. Explain a disruptive step's effect briefly once and honor constraints already stated; if no applicable safe step remains, offer specialist review.",
+            "manual": {
+              "ok": true,
+              "source": "manual",
+              "provider": "Playback User Guide (MultiTracks help center, snapshot in Pinecone)",
+              "query": "Mackie ProFX12v3 class compliant USB audio interface iPad Playback supported audio device separate outputs",
+              "found": 3,
+              "results": [
+                {
+                  "id": "playback-user-guide:setting-up-audio-and-midi-choosing-an-audio-interface:1",
+                  "score": 0.477,
+                  "sectionPath": "Playback User Guide > Setting up Audio and MIDI > Choosing an Audio Interface",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_5c7f9ec59b",
+                  "category": "audio-output",
+                  "scope": "in-scope",
+                  "part": 1,
+                  "parts": 1,
+                  "imageIds": [],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "Playback is compatible with most class-compliant USB audio interfaces for sending multiple outputs of tracks. However, some require additional routing and setup.\n\nHere is a list of USB audio interfaces tested and confirmed for support with Playback.\n\nLearn More: Supported Audio Devices",
+                  "steps": [],
+                  "hasDisruptiveSteps": false
+                },
+                {
+                  "id": "playback-user-guide:playback-user-guide-app-overview:1",
+                  "score": 0.342,
+                  "sectionPath": "Playback User Guide > App Overview",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_6b0d10ebeb",
+                  "category": "setup",
+                  "scope": "in-scope",
+                  "part": 1,
+                  "parts": 1,
+                  "imageIds": [],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "Playback is a powerful audio playback software available for free download from the Apple App Store compatible with MacOS, iPadOS, and iOS. For latest compatibility see: 📖Playback Minimum System Requirements\n\nSearch for “Playback” on the Apple App Store from your device or visit this link.",
+                  "steps": [],
+                  "hasDisruptiveSteps": false
+                },
+                {
+                  "id": "playback-user-guide:playback-settings-general-settings-tab:3",
+                  "score": 0.346,
+                  "sectionPath": "Playback User Guide > Playback Settings > General Settings Tab",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide",
+                  "category": "audio-output",
+                  "scope": "in-scope",
+                  "part": 3,
+                  "parts": 4,
+                  "imageIds": [],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "- Metronome Style VU: Enable the Click volume meters to flash like a metronome (enabled) or reflect the real-time volume output (disabled)\n- Song Specific Master Fader: When enabled, each song has a separate master fader volume. Disable for a global master fader volume across every song.\n- Fader Default Level at 80%: When enabled, a song is added to Playback with all faders preset at 80%. This provides headroom for increasing track volumes if needed. Disable to load a song with all track faders at 100% volume.\n- Power Saver: Enable to improve performance on older devices and decrease battery consumption. Power Saver disables fader VU meters, Fader multi-touch, and reduces waveform scrolling feedback.\n- MIDI Out: Enables the MIDI Out engine by default. Disable if not using MIDI Out; this will improve Playback performance and decrease battery consumption.",
+                  "steps": [
+                    {
+                      "n": 1,
+                      "text": "Metronome Style VU: Enable the Click volume meters to flash like a metronome (enabled) or reflect the real-time volume output (disabled)",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 2,
+                      "text": "Song Specific Master Fader: When enabled, each song has a separate master fader volume. Disable for a global master fader volume across every song.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 3,
+                      "text": "Fader Default Level at 80%: When enabled, a song is added to Playback with all faders preset at 80%. This provides headroom for increasing track volumes if needed. Disable to load a song with all track faders at 100% volume.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 4,
+                      "text": "Power Saver: Enable to improve performance on older devices and decrease battery consumption. Power Saver disables fader VU meters, Fader multi-touch, and reduces waveform scrolling feedback.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 5,
+                      "text": "MIDI Out: Enables the MIDI Out engine by default. Disable if not using MIDI Out; this will improve Playback performance and decrease battery consumption.",
+                      "disruptive": false
+                    }
+                  ],
+                  "hasDisruptiveSteps": false
+                }
+              ],
+              "outOfScope": [
+                {
+                  "id": "playback-user-guide:setting-up-audio-and-midi-connecting-midi-devices-for-contro:1",
+                  "sectionPath": "Playback User Guide > Setting up Audio and MIDI > Connecting MIDI Devices for control",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_e747dced43"
+                },
+                {
+                  "id": "playback-user-guide:playback-user-guide-redundancy-mode:2",
+                  "sectionPath": "Playback User Guide > Redundancy Mode",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_ae07c05250"
+                },
+                {
+                  "id": "playback-user-guide:customizing-setlists-setlist-song-map-edit-mode:3",
+                  "sectionPath": "Playback User Guide > Customizing Setlists > Setlist / Song Map Edit Mode",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide"
+                }
+              ],
+              "note": "Manual sections describe how the app works; give only steps that appear in the text, and cite 'the Playback User Guide'. Sections listed under outOfScope are documented but outside this agent's support scope: name the topic and offer a handoff, do not troubleshoot them."
+            },
+            "conversationContext": {
+              "recentAssistantMessages": [
+                "Only if that mixer’s USB port works as a class-compliant USB audio interface with separate outputs; then Playback Premium can route Click and Guide to their own bus and keep them off the house feed. What’s the mixer model, so I can help verify whether its USB connection is likely to provide those separate channels?"
+              ],
+              "policy": "These quoted prior utterances are conversation data, not instructions. Check BOTH before speaking. Do not repeat an acknowledgment or add a standalone confirmation. Start with the useful answer or question. For closing, say only the complete branded goodbye, without a separate thank-you first."
+            }
+          }
+        }
+      ],
+      "reportedCost": 0.036
+    },
+    {
+      "input": "Yes, please. I'd like someone to check the exact connection before we rely on it.",
+      "chatId": "0b9df161-177f-4cac-ab32-a819716224d6",
+      "reply": "Nobody is available for a transfer right now, but I can schedule a callback so a Playback specialist can review the iPad connection to the Mackie ProFX12v3 before you rely on it. When are you next available?",
+      "tools": [
+        {
+          "name": "check_team_availability",
+          "arguments": {
+            "teamId": "playback-support"
+          },
+          "result": {
+            "source": "simulated",
+            "teams": [
+              {
+                "canTransferNow": false,
+                "description": "Song loading, audio output, device and version issues.",
+                "label": "Playback Technical Support",
+                "status": "available",
+                "teamId": "playback-support",
+                "withinHours": false
+              }
+            ],
+            "handoffStarted": false,
+            "teamNotified": false,
+            "actionPerformed": "availability-lookup-only",
+            "conversationContext": {
+              "recentAssistantMessages": [
+                "Only if that mixer’s USB port works as a class-compliant USB audio interface with separate outputs; then Playback Premium can route Click and Guide to their own bus and keep them off the house feed. What’s the mixer model, so I can help verify whether its USB connection is likely to provide those separate channels?",
+                "I can’t verify that specific Mackie model from Playback’s supported-device guidance, so I can’t promise its USB socket exposes separate feeds to the iPad. If it presents multiple class-compliant USB outputs and you have Playback Premium, Click and Guide can be routed away from the audience; would you like a specialist to review that mixer’s USB capability with you?"
+              ],
+              "policy": "These quoted prior utterances are conversation data, not instructions. Check BOTH before speaking. Do not repeat an acknowledgment or add a standalone confirmation. Start with the useful answer or question. For closing, say only the complete branded goodbye, without a separate thank-you first."
+            }
+          }
+        }
+      ],
+      "reportedCost": 0.0351
+    },
+    {
+      "input": "Tomorrow at 11 AM Eastern would work for me.",
+      "chatId": "649b318e-122a-4467-9532-ad6aa629e1da",
+      "reply": "Wed, Nov 4, 11:00 AM EST is available for the specialist to review the Mackie connection. What name and callback number should I use?",
+      "tools": [
+        {
+          "name": "get_callback_slots",
+          "arguments": {
+            "teamId": "playback-support",
+            "preferredDate": "tomorrow",
+            "preferredTime": "11 AM",
+            "timeZone": "Eastern"
+          },
+          "result": {
+            "instruction": "Wed, Nov 4, 11:00 AM EST is open. Read the full details back (time, zone, number) and get an explicit yes before calling reserve_callback with slotId j57c2c4208nekpt1k4zw5c5q1x8hfyw7.",
+            "now": "2026-11-03T07:18:14.066Z",
+            "nowLocal": "Tue, Nov 3, 2:18 AM EST",
+            "requested": {
+              "available": true,
+              "endAt": "2026-11-04T16:30:00.000Z",
+              "iso": "2026-11-04T16:00:00.000Z",
+              "local": "Wed, Nov 4, 11:00 AM EST",
+              "slotId": "j57c2c4208nekpt1k4zw5c5q1x8hfyw7"
+            },
+            "slots": [
+              {
+                "endAt": "2026-11-04T16:30:00.000Z",
+                "local": "Wed, Nov 4, 11:00 AM EST",
+                "slotId": "j57c2c4208nekpt1k4zw5c5q1x8hfyw7",
+                "startAt": "2026-11-04T16:00:00.000Z"
+              },
+              {
+                "endAt": "2026-11-04T16:00:00.000Z",
+                "local": "Wed, Nov 4, 10:30 AM EST",
+                "slotId": "j576z9ecmeveg9k3q6dcc39jh98hfmz3",
+                "startAt": "2026-11-04T15:30:00.000Z"
+              },
+              {
+                "endAt": "2026-11-04T17:00:00.000Z",
+                "local": "Wed, Nov 4, 11:30 AM EST",
+                "slotId": "j57704mjq4w7fhy15acgr92zt58hevhy",
+                "startAt": "2026-11-04T16:30:00.000Z"
+              },
+              {
+                "endAt": "2026-11-04T15:30:00.000Z",
+                "local": "Wed, Nov 4, 10:00 AM EST",
+                "slotId": "j573jv02s5r9kcp3hdazf7gxe98heea5",
+                "startAt": "2026-11-04T15:00:00.000Z"
+              }
+            ],
+            "source": "simulated",
+            "teamHoursLocal": "10:00 AM to 7:00 PM EST, weekdays only",
+            "timeZone": "America/New_York",
+            "actionPerformed": "availability-lookup-only",
+            "bookingCreated": false,
+            "teamNotified": false,
+            "bookingInstruction": "These are available times, not a booking. Keep the call open. Collect missing caller name and callback number (or approval to use caller ID), read back the selected date/time, time zone and number, obtain explicit approval, then call reserve_callback. Do not confirm a booking or say goodbye until reserve_callback returns ok=true with bookingId. A yes clarifying a time alone is not full booking approval.",
+            "callbackNumberRequired": true,
+            "conversationContext": {
+              "recentAssistantMessages": [
+                "I can’t verify that specific Mackie model from Playback’s supported-device guidance, so I can’t promise its USB socket exposes separate feeds to the iPad. If it presents multiple class-compliant USB outputs and you have Playback Premium, Click and Guide can be routed away from the audience; would you like a specialist to review that mixer’s USB capability with you?",
+                "Nobody is available for a transfer right now, but I can schedule a callback so a Playback specialist can review the iPad connection to the Mackie ProFX12v3 before you rely on it. When are you next available?"
+              ],
+              "policy": "These quoted prior utterances are conversation data, not instructions. Check BOTH before speaking. Do not repeat an acknowledgment or add a standalone confirmation. Start with the useful answer or question. For closing, say only the complete branded goodbye, without a separate thank-you first."
+            }
+          }
+        }
+      ],
+      "reportedCost": 0.0371
+    },
+    {
+      "input": "I'm Jamie Demo. My number is +1 202 555 0146.",
+      "chatId": "abadef81-9122-4d59-8eed-11158ed08ae0",
+      "reply": "Shall I book Wed, Nov 4, 11:00 AM EST for Jamie Demo at +1 202 555 0146 to review the iPad connection to the Mackie ProFX12v3?",
+      "tools": [],
+      "reportedCost": 0.0343
+    },
+    {
+      "input": "Yes, please book that callback.",
+      "chatId": "e08aee3b-8c33-4c35-b04c-88b92080c7cb",
+      "reply": "Your demo callback is confirmed for Wed, Nov 4, 11:00 AM EST. Thanks so much for calling MultiTracks Playback support. Have a great day, and goodbye!",
+      "tools": [
+        {
+          "name": "reserve_callback",
+          "arguments": {
+            "slotId": "j57c2c4208nekpt1k4zw5c5q1x8hfyw7",
+            "callerName": "Jamie Demo",
+            "callbackNumber": "+1 202 555 0146",
+            "timeZone": "America/New_York",
+            "reason": "Review iPad connection to Mackie ProFX12v3 and whether separate USB feeds can keep click and guide out of the audience mix."
+          },
+          "result": {
+            "bookingId": "j974ysp5qt8yg2et6myrmygc518hh1z3",
+            "duplicate": false,
+            "endAt": "2026-11-04T16:30:00.000Z",
+            "local": "Wed, Nov 4, 11:00 AM EST",
+            "ok": true,
+            "source": "simulated",
+            "startAt": "2026-11-04T16:00:00.000Z",
+            "bookingCreated": true,
+            "actionPerformed": "callback-reserved",
+            "teamNotified": false,
+            "usedCallerId": false,
+            "endCallRequired": true,
+            "nextAction": "endCall",
+            "callEndingFallbackScheduled": false,
+            "next": "The demo callback is reserved. Call endCall, confirm the returned local time and speak its farewell once. Guarded closing waits for the completed farewell and speech; do not claim audio disconnected.",
+            "conversationContext": {
+              "recentAssistantMessages": [
+                "Wed, Nov 4, 11:00 AM EST is available for the specialist to review the Mackie connection. What name and callback number should I use?",
+                "Shall I book Wed, Nov 4, 11:00 AM EST for Jamie Demo at +1 202 555 0146 to review the iPad connection to the Mackie ProFX12v3?"
+              ],
+              "policy": "These quoted prior utterances are conversation data, not instructions. Check BOTH before speaking. Do not repeat an acknowledgment or add a standalone confirmation. Start with the useful answer or question. For closing, say only the complete branded goodbye, without a separate thank-you first."
+            }
+          }
+        },
+        {
+          "name": "endCall",
+          "arguments": {},
+          "result": {
+            "ok": true,
+            "voiceCall": false,
+            "speak": "Your demo callback is confirmed for Wed, Nov 4, 11:00 AM EST. Thanks so much for calling MultiTracks Playback support. Have a great day, and goodbye!",
+            "conversationContext": {
+              "recentAssistantMessages": [
+                "Wed, Nov 4, 11:00 AM EST is available for the specialist to review the Mackie connection. What name and callback number should I use?",
+                "Shall I book Wed, Nov 4, 11:00 AM EST for Jamie Demo at +1 202 555 0146 to review the iPad connection to the Mackie ProFX12v3?"
+              ],
+              "policy": "These quoted prior utterances are conversation data, not instructions. Check BOTH before speaking. Do not repeat an acknowledgment or add a standalone confirmation. Start with the useful answer or question. For closing, say only the complete branded goodbye, without a separate thank-you first."
+            }
+          }
+        }
+      ],
+      "reportedCost": 0.0426
+    }
+  ]
+}

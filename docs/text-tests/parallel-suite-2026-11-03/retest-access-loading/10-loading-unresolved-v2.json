@@ -1,0 +1,622 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "caseId": "10-loading-unresolved",
+  "variant": 2,
+  "testId": "text-poc-a4be177f-138c-40cb-8cdc-6aa45bd78c2c",
+  "configurationHash": "0c3d127c0adf851f7751cbb8f915fc2522bffcc6f85ea28a7df93b33b2f1d7ab",
+  "toolRuntime": "deployed-development",
+  "fixture": {
+    "id": "10-loading-unresolved",
+    "intent": "song-loading",
+    "handling": "human-review",
+    "openings": [
+      "Graves Into Gardens won't open on our iPad. I've pressed Try Again three times, and it still hasn't worked.",
+      "My song still won't open. I've tried again a few times."
+    ],
+    "reviewOnly": {
+      "facts": "Three retries have failed. The caller declines content deletion/clearing/re-download changes before service. Other content is ready and must stay intact. No safe applicable documented recovery remains in this fixture; root cause is not asserted. If an account check is relevant: John Doe, 111, organization 480113; the song is a synthetic purchase. Reveal the exact error and retry count only when asked; do not assume the agent knows either from the opening. Device is iPad; Playback 8.6.4; exact error Audio Files Missing. For callback role-play only: name John Doe, demo phone +1 202 555 0150, zone Eastern, preferred tomorrow at 1 PM. Give details only when asked. If requested time unavailable, choose a returned available alternative. Confirm booking only after full date/time, zone and number readback. For the second opening, prefer one half-hour later to isolate concurrent fixture bookings.",
+      "expected": "Respect prior failed steps and timing, consult documentation, acknowledge inability to resolve with suitable supported steps, offer specialist review and follow availability/handoff/callback after acceptance.",
+      "callerProfile": {
+        "goal": "Get help for the song that still fails without risking ready downloads.",
+        "knows": [
+          "Using an iPad.",
+          "Song is Graves Into Gardens.",
+          "Has pressed the retry button three times; all failed.",
+          "If destructive recovery comes up, explain that service is starting and ready downloads cannot be removed.",
+          "Name John Doe if needed."
+        ],
+        "canReadWithHelp": {
+          "Error dialog": "Audio Files Missing",
+          "Playback About": "8.6.4",
+          "Organization ID": "480113",
+          "iPad Settings > General > About": "iPadOS 18"
+        },
+        "cannotVerify": [
+          "Cannot identify the root cause.",
+          "Cannot accept deleting/clearing ready songs before service.",
+          "No supported safe recovery in this fixture has succeeded."
+        ],
+        "scriptedOutcome": "Do not report recovery from an unrelated step. Accept an offered specialist once no suitable supported step remains; give callback preferences only if needed."
+      }
+    }
+  },
+  "failure": null,
+  "done": true,
+  "cleanupComplete": true,
+  "reportedTextCost": 0.2692,
+  "turns": [
+    {
+      "input": "My song still won't open. I've tried again a few times.",
+      "chatId": "f98c0722-5601-4528-8c6f-4996f9d8f8de",
+      "reply": "What happens on screen when you try to open the song—do you see an error message or does it just keep loading?",
+      "tools": [],
+      "reportedCost": 0.0072
+    },
+    {
+      "input": "It says Audio Files Missing.",
+      "chatId": "4a2019fb-b696-41e3-9fb1-446499c806de",
+      "reply": "That message has a built-in recovery on the third retry. Have you tapped Try Again at least three times since seeing it?",
+      "tools": [
+        {
+          "name": "search_playback_docs",
+          "arguments": {
+            "query": "Playback \"Audio Files Missing\" error when opening a song"
+          },
+          "result": {
+            "ok": true,
+            "source": "documentation",
+            "provider": "MultiTracks Help Center (bounded snapshot)",
+            "snapshotRetrievedAt": "2026-10-31",
+            "query": "Playback \"Audio Files Missing\" error when opening a song",
+            "found": 6,
+            "withheldArticles": [
+              {
+                "id": "route-click-guide-to-separate-busses",
+                "title": "How To | Route Click & Guide to Separate Busses in Playback (legacy, pre-7.6)",
+                "url": "https://helpcenter.multitracks.com/en/articles/5224107-how-to-route-click-guide-to-separate-busses-in-playback",
+                "versionRange": {
+                  "maxExclusive": "7.6"
+                },
+                "reason": "Restricted procedure requires a caller-confirmed version in its supported range."
+              }
+            ],
+            "results": [
+              {
+                "id": "troubleshooting-playback-download-errors",
+                "title": "Troubleshooting Playback Download Errors",
+                "category": "song-loading",
+                "url": "https://helpcenter.multitracks.com/en/articles/13452943-troubleshooting-playback-download-errors",
+                "retrievedAt": "2026-11-03",
+                "appliesTo": [],
+                "summary": "Covers four named download error messages in Playback (Error Authorizing, Audio Files Missing, Insufficient Storage, generic Download Error) plus a catch-all. MultiTracks says download errors are rare and asks users who see the same error repeatedly to report it through the website chat. The article does not name a platform; it refers only to 'the device' and 'the Playback app'. Each step belongs to its named-error section. The remove/re-add and alternate-key quick fixes are documented under generic Download Error; that section does not establish them as Audio Files Missing recovery.",
+                "steps": [
+                  {
+                    "n": 1,
+                    "text": "'Error Authorizing': the download failed a security check (your network may be blocking Playback from verifying the device). Follow the separate article 'Playback Download Error (Download Unauthorized)'.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 2,
+                    "text": "'Audio Files Missing': tap Try Again at least three times. On the third attempt Playback runs a different recovery routine automatically.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 3,
+                    "text": "'Audio Files Missing' (if three attempts fail on a song you recently downloaded in past setlists): open the setlist menu, scroll to the bottom, and select 'Delete All Setlists from Device'. Last resort only: it removes all local downloads and every current setlist must be downloaded again.",
+                    "disruptive": true,
+                    "kind": "delete-content",
+                    "caution": "This removes the song from the device and re-downloads it, so only do it when you have time before you play."
+                  },
+                  {
+                    "n": 4,
+                    "text": "'Insufficient Storage': remove past setlists with 'Delete all setlists from device' at the bottom of the setlist menu. If the error persists, check the device's storage; it may be too full. A typical song is roughly 40 MB to 1 GB, so a full setlist can be several GB.",
+                    "disruptive": true,
+                    "kind": "delete-content",
+                    "caution": "This removes the song from the device and re-downloads it, so only do it when you have time before you play."
+                  },
+                  {
+                    "n": 5,
+                    "text": "'Download Error' (generic): tap Try Again at least two times. If it continues and you are short on time, use Contact Support in the About tab of Playback Settings, then try the quick fixes.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 6,
+                    "text": "'Download Error' (generic section, after retries and contacting support) - Quick fix 1 - remove and re-add the song: tap Edit, tap the red minus icon on the song, tap '+ Add Song', find the song again, and load it.",
+                    "disruptive": true,
+                    "kind": "delete-content",
+                    "caution": "This removes the song from the device and re-downloads it, so only do it when you have time before you play."
+                  },
+                  {
+                    "n": 7,
+                    "text": "'Download Error' (generic section, after retries and contacting support) - Quick fix 2 - download in another key and transpose locally: before loading, change the song's key in song settings to a key close to the one you need; after the download, open song settings in edit mode and change the key back.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 8,
+                    "text": "'Download Error' (generic section, after retries and contacting support) - Quick fix 3 - clear local data (last resort): contact support first from the About tab, then open the setlist menu (top-right) and select 'Delete All Setlists from Device' at the bottom. All setlists must be redownloaded afterward.",
+                    "disruptive": true,
+                    "kind": "delete-content",
+                    "caution": "This removes the song from the device and re-downloads it, so only do it when you have time before you play."
+                  },
+                  {
+                    "n": 9,
+                    "text": "Any other error: contact MultiTracks.com through the website messenger or 'Contact Support' in the About tab of the Playback app.",
+                    "disruptive": false
+                  }
+                ],
+                "hasDisruptiveSteps": true,
+                "relevance": 18
+              },
+              {
+                "id": "playback-product-page-faq",
+                "title": "Playback product page FAQ (multitracks.com)",
+                "category": "general",
+                "url": "https://www.multitracks.com/products/playback/",
+                "retrievedAt": "2026-10-31",
+                "appliesTo": [
+                  "iOS",
+                  "iPadOS",
+                  "macOS"
+                ],
+                "summary": "Five FAQs on the Playback product page. How do I add a song: tap 'Add a Song' and select a song; after the first, keep adding in edit mode with the '+' button. Can I upload my own content: yes, with a Cloud Pro subscription (also included in the Live Bundle or MultiTracks One); create a cloud song, upload stems/audio files, and they appear in Playback. How many devices: log in on up to 2 devices; a Premium subscription adds a 3rd device slot; devices are managed in your MultiTracks.com account. Can I give my team access: yes, add a person to your account and enable Playback Team Sharing to share your purchased library and MultiTracks Cloud content. Can I use an audio interface: yes, see the tested supported-devices list. The page also says Playback for Mac supports Dante with up to 32 outputs and that Premium includes up to 32 MultiOuts with buses and redundancy with PlayAudio 12.",
+                "steps": [
+                  {
+                    "n": 1,
+                    "text": "Add a song: tap 'Add a Song' in Playback and select a song. After the first song, add more in edit mode with the '+' button.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 2,
+                    "text": "Upload your own content: requires Cloud Pro (included in Live Bundle or MultiTracks One). Create a cloud song, upload your stems or audio files, and they appear in Playback.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 3,
+                    "text": "Device limit: Playback can be logged in on up to 2 devices; Premium adds a 3rd slot. Manage devices in your MultiTracks.com account (see 'Managing ChartBuilder and Playback Devices').",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 4,
+                    "text": "Team access: add the person to your account and enable Playback Team Sharing so they can use your purchased library and Cloud content.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 5,
+                    "text": "Audio interfaces: supported, see the tested list at https://www.multitracks.com/products/playback/supported.",
+                    "disruptive": false
+                  }
+                ],
+                "hasDisruptiveSteps": false,
+                "relevance": 10
+              },
+              {
+                "id": "playback-general-settings-overview",
+                "title": "Playback General Settings Overview",
+                "category": "audio-output",
+                "url": "https://helpcenter.multitracks.com/en/articles/12549860-playback-general-settings-overview",
+                "retrievedAt": "2026-10-30",
+                "appliesTo": [
+                  "iOS"
+                ],
+                "summary": "Lists every setting in the General tab (three-line menu icon top-right > General). Audio-relevant items: Auto-Pan, Click Sound, Song Specific Buses (Premium), Audio Device (shows and sets which connected device Playback uses for all audio output), Power Saver, MIDI Out, and SMPTE Timecode. The page gives no detail on Audio Device choices and does not mention sample rate, Bluetooth, storage, or subscription display.",
+                "steps": [
+                  {
+                    "n": 1,
+                    "text": "Open settings: tap the three-line menu icon in the top-right corner of Playback and make sure the General tab is selected.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 2,
+                    "text": "Audio Device: shows and sets which connected audio device Playback uses for all audio output.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 3,
+                    "text": "Auto-Pan: routes click and guide to the left mono output and all tracks to the right mono output of the device's stereo output.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 4,
+                    "text": "Song Specific Buses (Premium): on gives each song its own bus fader mix; off uses one global bus mix.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 5,
+                    "text": "Power Saver: improves performance on older devices; disables fader VU meters and fader multi-touch and reduces waveform scrolling feedback.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 6,
+                    "text": "MIDI Out: enabled by default; disable if unused to improve performance and battery life.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 7,
+                    "text": "SMPTE Timecode: toggles SMPTE output and selects frame rate.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 8,
+                    "text": "Fader Default Level at 80%: on presets faders to 80% for headroom; off loads tracks at 100%.",
+                    "disruptive": false
+                  }
+                ],
+                "hasDisruptiveSteps": false,
+                "relevance": 9
+              }
+            ],
+            "note": "Use only steps whose source section, named error, version and setup conditions match the caller's facts. A less disruptive step is not automatically applicable. Prefer applicable non-disruptive steps. Explain a disruptive step's effect briefly once and honor constraints already stated; if no applicable safe step remains, offer specialist review.",
+            "manual": {
+              "ok": true,
+              "source": "manual",
+              "provider": "Playback User Guide (MultiTracks help center, snapshot in Pinecone)",
+              "query": "Playback \"Audio Files Missing\" error when opening a song",
+              "found": 3,
+              "results": [
+                {
+                  "id": "playback-user-guide:playback-user-guide-user-interface-overview:1",
+                  "score": 0.365,
+                  "sectionPath": "Playback User Guide > User Interface Overview",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_1ed5ceb199",
+                  "category": "setup",
+                  "scope": "in-scope",
+                  "part": 1,
+                  "parts": 1,
+                  "imageIds": [],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "When opening Playback for the first time, an empty setlist will be created called My Playback Setlist.",
+                  "steps": [],
+                  "hasDisruptiveSteps": false
+                },
+                {
+                  "id": "playback-user-guide:playback-settings-about-tab:1",
+                  "score": 0.333,
+                  "sectionPath": "Playback User Guide > Playback Settings > About Tab",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide",
+                  "category": "subscription",
+                  "scope": "adjacent",
+                  "part": 1,
+                  "parts": 1,
+                  "imageIds": [
+                    "img-41",
+                    "img-42"
+                  ],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "- Restore Purchases: If an iTunes subscription is expired or not being confirmed by Playback, reconcile any issues with payment info in the App Store and Tap Restore Purchases to reconnect your In-App Subscription.\n- Manage Subscription: Explore the paid versions of Playback and what features they have to offer. Learn More Here.\n- Manual: opens up this user guide.\n- Reset Tool Tips: If a new feature seems confusing, Tap to reset and see the tool tip tour again.\n- Contact Support: will send an email to support with all of the currently-opened setlist details and device information helpful for troubleshooting any potential issues.\n- Become a Beta Tester: Interested in early access to upcoming new features? Apply to become a Playback beta tester.\n- Acknowledgments: Playback software acknowledgments.\n- Playback Version and build information is listed at the very bottom.",
+                  "steps": [
+                    {
+                      "n": 1,
+                      "text": "Restore Purchases: If an iTunes subscription is expired or not being confirmed by Playback, reconcile any issues with payment info in the App Store and Tap Restore Purchases to reconnect your In-App Subscription.",
+                      "disruptive": true,
+                      "kind": "update",
+                      "caution": "Updating the app closes Playback and takes a few minutes; don't do this during a service."
+                    },
+                    {
+                      "n": 2,
+                      "text": "Manage Subscription: Explore the paid versions of Playback and what features they have to offer. Learn More Here.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 3,
+                      "text": "Manual: opens up this user guide.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 4,
+                      "text": "Reset Tool Tips: If a new feature seems confusing, Tap to reset and see the tool tip tour again.",
+                      "disruptive": true,
+                      "kind": "settings-change",
+                      "caution": "Changing this setting takes effect immediately and can cut audio for a moment."
+                    },
+                    {
+                      "n": 5,
+                      "text": "Contact Support: will send an email to support with all of the currently-opened setlist details and device information helpful for troubleshooting any potential issues.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 6,
+                      "text": "Become a Beta Tester: Interested in early access to upcoming new features? Apply to become a Playback beta tester.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 7,
+                      "text": "Acknowledgments: Playback software acknowledgments.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 8,
+                      "text": "Playback Version and build information is listed at the very bottom.",
+                      "disruptive": false
+                    }
+                  ],
+                  "hasDisruptiveSteps": true
+                },
+                {
+                  "id": "playback-user-guide:transport-controls-transport-controls-explained:1",
+                  "score": 0.326,
+                  "sectionPath": "Playback User Guide > User Interface Overview > Transport Controls > Transport Controls Explained",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_9df35f8e44",
+                  "category": "setup",
+                  "scope": "in-scope",
+                  "part": 1,
+                  "parts": 1,
+                  "imageIds": [],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "- Time signature/tempo display of the currently selected song (blank, if no song is loaded)\n- Time display, showing the time and start/end points of the currently selected song\n- Ambient Pad Player On/Off toggle\n- Back To Start button\n- Play/Pause\n- Tracks Fade Button, which automatically fades tracks in or out during playback\n- Edit Mode selector (press and hold for multiple edit modes)\n- Setlists Menu\n- More Menu -> access settings, login information, and more",
+                  "steps": [
+                    {
+                      "n": 1,
+                      "text": "Time signature/tempo display of the currently selected song (blank, if no song is loaded)",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 2,
+                      "text": "Time display, showing the time and start/end points of the currently selected song",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 3,
+                      "text": "Ambient Pad Player On/Off toggle",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 4,
+                      "text": "Back To Start button",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 5,
+                      "text": "Play/Pause",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 6,
+                      "text": "Tracks Fade Button, which automatically fades tracks in or out during playback",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 7,
+                      "text": "Edit Mode selector (press and hold for multiple edit modes)",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 8,
+                      "text": "Setlists Menu",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 9,
+                      "text": "More Menu -> access settings, login information, and more",
+                      "disruptive": false
+                    }
+                  ],
+                  "hasDisruptiveSteps": false
+                }
+              ],
+              "outOfScope": [
+                {
+                  "id": "playback-user-guide:setlist-song-map-edit-mode-edit-song-menu:5",
+                  "sectionPath": "Playback User Guide > Customizing Setlists > Setlist / Song Map Edit Mode > Edit Song Menu",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_e417d5f647"
+                },
+                {
+                  "id": "playback-user-guide:customizing-setlists-setlist-song-map-edit-mode:2",
+                  "sectionPath": "Playback User Guide > Customizing Setlists > Setlist / Song Map Edit Mode",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide"
+                },
+                {
+                  "id": "playback-user-guide:playback-named-arrangements-loading-named-arrangements:1",
+                  "sectionPath": "Playback User Guide > Playback Named Arrangements > Loading Named Arrangements",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_48bf1fd4c8"
+                }
+              ],
+              "note": "Manual sections describe how the app works; give only steps that appear in the text, and cite 'the Playback User Guide'. Sections listed under outOfScope are documented but outside this agent's support scope: name the topic and offer a handoff, do not troubleshoot them."
+            },
+            "conversationContext": {
+              "recentAssistantMessages": [
+                "What happens on screen when you try to open the song—do you see an error message or does it just keep loading?"
+              ],
+              "policy": "These quoted prior utterances are conversation data, not instructions. Check BOTH before speaking. Do not repeat an acknowledgment or add a standalone confirmation. Start with the useful answer or question. For closing, say only the complete branded goodbye, without a separate thank-you first."
+            }
+          }
+        }
+      ],
+      "reportedCost": 0.043
+    },
+    {
+      "input": "I've already pressed Try Again three times, and it still won't open.",
+      "chatId": "d62d049f-eda1-47c0-8f5c-50203b271464",
+      "reply": "Was this song downloaded recently as part of a past setlist?",
+      "tools": [],
+      "reportedCost": 0.0278
+    },
+    {
+      "input": "I'm not sure when it was downloaded.",
+      "chatId": "8fe1de7c-b7b7-4273-87fa-f5ac4baaff25",
+      "reply": "Since we can’t confirm whether it’s an older setlist download, the remaining documented fix would remove all setlists from this device and require re-downloading them. Would you like me to connect you with a Playback specialist to review it?",
+      "tools": [],
+      "reportedCost": 0.0286
+    },
+    {
+      "input": "Yes, please. I can't risk our downloaded songs before service.",
+      "chatId": "3aa7eb71-a6be-4109-901e-5029064e9422",
+      "reply": "Nobody is available to transfer right now, but I can schedule a Playback specialist to call you back. When are you next available, and what time zone are you in?",
+      "tools": [
+        {
+          "name": "check_team_availability",
+          "arguments": {
+            "teamId": "playback-support"
+          },
+          "result": {
+            "source": "simulated",
+            "teams": [
+              {
+                "canTransferNow": false,
+                "description": "Song loading, audio output, device and version issues.",
+                "label": "Playback Technical Support",
+                "status": "available",
+                "teamId": "playback-support",
+                "withinHours": false
+              }
+            ],
+            "handoffStarted": false,
+            "teamNotified": false,
+            "actionPerformed": "availability-lookup-only",
+            "conversationContext": {
+              "recentAssistantMessages": [
+                "Was this song downloaded recently as part of a past setlist?",
+                "Since we can’t confirm whether it’s an older setlist download, the remaining documented fix would remove all setlists from this device and require re-downloading them. Would you like me to connect you with a Playback specialist to review it?"
+              ],
+              "policy": "These quoted prior utterances are conversation data, not instructions. Check BOTH before speaking. Do not repeat an acknowledgment or add a standalone confirmation. Start with the useful answer or question. For closing, say only the complete branded goodbye, without a separate thank-you first."
+            }
+          }
+        }
+      ],
+      "reportedCost": 0.0308
+    },
+    {
+      "input": "Tomorrow at 1:30 PM Eastern works for me.",
+      "chatId": "55a809a8-a26e-4772-8522-e33e68979f8b",
+      "reply": "I have Wed, Nov 4, 1:30 PM EST available. What’s the best number for the specialist to call you back on?",
+      "tools": [
+        {
+          "name": "get_callback_slots",
+          "arguments": {
+            "teamId": "playback-support",
+            "preferredDate": "tomorrow",
+            "preferredTime": "1:30 PM",
+            "timeZone": "Eastern"
+          },
+          "result": {
+            "instruction": "Wed, Nov 4, 1:30 PM EST is open. Read the full details back (time, zone, number) and get an explicit yes before calling reserve_callback with slotId j576k1qksn0mjw959dh5m4vz9h8hfyvx.",
+            "now": "2026-11-03T07:09:57.904Z",
+            "nowLocal": "Tue, Nov 3, 2:09 AM EST",
+            "requested": {
+              "available": true,
+              "endAt": "2026-11-04T19:00:00.000Z",
+              "iso": "2026-11-04T18:30:00.000Z",
+              "local": "Wed, Nov 4, 1:30 PM EST",
+              "slotId": "j576k1qksn0mjw959dh5m4vz9h8hfyvx"
+            },
+            "slots": [
+              {
+                "endAt": "2026-11-04T19:00:00.000Z",
+                "local": "Wed, Nov 4, 1:30 PM EST",
+                "slotId": "j576k1qksn0mjw959dh5m4vz9h8hfyvx",
+                "startAt": "2026-11-04T18:30:00.000Z"
+              },
+              {
+                "endAt": "2026-11-04T18:30:00.000Z",
+                "local": "Wed, Nov 4, 1:00 PM EST",
+                "slotId": "j570ym4vt9gmehvgdcb5cfv2q18hf8gd",
+                "startAt": "2026-11-04T18:00:00.000Z"
+              },
+              {
+                "endAt": "2026-11-04T19:30:00.000Z",
+                "local": "Wed, Nov 4, 2:00 PM EST",
+                "slotId": "j574zkvecxp1cs8t2tdykcx6f58hf9sc",
+                "startAt": "2026-11-04T19:00:00.000Z"
+              },
+              {
+                "endAt": "2026-11-04T18:00:00.000Z",
+                "local": "Wed, Nov 4, 12:30 PM EST",
+                "slotId": "j579s0kkcr7y327wrymkhddx0s8hfmhg",
+                "startAt": "2026-11-04T17:30:00.000Z"
+              }
+            ],
+            "source": "simulated",
+            "teamHoursLocal": "10:00 AM to 7:00 PM EST, weekdays only",
+            "timeZone": "America/New_York",
+            "actionPerformed": "availability-lookup-only",
+            "bookingCreated": false,
+            "teamNotified": false,
+            "bookingInstruction": "These are available times, not a booking. Keep the call open. Collect missing caller name and callback number (or approval to use caller ID), read back the selected date/time, time zone and number, obtain explicit approval, then call reserve_callback. Do not confirm a booking or say goodbye until reserve_callback returns ok=true with bookingId. A yes clarifying a time alone is not full booking approval.",
+            "callbackNumberRequired": true,
+            "conversationContext": {
+              "recentAssistantMessages": [
+                "Since we can’t confirm whether it’s an older setlist download, the remaining documented fix would remove all setlists from this device and require re-downloading them. Would you like me to connect you with a Playback specialist to review it?",
+                "Nobody is available to transfer right now, but I can schedule a Playback specialist to call you back. When are you next available, and what time zone are you in?"
+              ],
+              "policy": "These quoted prior utterances are conversation data, not instructions. Check BOTH before speaking. Do not repeat an acknowledgment or add a standalone confirmation. Start with the useful answer or question. For closing, say only the complete branded goodbye, without a separate thank-you first."
+            }
+          }
+        }
+      ],
+      "reportedCost": 0.0334
+    },
+    {
+      "input": "Please use +1 202 555 0150.",
+      "chatId": "d2f03172-8b72-425b-87e7-91f3e2d9f29e",
+      "reply": "What name should I include for the specialist’s callback?",
+      "tools": [],
+      "reportedCost": 0.0301
+    },
+    {
+      "input": "John Doe.",
+      "chatId": "18fe3854-bfda-4d0f-9d9a-62689d0dfdb1",
+      "reply": "Shall I book the Playback specialist to call John Doe at +1 202 555 0150 on Wed, Nov 4, 1:30 PM EST about the Audio Files Missing error?",
+      "tools": [],
+      "reportedCost": 0.0305
+    },
+    {
+      "input": "Yes, please book that callback.",
+      "chatId": "a1a43656-0252-4599-bfb1-3104132892a7",
+      "reply": "Your demo callback is confirmed for Wed, Nov 4, 1:30 PM EST. Thanks so much for calling MultiTracks Playback support. Have a great day, and goodbye!",
+      "tools": [
+        {
+          "name": "reserve_callback",
+          "arguments": {
+            "slotId": "j576k1qksn0mjw959dh5m4vz9h8hfyvx",
+            "callerName": "John Doe",
+            "callbackNumber": "+1 202 555 0150",
+            "timeZone": "Eastern",
+            "reason": "Audio Files Missing error; caller retried three times and cannot risk deleting setlists/downloads before service."
+          },
+          "result": {
+            "bookingId": "j9706x2fbnrnpnzw70zhy7vrz58hhca3",
+            "duplicate": false,
+            "endAt": "2026-11-04T19:00:00.000Z",
+            "local": "Wed, Nov 4, 1:30 PM EST",
+            "ok": true,
+            "source": "simulated",
+            "startAt": "2026-11-04T18:30:00.000Z",
+            "bookingCreated": true,
+            "actionPerformed": "callback-reserved",
+            "teamNotified": false,
+            "usedCallerId": false,
+            "endCallRequired": true,
+            "nextAction": "endCall",
+            "callEndingFallbackScheduled": false,
+            "next": "The demo callback is reserved. Call endCall, confirm the returned local time and speak its farewell once. Guarded closing waits for the completed farewell and speech; do not claim audio disconnected.",
+            "conversationContext": {
+              "recentAssistantMessages": [
+                "What name should I include for the specialist’s callback?",
+                "Shall I book the Playback specialist to call John Doe at +1 202 555 0150 on Wed, Nov 4, 1:30 PM EST about the Audio Files Missing error?"
+              ],
+              "policy": "These quoted prior utterances are conversation data, not instructions. Check BOTH before speaking. Do not repeat an acknowledgment or add a standalone confirmation. Start with the useful answer or question. For closing, say only the complete branded goodbye, without a separate thank-you first."
+            }
+          }
+        },
+        {
+          "name": "endCall",
+          "arguments": {},
+          "result": {
+            "ok": true,
+            "voiceCall": false,
+            "speak": "Your demo callback is confirmed for Wed, Nov 4, 1:30 PM EST. Thanks so much for calling MultiTracks Playback support. Have a great day, and goodbye!",
+            "conversationContext": {
+              "recentAssistantMessages": [
+                "What name should I include for the specialist’s callback?",
+                "Shall I book the Playback specialist to call John Doe at +1 202 555 0150 on Wed, Nov 4, 1:30 PM EST about the Audio Files Missing error?"
+              ],
+              "policy": "These quoted prior utterances are conversation data, not instructions. Check BOTH before speaking. Do not repeat an acknowledgment or add a standalone confirmation. Start with the useful answer or question. For closing, say only the complete branded goodbye, without a separate thank-you first."
+            }
+          }
+        }
+      ],
+      "reportedCost": 0.0378
+    }
+  ]
+}
