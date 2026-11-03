@@ -1,0 +1,26 @@
+{
+  "name": "reviewer-pdf-demo-script",
+  "kind": "development-text-proof-of-concept",
+  "voiceCallCreated": false,
+  "cases": [
+    {
+      "id": "reviewer-pdf-false-expired",
+      "intent": "version",
+      "handling": "agent-target",
+      "openings": [
+        "Hi, I'm trying to get our church's iPad ready, but Playback says our subscription expired. I thought we already paid for it."
+      ],
+      "reviewOnly": {
+        "facts": "Kyle's reviewer PDF script. John Doe, Riverbend Community Church, Organization ID 480113 (admin sent it). Paid on the MultiTracks website. Restore Purchases still says expired (only after Penny guides it). Playback 8.6.1, iPadOS 18, iPad Air 5th gen, selected organization Riverbend. Share each fact only when asked; ask 'How do I navigate to that area?' for unfamiliar settings.",
+        "expected": "Org lookup 480113 shows active Cloud Pro; release check finds the 8.6.3 fix; Penny should NOT ask for the iPadOS version before advising the update; check_song_access for Way Maker; branded goodbye. Record every question Penny asks.",
+        "callerProfile": {
+          "goal": "Clear the false expired message, then ask whether the church has Way Maker.",
+          "knows": ["Using an iPad.", "Paid on the MultiTracks website.", "Name John Doe.", "Organization ID 480113."],
+          "canReadWithHelp": { "Playback About": "8.6.1", "iPad Settings > General > About": "iPadOS 18", "Side menu organization": "Riverbend Community Church" },
+          "cannotVerify": ["Cannot diagnose a version defect."],
+          "scriptedOutcome": "After the agent guides the update: 'Okay, it's finished. I've opened Playback again, and that message is gone.' At the anything-else question: 'Actually, we're hoping to use Way Maker on Sunday. Do we already have that one?' After the answer: 'Okay, I'll let our worship leader know. That's everything, thank you!'"
+        }
+      }
+    }
+  ]
+}

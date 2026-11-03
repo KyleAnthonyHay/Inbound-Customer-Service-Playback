@@ -38,28 +38,23 @@ function FitScreen({ className, children }: { className: string; children: React
  * radius ~13% of the opening width, and exactly the 440x956 screen ratio.
  * The screen renders on top of the frame, clipped to that opening, so the
  * app's own Dynamic Island shows instead of the one baked into the image.
- * On narrow viewports the frame is dropped and the screen fills the window
- * inside the device safe areas; the `.bare` class lets the screen hide its
- * drawn status bar, since the real phone shows its own.
+ * The framed phone shows at every viewport size (phones included), sized to
+ * fit the window's height and width, so the page itself never scrolls.
  */
 /** Large-screen right padding that keeps the phone centered beside the open activity panel (widths match ActivityPanel). */
 const SHIFTED = "lg:pl-24 lg:pr-[560px] xl:pl-0 xl:pr-[640px]";
 
 export function PhoneFrame({ children, shifted = false }: { children: React.ReactNode; shifted?: boolean }) {
   return (
-    <>
-      {/* Phone-size viewports: no frame */}
-      <div className="bare h-[100dvh] w-full bg-[#242424] sm:hidden" style={{ paddingTop: "env(safe-area-inset-top)", paddingBottom: "env(safe-area-inset-bottom)" }}>
-        <FitScreen className="relative h-full w-full overflow-hidden">{children}</FitScreen>
+    <div
+      className={`flex h-[100dvh] items-center justify-center overflow-hidden bg-[#0b0b0c] px-4 transition-[padding] duration-300 ${shifted ? SHIFTED : ""}`}
+      style={{ paddingTop: "calc(env(safe-area-inset-top) + 64px)", paddingBottom: "calc(env(safe-area-inset-bottom) + 24px)" }}
+    >
+      {/* Height-limited, and on narrow screens width-limited (980/2000 aspect ratio). */}
+      <div className="relative" style={{ height: "min(100%, 1000px, calc((100vw - 32px) * 2000 / 980))", aspectRatio: "980 / 2000" }}>
+        <Image src="/iphone-frame.webp" alt="" fill priority sizes="500px" className="pointer-events-none select-none object-contain" />
+        <FitScreen className="absolute inset-[2.2%_5.1%] overflow-hidden rounded-[13%/6%] bg-[#242424]">{children}</FitScreen>
       </div>
-
-      {/* Larger viewports: framed */}
-      <div className={`hidden min-h-[100dvh] items-center justify-center bg-[#0b0b0c] py-6 transition-[padding] duration-300 sm:flex ${shifted ? SHIFTED : ""}`}>
-        <div className="relative" style={{ height: "min(92dvh, 1000px)", aspectRatio: "980 / 2000" }}>
-          <Image src="/iphone-frame.webp" alt="" fill priority sizes="500px" className="pointer-events-none select-none object-contain" />
-          <FitScreen className="absolute inset-[2.2%_5.1%] overflow-hidden rounded-[13%/6%] bg-[#242424]">{children}</FitScreen>
-        </div>
-      </div>
-    </>
+    </div>
   );
 }

@@ -191,6 +191,12 @@ test("update assessment separates candidate matches from complete OS prerequisit
     if (!oldOS.ok) return;
     assert.equal(oldOS.updateAssessment.prerequisitesComplete, false);
     assert.ok(oldOS.updateAssessment.blockers.includes("installed-os-below-current-app-minimum"));
+    const noOs = await getRelevantChangesSinceVersion({ installedVersion: "8.5.0", symptom: "download bar stuck", platform: "iPadOS" });
+    assert.ok(noOs.ok);
+    if (!noOs.ok) return;
+    assert.equal(noOs.updateAssessment.prerequisitesComplete, true);
+    assert.deepEqual(noOs.updateAssessment.missingInformation, []);
+    assert.match(noOs.updateAssessment.osCheck ?? "", /App Store/);
     const mac = await getRelevantChangesSinceVersion({ installedVersion: "8.5.0", symptom: "download bar stuck", platform: "macOS", osVersion: "15" });
     assert.ok(mac.ok);
     if (!mac.ok) return;
