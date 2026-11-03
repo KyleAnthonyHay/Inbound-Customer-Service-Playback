@@ -3,6 +3,9 @@
  * {CONVEX_SITE_URL}/vapi/tools (convex/http.ts), which dispatches by name (convex/vapiTools.ts).
  * Shared across the browser assistant and the phone assistant.
  */
+/** How long a tool may take before its holding line is spoken. */
+export const TOOL_DELAY_LINE_MS = 2500;
+
 export function buildToolDefinitions(opts: { serverUrl: string; secret?: string }) {
   const server = {
     url: opts.serverUrl,
@@ -19,7 +22,11 @@ export function buildToolDefinitions(opts: { serverUrl: string; secret?: string 
     type: "function",
     async: false,
     server,
-    messages: [{ type: "request-start", content: startMessage }],
+    // Spoken by Vapi only if the tool has not answered within the delay. A "request-start"
+    // line fired on every call and stacked on top of the speaker's own acknowledgment
+    // ("Got it." then "Still looking that up."); the speaker
+    // already covers the wait, so the tool line is reserved for genuinely slow lookups.
+    messages: [{ type: "request-response-delayed", content: startMessage, timingMilliseconds: TOOL_DELAY_LINE_MS }],
     function: { name, description, parameters: { type: "object", properties, required } },
   });
 
@@ -29,7 +36,7 @@ export function buildToolDefinitions(opts: { serverUrl: string; secret?: string 
       "Use to answer questions about the demo service/setlist, or proactively when service timing or song metadata can inform the next in-scope support decision. The caller need not request the lookup, but general product or hardware suitability does not depend on a song plan. Reads one shared fictional demo organization's upcoming service and songs from the real Planning Center Services API, never a caller's church. Planning metadata does not verify licensing, downloads, imports or audio hardware. Reuse retrieved context; honor retryAt if rate limited.",
       {},
       [],
-      "Let me check the demo service's song list."
+      "Still checking the demo service's song list."
     ),
     fn(
       "search_playback_docs",
@@ -40,14 +47,14 @@ export function buildToolDefinitions(opts: { serverUrl: string; secret?: string 
         platform: { type: "string", description: "Caller's platform if known: iOS, iPadOS, macOS, Windows." },
       },
       ["query"],
-      "Absolutely, let me pull that up. One moment please."
+      "Still looking that up."
     ),
     fn(
       "get_current_playback_app_info",
       "Use when current published Playback metadata answers the caller's question. Returns live Apple metadata and inconsistencies; check platform applicability. The release comparator already returns the current version and iOS/iPadOS minimum OS, so reuse it rather than duplicate that lookup. This lookup alone does not establish a symptom-specific fix.",
       {},
       [],
-      "One moment while I check the current Playback version."
+      "Still checking the current Playback version."
     ),
     fn(
       "get_relevant_changes_since_version",
@@ -59,7 +66,7 @@ export function buildToolDefinitions(opts: { serverUrl: string; secret?: string 
         osVersion: { type: "string", description: "Caller-confirmed operating-system version, e.g. 18. Omit if unknown; the assessment will identify it as missing." },
       },
       ["installedVersion"],
-      "Let me compare your version with the documented release history."
+      "Still comparing your version with the release history."
     ),
     fn(
       "lookup_demo_customer",
@@ -71,7 +78,7 @@ export function buildToolDefinitions(opts: { serverUrl: string; secret?: string 
         name: { type: "string" },
       },
       [],
-      "Let me pull up that account."
+      "Still pulling up that account."
     ),
     fn(
       "check_song_access",
@@ -83,14 +90,14 @@ export function buildToolDefinitions(opts: { serverUrl: string; secret?: string 
         customerId: { type: "string" },
       },
       ["songTitle"],
-      "Let me check whether that song is in your library."
+      "Still checking whether that song is in your library."
     ),
     fn(
       "check_team_availability",
       "Use when the caller wants a human or specialist involvement may be appropriate because of uncertainty, support scope, unresolved symptoms or account needs. Returns simulated team availability with handoffStarted=false. This lookup never connects anyone, even when canTransferNow=true; initiate_handoff performs an accepted transfer. The lookup does not establish consent.",
       { teamId: { type: "string", enum: ["playback-support", "billing"], description: "Team to check. Defaults to all." } },
       [],
-      "Of course. Let me see who's available. One moment please."
+      "Still checking who's available."
     ),
     fn(
       "get_callback_slots",
@@ -103,7 +110,7 @@ export function buildToolDefinitions(opts: { serverUrl: string; secret?: string 
         fromIso: { type: "string", description: "Optional earliest time, ISO 8601, when the caller has no specific time in mind." },
       },
       ["teamId"],
-      "Let me check that time."
+      "Still checking that time."
     ),
     fn(
       "reserve_callback",
@@ -117,14 +124,14 @@ export function buildToolDefinitions(opts: { serverUrl: string; secret?: string 
         customerId: { type: "string" },
       },
       ["slotId", "callerName", "callbackNumber", "timeZone", "reason"],
-      "Booking that now."
+      "Still booking that."
     ),
     fn(
       "initiate_handoff",
       "Use when the caller has requested or accepted a human transfer and check_team_availability confirms the selected team can transfer now. Starts the simulated handoff and returns success or failure, rechecking availability. Success completes this demo's support workflow and returns endCallRequired=true; failure leaves the conversation open. Success must be confirmed before announcing a connection; this demo never connects to real staff.",
       { teamId: { type: "string", enum: ["playback-support", "billing"] } },
       ["teamId"],
-      "Let me request that handoff."
+      "Still requesting that handoff."
     ),
     { type: "endCall" },
   ];
