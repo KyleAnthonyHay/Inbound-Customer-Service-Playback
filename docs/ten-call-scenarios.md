@@ -116,6 +116,6 @@ The outcomes below are targets to evaluate, not answers to feed the agent. These
 
 ---
 
-**Every normal completion:** the agent asks “Is there anything else I can help with?” and waits. When you decline, it says “Okay, thanks for calling MultiTracks Support. Goodbye.” and disconnects. You can answer naturally; no exact caller sign-off is required. Text tests cannot prove full spoken playback or actual disconnect.
+**Every normal completion:** the agent asks “Is there anything else I can help you with today?” and waits. When you decline, it says “Thanks so much for calling MultiTracks Playback support. Have a great day, and goodbye!” and disconnects. You can answer naturally; no exact caller sign-off is required. Text tests cannot prove full spoken playback or actual disconnect.
 
 **Every human outcome:** a completed simulated handoff or confirmed callback is success; an availability check alone is not. Transfers do not reach real staff.

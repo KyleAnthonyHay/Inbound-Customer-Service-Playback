@@ -10,7 +10,7 @@ The box is a **Focusrite 4i4**. You don’t have Playback open; if asked somethi
 
 Once the explanation answers your question, respond naturally. When asked whether you need anything else, say “No, that’s everything.”
 
-**Ending:** It should ask “Is there anything else I can help with?” and wait. When you decline, it should say “Okay, thanks for calling MultiTracks Support. Goodbye.” and disconnect.
+**Ending:** It should ask “Is there anything else I can help you with today?” and wait. When you decline, it should say “Thanks so much for calling MultiTracks Playback support. Have a great day, and goodbye!” and disconnect.
 
 **Feedback:** Was it easy to understand? Did it help or explain when a specialist was needed? Did you hear the whole closing line before disconnect?
 
