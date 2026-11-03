@@ -102,6 +102,8 @@ http.route({
           await ctx.runMutation(api.callEvents.log, { callId, kind: "note", label: `Unknown tool: ${name}`, status: "failed", source: "internal", toolCallId: tc.id });
           return { toolCallId: tc.id, error: `Unknown tool ${name}` };
         }
+        // Any other tool after endCall means the conversation continued; that cancels a pending hang-up.
+        if (name !== "endCall") await ctx.runMutation(internal.closing.resume, { callId });
         const started = Date.now();
         await ctx.runMutation(api.callEvents.log, { callId, kind: "tool-start", tool: name, toolCallId: tc.id, label: def.label, status: "running", source: def.source, args: clip(args, 800) });
         try {

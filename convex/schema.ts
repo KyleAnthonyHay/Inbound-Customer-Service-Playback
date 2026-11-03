@@ -145,6 +145,10 @@ export default defineSchema({
     closingFarewell: v.optional(v.string()),
     callerSpeaking: v.optional(v.boolean()),
     closingInterrupted: v.optional(v.boolean()),
+    /** Phone fallback: estimated end of the endCall farewell, for channels that send no speech events. */
+    closingDeadlineAt: v.optional(v.number()),
+    /** A non-closing tool ran after closing was requested, so the conversation continued. */
+    closingResumedAt: v.optional(v.number()),
     /** Successful simulated handoff has scheduled its one server-side hang-up fallback. */
     handoffEndScheduledAt: v.optional(v.number()),
     startedAt: v.number(), // epoch ms
