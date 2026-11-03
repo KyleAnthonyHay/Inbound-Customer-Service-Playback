@@ -46,9 +46,9 @@
  */
 
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { useMutation, useQuery } from "convex/react";
+import { useMutation, useQuery, usePaginatedQuery } from "convex/react";
 import { AnimatePresence, MotionConfig, motion, useReducedMotion } from "motion/react";
-import { ChevronLeft, ChevronRight, Activity, AlertTriangle, History, Trash2, Wrench, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Activity, AlertTriangle, History, Archive, ArchiveRestore, Trash2, Wrench, X } from "lucide-react";
 import { api } from "../../convex/_generated/api";
 import type { Doc } from "../../convex/_generated/dataModel";
 import { useConvexReady } from "./ConvexClientProvider";
@@ -57,6 +57,7 @@ import type { ActivityEvent, CallStatus, TranscriptLine } from "@/lib/useVapiCal
 import type { ToolSource } from "@/lib/tools/meta";
 import { config } from "@/lib/config";
 import { formatCallerNumber } from "@/lib/tools/callerId";
+import { CallMetrics, CallMetricsOverview } from "./CallMetrics";
 
 type Props = {
   open: boolean;
@@ -72,14 +73,25 @@ type Props = {
   onOpenPastCall?: (callId: string) => void;
   /** The single agent instance picked up a call on another channel (phone, harness); the page may open the panel. */
   onRemoteCall?: (callId: string) => void;
+  onClearPanel?: () => void;
+  viewingHistory?: boolean;
 };
 
 type ViewData = {
+  metrics?: React.ReactNode;
+  metricsOverview?: React.ReactNode;
   serverEvents: Doc<"callEvents">[];
   pastCalls: Doc<"calls">[];
   callRow: Doc<"calls"> | null;
   storedTranscript: Doc<"transcripts">[];
   onClearHistory?: () => Promise<unknown>;
+  onArchiveCall?: (callId: string) => Promise<unknown>;
+  onRestoreCall?: (callId: string) => Promise<unknown>;
+  onDeleteCall?: (callId: string) => Promise<unknown>;
+  savedCalls?: Doc<"calls">[];
+  onLoadHistory?: () => void;
+  historyHasMore?: boolean;
+  historyLoading?: boolean;
 };
 
 type Step = {
@@ -97,7 +109,26 @@ type Step = {
   output?: string;
 };
 
-/** Source name + dot color: blue / amber / teal / gray, tuned for the dark panel. */
+const ACTIVITY_COLOR = {
+  connecting: "255, 159, 10",
+  connected: "99, 211, 146",
+  thinking: "194, 164, 255",
+  tool: "122, 184, 255",
+  failed: "255, 138, 143",
+  idle: "161, 161, 166",
+};
+
+function stepColor(step: Step): string {
+  if (step.status === "failed") return ACTIVITY_COLOR.failed;
+  if (step.tool === "delegate") return ACTIVITY_COLOR.thinking;
+  if (step.tool) return ACTIVITY_COLOR.tool;
+  if (step.source === "model") return ACTIVITY_COLOR.thinking;
+  if (step.label === "Connecting") return ACTIVITY_COLOR.connecting;
+  if (step.label === "Connected" || step.label.startsWith("Call connected")) return ACTIVITY_COLOR.connected;
+  return ACTIVITY_COLOR.idle;
+}
+
+/** Provenance badges retain their secondary source colors. */
 const SOURCE = {
   live: { name: "Apple", dot: "bg-[#4c9dff]", text: "text-[#6fb0ff]", tag: "bg-[#4c9dff]/[0.14] text-[#8cc0ff]" },
   simulated: { name: "Simulated", dot: "bg-[#f5b83d]", text: "text-[#f5c45e]", tag: "bg-[#f5b83d]/[0.14] text-[#f7cb72]" },
@@ -145,6 +176,16 @@ function Live(props: Props) {
   const callRow = useQuery(api.calls.get, callArgs) ?? null;
   const storedTranscript = useQuery(api.calls.transcriptByCall, callArgs) ?? [];
   const clearAll = useMutation(api.calls.clearAll);
+  const archive = useMutation(api.calls.archive);
+  const restore = useMutation(api.calls.restore);
+  const deleteArchived = useMutation(api.calls.deleteArchived);
+  const assignScenario = useMutation(api.callAnalytics.assignScenario);
+  const metricsOverview = useQuery(api.callAnalytics.overview, skip || !props.open ? "skip" : {});
+  const history = usePaginatedQuery(api.calls.archived, skip ? "skip" : {}, { initialNumItems: 50 });
+  const { onClearPanel, viewingHistory } = props;
+  useEffect(() => {
+    if (callRow?.archivedAt !== undefined && !browserLive && !viewingHistory) onClearPanel?.();
+  }, [callRow?.archivedAt, browserLive, viewingHistory, onClearPanel]);
 
   // Browser calls are mirrored to Convex from here (Vapi's web client is the only party that sees
   // them live), so the same call shows on every other device and lands in Past calls.
@@ -175,7 +216,26 @@ function Live(props: Props) {
     void statusUpdate({ callId: m.callId, status: "ended", callType: "webCall" }).catch(() => {});
   }, [skip, props.status, statusUpdate]);
 
-  return <View {...props} callId={callId} serverEvents={serverEvents} pastCalls={pastCalls} callRow={callRow} storedTranscript={storedTranscript} onClearHistory={() => clearAll({})} />;
+  return <View {...props} callId={callId} serverEvents={serverEvents} pastCalls={pastCalls} callRow={callRow} storedTranscript={storedTranscript}
+    metrics={callRow ? <CallMetrics key={callRow.callId} call={callRow} onScenario={scenarioId => assignScenario({ callId: callRow.callId, scenarioId })} /> : undefined}
+    metricsOverview={metricsOverview ? <CallMetricsOverview data={metricsOverview} /> : undefined}
+    savedCalls={history.results} historyHasMore={history.status === "CanLoadMore"} historyLoading={history.status === "LoadingMore" || history.status === "LoadingFirstPage"}
+    onLoadHistory={() => history.loadMore(50)}
+    onArchiveCall={async id => {
+      const result = await archive({ callId: id });
+      if (!result.ok) throw Error(result.reason === "call-in-progress" ? "Finish the call before clearing it." : "This call is no longer available.");
+      if (id === callId) props.onClearPanel?.();
+    }}
+    onRestoreCall={async id => {
+      const result = await restore({ callId: id });
+      if (!result.ok) throw Error(result.reason === "call-in-progress" ? "Finish the call before restoring it." : "This call is no longer available.");
+    }}
+    onDeleteCall={async id => {
+      const result = await deleteArchived({ callId: id });
+      if (!result.ok) throw Error(result.reason === "call-in-progress" ? "Finish the call before deleting it." : "Move the call to Archive before deleting it.");
+      if (id === callId) props.onClearPanel?.();
+    }}
+    onClearHistory={async () => { await clearAll({}); props.onClearPanel?.(); }} />;
 }
 
 function useElapsed(startedAt: number | null, status: CallStatus): { prefix: string; value: string | null } {
@@ -274,15 +334,15 @@ function Swap({ k, children, className }: { k: string; children: ReactNode; clas
  * Busy text: a lower-contrast band (~1/3 of the text wide) sweeps left -> right in ~500 ms, then rests
  * ~700 ms. With a 300%-wide gradient the band is only on the text for the middle half of each pass.
  */
-function Shimmer({ children, active, base = 0.8, idle = 0.6 }: { children: string; active: boolean; base?: number; idle?: number }) {
+function Shimmer({ children, active, base = 0.8, idle = 0.6, rgb = "255, 255, 255" }: { children: string; active: boolean; base?: number; idle?: number; rgb?: string }) {
   const reduce = useReducedMotion();
-  if (!active || reduce) return <span style={{ color: `rgba(255,255,255,${active ? base : idle})` }}>{children}</span>;
-  const b = `rgba(255,255,255,${base})`;
+  if (!active || reduce) return <span style={{ color: `rgba(${rgb},${active ? base : idle})` }}>{children}</span>;
+  const b = `rgba(${rgb},${base})`;
   return (
     <motion.span
       className="bg-clip-text text-transparent"
       style={{
-        backgroundImage: `linear-gradient(90deg, ${b} 0%, ${b} 41%, rgba(255,255,255,${base * 0.4}) 50%, ${b} 59%, ${b} 100%)`,
+        backgroundImage: `linear-gradient(90deg, ${b} 0%, ${b} 41%, rgba(${rgb},${base * 0.4}) 50%, ${b} 59%, ${b} 100%)`,
         backgroundSize: "300% 100%",
         WebkitBackgroundClip: "text",
       }}
@@ -391,14 +451,15 @@ type Entrance = { mode: "intro" | "insert"; delay: number };
 function StepDot({ step }: { step: Step }) {
   const reduce = useReducedMotion();
   const running = step.status === "running";
-  const color = step.status === "failed" ? "bg-[#ff6369]" : SOURCE[step.source].dot;
+  const color = `rgb(${stepColor(step)})`;
   return (
     <span className="relative z-[1] flex h-3.5 w-3.5 shrink-0 items-center justify-center" aria-label={step.status === "info" || step.status === "succeeded" ? "done" : step.status}>
       <AnimatePresence initial={false}>
         {running ? (
           <motion.span
             key="spin"
-            className="absolute inset-0 flex items-center justify-center text-white/85"
+            className="absolute inset-0 flex items-center justify-center"
+            style={{ color }}
             initial={reduce ? false : ICON_IN}
             animate={SHARP}
             exit={{ ...ICON_IN, transition: { duration: reduce ? 0 : SWAP_OUT, ease: "easeIn" } }}
@@ -414,7 +475,7 @@ function StepDot({ step }: { step: Step }) {
             animate={SHARP}
             transition={{ duration: reduce ? 0 : SWAP_IN, ease: EASE, delay: reduce ? 0 : SWAP_OUT }}
           >
-            <span className={cn("h-2 w-2 rounded-full transition-colors duration-[120ms]", color)} />
+            <span className="h-2 w-2 rounded-full transition-colors duration-[120ms]" style={{ backgroundColor: color }} />
           </motion.span>
         )}
       </AnimatePresence>
@@ -471,10 +532,8 @@ function StepRow({ step, entrance, first, last, expanded, onToggle }: { step: St
         <StepDot step={step} />
         <span className="flex min-w-0 flex-1 items-center gap-2">
           <span
-            className={cn(
-              "truncate text-[13px] transition-colors duration-[120ms]",
-              running ? "text-white" : step.status === "failed" ? "text-[#ff8a8f]" : "text-white/75"
-            )}
+            className="truncate text-[13px] transition-colors duration-[120ms]"
+            style={{ color: `rgb(${stepColor(step)})` }}
           >
             <ScrambleText text={step.label} animateMount={insert && !reduce} delayMs={revealAt * 1000} />
           </span>
@@ -611,12 +670,12 @@ function LiveTranscript({ transcript, markers, reduce }: { transcript: Transcrip
           {rows.map((r) => {
             if (r.kind === "tool") {
               const m = r.m;
-              const color = m.status === "failed" ? "text-[#ff8a8f]" : m.status === "running" ? "text-white/55" : "text-[#6edcb8]/80";
+              const color = m.status === "failed" ? "text-[#ff8a8f]" : "text-[#7ab8ff]";
               return (
                 <motion.li key={`tool-${m.id}`} initial={reduce ? false : BLUR_IN} animate={SHARP} transition={{ duration: reduce ? 0 : REVEAL, ease: EASE }} className="flex items-center gap-1.5 font-mono text-[11px]">
                   <Wrench size={10} aria-hidden className={cn("shrink-0", color)} />
                   <span className={color}>{m.tool}</span>
-                  {m.status === "running" ? <Spinner size={10} className="text-white/40" /> : m.detail ? <span className="truncate text-white/35">· {m.detail}</span> : null}
+                  {m.status === "running" ? <Spinner size={10} className="text-[#7ab8ff]" /> : m.detail ? <span className="truncate text-white/35">· {m.detail}</span> : null}
                 </motion.li>
               );
             }
@@ -678,7 +737,7 @@ function dayBucket(at: number, now: number): "Today" | "Yesterday" | "Earlier" {
 }
 
 function durationText(c: Doc<"calls">, now: number): string {
-  const secs = Math.round(c.durationSeconds ?? ((c.endedAt ?? now) - c.startedAt) / 1000);
+  const secs = Math.round(c.measurements?.durationSeconds ?? c.durationSeconds ?? ((c.endedAt ?? now) - c.startedAt) / 1000);
   if (!Number.isFinite(secs) || secs < 0) return "";
   return secs >= 60 ? `${Math.floor(secs / 60)}m ${secs % 60}s` : `${secs}s`;
 }
@@ -686,11 +745,21 @@ function durationText(c: Doc<"calls">, now: number): string {
 /**
  * The panel's second view: every past call, like a chat app's conversation list. Newest first,
  * grouped by day, each row opens that call's own activity view (steps card + transcript).
- * A red two-step "Delete past calls" clears the calls, their transcripts and their tool events.
+ * Panel removal archives records; only an explicit Archive deletion erases history.
  */
-function HistoryView({ calls, currentId, busy, onOpen, onClear, reduce }: { calls: Doc<"calls">[]; currentId: string | null; busy: boolean; onOpen?: (id: string) => void; onClear?: () => Promise<unknown>; reduce: boolean }) {
+function HistoryView({ calls: panelCalls, savedCalls = [], currentId, busy, onOpen, onClear, onArchive, onRestore, onDelete, onLoadMore, hasMore, loading, reduce }: {
+  calls: Doc<"calls">[]; savedCalls?: Doc<"calls">[]; currentId: string | null; busy: boolean;
+  onOpen?: (id: string) => void; onClear?: () => Promise<unknown>; onArchive?: (id: string) => Promise<unknown>; onRestore?: (id: string) => Promise<unknown>;
+  onDelete?: (id: string) => Promise<unknown>;
+  onLoadMore?: () => void; hasMore?: boolean; loading?: boolean; reduce: boolean;
+}) {
   const [confirm, setConfirm] = useState(false);
   const [clearing, setClearing] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [removing, setRemoving] = useState<string | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<Doc<"calls"> | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const calls = saved ? savedCalls : panelCalls;
   const now = useNow();
   const groups: { label: string; items: Doc<"calls">[] }[] = [];
   for (const c of calls) {
@@ -703,9 +772,33 @@ function HistoryView({ calls, currentId, busy, onOpen, onClear, reduce }: { call
 
   return (
     <motion.div key="history" initial={reduce ? false : BLUR_IN} animate={SHARP} exit={reduce ? undefined : BLUR_IN} transition={{ duration: reduce ? 0 : REVEAL, ease: EASE }} className="mt-3">
+      <div className="mb-3 flex gap-1 rounded-lg bg-white/[0.04] p-1" role="tablist" aria-label="Call history view">
+        {[[false, "In this panel"], [true, "Archive"]].map(([value, label]) => (
+          <button key={String(value)} type="button" role="tab" aria-selected={saved === value}
+            onClick={() => { setSaved(value === true); setConfirm(false); setDeleteTarget(null); setError(null); }}
+            className={cn("min-h-[36px] flex-1 rounded-md px-3 text-[12px] transition-colors", saved === value ? "bg-white/10 text-white" : "text-white/55 hover:text-white/85")}>{label}</button>
+        ))}
+      </div>
+      {error && <p role="alert" className="mb-3 text-[12px] text-[#ff8a8f]">{error}</p>}
+      {saved && deleteTarget && onDelete && (
+        <div role="alertdialog" aria-labelledby="delete-call-title" aria-describedby="delete-call-description" className="mb-3 rounded-xl border border-[#ff5f66]/35 bg-[#ff5f66]/10 p-3">
+          <p id="delete-call-title" className="text-[13px] font-medium text-white">Delete this call permanently?</p>
+          <p className="mt-1 truncate text-[12px] text-white/75">{deleteTarget.title ?? "Playback support call"}</p>
+          <p id="delete-call-description" className="mt-1 text-[12px] text-white/60">The saved call, transcript, activity and measurements will be deleted. This cannot be undone.</p>
+          <div className="mt-3 flex gap-2">
+            <button type="button" disabled={busy || removing !== null} className="min-h-[36px] rounded-lg bg-[#ff5f66] px-3 text-[12px] font-medium text-white disabled:opacity-40" onClick={async () => {
+              setRemoving(deleteTarget.callId); setError(null);
+              try { await onDelete(deleteTarget.callId); setDeleteTarget(null); }
+              catch (e) { setError(e instanceof Error ? e.message : "Could not delete this call. Please try again."); }
+              finally { setRemoving(null); }
+            }}>{removing === deleteTarget.callId ? "Deleting…" : "Delete permanently"}</button>
+            <button type="button" disabled={removing !== null} onClick={() => setDeleteTarget(null)} className="min-h-[36px] rounded-lg px-3 text-[12px] text-white/70 disabled:opacity-40">Cancel</button>
+          </div>
+        </div>
+      )}
       {calls.length === 0 ? (
         <p className="rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-[13px] text-white/45">
-          No past calls yet. Each finished call is listed here with its steps and transcript.
+          {saved ? (loading ? "Loading archive…" : "No archived calls.") : "This panel is clear."}
         </p>
       ) : (
         <div className="overflow-hidden rounded-xl border border-white/10 bg-white/[0.03]">
@@ -716,27 +809,31 @@ function HistoryView({ calls, currentId, busy, onOpen, onClear, reduce }: { call
                 {g.items.map((c) => {
                   const current = c.callId === currentId;
                   const live = c.status === "in-progress" || c.status === "ringing";
+                  const tools = c.measurements?.toolCallCount ?? c.toolCount;
                   return (
-                    <li key={c._id} className="border-t border-white/[0.05]">
+                    <li key={c._id} className="flex items-center border-t border-white/[0.05]">
                       <button
                         type="button"
                         disabled={!onOpen || (busy && !current)}
                         onClick={() => onOpen?.(c.callId)}
                         aria-current={current ? "true" : undefined}
                         className={cn(
-                          "flex min-h-[44px] w-full items-center gap-3 px-4 py-2.5 text-left transition-colors",
+                          "flex min-h-[44px] min-w-0 flex-1 items-center gap-3 px-4 py-2.5 text-left transition-colors",
                           current ? "bg-white/[0.06]" : "hover:bg-white/[0.04]",
                           (!onOpen || (busy && !current)) && "cursor-default opacity-60"
                         )}
                       >
-                        <span className={cn("h-1.5 w-1.5 shrink-0 rounded-full", live ? "bg-[#34c79a] motion-safe:animate-pulse" : "bg-white/25")} aria-hidden />
+                        <span className={cn("h-1.5 w-1.5 shrink-0 rounded-full", c.status === "ringing" ? "bg-[#ff9f0a] motion-safe:animate-pulse" : live ? "bg-[#63d392] motion-safe:animate-pulse" : "bg-white/25")} aria-hidden />
                         <span className="min-w-0 flex-1">
                           <span className={cn("block truncate text-[13px]", current ? "text-white" : "text-white/85")}>{c.title ?? "Playback support call"}</span>
+                          <span className="block truncate text-[11px] text-white/55">
+                            Intent: {c.review ? [c.review.primaryIntent, ...c.review.secondaryIntents].join(" + ") : c.status === "ended" ? "pending review" : "after call"}
+                          </span>
                           <span className="block truncate font-mono text-[10.5px] text-white/40">
                             {now ? relativeTime(c.startedAt, now) : ""}
                             {now && durationText(c, now) ? ` · ${durationText(c, now)}` : ""}
-                            {` · ${c.toolCount} tool${c.toolCount === 1 ? "" : "s"}`}
-                            {c.transcriptCount ? ` · ${c.transcriptCount} lines` : ""}
+                            {` · ${tools} tool${tools === 1 ? "" : "s"}`}
+                            {c.measurements ? ` · ${c.measurements.messageCount} messages` : c.transcriptCount ? ` · ${c.transcriptCount} logged lines` : ""}
                             {c.channel !== "unknown" ? ` · ${c.channel}` : ""}
                             {c.callerNumber ? ` · from ${formatCallerNumber(c.callerNumber)}` : ""}
                             {live ? " · live" : c.endedReason ? ` · ${c.endedReason.replace(/-/g, " ")}` : ""}
@@ -744,6 +841,32 @@ function HistoryView({ calls, currentId, busy, onOpen, onClear, reduce }: { call
                         </span>
                         <ChevronRight size={14} aria-hidden className="shrink-0 text-white/30" />
                       </button>
+                      {onArchive && c.status === "ended" && c.archivedAt === undefined && (
+                        <button type="button" aria-label={`Remove call from panel: ${c.title ?? "Playback support call"}`}
+                          title="Move to Archive" disabled={busy || clearing || removing !== null}
+                          className="mr-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-white/40 transition-colors hover:bg-white/10 hover:text-white/85 disabled:opacity-30"
+                          onClick={async () => {
+                            setRemoving(c.callId); setError(null);
+                            try { await onArchive(c.callId); } catch (e) { setError(e instanceof Error ? e.message : "Could not clear this call. Please try again."); }
+                            finally { setRemoving(null); }
+                          }}><Archive size={15} aria-hidden /></button>
+                      )}
+                      {onRestore && c.status === "ended" && c.archivedAt !== undefined && (
+                        <button type="button" aria-label={`Restore call to panel: ${c.title ?? "Playback support call"}`}
+                          title="Restore to panel" disabled={busy || clearing || removing !== null}
+                          className="mr-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-white/40 transition-colors hover:bg-white/10 hover:text-white/85 disabled:opacity-30"
+                          onClick={async () => {
+                            setRemoving(c.callId); setError(null);
+                            try { await onRestore(c.callId); } catch (e) { setError(e instanceof Error ? e.message : "Could not restore this call. Please try again."); }
+                            finally { setRemoving(null); }
+                          }}><ArchiveRestore size={15} aria-hidden /></button>
+                      )}
+                      {saved && onDelete && c.status === "ended" && c.archivedAt !== undefined && (
+                        <button type="button" aria-label={`Delete archived call permanently: ${c.title ?? "Playback support call"}`} title="Delete permanently"
+                          disabled={busy || clearing || removing !== null}
+                          className="mr-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-[#ff8a8f]/70 transition-colors hover:bg-[#ff5f66]/15 hover:text-[#ff8a8f] disabled:opacity-30"
+                          onClick={() => { setDeleteTarget(c); setError(null); }}><Trash2 size={15} aria-hidden /></button>
+                      )}
                     </li>
                   );
                 })}
@@ -753,26 +876,29 @@ function HistoryView({ calls, currentId, busy, onOpen, onClear, reduce }: { call
         </div>
       )}
 
-      {onClear && deletable > 0 && (
+      {saved && (hasMore || loading) && <button type="button" disabled={loading} onClick={onLoadMore}
+        className="mt-3 min-h-[40px] w-full rounded-lg border border-white/10 text-[12px] text-white/70 disabled:opacity-40">{loading ? "Loading…" : "Load older calls"}</button>}
+      {!saved && onClear && deletable > 0 && (
         <div className="mt-4 flex min-h-[44px] flex-wrap items-center gap-2">
           {confirm ? (
             <>
-              <span className="text-[12.5px] text-white/65">Delete {deletable} past call{deletable === 1 ? "" : "s"} and their logs?</span>
+              <span className="text-[12.5px] text-white/65">Move all finished calls to Archive?</span>
               <button
                 type="button"
                 disabled={clearing}
                 onClick={async () => {
                   setClearing(true);
                   try {
-                    await onClear();
+                    await onClear(); setConfirm(false);
+                  } catch (e) {
+                    setError(e instanceof Error ? e.message : "Could not clear the panel. Please try again.");
                   } finally {
                     setClearing(false);
-                    setConfirm(false);
                   }
                 }}
                 className="min-h-[36px] rounded-lg bg-[#ff5f66] px-3.5 text-[13px] font-medium text-white hover:bg-[#ff747a] disabled:opacity-50"
               >
-                {clearing ? "Deleting…" : "Delete"}
+                {clearing ? "Clearing…" : "Clear panel"}
               </button>
               <button type="button" onClick={() => setConfirm(false)} className="min-h-[36px] rounded-lg px-3 text-[13px] text-white/60 hover:text-white/90">
                 Cancel
@@ -781,12 +907,12 @@ function HistoryView({ calls, currentId, busy, onOpen, onClear, reduce }: { call
           ) : (
             <button
               type="button"
-              disabled={busy}
+              disabled={busy || removing !== null}
               onClick={() => setConfirm(true)}
               title={busy ? "Available when no call is in progress" : undefined}
               className="flex min-h-[40px] items-center gap-2 rounded-lg border border-[#ff5f66]/35 bg-[#ff5f66]/[0.12] px-3.5 text-[13px] font-medium text-[#ff8a8f] transition-colors hover:bg-[#ff5f66]/20 disabled:opacity-40"
             >
-              <Trash2 size={14} aria-hidden /> Delete past calls
+              <Archive size={14} aria-hidden /> Clear panel
             </button>
           )}
         </div>
@@ -797,7 +923,7 @@ function HistoryView({ calls, currentId, busy, onOpen, onClear, reduce }: { call
 
 /* ------------------------------------------------------------------ view */
 
-function View({ open, onToggle, callId, status: browserStatus, startedAt: browserStartedAt, assistantSpeaking, handoff, clientEvents, transcript, onOpenPastCall, serverEvents, pastCalls, callRow, storedTranscript, onClearHistory }: Props & ViewData) {
+function View({ open, onToggle, callId, status: browserStatus, startedAt: browserStartedAt, assistantSpeaking, handoff, clientEvents, transcript, onOpenPastCall, serverEvents, pastCalls, callRow, storedTranscript, onClearHistory, onArchiveCall, onRestoreCall, onDeleteCall, savedCalls, onLoadHistory, historyHasMore, historyLoading, metrics, metricsOverview }: Props & ViewData) {
   const reduce = useReducedMotion();
   // A call on another channel (phone, harness) that the agent is on right now: show it as live.
   const remoteLive =
@@ -827,7 +953,8 @@ function View({ open, onToggle, callId, status: browserStatus, startedAt: browse
 
   const running = steps.filter((s) => s.status === "running");
   const failed = steps.filter((s) => s.status === "failed");
-  const tools = steps.filter((s) => s.source !== "call" && s.source !== "model");
+  const tools = steps.filter((s) => s.tool && s.tool !== "delegate");
+  const toolCount = callRow?.measurements?.toolCallCount ?? tools.length;
   const markers: Marker[] = steps.flatMap((s) => (s.tool && s.tool !== "delegate" ? [{ id: s.id, at: s.at, tool: s.tool, status: s.status, detail: s.detail }] : []));
   const liveCount = tools.filter((s) => s.source === "live").length;
   const simCount = tools.filter((s) => s.source === "simulated").length;
@@ -843,13 +970,17 @@ function View({ open, onToggle, callId, status: browserStatus, startedAt: browse
     : null;
   const busy = status === "connecting" || (status === "active" && (running.length > 0 || !!handoff));
   const warn = failed.length > 0 && status !== "active";
+  const activityColor = status === "connecting" ? ACTIVITY_COLOR.connecting
+    : status === "error" ? ACTIVITY_COLOR.failed
+    : status === "active" ? (running.length ? stepColor(running[running.length - 1]) : ACTIVITY_COLOR.connected)
+    : ACTIVITY_COLOR.idle;
 
   const pill = {
-    idle: ["Ready", "bg-[#8e8e93]"],
-    connecting: ["Connecting", "bg-[#f5b83d]"],
-    active: ["Live", "bg-[#34c79a]"],
-    ended: ["Ended", "bg-[#8e8e93]"],
-    error: ["Failed", "bg-[#ff6369]"],
+    idle: ["Ready", ACTIVITY_COLOR.idle],
+    connecting: ["Connecting", ACTIVITY_COLOR.connecting],
+    active: ["Live", ACTIVITY_COLOR.connected],
+    ended: ["Ended", ACTIVITY_COLOR.idle],
+    error: ["Failed", ACTIVITY_COLOR.failed],
   }[status];
 
   return (
@@ -881,7 +1012,7 @@ function View({ open, onToggle, callId, status: browserStatus, startedAt: browse
         className={cn(
           // phones: modal bottom sheet; tablets and up: right-hand drawer
           "fixed inset-x-0 bottom-0 z-20 flex h-[80dvh] w-full flex-col rounded-t-[28px] border-t border-white/10 bg-[#111113]/95 text-white shadow-[0_-20px_60px_rgba(0,0,0,0.45)] backdrop-blur-xl transition-transform duration-300",
-          "sm:inset-x-auto sm:inset-y-0 sm:right-0 sm:h-auto sm:w-[400px] sm:max-w-[94vw] sm:rounded-none sm:border-l sm:border-t-0 sm:shadow-[-20px_0_60px_rgba(0,0,0,0.45)]",
+          "sm:inset-x-auto sm:inset-y-0 sm:right-0 sm:h-auto sm:w-[480px] sm:max-w-[94vw] lg:w-[560px] xl:w-[640px] sm:rounded-none sm:border-l sm:border-t-0 sm:shadow-[-20px_0_60px_rgba(0,0,0,0.45)]",
           open ? "translate-y-0 sm:translate-x-0" : "translate-y-full sm:translate-x-full sm:translate-y-0"
         )}
         style={{ fontFamily: "var(--font-geist-sans), -apple-system, system-ui, sans-serif" }}
@@ -918,7 +1049,7 @@ function View({ open, onToggle, callId, status: browserStatus, startedAt: browse
                 <ChevronRight size={14} />
               </motion.span>
               <Swap k={elapsed.prefix}>
-                <Shimmer active={status === "active"} base={0.75} idle={0.75}>{elapsed.prefix}</Shimmer>
+                <Shimmer active={status === "active"} base={0.9} idle={0.9} rgb={activityColor}>{elapsed.prefix}</Shimmer>
               </Swap>
               {/* counter ticks as a hard cut, like the reference */}
               {elapsed.value && <span className="tabular-nums text-white/40">{elapsed.value}</span>}
@@ -953,8 +1084,10 @@ function View({ open, onToggle, callId, status: browserStatus, startedAt: browse
           </div>
 
           {view === "history" ? (
+            <>{metricsOverview}
             <HistoryView
               calls={pastCalls}
+              savedCalls={savedCalls}
               currentId={callId}
               busy={liveCall}
               onOpen={(id) => {
@@ -962,8 +1095,14 @@ function View({ open, onToggle, callId, status: browserStatus, startedAt: browse
                 setView("activity");
               }}
               onClear={onClearHistory}
+              onArchive={onArchiveCall}
+              onRestore={onRestoreCall}
+              onDelete={onDeleteCall}
+              onLoadMore={onLoadHistory}
+              hasMore={historyHasMore}
+              loading={historyLoading}
               reduce={!!reduce}
-            />
+            /></>
           ) : (
           <>
           <AnimatePresence initial={false}>
@@ -985,8 +1124,8 @@ function View({ open, onToggle, callId, status: browserStatus, startedAt: browse
                   >
                     Playback support call
                   </motion.h2>
-                  <span className="flex items-center gap-1.5 text-[12px] text-white/55">
-                    <span className={cn("h-1.5 w-1.5 rounded-full transition-colors duration-200", pill[1])} aria-hidden />
+                  <span className="flex items-center gap-1.5 text-[12px]" style={{ color: `rgb(${pill[1]})` }}>
+                    <span className="h-1.5 w-1.5 rounded-full transition-colors duration-200" style={{ backgroundColor: `rgb(${pill[1]})` }} aria-hidden />
                     <Swap k={pill[0]}>{pill[0]}</Swap>
                   </span>
                 </header>
@@ -1018,20 +1157,21 @@ function View({ open, onToggle, callId, status: browserStatus, startedAt: browse
                             <motion.span
                               key={busy ? "busy" : warn ? "warn" : "idle"}
                               className="flex items-center justify-center"
+                              style={{ color: `rgb(${activityColor})` }}
                               initial={reduce ? false : ICON_IN}
                               animate={SHARP}
                               exit={{ ...ICON_IN, transition: { duration: reduce ? 0 : SWAP_OUT, ease: "easeIn" } }}
                               transition={{ duration: reduce ? 0 : SWAP_IN, ease: EASE }}
                             >
                               {busy ? (
-                                <Spinner size={13} className="text-white/70" />
+                                <Spinner size={13} />
                               ) : warn ? (
                                 <AlertTriangle size={13} className="text-[#f5c45e]" aria-hidden />
                               ) : (
                                 <span
                                   className={cn(
                                     "h-1.5 w-1.5 rounded-full",
-                                    status === "active" ? (assistantSpeaking ? "bg-[#34c79a] motion-safe:animate-pulse" : "bg-[#34c79a]") : "bg-white/30"
+                                    status === "active" ? (assistantSpeaking ? "bg-[#63d392] motion-safe:animate-pulse" : "bg-[#63d392]") : "bg-white/30"
                                   )}
                                   aria-hidden
                                 />
@@ -1041,7 +1181,7 @@ function View({ open, onToggle, callId, status: browserStatus, startedAt: browse
                         </span>
                         <span className="min-w-0 truncate" aria-live="polite">
                           <Swap k={statusLine}>
-                            <Shimmer active={busy}>{statusLine}</Shimmer>
+                            <Shimmer active={busy} rgb={activityColor}>{statusLine}</Shimmer>
                           </Swap>
                         </span>
                       </div>
@@ -1052,6 +1192,7 @@ function View({ open, onToggle, callId, status: browserStatus, startedAt: browse
             )}
           </AnimatePresence>
 
+          {metrics}
           {/* Live transcript: scrolls, follows the newest line */}
           {shownTranscript.length > 0 && <LiveTranscript transcript={shownTranscript} markers={markers} reduce={!!reduce} />}
 
@@ -1065,11 +1206,11 @@ function View({ open, onToggle, callId, status: browserStatus, startedAt: browse
           {/* Chips */}
           <motion.div layout="position" transition={{ layout: { duration: reduce ? 0 : 0.26, ease: EASE } }} className="mt-4 flex flex-wrap items-center gap-2 text-[12px] text-white/60">
             <span className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1">
-              <span className={cn("h-1.5 w-1.5 rounded-full transition-colors duration-200", pill[1])} aria-hidden />
+              <span className="h-1.5 w-1.5 rounded-full transition-colors duration-200" style={{ backgroundColor: `rgb(${pill[1]})` }} aria-hidden />
               {callId ? `Call ${callId.slice(0, 8)}` : "No call"}
             </span>
             <span className="rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1 tabular-nums">
-              {tools.length} tool{tools.length === 1 ? "" : "s"} · <span className={SOURCE.live.text}>{liveCount} live</span> ·{" "}
+              {toolCount} tool{toolCount === 1 ? "" : "s"} · <span className={SOURCE.live.text}>{liveCount} live</span> ·{" "}
               <span className={SOURCE.simulated.text}>{simCount} simulated</span>
             </span>
             {shownTranscript.length > 0 && (
