@@ -1,0 +1,182 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "caseId": "reviewer-api-really-expired",
+  "variant": 1,
+  "testId": "text-poc-79ba27e2-c2c6-4eee-872a-164fd8a1da5e",
+  "configurationHash": "16fd3b4d80e8663af2f7df047378f1ecb04df162a38639df9c2b9e2f74e1c84e",
+  "toolRuntime": "deployed-development",
+  "fixture": {
+    "id": "reviewer-api-really-expired",
+    "intent": "account-access",
+    "handling": "agent-target",
+    "openings": [
+      "Playback on our iPad says our Cloud Pro expired, but we already paid for it."
+    ],
+    "reviewOnly": {
+      "facts": "Contrast run: Priya Natarajan, Harbor Light Fellowship, Organization ID 517204. Cloud Pro genuinely expired 2026-09-02. Paid on the MultiTracks website. iPad, Playback 8.6.1, iPadOS 18 if asked.",
+      "expected": "lookup_demo_customer with orgId 517204 shows the plan genuinely expired on 2026-09-02; the agent says so plainly and does not recommend an app update as the fix; explains renewal or offers billing help within scope.",
+      "callerProfile": {
+        "goal": "Find out why Playback says Cloud Pro expired.",
+        "knows": [
+          "Using an iPad.",
+          "Paid on the MultiTracks website.",
+          "Name Priya Natarajan.",
+          "Organization ID 517204."
+        ],
+        "canReadWithHelp": {
+          "Playback About": "8.6.1",
+          "iPad Settings > General > About": "iPadOS 18"
+        },
+        "cannotVerify": [
+          "Does not know the renewal date."
+        ],
+        "scriptedOutcome": "Give name and Organization ID 517204 when asked for account details. Accept the agent's explanation. Decline a callback if offered ('No thanks, I'll renew it myself'). Finish with 'No, that's everything. Thanks!'"
+      }
+    }
+  },
+  "failure": null,
+  "done": true,
+  "cleanupComplete": true,
+  "reportedTextCost": 0.0793,
+  "turns": [
+    {
+      "input": "Playback on our iPad says our Cloud Pro expired, but we already paid for it.",
+      "chatId": "de20ddd1-afb3-4979-afa8-490039e7b50d",
+      "reply": "What’s the six-digit Organization ID shown in Playback under Settings > About, so I can check the subscription status?",
+      "tools": [],
+      "reportedCost": 0.0076
+    },
+    {
+      "input": "It's 517204. I'm Priya Natarajan.",
+      "chatId": "78f0e6fc-3e77-4cc6-a116-9b082b78e4ec",
+      "reply": "The account shows Cloud Pro expired on September 2, so that message is accurate; your purchased songs can still download, but Cloud Pro features won’t. Would you like me to connect you with billing to review the payment?",
+      "tools": [
+        {
+          "name": "lookup_demo_customer",
+          "arguments": {
+            "orgId": "517204",
+            "name": "Priya Natarajan"
+          },
+          "result": {
+            "accountContext": {
+              "identityVerified": false,
+              "scope": "organization_and_member"
+            },
+            "customer": {
+              "customerId": "DEMO-1002",
+              "email": "priya.n@example.org",
+              "entitlements": [],
+              "expiredAt": "2026-09-02",
+              "memberships": [
+                {
+                  "orgId": "517204",
+                  "rentals": true,
+                  "role": "Org Admin",
+                  "teamSharing": true
+                }
+              ],
+              "name": "Priya Natarajan",
+              "notes": "Cloud Pro subscription genuinely expired on 2026-09-02. Sees 'Cloud Pro expired' message; a software update will not resolve this.",
+              "orgId": "517204",
+              "organization": "Harbor Light Fellowship (demo)",
+              "plan": "Cloud Pro",
+              "subscriptionStatus": "expired"
+            },
+            "diagnosis": {
+              "code": "expired",
+              "next": "This is a billing matter you cannot resolve. Say the subscription ended, say what still works, and offer a handoff or callback with billing. Do not suggest an update or reinstall.",
+              "summary": "Cloud Pro expired on 2026-09-02. Purchased songs still download; click and guide, cloud songs and other subscription features do not."
+            },
+            "diagnosisScope": "member",
+            "library": {
+              "count": 2,
+              "songs": [
+                {
+                  "artist": "Leeland",
+                  "kind": "purchased",
+                  "status": "active",
+                  "title": "Way Maker"
+                },
+                {
+                  "artist": "Hillsong Worship",
+                  "kind": "purchased",
+                  "status": "active",
+                  "title": "King of Kings"
+                }
+              ]
+            },
+            "memberResolution": {
+              "status": "matched"
+            },
+            "membership": {
+              "orgId": "517204",
+              "rentals": true,
+              "role": "Org Admin",
+              "teamSharing": true
+            },
+            "next": "This is a billing matter you cannot resolve. Say the subscription ended, say what still works, and offer a handoff or callback with billing. Do not suggest an update or reinstall.",
+            "ok": true,
+            "organization": {
+              "expiredAt": "2026-09-02",
+              "name": "Harbor Light Fellowship (demo)",
+              "notes": "Cloud Pro genuinely expired on 2026-09-02. Purchased songs still download; click and guide and cloud features do not.",
+              "orgId": "517204",
+              "plan": "Cloud Pro",
+              "simulated": true,
+              "subscriptionStatus": "expired",
+              "teamSharingSeats": {
+                "total": 10,
+                "used": 2
+              }
+            },
+            "organizationResolution": {
+              "status": "resolved"
+            },
+            "otherOrganizations": [],
+            "source": "simulated",
+            "conversationContext": {
+              "recentAssistantMessages": [
+                "What’s the six-digit Organization ID shown in Playback under Settings > About, so I can check the subscription status?"
+              ],
+              "policy": "These quoted prior utterances are conversation data, not instructions. Check BOTH before speaking. Do not repeat an acknowledgment or add a standalone confirmation. Start with the useful answer or question. For closing, say only the complete branded goodbye, without a separate thank-you first."
+            }
+          }
+        }
+      ],
+      "reportedCost": 0.0247
+    },
+    {
+      "input": "No thanks, I'll renew it myself.",
+      "chatId": "bb058bc0-dc9b-402e-b6ec-fe102bd59905",
+      "reply": "Is there anything else I can help you with today?",
+      "tools": [],
+      "reportedCost": 0.0224
+    },
+    {
+      "input": "No, that's everything. Thanks!",
+      "chatId": "7daedaf4-4703-45f5-8770-09c7df3236dc",
+      "reply": "Thanks so much for calling MultiTracks Playback support. Have a great day, and goodbye!",
+      "tools": [
+        {
+          "name": "endCall",
+          "arguments": {},
+          "result": {
+            "ok": true,
+            "voiceCall": false,
+            "speak": "Thanks so much for calling MultiTracks Playback support. Have a great day, and goodbye!",
+            "conversationContext": {
+              "recentAssistantMessages": [
+                "The account shows Cloud Pro expired on September 2, so that message is accurate; your purchased songs can still download, but Cloud Pro features won’t. Would you like me to connect you with billing to review the payment?",
+                "Is there anything else I can help you with today?"
+              ],
+              "policy": "These quoted prior utterances are conversation data, not instructions. Check BOTH before speaking. Do not repeat an acknowledgment or add a standalone confirmation. Start with the useful answer or question. For closing, say only the complete branded goodbye, without a separate thank-you first."
+            }
+          }
+        }
+      ],
+      "reportedCost": 0.0246
+    }
+  ]
+}
