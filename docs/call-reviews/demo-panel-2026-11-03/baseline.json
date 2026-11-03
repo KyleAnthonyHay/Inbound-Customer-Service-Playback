@@ -1,0 +1,189 @@
+{
+  "selectedCallIds": [
+    "01a1a0e0-48cd-7000-8035-95aee867ec14",
+    "01a1a0e2-b475-7000-abfc-b9af17557af9",
+    "01a1a0e5-ea6f-7000-8956-0867632fd003",
+    "01a1a0eb-2bcf-7887-b320-d63b618b1ae2",
+    "01a1a0f6-3f46-7559-bc51-efb123ac803f",
+    "01a1a0f8-29b1-7000-aa6b-5069c61a70b2",
+    "01a1a0fc-4bf7-7559-bcf7-355039e6dc1a",
+    "01a1a0fe-03aa-799c-ba9a-6c74588ea615",
+    "01a1a102-7a4f-7887-b600-12ab2dba0343",
+    "01a1a109-b911-7eee-b107-39d44b1d4e20"
+  ],
+  "counts": {
+    "contained": 7,
+    "intentMatches": 10,
+    "labelMismatch": 0,
+    "missing": 0,
+    "noHumanEscalation": 7,
+    "resolved": 7,
+    "reviewed": 10,
+    "selected": 10,
+    "unknownResolution": 0,
+    "unreviewed": 0
+  },
+  "metrics": {
+    "containment": {
+      "denominator": 10,
+      "numerator": 7,
+      "percent": 70
+    },
+    "intentAccuracy": {
+      "denominator": 10,
+      "numerator": 10,
+      "percent": 100
+    },
+    "resolution": {
+      "denominator": 10,
+      "numerator": 7,
+      "percent": 70
+    },
+    "resolutionAmongNoEscalation": {
+      "denominator": 7,
+      "numerator": 7,
+      "percent": 100
+    }
+  },
+  "source": [
+    {
+      "callId": "01a1a0e0-48cd-7000-8035-95aee867ec14",
+      "scenarioId": "01-click-guide",
+      "review": {
+        "escalation": "none",
+        "evidence": "Caller reported: 'when we turn down the spoken guide in our ears, the click gets quieter too.' Assistant identified both Click and Guide were routed to Output 1 on the Focusrite, explained this causes the issue, and guided the caller to assign Guide to Output 2. Caller confirmed: 'That worked. We can turn down the spoken guide without changing the click now.' Assistant confirmed separation and asked if further help was needed; caller declined. No escalation was offered or requested.",
+        "primaryIntent": "routing",
+        "resolution": "resolved",
+        "secondaryIntents": []
+      },
+      "archivedAt": null
+    },
+    {
+      "callId": "01a1a0e2-b475-7000-abfc-b9af17557af9",
+      "scenarioId": "02-reconnect",
+      "review": {
+        "escalation": "none",
+        "evidence": "Caller reported that after unplugging and reconnecting their sound interface, instruments were coming through different channels instead of all music going through outputs 3 and 4. The assistant guided the caller to check the selected audio device and bus assignments, then instructed them to set all music buses to outputs 3 and 4. The caller confirmed that after making these changes, the music was coming through the correct outputs and click/guide remained separate. Caller said, 'No, we're all set' when asked if they needed anything else.",
+        "primaryIntent": "routing",
+        "resolution": "resolved",
+        "secondaryIntents": []
+      },
+      "archivedAt": null
+    },
+    {
+      "callId": "01a1a0e5-ea6f-7000-8956-0867632fd003",
+      "scenarioId": "03-audio-device",
+      "review": {
+        "escalation": "none",
+        "evidence": "Caller reported: 'this song looks like it's playing in Playback, but we can't hear anything through the church sound system.' Assistant guided them to check the Audio Device setting, which was initially set to MacBook speakers instead of the Focusrite 4i4. After switching to the Focusrite, the caller confirmed: 'That fixed it.' Assistant then asked if further help was needed, and the caller declined. The call ended with the branded farewell.",
+        "primaryIntent": "routing",
+        "resolution": "resolved",
+        "secondaryIntents": []
+      },
+      "archivedAt": null
+    },
+    {
+      "callId": "01a1a0eb-2bcf-7887-b320-d63b618b1ae2",
+      "scenarioId": "04-false-expired",
+      "review": {
+        "escalation": "none",
+        "evidence": "Caller reported: 'playback on our iPad says it's expired' despite having paid for Cloud Pro. Assistant confirmed Cloud Pro was active through March 14, 2027, and guided the caller to tap Restore Purchases, which did not resolve the issue. Assistant then gathered Playback version (8.6.1) and iPadOS version (18), identified that Playback 8.6.3 fixed this false expired message, and recommended updating the app. Caller confirmed: 'It- It sorted it out, thank you.' Assistant asked if anything else was needed; caller declined further help. No escalation or handoff occurred.",
+        "primaryIntent": "version",
+        "resolution": "resolved",
+        "secondaryIntents": [
+          "account-access"
+        ]
+      },
+      "archivedAt": null
+    },
+    {
+      "callId": "01a1a0f6-3f46-7559-bc51-efb123ac803f",
+      "scenarioId": "05-supported-setup",
+      "review": {
+        "escalation": "none",
+        "evidence": "Caller asked if their iPad and Focusrite 4i4 would work with Playback to send click/cues to the band and music to the audience. Assistant confirmed the Focusrite 4i4 is tested with Playback on iPad, requires a powered USB hub, and Playback Premium for separate routing. Caller accepted the answer and said, 'No, that's it. Thank you.' The call was then closed with the branded farewell.",
+        "primaryIntent": "compatibility",
+        "resolution": "resolved",
+        "secondaryIntents": [
+          "routing"
+        ]
+      },
+      "archivedAt": null
+    },
+    {
+      "callId": "01a1a0f8-29b1-7000-aa6b-5069c61a70b2",
+      "scenarioId": "06-borrowed-mixer",
+      "review": {
+        "escalation": "callback",
+        "evidence": "Caller asked if they could connect an iPad to a borrowed Mackie ProFX12v3 mixer via USB and keep click/guide out of the audience music. Assistant explained this depends on whether the mixer acts as a class-compliant multi-output interface, but the ProFX12v3 is not on the tested list and details were unavailable. Caller could not confirm the mixer's USB capabilities and requested a specialist review. Callback was scheduled and confirmed for Tue, Nov 3, 10:00 AM EST. No technical resolution was reached; the issue was escalated via callback.",
+        "primaryIntent": "routing",
+        "resolution": "unresolved",
+        "secondaryIntents": [
+          "compatibility",
+          "callback",
+          "human-request"
+        ]
+      },
+      "archivedAt": null
+    },
+    {
+      "callId": "01a1a0fc-4bf7-7559-bcf7-355039e6dc1a",
+      "scenarioId": "07-organization",
+      "review": {
+        "escalation": "none",
+        "evidence": "Caller reported: 'I can sign in to playback, but none of our church's songs are showing up. Uh. Worship leader can see them, but I can't.' Assistant clarified organization selection, caller confirmed seeing 'personal account' and 'Northgate Worship Collective' in the list. Assistant instructed to select the church organization; caller replied, 'Oh, I see. Yeah, I can see it now.' Assistant confirmed resolution and asked if further help was needed; caller declined. Call ended with branded farewell.",
+        "primaryIntent": "account-access",
+        "resolution": "resolved",
+        "secondaryIntents": [
+          "song-loading"
+        ]
+      },
+      "archivedAt": null
+    },
+    {
+      "callId": "01a1a0fe-03aa-799c-ba9a-6c74588ea615",
+      "scenarioId": "08-permission",
+      "review": {
+        "escalation": "callback",
+        "evidence": "Caller reported that songs were locked in Playback and stated, \"the church's songs are locked for me.\" The assistant confirmed via account lookup that the caller (Sam Okafor) did not have Playback Team Sharing permission, which is required for access to purchased tracks, and explained this to the caller. The caller then requested help getting the right access, and the assistant offered and scheduled a callback with Playback Support for further review. The callback was confirmed for Tue, Nov 3, 10:30 AM EST. The underlying need was account-access (permissions), with song-loading as a related concern. The issue was not resolved during the call, as the permission could not be granted by the assistant and required admin or specialist intervention. Escalation was completed via a confirmed callback booking.",
+        "primaryIntent": "account-access",
+        "resolution": "unresolved",
+        "secondaryIntents": [
+          "song-loading",
+          "callback",
+          "human-request"
+        ]
+      },
+      "archivedAt": null
+    },
+    {
+      "callId": "01a1a102-7a4f-7887-b600-12ab2dba0343",
+      "scenarioId": "09-loading-recovery",
+      "review": {
+        "escalation": "none",
+        "evidence": "Caller reported 'Graves into Gardens won't open' on iPad, with 'audio files missing' error. Assistant guided caller to tap 'Try Again' three times per documentation; caller confirmed the song opened after the second additional attempt. Caller then asked for the other songs on Sunday's demo plan; assistant provided the Planning Center service context ('Graves Into Gardens', 'Do It Again', 'What A Beautiful Name'). Caller said 'No, that's it. Thank you,' and the call was closed with the branded farewell. All substantive requests were answered and caller confirmed resolution.",
+        "primaryIntent": "song-loading",
+        "resolution": "resolved",
+        "secondaryIntents": [
+          "service-plan"
+        ]
+      },
+      "archivedAt": null
+    },
+    {
+      "callId": "01a1a109-b911-7eee-b107-39d44b1d4e20",
+      "scenarioId": "10-loading-unresolved",
+      "review": {
+        "escalation": "callback",
+        "evidence": "The caller reported that 'Graves Into Gardens' would not open on their iPad and displayed 'audio files missing' after pressing Try Again three times. The assistant confirmed this was a song-loading issue, checked for recent downloads, and determined that the only documented fix would remove all setlists, which the caller could not do before service. The assistant offered and scheduled a callback with a Playback specialist for further help. The underlying need was song-loading, with a callback successfully booked. The issue was not resolved during the call, as the song remained unavailable and the disruptive fix was not performed.",
+        "primaryIntent": "song-loading",
+        "resolution": "unresolved",
+        "secondaryIntents": [
+          "callback",
+          "human-request"
+        ]
+      },
+      "archivedAt": null
+    }
+  ]
+}

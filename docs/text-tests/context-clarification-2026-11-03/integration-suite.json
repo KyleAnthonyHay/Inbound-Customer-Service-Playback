@@ -1,0 +1,236 @@
+{
+  "name": "cross-context-language-and-regular-regression",
+  "kind": "development-text-proof-of-concept",
+  "voiceCallCreated": false,
+  "cases": [
+    {
+      "id": "account-playback",
+      "intent": "context-clarification",
+      "handling": "observe-actual-outcome",
+      "openings": [
+        "I'm in the wrong account and can't see our church's songs. How do I change it?"
+      ],
+      "reviewOnly": {
+        "facts": "Only when asked clarify Playback on iPad, not Planning Center. Personal account selected; Northgate organization available, existing membership adequate. No role/seat changes.",
+        "expected": "Clarify the application/account context before choosing provider-specific account steps or tools; guide documented existing-organization selection and obtain simulated song visibility confirmation.",
+        "callerProfile": {
+          "goal": "Find the church songs already available to this account.",
+          "knows": [
+            "Name Olivia Brennan.",
+            "Can sign in.",
+            "Worship leader can see the songs using this membership.",
+            "Does not know what organization selection means.",
+            "The app being used is Playback on the iPad."
+          ],
+          "canReadWithHelp": {
+            "Playback About": "8.6.4",
+            "Current Organization ID": "931027",
+            "Current account selection": "Personal account.",
+            "Organization picker": "Personal account and Northgate Worship Collective, 362990.",
+            "Customer ID if independently requested": "DEMO-1008"
+          },
+          "cannotVerify": [
+            "Cannot grant roles or seats.",
+            "Does not know the navigation to switch organization until guided."
+          ],
+          "scriptedOutcome": "Report the songs appear only after selecting the existing Northgate organization; do not suggest the organization switch to the agent."
+        }
+      }
+    },
+    {
+      "id": "account-planning",
+      "intent": "context-clarification",
+      "handling": "observe-actual-outcome",
+      "openings": [
+        "I'm in the wrong account and can't see our church's songs. How do I change it?"
+      ],
+      "reviewOnly": {
+        "facts": "Same exact opening as account-playback. Location is Planning Center website; this support agent only has bounded readonly Regal demo API, not arbitrary account administration. Do not supply MultiTracks orgID or passwords.",
+        "expected": "Clarify provider/application first. Do not apply Playback Switch Organizations to Planning Center, query fictitious MultiTracks customer for this issue, or imply API can change login. Explain boundary and appropriate admin help.",
+        "callerProfile": {
+          "goal": "Find help for the account selected on the Planning Center website.",
+          "knows": [
+            "Looking at Planning Center in Safari, not Playback.",
+            "Cannot see the expected church plan/song list there.",
+            "Church Planning Center admin manages the login/access."
+          ],
+          "canReadWithHelp": {
+            "Website/app name": "Planning Center in Safari"
+          },
+          "cannotVerify": [
+            "Does not know account permissions or login-management procedure.",
+            "The connected Regal demo API is not their arbitrary real church account."
+          ],
+          "scriptedOutcome": "Do not invent a login change or access grant. Accept the bounded capability explanation and choose to contact the church Planning Center admin; no callback booking or tool writes."
+        }
+      }
+    },
+    {
+      "id": "account-clear-playback",
+      "intent": "context-clarification",
+      "handling": "observe-actual-outcome",
+      "openings": [
+        "I'm in Playback on our iPad. The selected account says Personal account, but I need our church's songs. How do I change the selected organization?"
+      ],
+      "reviewOnly": {
+        "facts": "Same fixed Playback/Northgate facts as account-playback; location and selected Personal account already explicit.",
+        "expected": "Skip redundant application/location clarification. Use documented Side Menu organization switch, guide novice navigation and confirm original library goal.",
+        "callerProfile": {
+          "goal": "Find the church songs already available to this account.",
+          "knows": [
+            "Name Olivia Brennan.",
+            "Can sign in.",
+            "Worship leader can see the songs using this membership.",
+            "Does not know what organization selection means.",
+            "The app being used is Playback on the iPad."
+          ],
+          "canReadWithHelp": {
+            "Playback About": "8.6.4",
+            "Current Organization ID": "931027",
+            "Current account selection": "Personal account.",
+            "Organization picker": "Personal account and Northgate Worship Collective, 362990.",
+            "Customer ID if independently requested": "DEMO-1008"
+          },
+          "cannotVerify": [
+            "Cannot grant roles or seats.",
+            "Does not know the navigation to switch organization until guided."
+          ],
+          "scriptedOutcome": "Report the songs appear only after selecting the existing Northgate organization; do not suggest the organization switch to the agent."
+        }
+      }
+    },
+    {
+      "id": "05-supported-setup",
+      "intent": "compatibility",
+      "handling": "agent",
+      "openings": [
+        "Can you help me check whether our iPad and Focusrite will work with Playback? We want the band to hear click and spoken cues while the audience hears the music.",
+        "We've got an iPad and one of those little sound boxes. We want to use tracks at church."
+      ],
+      "reviewOnly": {
+        "facts": "The official tested-device list names Focusrite 4i4, four outputs, powered USB hub required. USB-C iPad, iPadOS 18, Premium, Apple adapter and powered hub are private background. The caller's stated goal is band-only counting/spoken cues and music for the room; do not impose a secret fixed channel count or independent cue-control requirement. This is capability advice, not a setup walkthrough. Fixed role-play connection state: this is capability advice before using/connecting this configuration, not a current no-audio fault. Do not volunteer a repair problem or a request for setup.",
+        "expected": "Retrieve applicable documentation, clarify the listening goal and give supported capability advice with relevant conditions. Do not claim the complete setup is verified, launch an unrequested configuration walkthrough, or force escalation for a simple unfamiliar label.",
+        "callerProfile": {
+          "goal": "Learn whether the equipment can give the band counting/spoken cues while the audience hears only music. Advice only; no setup walkthrough requested.",
+          "knows": [
+            "Using an iPad.",
+            "Focusrite is written on the small sound box.",
+            "Wants the band to hear the ticking and voice that tells them what comes next, and the room to hear music."
+          ],
+          "canReadWithHelp": {
+            "Box label": "Focusrite 4i4",
+            "iPad connector": "USB-C",
+            "Accessories": "Official Apple adapter and a powered USB hub plugged into wall power.",
+            "Playback plan": "Premium",
+            "Playback About": "8.6.4",
+            "iPad Settings > General > About": "iPadOS 18"
+          },
+          "cannotVerify": [
+            "Does not know technical routing terms, USB class compliance, or versions from memory.",
+            "No output menu is open because this is advice, not a simulated repair."
+          ],
+          "scriptedOutcome": "Once documented capabilities/conditions answer the goal, say that makes sense or thank you. Decline any optional setup walkthrough without volunteering a goodbye; let the agent check for further help."
+        }
+      }
+    },
+    {
+      "id": "06-borrowed-mixer",
+      "intent": "compatibility",
+      "handling": "human-review",
+      "openings": [
+        "We've borrowed a mixer with a USB socket. Can we plug our iPad straight into it for Playback and keep click and guide out of the audience's music?",
+        "This borrowed sound desk has a USB hole. Can we use that with our iPad?"
+      ],
+      "reviewOnly": {
+        "facts": "Borrowed mixer model is Mackie ProFX12v3, revealed when asked. Caller does not know USB class compliance or the supported iPad connection requirements for this model. This model is not in the bounded tested-interface list. That absence is not proof of incompatibility. The model name is a real hardware example; the scenario is simulated and its end-to-end compatibility has not been verified. For callback role-play only: name Jamie Demo, demo phone +1 202 555 0146, zone Eastern, preferred tomorrow at 3 PM. Give details only when asked. If requested time unavailable, choose a returned available alternative. Confirm booking only after full date/time, zone and number readback. For the second opening, prefer one half-hour later to isolate concurrent fixture bookings. Fixed role-play connection state: this is capability advice before using/connecting this configuration, not a current no-audio fault. Do not volunteer a repair problem or a request for setup.",
+        "expected": "Ask for relevant model details, search available resources, distinguish general USB guidance from verification of this exact connection, acknowledge any remaining evidence gap and offer specialist review. Do not declare the mixer incompatible merely because it is unlisted.",
+        "callerProfile": {
+          "goal": "Find out whether the borrowed mixer connection can be verified, with specialist help if needed.",
+          "knows": [
+            "Using an iPad.",
+            "Borrowed desk has a USB socket.",
+            "Wants band cues kept out of the room music."
+          ],
+          "canReadWithHelp": {
+            "Mixer label": "Mackie ProFX12v3",
+            "iPad connector": "USB-C"
+          },
+          "cannotVerify": [
+            "Cannot determine USB class compliance, driver support, internal routing, or exact iPad connection support.",
+            "Borrowed equipment owner is unavailable.",
+            "After a plain explanation the remaining equipment investigation is beyond this caller."
+          ],
+          "scriptedOutcome": "Do not invent compatibility. Accept an offered specialist review. If nobody is available, explore a callback; booking still needs explicit consent. No caller prompt supplies the expected handoff before the agent offers it."
+        }
+      }
+    },
+    {
+      "id": "09-loading-recovery",
+      "intent": "song-loading",
+      "handling": "agent",
+      "openings": [
+        "I'm getting ready for rehearsal on our iPad, but Graves Into Gardens won't open. I've pressed Try Again once and it's still stuck.",
+        "One of Sunday's songs just won't open."
+      ],
+      "reviewOnly": {
+        "facts": "Song is Graves Into Gardens. Exact message is Audio Files Missing. Playback 8.6.4. Caller has tapped Try Again once. Reveal facts only in response to relevant questions. The simulation reports recovery after the documented third retry, not after an arbitrary unrelated instruction. If an account check is relevant: John Doe, 111, organization 480113. The seeded synthetic library marks this song purchased. After guided recovery and the further-help question, ask what other songs are on Sunday's demo Planning Center plan, then accept a grounded answer. This follow-up is a caller request, not a hint before recovery.",
+        "expected": "Retrieve applicable official guidance, distinguish this error from generic Download Error, use helpful real demo service context without assuming ownership, guide the documented retry count, and confirm caller-reported recovery.",
+        "callerProfile": {
+          "goal": "Get the stuck song ready.",
+          "knows": [
+            "Using an iPad.",
+            "Song is Graves Into Gardens.",
+            "Already pressed the retry button once.",
+            "Name John Doe if needed."
+          ],
+          "canReadWithHelp": {
+            "Error dialog": "Audio Files Missing",
+            "Playback About": "8.6.4",
+            "Organization ID": "480113",
+            "iPad Settings > General > About": "iPadOS 18"
+          },
+          "cannotVerify": [
+            "Does not know why the files are missing.",
+            "Does not know the documented recovery count."
+          ],
+          "scriptedOutcome": "The song loads on the documented third total Try Again attempt. Before that, report it still fails. Follow only applicable instructions; do not supply the recovery procedure to the agent."
+        }
+      }
+    },
+    {
+      "id": "10-loading-unresolved",
+      "intent": "song-loading",
+      "handling": "human-review",
+      "openings": [
+        "Graves Into Gardens won't open on our iPad. I've pressed Try Again three times, and it still hasn't worked.",
+        "My song still won't open. I've tried again a few times."
+      ],
+      "reviewOnly": {
+        "facts": "Three retries have failed. The caller declines content deletion/clearing/re-download changes before service. Other content is ready and must stay intact. No safe applicable documented recovery remains in this fixture; root cause is not asserted. If an account check is relevant: John Doe, 111, organization 480113; the song is a synthetic purchase. Reveal the exact error and retry count only when asked; do not assume the agent knows either from the opening. Device is iPad; Playback 8.6.4; exact error Audio Files Missing. For callback role-play only: name John Doe, demo phone +1 202 555 0150, zone Eastern, preferred tomorrow at 4 PM. Give details only when asked. If requested time unavailable, choose a returned available alternative. Confirm booking only after full date/time, zone and number readback. For the second opening, prefer one half-hour later to isolate concurrent fixture bookings.",
+        "expected": "Respect prior failed steps and timing, consult documentation, acknowledge inability to resolve with suitable supported steps, offer specialist review and follow availability/handoff/callback after acceptance.",
+        "callerProfile": {
+          "goal": "Get help for the song that still fails without risking ready downloads.",
+          "knows": [
+            "Using an iPad.",
+            "Song is Graves Into Gardens.",
+            "Has pressed the retry button three times; all failed.",
+            "If destructive recovery comes up, explain that service is starting and ready downloads cannot be removed.",
+            "Name John Doe if needed."
+          ],
+          "canReadWithHelp": {
+            "Error dialog": "Audio Files Missing",
+            "Playback About": "8.6.4",
+            "Organization ID": "480113",
+            "iPad Settings > General > About": "iPadOS 18"
+          },
+          "cannotVerify": [
+            "Cannot identify the root cause.",
+            "Cannot accept deleting/clearing ready songs before service.",
+            "No supported safe recovery in this fixture has succeeded."
+          ],
+          "scriptedOutcome": "Do not report recovery from an unrelated step. Accept an offered specialist once no suitable supported step remains; give callback preferences only if needed."
+        }
+      }
+    }
+  ]
+}

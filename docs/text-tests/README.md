@@ -1,4 +1,6 @@
-**Latest feedback update:** [Account reuse, mixed intent labels and grouped callback questions](three-feedback-2026-11-03/review.md) records the three subsequent changes, five focused text conversations, local checks and development activation. The [earlier parallel ten-case audit](parallel-suite-2026-11-03/review.md) retains its original configurations and findings. Text results do not establish voice delivery or disconnect.
+**Latest context/plain-language update:** [Paired ambiguity tests and regular scenario regressions](context-clarification-2026-11-03/review.md) records the general policy, nine context cases, ten regular scenarios and four revisions. The selected balanced development version still has an ambiguous-account assumption and occasional jargon; the stricter variant was rejected after over-clarification. Text results do not establish voice delivery or disconnect.
+
+[Account reuse, mixed intent labels and grouped callback questions](three-feedback-2026-11-03/review.md) and the [earlier parallel ten-case audit](parallel-suite-2026-11-03/review.md) retain their original configurations and findings.
 
 **Current workflow:** [Open-ended developer conversations](../open-ended-test-method.md), with [the completed ten-conversation review](open-ended-review.md). The findings below are historical; Jordan now has one informal usability try-out, not a ten-call script.
 

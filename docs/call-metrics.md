@@ -44,6 +44,14 @@ Unknown outcomes remain in the reviewed denominator, conservatively; pending/not
 
 ## Counts, timings and cost
 
+### Editable demo panel
+
+The development Activity panel has a separate **Demo calls** view. Convex `demoCallSets` holds one explicitly selected completed, reviewed voice call per curated scenario, initially copied from `manual-voice-initial-ten-2026-11-03`. Initialization is idempotent: it never resets later edits. Selected calls are hidden from the working Past calls list; their source records and Archive behavior remain intact. The recent unarchived history overview explicitly includes demo calls and is separate from the demo-only scorecards.
+
+Use **Open call** for its original transcript and measurements, **Swap call** for another reviewed voice call already labeled with the same test scenario, or **Remove from demo** to empty that slot without deleting the call. An empty slot has **Choose call** to restore or replace it. Candidate lists inspect the latest 100 calls carrying that scenario label and do not filter by a positive score. Expected scenario labels remain outside model inputs.
+
+Intent accuracy, strict containment and overall resolution recalculate from this selection only, showing each numerator and reviewed denominator. Removing calls changes the denominator; incomplete or missing source records and changed labels are flagged and excluded. Unknown outcomes remain in the reviewed denominator as unresolved. With no reviewed calls, rates are unavailable rather than 0% or 100%. The original immutable evaluation snapshot remains unchanged by selection edits. These are manual browser voice role-plays, not telephone trials or a voice retest of later prompt changes. Production selection writes are disabled.
+
 ### Fixed presentation cohort
 
 The [initial ten manual browser voice results](call-reviews/curated-voice-results-2026-11-03/review.md) are stored separately from the moving dashboard in the development `evaluationRuns` table. Each immutable admin-created snapshot preserves explicit call IDs, independently assigned scenario labels, native review values, accepted intent comparisons, source dates, metric definitions and each numerator/denominator. `evaluationRuns:capture` derives values from stored calls and rejects missing/duplicate scenarios, text/harness/active calls and absent reviews; it never edits source history. `evaluationRuns:get` reads the fixed snapshot by key. Both functions are internal and development-only.

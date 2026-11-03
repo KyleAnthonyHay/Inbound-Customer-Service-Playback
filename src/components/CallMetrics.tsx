@@ -57,7 +57,7 @@ type Overview = { window: number; completed: number; evaluated: number; labeled:
 const rate = (n: number, d: number) => d ? `${Math.round(n / d * 100)}% (${n}/${d})` : "Not yet evaluated";
 export function CallMetricsOverview({ data }: { data: Overview }) {
   return <section aria-label="Call quality overview" className="mb-3 rounded-xl border border-white/10 p-3 text-xs text-white/60">
-    <p className="mb-2 font-medium text-white/85">Quality · {data.window} calls in this panel, archive excluded</p>
+    <p className="mb-2 font-medium text-white/85">Recent unarchived history · {data.window} calls, including demo calls</p>
     <p>Expected intent accuracy: {rate(data.correct, data.labeled)}</p>
     <p>Containment: {rate(data.contained, data.evaluated)} · Resolution: {rate(data.resolved, data.evaluated)}</p>
     <p className="mt-1 text-white/40">Reviewed {data.evaluated}/{data.completed} completed calls · {data.unknownResolution} unknown outcomes. Unknown outcomes remain in the reviewed denominator; pending calls are excluded. Unlabeled calls are excluded from intent accuracy.</p>

@@ -1,0 +1,9 @@
+{
+  "kind": "fixture-provenance-correction",
+  "scope": "Initial candidate A track-app only",
+  "originalIssue": "Copied Guide output-selector readout said Output1 while the same profile Buses readout and declared app-level fixture already specified Guide Output2.",
+  "actualTimeline": "Initial routing start completed all six opening turns before the pause/correction was received. No selector or other private follow-up readout had been sent. The original track-app run was stopped after its first reply as fixture-blocked; its stored fixture and reply were preserved. Other five routing runs were unchanged. Corrected master/subset fixtures were used from the beginning of every B/C/D run.",
+  "correctsMetadata": "The preflightCorrection text inherited by config/retest-config/final-config/gate-config says before routing inference. That phrasing is inaccurate for A initial turns; this explicit erratum records the actual chronology. Do not interpret the initial track-app as a completed valid fixture test.",
+  "noAgentInputsChangedMidConversation": true,
+  "earlierConfigFilesPreserved": true
+}

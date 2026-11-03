@@ -44,6 +44,15 @@ test("searchDocs returns nothing for unrelated queries and says not to invent", 
   assert.match(r.note, /Do not invent/);
 });
 
+test("a matched product guide does not establish the caller's application or control context", () => {
+  const r = searchDocs("switch organization wrong account", { category: "setup" });
+  assert.ok(r.found > 0);
+  assert.equal(r.evidenceScope, "product-documentation");
+  assert.equal(r.establishesCallerContext, false);
+  assert.match(r.note, /does not establish caller context/);
+  assert.equal(searchDocs("unrelated lasagna recipe").establishesCallerContext, false);
+});
+
 test("category preferences retain stronger organization navigation evidence from the master guide", () => {
   for (const category of ["setup", "song-loading"]) {
     const r = searchDocs("Switch Organizations", { category });

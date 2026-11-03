@@ -48,7 +48,7 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useMutation, useQuery, usePaginatedQuery } from "convex/react";
 import { AnimatePresence, MotionConfig, motion, useReducedMotion } from "motion/react";
-import { ChevronLeft, ChevronRight, Activity, AlertTriangle, History, Archive, ArchiveRestore, Trash2, Wrench, X, Headset, User } from "lucide-react";
+import { ChevronLeft, ChevronRight, Activity, AlertTriangle, History, Archive, ArchiveRestore, Trash2, Wrench, X, Headset, User, FlaskConical } from "lucide-react";
 import { PERSONA_NAME } from "@/lib/voicePolicy";
 import { api } from "../../convex/_generated/api";
 import type { Doc } from "../../convex/_generated/dataModel";
@@ -59,6 +59,7 @@ import type { ToolSource } from "@/lib/tools/meta";
 import { config } from "@/lib/config";
 import { formatCallerNumber } from "@/lib/tools/callerId";
 import { CallMetrics, CallMetricsOverview } from "./CallMetrics";
+import { DemoCallsPanel, type DemoCallsData } from "./DemoCallsPanel";
 
 type Props = {
   open: boolean;
@@ -79,6 +80,7 @@ type Props = {
 };
 
 type ViewData = {
+  demoData?: DemoCallsData;
   metrics?: React.ReactNode;
   metricsOverview?: React.ReactNode;
   serverEvents: Doc<"callEvents">[];
@@ -174,6 +176,9 @@ function Live(props: Props) {
   const callArgs = skip ? "skip" : { callId: callId ?? "" };
   const serverEvents = useQuery(api.callEvents.byCall, callArgs) ?? [];
   const pastCalls = useQuery(api.calls.list, skip ? "skip" : { limit: 50 }) ?? [];
+  const demoData = useQuery(api.demoCalls.get, skip || !props.open ? "skip" : {});
+  const selectedDemoIds = new Set(demoData?.selectedCallIds);
+  const workingCalls = pastCalls.filter(c => !selectedDemoIds.has(c.callId));
   const callRow = useQuery(api.calls.get, callArgs) ?? null;
   const storedTranscript = useQuery(api.calls.transcriptByCall, callArgs) ?? [];
   const clearAll = useMutation(api.calls.clearAll);
@@ -217,7 +222,7 @@ function Live(props: Props) {
     void statusUpdate({ callId: m.callId, status: "ended", callType: "webCall" }).catch(() => {});
   }, [skip, props.status, statusUpdate]);
 
-  return <View {...props} callId={callId} serverEvents={serverEvents} pastCalls={pastCalls} callRow={callRow} storedTranscript={storedTranscript}
+  return <View {...props} callId={callId} serverEvents={serverEvents} pastCalls={workingCalls} demoData={demoData} callRow={callRow} storedTranscript={storedTranscript}
     metrics={callRow ? <CallMetrics key={callRow.callId} call={callRow} onScenario={scenarioId => assignScenario({ callId: callRow.callId, scenarioId })} /> : undefined}
     metricsOverview={metricsOverview ? <CallMetricsOverview data={metricsOverview} /> : undefined}
     savedCalls={history.results} historyHasMore={history.status === "CanLoadMore"} historyLoading={history.status === "LoadingMore" || history.status === "LoadingFirstPage"}
@@ -956,7 +961,7 @@ function HistoryView({ calls: panelCalls, savedCalls = [], currentId, busy, onOp
 
 /* ------------------------------------------------------------------ view */
 
-function View({ open, onToggle, callId, status: browserStatus, startedAt: browserStartedAt, assistantSpeaking, handoff, clientEvents, transcript, onOpenPastCall, serverEvents, pastCalls, callRow, storedTranscript, onClearHistory, onArchiveCall, onRestoreCall, onDeleteCall, savedCalls, onLoadHistory, historyHasMore, historyLoading, metrics, metricsOverview }: Props & ViewData) {
+function View({ open, onToggle, callId, status: browserStatus, startedAt: browserStartedAt, assistantSpeaking, handoff, clientEvents, transcript, onOpenPastCall, serverEvents, pastCalls, callRow, storedTranscript, onClearHistory, onArchiveCall, onRestoreCall, onDeleteCall, savedCalls, onLoadHistory, historyHasMore, historyLoading, metrics, metricsOverview, demoData }: Props & ViewData) {
   const reduce = useReducedMotion();
   // A call on another channel (phone, harness) that the agent is on right now: show it as live.
   const remoteLive =
@@ -964,7 +969,7 @@ function View({ open, onToggle, callId, status: browserStatus, startedAt: browse
   const status: CallStatus = remoteLive ? (callRow.status === "ringing" ? "connecting" : "active") : browserStatus;
   const startedAt = remoteLive && callRow ? callRow.startedAt : browserStartedAt;
   const [cardOpen, setCardOpen] = useState(true);
-  const [view, setView] = useState<"activity" | "history">("activity");
+  const [view, setView] = useState<"activity" | "history" | "demo">("activity");
   const elapsed = useElapsed(startedAt, status);
   const logged = useMemo(() => buildSteps(serverEvents, clientEvents), [serverEvents, clientEvents]);
   // Live lines while a call runs; the stored transcript when replaying a past call.
@@ -1057,7 +1062,7 @@ function View({ open, onToggle, callId, status: browserStatus, startedAt: browse
         <div className="mx-auto mt-2.5 h-1 w-9 shrink-0 rounded-full bg-white/25 sm:hidden" aria-hidden />
         <div className="flex-1 overflow-y-auto overscroll-contain px-4 pb-5 pt-4 sm:px-5 sm:pt-6">
           <div className="flex items-center justify-between gap-3">
-            {view === "history" ? (
+            {view !== "activity" ? (
               <button
                 type="button"
                 onClick={() => setView("activity")}
@@ -1065,8 +1070,8 @@ function View({ open, onToggle, callId, status: browserStatus, startedAt: browse
               >
                 <ChevronLeft size={14} aria-hidden />
                 Activity
-                <span className="ml-2 font-medium text-white/90">Past calls</span>
-                <span className="ml-1 rounded-full bg-white/[0.08] px-1.5 py-px font-mono text-[10.5px] tabular-nums text-white/55">{pastCalls.length}</span>
+                <span className="ml-2 font-medium text-white/90">{view === "demo" ? "Demo calls" : "Past calls"}</span>
+                <span className="ml-1 rounded-full bg-white/[0.08] px-1.5 py-px font-mono text-[10.5px] tabular-nums text-white/55">{view === "demo" ? demoData?.counts.selected ?? 0 : pastCalls.length}</span>
               </button>
             ) : (
             <motion.button
@@ -1093,7 +1098,8 @@ function View({ open, onToggle, callId, status: browserStatus, startedAt: browse
             </motion.button>
             )}
             <span className="flex shrink-0 items-center gap-0.5">
-              {view === "activity" && (
+              {view !== "demo" && demoData && <button type="button" onClick={() => setView("demo")} aria-label={`Demo calls (${demoData.counts.selected})`} title="Demo calls" className="flex h-11 items-center gap-1.5 rounded-full px-2 text-xs text-white/70 hover:bg-white/[0.06] sm:h-7"><FlaskConical size={14} aria-hidden /><span className="hidden sm:inline">Demo</span><span>{demoData.counts.selected}</span></button>}
+              {view !== "history" && (
                 <button
                   type="button"
                   onClick={() => setView("history")}
@@ -1120,7 +1126,9 @@ function View({ open, onToggle, callId, status: browserStatus, startedAt: browse
             </span>
           </div>
 
-          {view === "history" ? (
+          {view === "demo" ? (
+            <DemoCallsPanel data={demoData} busy={liveCall} onOpen={id => { onOpenPastCall?.(id); setView("activity"); }} />
+          ) : view === "history" ? (
             <>{metricsOverview}
             <HistoryView
               calls={pastCalls}

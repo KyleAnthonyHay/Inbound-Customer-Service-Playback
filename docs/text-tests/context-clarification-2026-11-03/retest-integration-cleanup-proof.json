@@ -1,0 +1,216 @@
+{
+  "before": {
+    "own": [
+      {
+        "bookingId": "j974bavs4xvm8dwevp9a41s35x8hhgxc",
+        "callId": "text-poc-4b758586-94ad-49e1-9f0e-5cccc39f97a0",
+        "status": "confirmed",
+        "callerName": "John Doe",
+        "callbackNumber": "+1 202 555 0150",
+        "slotId": "j574fdjx9yct2jn9vzgpxdczfd8he6k1",
+        "timeZone": "Eastern"
+      },
+      {
+        "bookingId": "j9791amw4c0c59nnq1pf71egyh8hhfxv",
+        "callId": "text-poc-7fcc72c3-c4dc-415e-983e-cebb367d620d",
+        "status": "confirmed",
+        "callerName": "Jamie Demo",
+        "callbackNumber": "202-555-0146",
+        "slotId": "j579axttt9vmhzypskfacx2xch8hf62t",
+        "timeZone": "Eastern"
+      }
+    ],
+    "slots": [
+      {
+        "available": false,
+        "detail": "that slot is already booked",
+        "iso": "2026-11-04T20:00:00.000Z",
+        "local": "Wed, Nov 4, 3:00 PM EST",
+        "reason": "taken"
+      },
+      {
+        "available": false,
+        "detail": "that slot is already booked",
+        "iso": "2026-11-04T21:00:00.000Z",
+        "local": "Wed, Nov 4, 4:00 PM EST",
+        "reason": "taken"
+      }
+    ],
+    "protectedBookings": [
+      {
+        "bookingId": "j9704ez9gjzg834rrcs6t8b0wx8hg901",
+        "callId": "01a1a109-b911-7eee-b107-39d44b1d4e20",
+        "status": "confirmed",
+        "slotId": "j572g57y6rbch9bw7pmq0f0nr98he7y2"
+      },
+      {
+        "bookingId": "j9779dn138hsag9yzedf284v1n8hhcz0",
+        "callId": "01a1a0fe-03aa-799c-ba9a-6c74588ea615",
+        "status": "confirmed",
+        "slotId": "j572nxnvr6vdr0pgm4xk4scynx8he1ys"
+      },
+      {
+        "bookingId": "j978vya47vmdth6wt3ds27ct518hgmc8",
+        "callId": "01a1a0f8-29b1-7000-aa6b-5069c61a70b2",
+        "status": "confirmed",
+        "slotId": "j57cxbc1dwxq1fccmh2sps7m2x8hf6ax"
+      },
+      {
+        "bookingId": "j97235gg0secrvv52gdj7cf9fs8hgz7d",
+        "callId": "01a19f52-4043-7000-8c7d-39e4ce54b8c6",
+        "status": "confirmed",
+        "slotId": "j57ehjmhgjd27rw4va3j4ryjch8hekqw"
+      },
+      {
+        "bookingId": "j972pk8pc6j4x7ddfc4x0x121s8hgv5e",
+        "callId": "01a19edd-1cdb-7552-9766-366ee3c28fbb",
+        "status": "confirmed",
+        "slotId": "j575a88dneyb0dkn280tqjgm118hec29"
+      }
+    ]
+  },
+  "after": {
+    "checkedAt": "2026-11-03T12:06:21.319Z",
+    "cleanupReturnCounts": {
+      "text-poc-7fcc72c3-c4dc-415e-983e-cebb367d620d": 1,
+      "text-poc-4b758586-94ad-49e1-9f0e-5cccc39f97a0": 1
+    },
+    "remainingOwnBookings": 0,
+    "slots": [
+      {
+        "available": true,
+        "endAt": "2026-11-04T20:30:00.000Z",
+        "iso": "2026-11-04T20:00:00.000Z",
+        "local": "Wed, Nov 4, 3:00 PM EST",
+        "slotId": "j579axttt9vmhzypskfacx2xch8hf62t"
+      },
+      {
+        "available": true,
+        "endAt": "2026-11-04T21:30:00.000Z",
+        "iso": "2026-11-04T21:00:00.000Z",
+        "local": "Wed, Nov 4, 4:00 PM EST",
+        "slotId": "j574fdjx9yct2jn9vzgpxdczfd8he6k1"
+      }
+    ],
+    "protectedBookingsUnchanged": true,
+    "runs": [
+      {
+        "caseId": "05-supported-setup",
+        "testId": "text-poc-a048b9fa-2aec-4239-a76a-2ac427dbb174",
+        "done": true,
+        "cleanupComplete": true,
+        "failure": null,
+        "remainingToolLogs": 0,
+        "turns": 3,
+        "cost": 0.0789
+      },
+      {
+        "caseId": "06-borrowed-mixer",
+        "testId": "text-poc-7fcc72c3-c4dc-415e-983e-cebb367d620d",
+        "done": true,
+        "cleanupComplete": true,
+        "failure": null,
+        "remainingToolLogs": 0,
+        "turns": 7,
+        "cost": 0.2849
+      },
+      {
+        "caseId": "09-loading-recovery",
+        "testId": "text-poc-c9748815-5f3e-476e-a254-134853b64127",
+        "done": true,
+        "cleanupComplete": true,
+        "failure": null,
+        "remainingToolLogs": 0,
+        "turns": 5,
+        "cost": 0.1425
+      },
+      {
+        "caseId": "10-loading-unresolved",
+        "testId": "text-poc-4b758586-94ad-49e1-9f0e-5cccc39f97a0",
+        "done": true,
+        "cleanupComplete": true,
+        "failure": null,
+        "remainingToolLogs": 0,
+        "turns": 7,
+        "cost": 0.23399999999999999
+      },
+      {
+        "caseId": "account-clear-playback",
+        "testId": "text-poc-a1e0a5c7-153f-404a-8fe0-51b686696574",
+        "done": true,
+        "cleanupComplete": true,
+        "failure": null,
+        "remainingToolLogs": 0,
+        "turns": 3,
+        "cost": 0.0775
+      },
+      {
+        "caseId": "account-planning",
+        "testId": "text-poc-72d99c4a-3971-4468-9b13-9fa5d4bfb709",
+        "done": true,
+        "cleanupComplete": true,
+        "failure": null,
+        "remainingToolLogs": 0,
+        "turns": 4,
+        "cost": 0.0756
+      },
+      {
+        "caseId": "account-playback",
+        "testId": "text-poc-86748724-10ca-4388-bd4a-e7cd3dbea2f3",
+        "done": true,
+        "cleanupComplete": true,
+        "failure": null,
+        "remainingToolLogs": 0,
+        "turns": 3,
+        "cost": 0.07769999999999999
+      }
+    ],
+    "sourceHashCheck": [
+      {
+        "file": "src/lib/assistant.ts",
+        "expected": "3f59fff4702ccc6e6128c477ca9ed4baafee7a8b1d87d3b938b27f51ce3404df",
+        "actual": "3f59fff4702ccc6e6128c477ca9ed4baafee7a8b1d87d3b938b27f51ce3404df"
+      },
+      {
+        "file": "src/lib/vapiTools.ts",
+        "expected": "1e4997efacc3419b9864ea462d1efede7394a4c126e35bf0c2d076eb572c9fe8",
+        "actual": "1e4997efacc3419b9864ea462d1efede7394a4c126e35bf0c2d076eb572c9fe8"
+      },
+      {
+        "file": "scripts/lib/text-agent.ts",
+        "expected": "5ecf7db31b758b530a5a3ff3f03b731bfae0203de670eef045f9b05efb1ab6ec",
+        "actual": "5ecf7db31b758b530a5a3ff3f03b731bfae0203de670eef045f9b05efb1ab6ec"
+      },
+      {
+        "file": "scripts/text-cases.ts",
+        "expected": "21f30edad6c0f8960e3696227d7e3d3674e4f75303239941407584382a9498c1",
+        "actual": "21f30edad6c0f8960e3696227d7e3d3674e4f75303239941407584382a9498c1"
+      },
+      {
+        "file": "convex/vapiTools.ts",
+        "expected": "edf4f499123a8b1700f8bb086bff2b58224f324a7be318b157a53c673caf4926",
+        "actual": "edf4f499123a8b1700f8bb086bff2b58224f324a7be318b157a53c673caf4926"
+      },
+      {
+        "file": "src/lib/tools/kb.ts",
+        "expected": "2276e1c3ba4fc190c47a18aaade3373f23b8439370a5fd5367548cd07e61bfcd",
+        "actual": "2276e1c3ba4fc190c47a18aaade3373f23b8439370a5fd5367548cd07e61bfcd"
+      },
+      {
+        "file": "src/knowledge/playback-kb.json",
+        "expected": "6ccaa6eb4f05425b4258eaa4357f33ed54819bc7a6ca68ba24e2fcf77ecc021f",
+        "actual": "6ccaa6eb4f05425b4258eaa4357f33ed54819bc7a6ca68ba24e2fcf77ecc021f"
+      },
+      {
+        "file": "convex/customers.ts",
+        "expected": "28fd3a1993ad025422765915338210522d39301da25b3d59b0eeb0f103b32810",
+        "actual": "28fd3a1993ad025422765915338210522d39301da25b3d59b0eeb0f103b32810"
+      },
+      {
+        "file": "convex/lib/accountContext.ts",
+        "expected": "8eddc40f641ef10ebb504716f445c60c621b9bc5ac0068abe4da7bb5034eb20e",
+        "actual": "8eddc40f641ef10ebb504716f445c60c621b9bc5ac0068abe4da7bb5034eb20e"
+      }
+    ]
+  }
+}

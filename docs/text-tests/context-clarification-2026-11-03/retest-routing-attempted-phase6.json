@@ -1,0 +1,18 @@
+[
+  {
+    "run": "track-console-v1",
+    "input": "It says Guide."
+  },
+  {
+    "run": "track-app-v1",
+    "input": "There are two rows: Guide Dynamic and Guide Non Dynamic. Both say Click."
+  },
+  {
+    "run": "01-click-guide-v1",
+    "input": "Output 1 is selected, and Output 2 is visible and not greyed out."
+  },
+  {
+    "run": "02-reconnect-v1",
+    "input": "I changed Guitars to 3/4. All the music is coming through the right pair again, and click and guide are still separate. Thank you!"
+  }
+]

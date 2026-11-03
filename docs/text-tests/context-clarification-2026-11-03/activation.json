@@ -1,0 +1,15 @@
+{
+  "kind": "development-context-clarification-activation",
+  "activatedAt": "2026-11-03T12:16:42.137Z",
+  "selectedCandidate": "C",
+  "developmentOnly": true,
+  "reasonerMatchesSource": true,
+  "speakerMatchesSource": true,
+  "functionsAndMessagesCurrent": true,
+  "toolServersPreserved": true,
+  "voicePreserved": true,
+  "firstMessagePreserved": true,
+  "artifactPlanPreserved": true,
+  "productionAssistantUnchanged": true,
+  "automatedVoiceCallsCreated": false
+}

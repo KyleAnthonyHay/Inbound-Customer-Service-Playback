@@ -2,6 +2,7 @@ import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 import { callMeasurements, callReview } from "./lib/callMetricValidators";
 import { evaluationRunFields } from "./lib/evaluationRunValidators";
+import { demoSetFields } from "./lib/demoCallValidators";
 
 /**
  * All data here is SYNTHETIC demo data. Customers, teams, slots, and bookings
@@ -20,6 +21,8 @@ const subscriptionStatus = v.union(v.literal("active"), v.literal("past-due"), v
 export default defineSchema({
   /** Immutable, explicitly selected evaluation cohorts; preserve original call history. */
   evaluationRuns: defineTable(evaluationRunFields).index("by_key", ["key"]),
+  /** Editable demo selection; the immutable original evaluation snapshot stays separate. */
+  demoCallSets: defineTable(demoSetFields).index("by_key", ["key"]),
   /** Internal singleton lease; no public query or client-controlled release. */
   callAdmission: defineTable({
     scope: v.string(), token: v.string(), expiresAt: v.number(), callId: v.optional(v.string()),
@@ -171,6 +174,7 @@ export default defineSchema({
   })
     .index("by_callId", ["callId"])
     .index("by_startedAt", ["startedAt"])
+    .index("by_scenarioId_startedAt", ["scenarioId", "startedAt"])
     .index("by_archivedAt_startedAt", ["archivedAt", "startedAt"])
     .index("by_archivedAt_status_startedAt", ["archivedAt", "status", "startedAt"]),
 

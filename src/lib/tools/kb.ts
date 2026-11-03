@@ -78,6 +78,8 @@ export function searchDocs(query: string, opts?: { category?: string; limit?: nu
     ok: true as const,
     source: "documentation" as const,
     provider: "MultiTracks Help Center (bounded snapshot)",
+    evidenceScope: "product-documentation" as const,
+    establishesCallerContext: false as const,
     snapshotRetrievedAt: kb.retrievedAt,
     query,
     found: scored.length,
@@ -106,6 +108,6 @@ export function searchDocs(query: string, opts?: { category?: string; limit?: nu
     note:
       scored.length === 0
         ? "No documented article matched. Do not invent steps; offer a handoff or ask a clarifying question."
-        : "Use only steps whose source section, named error, version and setup conditions match the caller's facts. A less disruptive step is not automatically applicable. Prefer applicable non-disruptive steps. Explain a disruptive step's effect briefly once and honor constraints already stated; if no applicable safe step remains, offer specialist review.",
+        : "These results describe Playback, not where the caller is currently looking or making a change. A matching article does not establish caller context. Use only steps whose application/control, source section, named error, version and setup conditions match the caller's established facts. A less disruptive step is not automatically applicable. Prefer applicable non-disruptive steps. Explain a disruptive step's effect briefly once and honor constraints already stated; if no applicable safe step remains, offer specialist review.",
   };
 }
