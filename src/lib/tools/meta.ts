@@ -12,7 +12,7 @@ export const TOOL_META: Record<string, { label: string; source: ToolSource }> = 
   get_callback_slots: { label: "Retrieving callback slots", source: "simulated" },
   reserve_callback: { label: "Reserving callback", source: "simulated" },
   initiate_handoff: { label: "Transferring to support team", source: "simulated" },
-  endCall: { label: "Ending the call", source: "model" },
+  endCall: { label: "Preparing the goodbye", source: "internal" },
   /** GPT-Live internal: the speaker delegates to the reasoner. Shown as thinking. */
   delegate: { label: "Thinking", source: "model" },
 };

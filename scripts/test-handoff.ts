@@ -48,6 +48,7 @@ test("availability alone, missing team and unavailable handoff never schedule a 
   const call = { callId, controlUrl };
   const availability = await tools.check_team_availability.run({}, ctx, call) as Record<string, unknown>;
   assert.equal(availability.handoffStarted, false);
+  assert.equal(availability.teamNotified, false);
   const failed = await tools.initiate_handoff.run({}, ctx, call) as Record<string, unknown>;
   assert.equal(failed.ok, false);
   assert.equal(failed.endCallRequired, undefined);
@@ -73,7 +74,7 @@ test("handoff fallback schedules once, gives the goodbye a grace period and leav
   const jobs: unknown[] = [];
   const ctx = {
     db: {
-      query: () => ({ withIndex: () => ({ unique: async () => row }) }),
+      query: (table: string) => ({ withIndex: () => ({ unique: async () => table === "deletedCalls" ? null : row }) }),
       get: async () => row,
       patch: async (_id: unknown, patch: unknown) => Object.assign(row, patch),
     },
