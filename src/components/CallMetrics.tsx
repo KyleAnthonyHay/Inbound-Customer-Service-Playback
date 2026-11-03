@@ -1,11 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import type { Doc } from "../../convex/_generated/dataModel";
 import { matchesScenarioIntent, outcome, SCENARIOS } from "../lib/callMetrics";
 
 const ms = (value?: number) => value === undefined ? "Unavailable" : `${(value / 1000).toFixed(2)} s`;
 const yesNo = (value: boolean | null) => value === null ? "Unknown" : value ? "Yes" : "No";
+
+/** One labeled group of label/value rows: labels left in the secondary tone, values right in the primary tone. */
+function Group({ title, rows }: { title: string; rows: Array<[string, ReactNode]> }) {
+  return <div className="mt-5 first:mt-0">
+    <h4 className="mb-1 text-[11px] font-medium uppercase tracking-wide text-white/40">{title}</h4>
+    <dl className="divide-y divide-white/[0.06]">
+      {rows.map(([label, value]) => <div key={label} className="flex items-baseline justify-between gap-4 py-1.5 text-[12.5px]">
+        <dt className="shrink-0 text-white/50">{label}</dt>
+        <dd className="min-w-0 text-right tabular-nums text-white/85">{value}</dd>
+      </div>)}
+    </dl>
+  </div>;
+}
+
+/** Measurements for one call, shown inside the panel's collapsible "Call measurements" section. */
 export function CallMetrics({ call, onScenario }: { call: Doc<"calls">; onScenario: (scenarioId: string | null) => Promise<unknown> }) {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -13,11 +28,9 @@ export function CallMetrics({ call, onScenario }: { call: Doc<"calls">; onScenar
   const scenario = SCENARIOS.find(s => s.id === call.scenarioId);
   const expectedIntent = scenario ? [scenario.intent, ...(scenario.intentAlternatives ?? []).map(a => [a.primary, ...a.requiredSecondary].join(" + "))].join(" or ") : "";
   const result = r ? outcome(r) : null;
-  return <details aria-label="Call measurements" className="my-3 rounded-xl border border-white/10 bg-white/[0.025] p-3.5 text-xs text-white/70">
-    <summary className="cursor-pointer font-medium text-white/90">Call measurements <span className="ml-2 font-normal text-white/40">{call.channel} · {call.analyticsState ?? "Not evaluated"}</span></summary>
-    <div className="mt-3">
-    <label className="block text-white/50">Expected test scenario
-      <select aria-label="Expected test scenario" value={call.scenarioId ?? ""} disabled={saving} className="mt-1 mb-2 w-full rounded border border-white/15 bg-neutral-900 p-2 text-white/80" onChange={async e => {
+  return <div aria-label="Call measurements" className="text-[12.5px] text-white/70">
+    <label className="block text-[12px] text-white/50">Expected test scenario
+      <select aria-label="Expected test scenario" value={call.scenarioId ?? ""} disabled={saving} className="mt-1.5 w-full rounded-lg border border-white/10 bg-[#1c1c1f] px-2.5 py-2 text-[13px] text-white/85 disabled:opacity-50" onChange={async e => {
         const id = e.target.value || null;
         setSaving(true); setError("");
         try { await onScenario(id); } catch { setError("Could not save the scenario. Please try again."); } finally { setSaving(false); }
@@ -26,41 +39,62 @@ export function CallMetrics({ call, onScenario }: { call: Doc<"calls">; onScenar
         {SCENARIOS.map(s => <option key={s.id} value={s.id}>{s.title}</option>)}
       </select>
     </label>
-    {error && <p role="alert" className="mb-2 text-orange-300">{error}</p>}
-    <dl className="grid grid-cols-2 gap-x-4 gap-y-2 [&_dt]:text-white/40 [&_dd]:mt-0.5 [&_dd]:tabular-nums">
-      <div><dt>Primary intent</dt><dd>{r?.primaryIntent ?? "Pending"}</dd></div>
-      <div><dt>Secondary intents</dt><dd>{!r ? "Pending" : r.secondaryIntents.length ? r.secondaryIntents.join(", ") : "None"}</dd></div>
-      <div><dt>Expected intent match</dt><dd>{!scenario ? "Needs scenario label" : !r ? `Pending · expected ${expectedIntent}` : `${matchesScenarioIntent(scenario, r) ? "Correct" : "Mismatch"} · expected ${expectedIntent}`}</dd></div>
-      <div><dt>Resolved</dt><dd>{result ? yesNo(result.resolved) : "Not evaluated"}</dd></div>
-      <div><dt>Contained</dt><dd>{result ? yesNo(result.contained) : "Not evaluated"}</dd></div>
-      <div><dt>Escalation (simulated)</dt><dd>{r?.escalation ?? "Not evaluated"}</dd></div>
-      <div><dt>Duration</dt><dd>{m?.durationSeconds !== undefined ? `${m.durationSeconds.toFixed(1)} s` : call.durationSeconds !== undefined ? `${call.durationSeconds.toFixed(1)} s` : "Unavailable"}</dd></div>
-      <div><dt>Call ended reason</dt><dd>{call.endedReason ?? (call.status === "ended" ? "Not reported" : "Still active")}</dd></div>
-      <div><dt>Transcript messages</dt><dd>{m ? `${m.messageCount} · ${m.userMessageCount} caller / ${m.assistantMessageCount} agent` : `${call.transcriptCount} logged`}</dd></div>
-      <div><dt>Tool calls</dt><dd>{m?.toolCallCount ?? `${call.toolCount} logged`} · {call.toolFailureCount ?? "?"} logged failures</dd></div>
-      <div><dt>Reasoner delegations</dt><dd>{m?.delegationCount ?? "Unavailable"}</dd></div>
-      <div><dt>Avg reply delay · estimate</dt><dd>{ms(m?.responseTimeAverageMs)} ({m?.responseSamples ?? 0} samples)</dd></div>
-      <div><dt>Reply p50 / p95 · estimates</dt><dd>{ms(m?.responseTimeP50Ms)} / {ms(m?.responseTimeP95Ms)}</dd></div>
-      <div><dt>First reply · estimate</dt><dd>{ms(m?.firstResponseEstimateMs)}</dd></div>
-      <div><dt>Greeting delay · estimate</dt><dd>{ms(m?.greetingDelayEstimateMs)}</dd></div>
-      <div><dt>Avg logged tool execution</dt><dd>{ms(call.toolLatencyAverageMs)} ({call.toolLatencySamples ?? 0} samples)</dd></div>
-      <div><dt>Reported call cost</dt><dd>{m?.costUsd !== undefined ? `$${m.costUsd.toFixed(4)}${m.usageComplete === false ? " · incomplete" : ""}` : "Unavailable"}</dd></div>
-    </dl>
-    {r?.evidence && <p className="mt-3 leading-relaxed text-white/55"><span className="text-white/40">{call.reviewSource === "reviewed-preview" ? "Reviewed preview" : "Post-call review"}: </span>{r.evidence}</p>}
-    <p className="mt-3 text-[11px] leading-relaxed text-white/40">Timing estimates use Vapi transcript timestamps, including tool waits. Greeting delay starts at Vapi call start; it does not prove when a phone caller heard audio. Answer-to-first-audio and model first-token timing are unavailable. Overlaps excluded: {m?.overlapCount ?? 0}. Expected labels stay outside agent inputs.</p>
-    {call.analyticsError && <p className="mt-2 text-orange-200/70">{call.analyticsError}</p>}
+    {error && <p role="alert" className="mt-2 text-[#ff8a8f]">{error}</p>}
+    <div className="mt-5">
+      <Group title="Outcome" rows={[
+        ["Primary intent", r?.primaryIntent ?? "Pending"],
+        ["Secondary intents", !r ? "Pending" : r.secondaryIntents.length ? r.secondaryIntents.join(", ") : "None"],
+        ["Expected intent", !scenario ? "Needs scenario label" : !r ? `Pending · ${expectedIntent}` : `${matchesScenarioIntent(scenario, r) ? "Correct" : "Mismatch"} · ${expectedIntent}`],
+        ["Resolved", result ? yesNo(result.resolved) : "Not evaluated"],
+        ["Contained", result ? yesNo(result.contained) : "Not evaluated"],
+        ["Escalation (simulated)", r?.escalation ?? "Not evaluated"],
+      ]} />
+      <Group title="Timing" rows={[
+        ["Duration", m?.durationSeconds !== undefined ? `${m.durationSeconds.toFixed(1)} s` : call.durationSeconds !== undefined ? `${call.durationSeconds.toFixed(1)} s` : "Unavailable"],
+        ["Avg reply delay (est.)", `${ms(m?.responseTimeAverageMs)} · ${m?.responseSamples ?? 0} samples`],
+        ["Reply p50 / p95 (est.)", `${ms(m?.responseTimeP50Ms)} / ${ms(m?.responseTimeP95Ms)}`],
+        ["First reply (est.)", ms(m?.firstResponseEstimateMs)],
+        ["Greeting delay (est.)", ms(m?.greetingDelayEstimateMs)],
+        ["Avg tool execution", `${ms(call.toolLatencyAverageMs)} · ${call.toolLatencySamples ?? 0} samples`],
+      ]} />
+      <Group title="Activity and cost" rows={[
+        ["Messages", m ? `${m.messageCount} · ${m.userMessageCount} caller / ${m.assistantMessageCount} agent` : `${call.transcriptCount} logged`],
+        ["Tool calls", `${m?.toolCallCount ?? `${call.toolCount} logged`} · ${call.toolFailureCount ?? "?"} failed`],
+        ["Reasoner delegations", m?.delegationCount ?? "Unavailable"],
+        ["Ended reason", call.endedReason?.replace(/-/g, " ") ?? (call.status === "ended" ? "Not reported" : "Still active")],
+        ["Reported cost", m?.costUsd !== undefined ? `$${m.costUsd.toFixed(4)}${m.usageComplete === false ? " · incomplete" : ""}` : "Unavailable"],
+      ]} />
     </div>
-  </details>;
+    {r?.evidence && <p className="mt-5 leading-relaxed text-white/60"><span className="text-white/40">{call.reviewSource === "reviewed-preview" ? "Reviewed preview" : "Post-call review"}: </span>{r.evidence}</p>}
+    {call.analyticsError && <p className="mt-3 text-[#f5c45e]">{call.analyticsError}</p>}
+    <p className="mt-4 text-[11px] leading-relaxed text-white/35">Timing estimates use Vapi transcript timestamps, including tool waits. Greeting delay starts at Vapi call start; it does not prove when a phone caller heard audio. Answer-to-first-audio and model first-token timing are unavailable. Overlaps excluded: {m?.overlapCount ?? 0}. Expected labels stay outside agent inputs.</p>
+  </div>;
+}
+
+/** A headline percentage with its fraction underneath. Shared by Past calls and Demo calls. */
+export function StatTile({ label, percent, detail }: { label: string; percent: number | null; detail: string }) {
+  return <div className="rounded-xl bg-white/[0.04] px-3 py-2.5">
+    <p className="text-[11px] text-white/50">{label}</p>
+    <p className="mt-0.5 text-[20px] font-semibold leading-tight tabular-nums text-white/95">{percent === null ? "—" : `${Math.round(percent)}%`}</p>
+    <p className="mt-0.5 text-[11px] tabular-nums text-white/40">{detail}</p>
+  </div>;
 }
 
 type Overview = { window: number; completed: number; evaluated: number; labeled: number; correct: number; resolved: number; contained: number; unknownResolution: number; channels: Array<{ channel: string; evaluated: number; resolved: number; contained: number }> };
-const rate = (n: number, d: number) => d ? `${Math.round(n / d * 100)}% (${n}/${d})` : "Not yet evaluated";
+const pct = (n: number, d: number) => d ? n / d * 100 : null;
 export function CallMetricsOverview({ data }: { data: Overview }) {
-  return <section aria-label="Call quality overview" className="mb-3 rounded-xl border border-white/10 p-3 text-xs text-white/60">
-    <p className="mb-2 font-medium text-white/85">Recent unarchived history · {data.window} calls, including demo calls</p>
-    <p>Expected intent accuracy: {rate(data.correct, data.labeled)}</p>
-    <p>Containment: {rate(data.contained, data.evaluated)} · Resolution: {rate(data.resolved, data.evaluated)}</p>
-    <p className="mt-1 text-white/40">Reviewed {data.evaluated}/{data.completed} completed calls · {data.unknownResolution} unknown outcomes. Unknown outcomes remain in the reviewed denominator; pending calls are excluded. Unlabeled calls are excluded from intent accuracy.</p>
-    {data.channels.filter(c => c.evaluated).map(c => <p key={c.channel} className="mt-2">{c.channel}: contained {rate(c.contained, c.evaluated)}, resolved {rate(c.resolved, c.evaluated)}</p>)}
+  return <section aria-label="Call quality overview">
+    <div className="grid grid-cols-3 gap-2">
+      <StatTile label="Intent accuracy" percent={pct(data.correct, data.labeled)} detail={`${data.correct}/${data.labeled} labeled`} />
+      <StatTile label="Containment" percent={pct(data.contained, data.evaluated)} detail={`${data.contained}/${data.evaluated} reviewed`} />
+      <StatTile label="Resolution" percent={pct(data.resolved, data.evaluated)} detail={`${data.resolved}/${data.evaluated} reviewed`} />
+    </div>
+    <details className="mt-2 text-[11.5px] leading-relaxed text-white/45">
+      <summary className="cursor-pointer list-none text-white/50 hover:text-white/80 [&::-webkit-details-marker]:hidden">
+        Last {data.window} unarchived calls, demo calls included · <span className="underline decoration-white/25 underline-offset-2">How these are counted</span>
+      </summary>
+      <p className="mt-1.5">Reviewed {data.evaluated}/{data.completed} completed calls · {data.unknownResolution} unknown outcomes. Unknown outcomes remain in the reviewed denominator; pending calls are excluded. Unlabeled calls are excluded from intent accuracy.</p>
+      {data.channels.filter(c => c.evaluated).map(c => <p key={c.channel} className="mt-1">{c.channel}: contained {c.contained}/{c.evaluated}, resolved {c.resolved}/{c.evaluated}</p>)}
+    </details>
   </section>;
 }
