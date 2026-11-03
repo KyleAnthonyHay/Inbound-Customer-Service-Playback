@@ -64,7 +64,10 @@ export async function getRelevantChangesSinceVersion(args: { installedVersion: s
   const missingInformation: string[] = [];
   if (!current) missingInformation.push("currentVersion");
   if (!platform) missingInformation.push("platform");
-  if (!osKnown) missingInformation.push("osVersion");
+  // On iPhone/iPad the App Store only offers an update the device can install, so an
+  // unknown iOS/iPadOS version is not a reason to ask before suggesting one.
+  const osCheckedByStore = iosPlatform && !osKnown && !!storeMinimum;
+  if (!osKnown && !osCheckedByStore) missingInformation.push("osVersion");
   if (platform && (!iosPlatform || !storeMinimum)) missingInformation.push("applicablePlatformRequirements");
   const blockers: string[] = [];
   if (upToDate) blockers.push("already-current-or-newer");
@@ -97,7 +100,10 @@ export async function getRelevantChangesSinceVersion(args: { installedVersion: s
       requirementsSource: iosPlatform && storeMinimum && apple.ok ? apple.url : null,
       missingInformation,
       blockers,
-      prerequisitesComplete: missingInformation.length === 0 && blockers.length === 0 && osRequirementMet === true,
+      osCheck: osCheckedByStore
+        ? `Not asked: the App Store only offers this update on iOS/iPadOS ${storeMinimum} or later. If the caller does not see the update, then ask for their iOS/iPadOS version.`
+        : null,
+      prerequisitesComplete: missingInformation.length === 0 && blockers.length === 0 && (osRequirementMet === true || osCheckedByStore),
       candidateMatchNeedsReview: true,
       scope: "Checks known versions and the current app's applicable OS minimum. Does not verify audio accessories or establish a device's root cause. Keyword matches are candidates, not confirmed fixes for the caller.",
     },
