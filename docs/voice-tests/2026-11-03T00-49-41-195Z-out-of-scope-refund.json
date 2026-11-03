@@ -1,0 +1,47 @@
+{
+  "scenario": "out-of-scope-refund",
+  "expectedIntent": "out-of-scope",
+  "callId": "01a19ee1-13a7-7552-97a6-e9f52426a413",
+  "endedReason": "customer-ended-call",
+  "vapiToolCalls": [
+    "delegate"
+  ],
+  "timing": {
+    "turns": [
+      {
+        "caller": "I got charged twice this month and I want a refund",
+        "silenceS": 0.4,
+        "firstHeard": "Okay, let me check on that.",
+        "transition": true,
+        "gapAfterTransitionS": 1.4,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"I got charged twice this month and I wan\" -> 0.4s silence, then transition: \"Okay, let me check on that.\" -> 1.4s gap -> \"I'm sorry about the duplicate charge. Re\" [delegate@+0.0s]"
+      },
+      {
+        "caller": "No, nothing else. Bye",
+        "silenceS": 0.2,
+        "firstHeard": "Okay, thanks for calling MultiTracks support. Goodbye.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [],
+        "summary": "\"No, nothing else. Bye\" -> 0.2s silence, then answer: \"Okay, thanks for calling MultiTracks support. Good\""
+      }
+    ],
+    "longestSilenceS": 0.4,
+    "longestGapAfterTransitionS": 1.4
+  },
+  "convexToolEvents": [],
+  "liveEvents": [
+    "24.0s TOOL-CALLS delegate({})"
+  ],
+  "transcript": [
+    "AGENT: Hi, thanks for calling MultiTracks Playback support. I'm an AI assistant. What can I help you with today?",
+    "CALLER: I got charged twice this month and I want a refund",
+    "AGENT: Okay, let me check on that.",
+    "AGENT: I'm sorry about the duplicate charge. Refunds are handled by our billing team. Do you want me to connect you with a billing specialist?",
+    "CALLER: No, nothing else. Bye",
+    "AGENT: Okay, thanks for calling MultiTracks support. Goodbye."
+  ]
+}

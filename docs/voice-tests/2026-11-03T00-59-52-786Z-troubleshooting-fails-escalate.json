@@ -1,0 +1,107 @@
+{
+  "scenario": "troubleshooting-fails-escalate",
+  "expectedIntent": "audio-output",
+  "callId": "01a19ee9-3961-7000-8589-048a2a67bf9b",
+  "endedReason": "customer-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "search_playback_docs",
+    "delegate",
+    "delegate",
+    "delegate",
+    "delegate"
+  ],
+  "timing": {
+    "turns": [
+      {
+        "caller": "No sound from my USB interface in Playback. I'm on an iPad, version eight point six point four, and I have time",
+        "silenceS": 0.2,
+        "firstHeard": "Got it. I'll start",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.0s",
+          "search_playback_docs@+1.6s"
+        ],
+        "summary": "\"No sound from my USB interface in Playba\" -> 0.2s silence, then answer: \"Got it. I'll start\" [delegate@+0.0s, search_playback_docs@+1.6s]"
+      },
+      {
+        "caller": "I've checked the audio device setting. It's set to the interface. Still nothing",
+        "silenceS": 0.6,
+        "firstHeard": "Got it. Thanks for checking. I'm",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"I've checked the audio device setting. I\" -> 0.6s silence, then answer: \"Got it. Thanks for checking. I'm\" [delegate@+0.0s]"
+      },
+      {
+        "caller": "Tried a different cable and a powered hub too. Still no sound",
+        "silenceS": 0.6,
+        "firstHeard": "Thanks for that. I'm considering the next step.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"Tried a different cable and a powered hu\" -> 0.6s silence, then answer: \"Thanks for that. I'm considering the next step.\" [delegate@+0.0s]"
+      },
+      {
+        "caller": "Yeah, okay. Let's set up a callback. Tomorrow morning, Central Time, five five five, zero one zero, zero one four two. Name is Elena Cruz",
+        "silenceS": 0.6,
+        "firstHeard": "Okay, I'm on it.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"Yeah, okay. Let's set up a callback. Tom\" -> 0.6s silence, then answer: \"Okay, I'm on it.\" [delegate@+0.0s]"
+      },
+      {
+        "caller": "Yes, confirm it. Bye",
+        "silenceS": 0.6,
+        "firstHeard": "Okay. Checking that now.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"Yes, confirm it. Bye\" -> 0.6s silence, then answer: \"Okay. Checking that now.\" [delegate@+0.0s]"
+      }
+    ],
+    "longestSilenceS": 0.6,
+    "longestGapAfterTransitionS": 0
+  },
+  "convexToolEvents": [
+    "search_playback_docs succeeded 444ms 6 result(s)"
+  ],
+  "liveEvents": [
+    "28.6s TOOL-CALLS delegate({})",
+    "30.3s TOOL-CALLS search_playback_docs({\"query\":\"Playback iPad USB audio interface no sound audio output routing USB interface\",\"category\":\"audio-output\",\"platform\":\"iPadOS\"})",
+    "52.6s TOOL-CALLS delegate({})",
+    "72.8s TOOL-CALLS delegate({})",
+    "104.9s TOOL-CALLS delegate({})",
+    "123.6s TOOL-CALLS delegate({})"
+  ],
+  "transcript": [
+    "AGENT: Hi, thanks for calling MultiTracks Playback support. I'm an AI assistant. What can I help you with today?",
+    "CALLER: No sound from my USB interface in Playback. I'm on an iPad, version eight point six point four, and I have time",
+    "AGENT: Got it. I'll start",
+    "AGENT: checking what could",
+    "AGENT: be going on.",
+    "AGENT: Thanks. When you press play, do you see the song moving in Playback but hear nothing from the interface?",
+    "CALLER: I've checked the audio device setting. It's set to the interface. Still nothing",
+    "AGENT: Got it. Thanks for checking. I'm",
+    "AGENT: thinking this through. What model of USB interface are you using?",
+    "CALLER: Tried a different cable and a powered hub too. Still no sound",
+    "AGENT: Thanks for that. I'm considering the next step.",
+    "AGENT: Thanks for trying those. In Playback Settings, open Buses, the page that sends groups of tracks to outputs, and tell me what output is shown for one bus.",
+    "CALLER: Yeah, okay. Let's set up a callback. Tomorrow morning, Central Time, five five five, zero one zero, zero one four two. Name is Elena Cruz",
+    "AGENT: Okay, I'm on it.",
+    "AGENT: What time tomorrow morning would you prefer for the callback, Central Time?",
+    "CALLER: Yes, confirm it. Bye",
+    "AGENT: Okay. Checking that now.",
+    "AGENT: I still need the specific time tomorrow morning before I can check availability. What time would you like?"
+  ]
+}

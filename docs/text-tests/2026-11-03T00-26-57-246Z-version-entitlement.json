@@ -1,0 +1,222 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "scenario": "version-entitlement",
+  "expectedIntent": "version-comparison-and-demo-entitlement",
+  "failure": null,
+  "reportedTextCost": 0.0121,
+  "turns": [
+    {
+      "input": "I'm demo customer 111. Playback 8.6.2 on my iPad says Cloud Pro expired. Can you check whether my demo subscription is active and whether a newer version has a documented fix?",
+      "chatId": "d696695b-0dda-439a-9701-9e057ab1ce81",
+      "reply": "Let me compare your version with the documented release history.\n\nYour demo Cloud Pro subscription is active through March 14, 2027. Version 8.6.3 documents a fix for this false expired message; what iPadOS version is your iPad running?",
+      "tools": [
+        {
+          "name": "lookup_demo_customer",
+          "arguments": {
+            "customerId": "111"
+          },
+          "result": {
+            "customer": {
+              "customerId": "111",
+              "email": "john.doe@example.org",
+              "entitlements": [
+                "cloud-sync",
+                "playback-pro-features",
+                "multitrack-downloads"
+              ],
+              "memberships": [
+                {
+                  "orgId": "480113",
+                  "rentals": true,
+                  "role": "Org Admin",
+                  "teamSharing": true
+                }
+              ],
+              "name": "John Doe",
+              "notes": "Active Cloud Pro subscriber. Reports a 'Cloud Pro expired' message in Playback despite an active plan. Last known Playback version 8.6.2 (iPad).",
+              "orgId": "480113",
+              "organization": "Riverbend Community Church (demo)",
+              "plan": "Cloud Pro",
+              "renewsAt": "2027-03-14",
+              "subscriptionStatus": "active"
+            },
+            "diagnosis": {
+              "code": "active",
+              "next": "The subscription is active. This alone does not establish the cause of a conflicting app message or access to every song. Use caller facts and applicable documentation to choose useful diagnostic evidence; release history can explain behavior left unexplained by account or configuration facts.",
+              "summary": "Cloud Pro is active and renews on 2027-03-14."
+            },
+            "library": {
+              "count": 8,
+              "songs": [
+                {
+                  "artist": "Elevation Worship",
+                  "kind": "purchased",
+                  "status": "active",
+                  "title": "Graves Into Gardens"
+                },
+                {
+                  "artist": "Elevation Worship",
+                  "kind": "purchased",
+                  "status": "active",
+                  "title": "Do It Again"
+                },
+                {
+                  "artist": "Hillsong Worship",
+                  "kind": "purchased",
+                  "status": "active",
+                  "title": "What A Beautiful Name"
+                },
+                {
+                  "artist": "Bethel Music",
+                  "kind": "purchased",
+                  "status": "active",
+                  "title": "Goodness of God"
+                },
+                {
+                  "artist": "All Sons & Daughters",
+                  "kind": "purchased",
+                  "status": "active",
+                  "title": "Great Are You Lord"
+                },
+                {
+                  "artist": "Brandon Lake",
+                  "kind": "purchased",
+                  "status": "active",
+                  "title": "Gratitude"
+                },
+                {
+                  "artist": "Phil Wickham",
+                  "kind": "purchased",
+                  "status": "active",
+                  "title": "House of the Lord"
+                },
+                {
+                  "artist": "Riverbend Worship",
+                  "kind": "cloud-song",
+                  "status": "active",
+                  "title": "Riverbend Benediction"
+                }
+              ]
+            },
+            "membership": {
+              "orgId": "480113",
+              "rentals": true,
+              "role": "Org Admin",
+              "teamSharing": true
+            },
+            "next": "The subscription is active. This alone does not establish the cause of a conflicting app message or access to every song. Use caller facts and applicable documentation to choose useful diagnostic evidence; release history can explain behavior left unexplained by account or configuration facts.",
+            "ok": true,
+            "organization": {
+              "name": "Riverbend Community Church (demo)",
+              "notes": "Healthy Cloud Pro org. Used for the 'active subscriber sees Cloud Pro expired' software-bug scenario.",
+              "orgId": "480113",
+              "plan": "Cloud Pro",
+              "renewsAt": "2027-03-14",
+              "simulated": true,
+              "subscriptionStatus": "active",
+              "teamSharingSeats": {
+                "total": 10,
+                "used": 4
+              }
+            },
+            "otherOrganizations": [],
+            "source": "simulated"
+          }
+        },
+        {
+          "name": "get_relevant_changes_since_version",
+          "arguments": {
+            "installedVersion": "8.6.2",
+            "symptom": "Cloud Pro expired message",
+            "platform": "iPadOS"
+          },
+          "result": {
+            "ok": true,
+            "installedVersion": "8.6.2",
+            "current": {
+              "version": "8.6.4",
+              "source": "live",
+              "provider": "Apple iTunes Lookup API",
+              "retrievedAt": "2026-11-03T00:26:55.963Z",
+              "releaseDate": "2026-10-26T14:26:55Z",
+              "minimumOsVersion": "15.6",
+              "minimumOsAppliesTo": "iOS/iPadOS only"
+            },
+            "isUpToDate": false,
+            "documentedReleasesBetween": [
+              "8.6.3"
+            ],
+            "relevantChanges": [
+              {
+                "version": "8.6.3",
+                "date": null,
+                "url": "https://helpcenter.multitracks.com/en/articles/17617217-playback-8-6-3-release-notes",
+                "matchingNotes": [
+                  "Subscriptions: fixed a false 'Cloud Pro expired' message that appeared for some active subscribers.",
+                  "Rentals & MT Complete: fixed three issues involving custom arrangements, interrupted MT Complete previews, and 'Song Data Error' messages after using Restore From Cloud."
+                ],
+                "matchedKeywords": [
+                  "cloud pro expired",
+                  "false expired message",
+                  "restore from cloud"
+                ],
+                "allNotes": [
+                  "Quality and stability release.",
+                  "Subscriptions: fixed a false 'Cloud Pro expired' message that appeared for some active subscribers.",
+                  "Improvements: removed the 'New' badge from MT Complete in the Add Song menu; reworded the low memory alert.",
+                  "Rentals & MT Complete: fixed three issues involving custom arrangements, interrupted MT Complete previews, and 'Song Data Error' messages after using Restore From Cloud.",
+                  "Setlists: fixed the waveform and mixer not loading after adding the first song; fixed a search display issue in the Open Setlists menu.",
+                  "Mac & Keyboard Shortcuts: fixed a Cmd+, conflict so it consistently opens Playback Settings.",
+                  "Audio & MIDI: improved MIDI Out stability during playback."
+                ]
+              }
+            ],
+            "history": {
+              "source": "documentation",
+              "provider": "MultiTracks Help Center release notes",
+              "snapshotRetrievedAt": "2026-10-31",
+              "coverage": [
+                "8.4.1",
+                "8.4.3",
+                "8.4.4",
+                "8.4.6",
+                "8.5.0",
+                "8.5.2",
+                "8.5.3",
+                "8.5.4",
+                "8.5.5",
+                "8.5.6",
+                "8.6.3"
+              ]
+            },
+            "gaps": [
+              "App Store version is 8.6.4 but the release notes text refers to Playback 8.6.3. Treat the notes as possibly belonging to an earlier release.",
+              "App Store shows 8.6.4 but documented release notes only go up to 8.6.3; changes in between are not covered."
+            ],
+            "updateAssessment": {
+              "installedVersion": "8.6.2",
+              "installedVersionSource": "caller-provided argument; historical record notes are not confirmation",
+              "platform": "iPadOS",
+              "osVersion": null,
+              "osRequirementMet": null,
+              "requirementsSource": "https://itunes.apple.com/lookup?id=751755884&country=us",
+              "missingInformation": [
+                "osVersion"
+              ],
+              "blockers": [],
+              "prerequisitesComplete": false,
+              "candidateMatchNeedsReview": true,
+              "scope": "Checks known versions and the current app's applicable OS minimum. Does not verify audio accessories or establish a device's root cause. Keyword matches are candidates, not confirmed fixes for the caller."
+            },
+            "updateIsDisruptive": true,
+            "updateCaution": "Updating closes Playback. Honor any interruption constraints the caller has volunteered; no timing question is required.",
+            "guidance": "Candidate release notes were found. This is not an update recommendation: updateAssessment identifies missing facts or blockers, and the candidate notes still require review for actual symptom applicability. A matching note does not guarantee caller recovery."
+          }
+        }
+      ],
+      "reportedCost": 0.0121
+    }
+  ]
+}

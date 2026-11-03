@@ -16,6 +16,10 @@ const plan = v.union(
 const subscriptionStatus = v.union(v.literal("active"), v.literal("past-due"), v.literal("expired"), v.literal("none"));
 
 export default defineSchema({
+  /** Internal singleton lease; no public query or client-controlled release. */
+  callAdmission: defineTable({
+    scope: v.string(), token: v.string(), expiresAt: v.number(), callId: v.optional(v.string()),
+  }).index("by_scope", ["scope"]),
   /**
    * The organization is where MultiTracks content is purchased and subscriptions
    * are shared (Playback User Guide, "Organizations vs. Users"). The six-digit

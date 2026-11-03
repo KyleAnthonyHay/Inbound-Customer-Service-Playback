@@ -1,0 +1,74 @@
+{
+  "scenario": "ambiguous-info",
+  "expectedIntent": "song-loading",
+  "callId": "01a19ed9-83be-7cc6-a0d4-6e347e801ac5",
+  "endedReason": "customer-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "delegate",
+    "search_playback_docs",
+    "delegate"
+  ],
+  "timing": {
+    "turns": [
+      {
+        "caller": "It's just not working",
+        "silenceS": 0.2,
+        "firstHeard": "I'm sorry to hear that. Can you tell me what's happening or what you're seeing?",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [],
+        "summary": "\"It's just not working\" -> 0.2s silence, then answer: \"I'm sorry to hear that. Can you tell me what's hap\""
+      },
+      {
+        "caller": "The songs, they won't go",
+        "silenceS": 0.2,
+        "firstHeard": "Got it.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.6s"
+        ],
+        "summary": "\"The songs, they won't go\" -> 0.2s silence, then answer: \"Got it.\" [delegate@+0.6s]"
+      },
+      {
+        "caller": "Oh, they won't download. It's stuck loading. I'm on an iPad. I don't know the version",
+        "silenceS": 1,
+        "firstHeard": "Okay. Let me check on that for you.",
+        "transition": true,
+        "gapAfterTransitionS": 3.8,
+        "tools": [
+          "delegate@+0.0s",
+          "search_playback_docs@+2.6s",
+          "delegate@+12.0s"
+        ],
+        "summary": "\"Oh, they won't download. It's stuck load\" -> 1s silence, then transition: \"Okay. Let me check on that for you.\" -> 3.8s gap -> \"Thanks. On the iPad, do you see any erro\" [delegate@+0.0s, search_playback_docs@+2.6s, delegate@+12.0s]"
+      }
+    ],
+    "longestSilenceS": 1,
+    "longestGapAfterTransitionS": 3.8
+  },
+  "convexToolEvents": [
+    "search_playback_docs succeeded 440ms 6 result(s)"
+  ],
+  "liveEvents": [
+    "45.1s TOOL-CALLS delegate({})",
+    "67.5s TOOL-CALLS delegate({})",
+    "70.0s TOOL-CALLS search_playback_docs({\"query\":\"Playback iPad song download stuck loading troubleshooting downloads\",\"category\":\"song-loading\",\"platform\":\"iPadOS\"})",
+    "92.2s TOOL-CALLS delegate({})"
+  ],
+  "transcript": [
+    "AGENT: Hi, thanks for calling MultiTracks Playback support. I'm an AI assistant. What can I help you with today?",
+    "CALLER: It's just not working",
+    "AGENT: I'm sorry to hear that. Can you tell me what's happening or what you're seeing?",
+    "CALLER: The songs, they won't go",
+    "AGENT: Got it.",
+    "AGENT: One moment.",
+    "AGENT: What happens on the screen when you tap one of the songs?",
+    "CALLER: Oh, they won't download. It's stuck loading. I'm on an iPad. I don't know the version",
+    "AGENT: Okay. Let me check on that for you.",
+    "AGENT: Thanks. On the iPad, do you see any error message with the loading spinner, or does it just keep spinning?",
+    "AGENT: Okay, thanks for calling MultiTracks",
+    "AGENT: Support. Goodbye."
+  ]
+}

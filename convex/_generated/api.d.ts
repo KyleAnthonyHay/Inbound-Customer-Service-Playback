@@ -8,12 +8,14 @@
  * @module
  */
 
+import type * as callAdmission from "../callAdmission.js";
 import type * as callEvents from "../callEvents.js";
 import type * as callbacks from "../callbacks.js";
 import type * as calls from "../calls.js";
 import type * as customers from "../customers.js";
 import type * as handoff from "../handoff.js";
 import type * as http from "../http.js";
+import type * as lib_callAdmission from "../lib/callAdmission.js";
 import type * as lib_handoffEnding from "../lib/handoffEnding.js";
 import type * as lib_seedAccounts from "../lib/seedAccounts.js";
 import type * as seed from "../seed.js";
@@ -28,12 +30,14 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  callAdmission: typeof callAdmission;
   callEvents: typeof callEvents;
   callbacks: typeof callbacks;
   calls: typeof calls;
   customers: typeof customers;
   handoff: typeof handoff;
   http: typeof http;
+  "lib/callAdmission": typeof lib_callAdmission;
   "lib/handoffEnding": typeof lib_handoffEnding;
   "lib/seedAccounts": typeof lib_seedAccounts;
   seed: typeof seed;

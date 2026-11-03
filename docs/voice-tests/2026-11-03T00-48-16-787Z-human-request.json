@@ -1,0 +1,88 @@
+{
+  "scenario": "human-request",
+  "expectedIntent": "human-request",
+  "callId": "01a19edf-2ef0-7ffb-8c4c-1fdc079e564d",
+  "endedReason": "assistant-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "get_callback_slots",
+    "delegate",
+    "delegate",
+    "endCall"
+  ],
+  "timing": {
+    "turns": [
+      {
+        "caller": "I don't want to troubleshoot. I just want to talk to a real person, please",
+        "silenceS": 0.4,
+        "firstHeard": "Sure. I'll check who's available right now.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [],
+        "summary": "\"I don't want to troubleshoot. I just wan\" -> 0.4s silence, then answer: \"Sure. I'll check who's available right now.\""
+      },
+      {
+        "caller": "Yes, a call back is fine. Anytime tomorrow afternoon. I'm in Central Time. My number is five five five, zero one zero, zero one nine nine, and my name is Marcus Bell",
+        "silenceS": 0.4,
+        "firstHeard": "Okay.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.0s",
+          "get_callback_slots@+0.6s"
+        ],
+        "summary": "\"Yes, a call back is fine. Anytime tomorr\" -> 0.4s silence, then answer: \"Okay.\" [delegate@+0.0s, get_callback_slots@+0.6s]"
+      },
+      {
+        "caller": "Yes. That time works. Go ahead and book it",
+        "silenceS": 0.4,
+        "firstHeard": "Sure.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"Yes. That time works. Go ahead and book \" -> 0.4s silence, then answer: \"Sure.\" [delegate@+0.0s]"
+      },
+      {
+        "caller": "Great. Thanks. Bye",
+        "silenceS": 0.2,
+        "firstHeard": "You're welcome.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.0s",
+          "endCall@+0.6s"
+        ],
+        "summary": "\"Great. Thanks. Bye\" -> 0.2s silence, then answer: \"You're welcome.\" [delegate@+0.0s, endCall@+0.6s]"
+      }
+    ],
+    "longestSilenceS": 0.4,
+    "longestGapAfterTransitionS": 0
+  },
+  "convexToolEvents": [
+    "get_callback_slots succeeded 58ms 4 open slot(s)"
+  ],
+  "liveEvents": [
+    "56.8s TOOL-CALLS delegate({})",
+    "59.9s TOOL-CALLS get_callback_slots({\"teamId\":\"playback-support\",\"timeZone\":\"Central\",\"preferredDate\":\"tomorrow\"})",
+    "82.8s TOOL-CALLS delegate({})",
+    "100.8s TOOL-CALLS delegate({})",
+    "102.2s TOOL-CALLS endCall({})",
+    "102.8s STATUS ended assistant-ended-call",
+    "102.8s hangup"
+  ],
+  "transcript": [
+    "AGENT: Hi, thanks for calling MultiTracks Playback support. I'm an AI assistant. What can I help you with today?",
+    "CALLER: I don't want to troubleshoot. I just want to talk to a real person, please",
+    "AGENT: Sure. I'll check who's available right now.",
+    "CALLER: Yes, a call back is fine. Anytime tomorrow afternoon. I'm in Central Time. My number is five five five, zero one zero, zero one nine nine, and my name is Marcus Bell",
+    "AGENT: Okay.",
+    "AGENT: Thanks, but tomorrow afternoon isn't available. We can do 9, 9:30, 10, or 10:30 AM Central. What works best?",
+    "CALLER: Yes. That time works. Go ahead and book it",
+    "AGENT: Sure.",
+    "AGENT: No problem. Which of those morning times would you like me to book?",
+    "CALLER: Great. Thanks. Bye",
+    "AGENT: You're welcome."
+  ]
+}

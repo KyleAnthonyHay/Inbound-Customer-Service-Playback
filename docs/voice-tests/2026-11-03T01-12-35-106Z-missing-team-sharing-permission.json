@@ -1,0 +1,95 @@
+{
+  "scenario": "missing-team-sharing-permission",
+  "expectedIntent": "song-loading",
+  "callId": "01a19ef5-a433-7bb0-9032-0a9722c4a4b7",
+  "endedReason": "assistant-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "search_playback_docs",
+    "get_planning_center_service_context",
+    "delegate",
+    "lookup_demo_customer",
+    "delegate",
+    "endCall"
+  ],
+  "timing": {
+    "turns": [
+      {
+        "caller": "I'm on our worship team and I can see the set list for Sunday, but none of the songs will download for me",
+        "silenceS": 0.2,
+        "firstHeard": "Mm.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"I'm on our worship team and I can see th\" -> 0.2s silence, then answer: \"Mm.\" [delegate@+0.0s]"
+      },
+      {
+        "caller": "They work fine on the leader's iPad",
+        "silenceS": 4.6,
+        "firstHeard": "I can see the demo Sunday plan includes Graves into Gardens, Do It Again, and What a Beautiful Name. What message, if any, appears when you try to download one of the songs?",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "search_playback_docs@+0.0s",
+          "get_planning_center_service_context@+0.0s"
+        ],
+        "summary": "\"They work fine on the leader's iPad\" -> 4.6s silence, then answer: \"I can see the demo Sunday plan includes Graves int\" [search_playback_docs@+0.0s, get_planning_center_service_context@+0.0s]"
+      },
+      {
+        "caller": "My email is sam dot okafor at example dot org",
+        "silenceS": 0.4,
+        "firstHeard": "Thanks.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+-0.0s",
+          "lookup_demo_customer@+0.6s"
+        ],
+        "summary": "\"My email is sam dot okafor at example do\" -> 0.4s silence, then answer: \"Thanks.\" [delegate@+-0.0s, lookup_demo_customer@+0.6s]"
+      },
+      {
+        "caller": "Ah. So it's a permission thing, not my app. I'll ask John to add me. Thanks. Bye",
+        "silenceS": 0.4,
+        "firstHeard": "No problem. I'll check on that.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.0s",
+          "endCall@+2.2s"
+        ],
+        "summary": "\"Ah. So it's a permission thing, not my a\" -> 0.4s silence, then answer: \"No problem. I'll check on that.\" [delegate@+0.0s, endCall@+2.2s]"
+      }
+    ],
+    "longestSilenceS": 4.6,
+    "longestGapAfterTransitionS": 0
+  },
+  "convexToolEvents": [
+    "get_planning_center_service_context succeeded 337ms 3 demo service song(s) — actual Services API read",
+    "search_playback_docs succeeded 388ms 6 result(s)",
+    "lookup_demo_customer succeeded 28ms missing-team-sharing"
+  ],
+  "liveEvents": [
+    "26.6s TOOL-CALLS delegate({})",
+    "30.9s TOOL-CALLS search_playback_docs({\"query\":\"Playback songs will not download from setlist troubleshooting\",\"category\":\"song-loading\"}), get_planning_center_service_context({})",
+    "53.8s TOOL-CALLS delegate({})",
+    "56.8s TOOL-CALLS lookup_demo_customer({\"email\":\"sam.okafor@example.org\"})",
+    "86.7s TOOL-CALLS delegate({})",
+    "88.8s TOOL-CALLS endCall({})",
+    "89.5s STATUS ended assistant-ended-call",
+    "89.5s hangup"
+  ],
+  "transcript": [
+    "AGENT: Hi, thanks for calling MultiTracks Playback support. I'm an AI assistant. What can I help you with today?",
+    "CALLER: I'm on our worship team and I can see the set list for Sunday, but none of the songs will download for me",
+    "AGENT: Mm.",
+    "CALLER: They work fine on the leader's iPad",
+    "AGENT: I can see the demo Sunday plan includes Graves into Gardens, Do It Again, and What a Beautiful Name. What message, if any, appears when you try to download one of the songs?",
+    "CALLER: My email is sam dot okafor at example dot org",
+    "AGENT: Thanks.",
+    "AGENT: I found your account. The church subscription is active, but your Playback Team Sharing permission isn't turned on. That's why the songs won't download for you. Your organization admin can enable that for you on the People page at MultiTracks dot com.",
+    "CALLER: Ah. So it's a permission thing, not my app. I'll ask John to add me. Thanks. Bye",
+    "AGENT: No problem. I'll check on that."
+  ]
+}

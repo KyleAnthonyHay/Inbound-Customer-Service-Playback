@@ -1,6 +1,7 @@
 import { httpRouter } from "convex/server";
 import { httpAction } from "./_generated/server";
-import { api } from "./_generated/api";
+import { api, internal } from "./_generated/api";
+import { DEV_SITE, startDevCall } from "./lib/callAdmission";
 import { tools, summarize } from "./vapiTools";
 import { callInfoOf } from "../src/lib/tools/callerId";
 
@@ -12,6 +13,29 @@ import { callInfoOf } from "../src/lib/tools/callerId";
  * { results: [{ toolCallId, result | error }] } with HTTP 200.
  */
 const http = httpRouter();
+
+// The SDK's apiBaseUrl points here only for the known development backend.
+// Production keeps its existing direct Vapi path.
+for (const [path, transport] of [["/dev-call/call/web", "browser"], ["/dev-call/websocket", "websocket"]] as const) {
+  http.route({ path, method: "OPTIONS", handler: httpAction(async () => new Response(null, {
+    status: 204, headers: { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Methods": "POST, OPTIONS", "Access-Control-Allow-Headers": "Authorization, Content-Type, x-demo-secret", "Access-Control-Max-Age": "600" },
+  })) });
+  http.route({ path, method: "POST", handler: httpAction(async (ctx, request) => {
+    const headers = { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*", "Cache-Control": "no-store", "Retry-After": "30" };
+    if (process.env.CONVEX_SITE_URL !== DEV_SITE) return new Response(JSON.stringify({ message: "Development calls only" }), { status: 404, headers });
+    // Browser auth has the same public-key security boundary as Vapi's web SDK.
+    const authorized = transport === "browser"
+      ? !!process.env.VAPI_PUBLIC_KEY && request.headers.get("authorization") === `Bearer ${process.env.VAPI_PUBLIC_KEY}`
+      : !!process.env.VAPI_TOOL_SECRET && request.headers.get("x-demo-secret") === process.env.VAPI_TOOL_SECRET;
+    if (!authorized) return new Response(JSON.stringify({ message: "Unauthorized" }), { status: 401, headers });
+    const result = await startDevCall(transport, {
+      env: process.env,
+      reserve: token => ctx.runMutation(internal.callAdmission.reserve, { token }),
+      update: args => ctx.runMutation(internal.callAdmission.update, args),
+    });
+    return new Response(JSON.stringify(result.body), { status: result.status, headers });
+  }) });
+}
 
 type CallFields = { id?: string; type?: string; startedAt?: string; customer?: { number?: string }; monitor?: { controlUrl?: string } };
 
@@ -156,6 +180,8 @@ http.route({
         });
         break;
     }
+    if (process.env.CONVEX_SITE_URL === DEV_SITE && (m.type === "end-of-call-report" || (m.type === "status-update" && m.status === "ended")))
+      await ctx.runMutation(internal.callAdmission.update, { callId, release: true });
     return json({ ok: true });
   }),
 });

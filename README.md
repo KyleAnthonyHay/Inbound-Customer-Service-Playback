@@ -255,6 +255,8 @@ Data comes from Vapi's assistant-level server messages, not the browser, so phon
 
 Both assistants are built from the same `buildAssistant()`; only the webhook URLs, the secret and the name differ. The phone number, when claimed, attaches to the prod assistant. Local testing (browser calls, `npm run voice:test`, `npm run sync:assistant`) touches only the dev pair, so the demo's call history and prompts stay untouched while you work.
 
+Development voice starts now go through a [server-side admission guard](docs/call-admission.md): one development call at a time, with at least one shared Vapi slot left for production. The guard reads live subscription capacity before creating a call and shows a retry-later message when blocked. Vapi capacity was verified as four shared slots on November 2, 2026. Production's call path is unchanged. Direct Vapi calls bypass this application guard; it is not a provider-level priority guarantee.
+
 **Keep the frontend, backend and saved voice assistant on the same reviewed version. The coordinated CLI release is:**
 
 ```bash

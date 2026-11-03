@@ -1,0 +1,98 @@
+{
+  "scenario": "audio-device-selection",
+  "expectedIntent": "audio-output",
+  "callId": "01a19eed-767e-7cc6-a20d-12cd9b84f4b5",
+  "endedReason": "assistant-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "search_playback_docs",
+    "delegate",
+    "search_playback_docs",
+    "delegate",
+    "delegate",
+    "endCall"
+  ],
+  "timing": {
+    "turns": [
+      {
+        "caller": "Hey, I'm not getting any sound out of Playback. It's playing but nothing comes out of my speakers",
+        "silenceS": 1,
+        "firstHeard": "Ah, okay, I see. Let me check that.",
+        "transition": true,
+        "gapAfterTransitionS": 2.6,
+        "tools": [
+          "delegate@+0.0s",
+          "search_playback_docs@+3.6s"
+        ],
+        "summary": "\"Hey, I'm not getting any sound out of Pl\" -> 1s silence, then transition: \"Ah, okay, I see. Let me check that.\" -> 2.6s gap -> \"Just to make sure, where are you expecti\" [delegate@+0.0s, search_playback_docs@+3.6s]"
+      },
+      {
+        "caller": "I'm on a MacBook with a USB interface plugged in. We don't play until tomorrow",
+        "silenceS": 0.4,
+        "firstHeard": "Okay, thanks. Checking",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.0s",
+          "search_playback_docs@+1.6s"
+        ],
+        "summary": "\"I'm on a MacBook with a USB interface pl\" -> 0.4s silence, then answer: \"Okay, thanks. Checking\" [delegate@+0.0s, search_playback_docs@+1.6s]"
+      },
+      {
+        "caller": "Oh. It was set to the laptop speakers. I switched it to the interface and now I hear it. Thank you",
+        "silenceS": 0.4,
+        "firstHeard": "Great!",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"Oh. It was set to the laptop speakers. I\" -> 0.4s silence, then answer: \"Great!\" [delegate@+0.0s]"
+      },
+      {
+        "caller": "That's everything. Bye",
+        "silenceS": 0.4,
+        "firstHeard": "Okay!",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+-0.0s",
+          "endCall@+0.6s"
+        ],
+        "summary": "\"That's everything. Bye\" -> 0.4s silence, then answer: \"Okay!\" [delegate@+-0.0s, endCall@+0.6s]"
+      }
+    ],
+    "longestSilenceS": 1,
+    "longestGapAfterTransitionS": 2.6
+  },
+  "convexToolEvents": [
+    "search_playback_docs succeeded 307ms 6 result(s)",
+    "search_playback_docs succeeded 307ms 6 result(s)"
+  ],
+  "liveEvents": [
+    "27.9s TOOL-CALLS delegate({})",
+    "30.7s TOOL-CALLS search_playback_docs({\"query\":\"Playback is playing but no sound comes out of speakers; troubleshooting audio output and output routing\",\"category\":\"audio-output\"})",
+    "52.7s TOOL-CALLS delegate({})",
+    "54.0s TOOL-CALLS search_playback_docs({\"query\":\"macOS Playback USB audio interface selected audio output no sound MacBook\",\"category\":\"audio-output\",\"platform\":\"macOS\"})",
+    "82.4s TOOL-CALLS delegate({})",
+    "100.0s TOOL-CALLS delegate({})",
+    "101.4s TOOL-CALLS endCall({})",
+    "102.0s STATUS ended assistant-ended-call",
+    "102.0s hangup"
+  ],
+  "transcript": [
+    "AGENT: Hi, thanks for calling MultiTracks Playback support. I'm an AI assistant. What can I help you with today?",
+    "CALLER: Hey, I'm not getting any sound out of Playback. It's playing but nothing comes out of my speakers",
+    "AGENT: Ah, okay, I see. Let me check that.",
+    "AGENT: Just to make sure, where are you expecting to hear the sound? Through the device itself, headphones, or speakers connected to other gear?",
+    "CALLER: I'm on a MacBook with a USB interface plugged in. We don't play until tomorrow",
+    "AGENT: Okay, thanks. Checking",
+    "AGENT: that now.",
+    "AGENT: Alright, since you have a little time, let's first check what audio device Playback is set to use. Please open Playback, go to settings, then general, and tell me what it shows for audio device.",
+    "CALLER: Oh. It was set to the laptop speakers. I switched it to the interface and now I hear it. Thank you",
+    "AGENT: Great!",
+    "AGENT: I'm glad that fixed it. Is there anything else I can help with?",
+    "CALLER: That's everything. Bye",
+    "AGENT: Okay!"
+  ]
+}

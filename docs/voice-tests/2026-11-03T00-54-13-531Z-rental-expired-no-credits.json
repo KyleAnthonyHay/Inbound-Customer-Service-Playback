@@ -1,0 +1,91 @@
+{
+  "scenario": "rental-expired-no-credits",
+  "expectedIntent": "subscription",
+  "callId": "01a19ee4-61e0-7aa9-8a08-7d427f116e55",
+  "endedReason": "customer-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "delegate",
+    "check_song_access",
+    "delegate",
+    "delegate"
+  ],
+  "timing": {
+    "turns": [
+      {
+        "caller": "Build my life won't play anymore. It's asking me to unlock it with rental credit, but I already rented it last month",
+        "silenceS": 0,
+        "firstHeard": "Hmm. Yeah, I see. Okay, let me check",
+        "transition": true,
+        "gapAfterTransitionS": 0.2,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"Build my life won't play anymore. It's a\" -> 0s silence, then transition: \"Hmm. Yeah, I see. Okay, let me check\" -> 0.2s gap -> \"into that. Could you open Playback, go t\" [delegate@+0.0s]"
+      },
+      {
+        "caller": "The organization ID is seven one four three one eight",
+        "silenceS": 0.4,
+        "firstHeard": "Okay, thanks",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.0s",
+          "check_song_access@+1.2s"
+        ],
+        "summary": "\"The organization ID is seven one four th\" -> 0.4s silence, then answer: \"Okay, thanks\" [delegate@+0.0s, check_song_access@+1.2s]"
+      },
+      {
+        "caller": "Got it. So the rental ran out and we're out of credits. Can you get billing to call me? I'm Tasha. Five five five. Zero one zero. Zero one four two. Central time. Tomorrow afternoon is fine",
+        "silenceS": 0,
+        "firstHeard": "Got it, Tasha. Let me check who is available",
+        "transition": true,
+        "gapAfterTransitionS": 0.4,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"Got it. So the rental ran out and we're \" -> 0s silence, then transition: \"Got it, Tasha. Let me check who is available\" -> 0.4s gap -> \"and see what I can do. What time tomorro\" [delegate@+0.0s]"
+      },
+      {
+        "caller": "Yes, that works. Book it",
+        "silenceS": 0.8,
+        "firstHeard": "Great. I'll check that.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"Yes, that works. Book it\" -> 0.8s silence, then answer: \"Great. I'll check that.\" [delegate@+0.0s]"
+      }
+    ],
+    "longestSilenceS": 0.8,
+    "longestGapAfterTransitionS": 0.4
+  },
+  "convexToolEvents": [
+    "check_song_access succeeded 26ms rental-expired"
+  ],
+  "liveEvents": [
+    "27.7s TOOL-CALLS delegate({})",
+    "48.9s TOOL-CALLS delegate({})",
+    "50.1s TOOL-CALLS check_song_access({\"orgId\":\"714318\",\"songTitle\":\"Build My Life\"})",
+    "83.8s TOOL-CALLS delegate({})",
+    "102.5s TOOL-CALLS delegate({})"
+  ],
+  "transcript": [
+    "AGENT: Hi, thanks for calling MultiTracks Playback support. I'm an AI assistant. What can I help you with today?",
+    "CALLER: Build my life won't play anymore. It's asking me to unlock it with rental credit, but I already rented it last month",
+    "AGENT: Hmm. Yeah, I see. Okay, let me check",
+    "AGENT: into that. Could you open Playback, go to Settings, then About, and tell me the six-digit Organization ID?",
+    "CALLER: The organization ID is seven one four three one eight",
+    "AGENT: Okay, thanks",
+    "AGENT: - let me",
+    "AGENT: take a look.",
+    "AGENT: Thanks for waiting. The rental for Build My Life is expired, and there aren't any rental credits left this cycle. Want me to get a billing specialist to help with the options?",
+    "CALLER: Got it. So the rental ran out and we're out of credits. Can you get billing to call me? I'm Tasha. Five five five. Zero one zero. Zero one four two. Central time. Tomorrow afternoon is fine",
+    "AGENT: Got it, Tasha. Let me check who is available",
+    "AGENT: and see what I can do. What time tomorrow afternoon would you prefer for the callback, Tasha?",
+    "CALLER: Yes, that works. Book it",
+    "AGENT: Great. I'll check that.",
+    "AGENT: What specific time tomorrow afternoon would you prefer, Central Time?"
+  ]
+}

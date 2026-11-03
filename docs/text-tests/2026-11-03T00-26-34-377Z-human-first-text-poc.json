@@ -1,0 +1,40 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "scenario": "human-first-text-poc",
+  "expectedIntent": "human-request",
+  "failure": null,
+  "reportedTextCost": 0.0082,
+  "turns": [
+    {
+      "input": "I do not want to troubleshoot. Please connect me to a person.",
+      "chatId": "0b6d5378-6224-4be1-a1b5-c5c0f314e1bc",
+      "reply": "Of course. Let me see who's available. One moment please.\n\nNo Playback specialist is available for a transfer right now, but I can schedule a callback. When are you next available?",
+      "tools": [
+        {
+          "name": "check_team_availability",
+          "arguments": {
+            "teamId": "playback-support"
+          },
+          "result": {
+            "source": "simulated",
+            "teams": [
+              {
+                "canTransferNow": false,
+                "description": "Song loading, audio output, device and version issues.",
+                "label": "Playback Technical Support",
+                "status": "available",
+                "teamId": "playback-support",
+                "withinHours": false
+              }
+            ],
+            "handoffStarted": false,
+            "actionPerformed": "availability-lookup-only"
+          }
+        }
+      ],
+      "reportedCost": 0.0082
+    }
+  ]
+}
