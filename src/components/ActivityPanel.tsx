@@ -687,7 +687,7 @@ function LiveTranscript({ transcript, markers, reduce }: { transcript: Transcrip
   }, [rows.length, last?.text, reduce]);
   return (
     <div className="mt-4">
-      <p className="mb-2 text-[13px] font-medium text-white/85">Agent activity</p>
+      <p className="mb-2 text-[13px] font-medium text-white/85">Conversation</p>
       <div ref={boxRef} className="max-h-[440px] overflow-y-auto overscroll-contain pr-1 [scrollbar-width:thin]">
         <ol className="relative">
           {rows.map((r, i) => {
@@ -1081,9 +1081,13 @@ function View({ open, onToggle, callId, status: browserStatus, startedAt: browse
               <motion.span initial={false} animate={{ rotate: cardOpen ? 90 : 0 }} transition={{ duration: reduce ? 0 : 0.2, ease: EASE }} className="flex">
                 <ChevronRight size={14} />
               </motion.span>
-              <Swap k={elapsed.prefix}>
-                <Shimmer active={status === "active"} base={0.9} idle={0.9} rgb={activityColor}>{elapsed.prefix}</Shimmer>
-              </Swap>
+              <span className="font-medium text-white/90">Agent activity</span>
+              {/* Live status follows the title; nothing extra while idle ("Ready"). */}
+              {elapsed.prefix !== "Ready" && (
+                <Swap k={elapsed.prefix} className="ml-1">
+                  <Shimmer active={status === "active"} base={0.9} idle={0.9} rgb={activityColor}>{elapsed.prefix}</Shimmer>
+                </Swap>
+              )}
               {/* counter ticks as a hard cut, like the reference */}
               {elapsed.value && <span className="tabular-nums text-white/40">{elapsed.value}</span>}
             </motion.button>
