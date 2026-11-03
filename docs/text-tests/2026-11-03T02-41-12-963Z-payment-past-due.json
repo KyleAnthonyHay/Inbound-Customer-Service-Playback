@@ -1,0 +1,93 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "scenario": "payment-past-due",
+  "expectedIntent": "subscription",
+  "failure": null,
+  "reportedTextCost": 0.025500000000000002,
+  "turns": [
+    {
+      "input": "Playback keeps showing a warning about our Cloud Pro payment, is our account about to get shut off?",
+      "chatId": "077ab95b-e0c4-4467-b0c5-b3fa41501ae0",
+      "reply": "Let me pull up that account.\n\nI can verify whether there’s a billing issue if you share the six-digit Organization ID from Playback Settings > About.",
+      "tools": [
+        {
+          "name": "lookup_demo_customer",
+          "arguments": {
+            "name": "unknown"
+          },
+          "result": {
+            "ok": false,
+            "reason": "not-found",
+            "source": "simulated"
+          }
+        }
+      ],
+      "reportedCost": 0.0089
+    },
+    {
+      "input": "Our organization ID is 8 2 9 4 5 5.",
+      "chatId": "e8b2dfb3-1a4f-4fc1-a3a7-c816a84331b0",
+      "reply": "Let me pull up that account.\n\nYour Cloud Pro renewal payment was declined, but your features will keep working through November 11. Billing needs to update the payment method before then; would you like me to connect you with the billing team?",
+      "tools": [
+        {
+          "name": "lookup_demo_customer",
+          "arguments": {
+            "orgId": "829455"
+          },
+          "result": {
+            "diagnosis": {
+              "code": "past-due",
+              "next": "Tell the caller their features still work for now and that the payment method needs updating with billing before the grace period ends. Offer a handoff or callback with the billing team; do not troubleshoot the warning as a bug.",
+              "summary": "Cloud Pro renewal payment failed on 2026-10-28; access continues until 2026-11-11."
+            },
+            "library": {
+              "count": 2,
+              "songs": [
+                {
+                  "artist": "Elevation Worship",
+                  "kind": "purchased",
+                  "status": "active",
+                  "title": "Graves Into Gardens"
+                },
+                {
+                  "artist": "Elevation Worship",
+                  "kind": "purchased",
+                  "status": "active",
+                  "title": "Praise"
+                }
+              ]
+            },
+            "next": "Tell the caller their features still work for now and that the payment method needs updating with billing before the grace period ends. Offer a handoff or callback with the billing team; do not troubleshoot the warning as a bug.",
+            "ok": true,
+            "organization": {
+              "graceEndsAt": "2026-11-11",
+              "name": "Lakeside Youth Ministry (demo)",
+              "notes": "Cloud Pro renewal payment failed on 2026-10-28 (card declined). Access continues through the grace period; billing must update the card.",
+              "orgId": "829455",
+              "pastDueSince": "2026-10-28",
+              "plan": "Cloud Pro",
+              "simulated": true,
+              "subscriptionStatus": "past-due",
+              "teamSharingSeats": {
+                "total": 10,
+                "used": 6
+              }
+            },
+            "otherOrganizations": [],
+            "source": "simulated"
+          }
+        }
+      ],
+      "reportedCost": 0.0093
+    },
+    {
+      "input": "Okay, so I have until the eleventh. I'll update the card myself. Thanks, bye.",
+      "chatId": "9ff64c91-2764-47f5-b09e-4c6a6df5c40d",
+      "reply": "Thanks so much for calling MultiTracks Playback support. Have a great day, and goodbye!",
+      "tools": [],
+      "reportedCost": 0.0073
+    }
+  ]
+}

@@ -1,0 +1,288 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "scenario": "ambiguous-info",
+  "expectedIntent": "song-loading",
+  "failure": "fetch failed",
+  "reportedTextCost": 0.027999999999999997,
+  "turns": [
+    {
+      "input": "It's just not working.",
+      "chatId": "0f4a1914-a8b5-4762-89f5-04c88be99fc6",
+      "reply": "What’s happening in Playback today—are you having trouble loading a song, or hearing audio?",
+      "tools": [],
+      "reportedCost": 0.0065
+    },
+    {
+      "input": "The songs, they won't go.",
+      "chatId": "d1277eb1-3888-4977-847c-9ea4052ccdeb",
+      "reply": "What do you see in Playback when you try to start one of the songs?",
+      "tools": [],
+      "reportedCost": 0.0069
+    },
+    {
+      "input": "Oh, they won't download, it's stuck loading. I'm on an iPad, I don't know the version.",
+      "chatId": "fba9d52a-1dc2-4a48-bc78-054fd9d63450",
+      "reply": "One moment\n\nWhat message, if any, appears on the iPad while the download is stuck?",
+      "tools": [
+        {
+          "name": "search_playback_docs",
+          "arguments": {
+            "query": "iPad songs stuck loading won't download troubleshooting downloads Playback",
+            "category": "song-loading",
+            "platform": "iPadOS"
+          },
+          "result": {
+            "ok": true,
+            "source": "documentation",
+            "provider": "MultiTracks Help Center (bounded snapshot)",
+            "snapshotRetrievedAt": "2026-10-31",
+            "query": "iPad songs stuck loading won't download troubleshooting downloads Playback",
+            "found": 6,
+            "results": [
+              {
+                "id": "troubleshooting-playback-download-errors",
+                "title": "Troubleshooting Playback Download Errors",
+                "category": "song-loading",
+                "url": "https://helpcenter.multitracks.com/en/articles/13452943-troubleshooting-playback-download-errors",
+                "retrievedAt": "2026-10-30",
+                "appliesTo": [],
+                "summary": "Covers four named download error messages in Playback (Error Authorizing, Audio Files Missing, Insufficient Storage, generic Download Error) plus a catch-all. MultiTracks says download errors are rare and asks users who see the same error repeatedly to report it through the website chat. The article does not name a platform; it refers only to 'the device' and 'the Playback app'.",
+                "steps": [
+                  {
+                    "n": 1,
+                    "text": "'Error Authorizing': the download failed a security check (your network may be blocking Playback from verifying the device). Follow the separate article 'Playback Download Error (Download Unauthorized)'.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 2,
+                    "text": "'Audio Files Missing': tap Try Again at least three times. On the third attempt Playback runs a different recovery routine automatically.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 3,
+                    "text": "'Audio Files Missing' (if three attempts fail on a song you recently downloaded in past setlists): open the setlist menu, scroll to the bottom, and select 'Delete All Setlists from Device'. Last resort only: it removes all local downloads and every current setlist must be downloaded again.",
+                    "disruptive": true,
+                    "kind": "delete-content",
+                    "caution": "This removes the song from the device and re-downloads it, so only do it when you have time before you play."
+                  },
+                  {
+                    "n": 4,
+                    "text": "'Insufficient Storage': remove past setlists with 'Delete all setlists from device' at the bottom of the setlist menu. If the error persists, check the device's storage; it may be too full. A typical song is roughly 40 MB to 1 GB, so a full setlist can be several GB.",
+                    "disruptive": true,
+                    "kind": "delete-content",
+                    "caution": "This removes the song from the device and re-downloads it, so only do it when you have time before you play."
+                  },
+                  {
+                    "n": 5,
+                    "text": "'Download Error' (generic): tap Try Again at least two times. If it continues and you are short on time, use Contact Support in the About tab of Playback Settings, then try the quick fixes.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 6,
+                    "text": "Quick fix 1 - remove and re-add the song: tap Edit, tap the red minus icon on the song, tap '+ Add Song', find the song again, and load it.",
+                    "disruptive": true,
+                    "kind": "delete-content",
+                    "caution": "This removes the song from the device and re-downloads it, so only do it when you have time before you play."
+                  },
+                  {
+                    "n": 7,
+                    "text": "Quick fix 2 - download in another key and transpose locally: before loading, change the song's key in song settings to a key close to the one you need; after the download, open song settings in edit mode and change the key back.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 8,
+                    "text": "Quick fix 3 - clear local data (last resort): contact support first from the About tab, then open the setlist menu (top-right) and select 'Delete All Setlists from Device' at the bottom. All setlists must be redownloaded afterward.",
+                    "disruptive": true,
+                    "kind": "delete-content",
+                    "caution": "This removes the song from the device and re-downloads it, so only do it when you have time before you play."
+                  },
+                  {
+                    "n": 9,
+                    "text": "Any other error: contact MultiTracks.com through the website messenger or 'Contact Support' in the About tab of the Playback app.",
+                    "disruptive": false
+                  }
+                ],
+                "hasDisruptiveSteps": true,
+                "relevance": 14
+              },
+              {
+                "id": "playback-download-error-download-unauthorized",
+                "title": "Playback Download Error (Download Unauthorized)",
+                "category": "song-loading",
+                "url": "https://helpcenter.multitracks.com/en/articles/8295507-playback-download-error-download-unauthorized",
+                "retrievedAt": "2026-10-30",
+                "appliesTo": [],
+                "summary": "Explains the message 'There was an error while authorizing the download of [song]', which means the download URL has expired or is unauthorized on the current network. Listed causes are a VPN on the Playback device, network administrator settings (multiple WAN uplinks, blocked domains or ports), or the network/IP address changing mid-download. The fix is to retry on a different connection or change the network's settings, ideally with a network admin or ISP.",
+                "steps": [
+                  {
+                    "n": 1,
+                    "text": "iCloud Private Relay (Apple): set the 'IP Address Location' option to 'Use Country & Time Zone'. The article warns that 'Maintain General Location' can cause this error.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 2,
+                    "text": "Turn off any VPN or VPN software on the device. Examples named in the article: Accountable2You, CovenantEyes, NordVPN, Surfshark.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 3,
+                    "text": "Try downloading on a different internet network from a different provider.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 4,
+                    "text": "Advanced (IT/network admin) - multiple WAN uplinks: the download request may leave through one uplink while the content download tries another. Pin requests to a specific WAN uplink in the advanced traffic network preferences, or adjust the WAN uplink settings. Contact support for help pinning requests.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 5,
+                    "text": "Advanced - other network settings: MultiTracks.com sends all traffic over port 443 (SSL); make sure it is not blocked. A static IP is not required, but if a download request uses a specific IP address, the same IP must complete the download.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 6,
+                    "text": "Still stuck: use the messenger in the bottom right of MultiTracks.com or email Support@MultiTracks.com.",
+                    "disruptive": false
+                  }
+                ],
+                "hasDisruptiveSteps": false,
+                "relevance": 7
+              },
+              {
+                "id": "playback-setlists-menu",
+                "title": "Playback Setlists & Setlists Menu",
+                "category": "song-loading",
+                "url": "https://helpcenter.multitracks.com/en/articles/5189112-playback-setlists-setlists-menu",
+                "retrievedAt": "2026-10-30",
+                "appliesTo": [],
+                "summary": "Describes the Setlists menu (music note icon, top-right of the main screen): creating/opening setlists, Planning Center import, Save To Cloud, Restore From Cloud, Save As New, and Delete All Setlists From Device. Also explains how to download a setlist or a single song from the Open Setlist menu without opening it, and that cloud changes sync manually via an 'Update Available' prompt. The article does not address offline behavior or what happens when a different user signs in.",
+                "steps": [
+                  {
+                    "n": 1,
+                    "text": "Download a whole setlist without opening it: in the Open Setlist menu, tap the cloud download icon next to the setlist name.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 2,
+                    "text": "Download a single song: tap the cloud download icon next to that song.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 3,
+                    "text": "Save local changes: choose 'Save To Cloud' in the Setlists menu; a blue check confirms success. Saving overwrites the setlist data on that device and in the cloud.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 4,
+                    "text": "Revert local changes to the saved cloud version: choose 'Restore From Cloud' in the Setlists menu (can be used at any point).",
+                    "disruptive": true,
+                    "kind": "settings-change",
+                    "caution": "Changing this setting takes effect immediately and can cut audio for a moment."
+                  },
+                  {
+                    "n": 5,
+                    "text": "Free local space or troubleshoot: 'Delete all setlists from the device' at the bottom of the Setlists menu removes every setlist from the device.",
+                    "disruptive": true,
+                    "kind": "delete-content",
+                    "caution": "This removes the song from the device and re-downloads it, so only do it when you have time before you play."
+                  },
+                  {
+                    "n": 6,
+                    "text": "Remove one setlist's audio from the device: open the setlist details menu (from the setlist menu) and choose the option to remove the Setlist audio files. The setlist details menu also lets you edit name/date or delete the setlist from your account.",
+                    "disruptive": true,
+                    "kind": "delete-content",
+                    "caution": "This removes the song from the device and re-downloads it, so only do it when you have time before you play."
+                  },
+                  {
+                    "n": 7,
+                    "text": "Another device not showing your changes: look for an 'Update Available' option in the setlist details inside the setlist menu. Devices with push notifications show a red icon above the setlist menu when an update is available; tapping it shows who saved, when, and their comment.",
+                    "disruptive": true,
+                    "kind": "update",
+                    "caution": "Updating the app closes Playback and takes a few minutes; don't do this during a service."
+                  }
+                ],
+                "hasDisruptiveSteps": true,
+                "relevance": 6
+              }
+            ],
+            "note": "Only give steps that appear in these results. Give non-disruptive steps first. Say a disruptive step's caution once per call, in one short sentence, unless the caller already told you their timing; then act on what they said and skip the caution.",
+            "manual": {
+              "ok": true,
+              "source": "manual",
+              "provider": "Playback User Guide (MultiTracks help center, snapshot in Pinecone)",
+              "query": "iPad songs stuck loading won't download troubleshooting downloads Playback",
+              "found": 3,
+              "results": [
+                {
+                  "id": "playback-user-guide:the-setlists-menu-navigating-the-setlists-menu:2",
+                  "score": 0.385,
+                  "sectionPath": "Playback User Guide > Building a Setlist > The Setlists Menu > Navigating the Setlists menu",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_2a50bdfc47",
+                  "category": "song-loading",
+                  "scope": "in-scope",
+                  "part": 2,
+                  "parts": 2,
+                  "imageIds": [
+                    "img-12"
+                  ],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "When tapping on the setlist you would like to load, you can see an overview of every setlist song, key and song length, as well as the Named Arrangement being used in the setlist. Tap any download icons to download tracks onto your device without loading the setlist, or choose to load the setlist immediately and automatically start downloading every song.\n\nNote: Songs may already be downloaded onto your Playback device via another loaded setlist and will not show a download icon.",
+                  "steps": [],
+                  "hasDisruptiveSteps": false
+                },
+                {
+                  "id": "playback-user-guide:adding-a-song-settings-available-when-adding-a-song:3",
+                  "score": 0.382,
+                  "sectionPath": "Playback User Guide > Building a Setlist > Adding a song > Settings available when adding a song:",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_0ef9eca3a1",
+                  "category": "song-loading",
+                  "scope": "in-scope",
+                  "part": 3,
+                  "parts": 3,
+                  "imageIds": [],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "After confirming the song is loading in with the desired settings, tap Add in the top right corner of the menu, and the song will begin downloading on your device.\n\nContinuing adding additional songs to the setlist by repeating the steps as needed, and make sure to always Save to cloud when finished making any setlist changes. Saving your setlist to the cloud not only protects your changes but also synchronizes the setlist to all devices logged into your MultiTracks.com account, ensuring consistent access during rehearsals and performances.",
+                  "steps": [],
+                  "hasDisruptiveSteps": false
+                },
+                {
+                  "id": "playback-user-guide:building-a-setlist-adding-a-song-in-playback:1",
+                  "score": 0.313,
+                  "sectionPath": "Playback User Guide > Building a Setlist > Adding A Song in Playback",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_4e38cbc5d7",
+                  "category": "song-loading",
+                  "scope": "in-scope",
+                  "part": 1,
+                  "parts": 1,
+                  "imageIds": [
+                    "img-09"
+                  ],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "To add a song in Playback, Tap “Add A Song” on the Setlist row to open the 'Add a Song' Menu. You'll have a number of options to navigate the song or product you'd like to add into Playback. Or simply use the top search to search through all songs.",
+                  "steps": [],
+                  "hasDisruptiveSteps": false
+                }
+              ],
+              "outOfScope": [
+                {
+                  "id": "playback-user-guide:setlist-song-map-edit-mode-edit-song-menu:5",
+                  "sectionPath": "Playback User Guide > Customizing Setlists > Setlist / Song Map Edit Mode > Edit Song Menu",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_e417d5f647"
+                },
+                {
+                  "id": "playback-user-guide:playback-named-arrangements-loading-named-arrangements:1",
+                  "sectionPath": "Playback User Guide > Playback Named Arrangements > Loading Named Arrangements",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_48bf1fd4c8"
+                }
+              ],
+              "note": "Manual sections describe how the app works; give only steps that appear in the text, and cite 'the Playback User Guide'. Sections listed under outOfScope are documented but outside this agent's support scope: name the topic and offer a handoff, do not troubleshoot them."
+            }
+          }
+        }
+      ],
+      "reportedCost": 0.0146
+    }
+  ]
+}

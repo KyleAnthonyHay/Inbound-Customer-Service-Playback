@@ -1,0 +1,89 @@
+{
+  "scenario": "handoff-offer-no",
+  "expectedIntent": "audio-output",
+  "callId": "01a19f58-53bf-7bb0-9663-9913833bafc0",
+  "endedReason": "customer-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "search_playback_docs",
+    "delegate",
+    "delegate"
+  ],
+  "timing": {
+    "turns": [
+      {
+        "caller": "We're on an iPad with a Focusrite interface. The band wants the click and guide in their in-ears and only the music out front, but the click and guide are coming through the main mixer and nothing is in the in-ears",
+        "silenceS": 0.4,
+        "firstHeard": "Let me check that.",
+        "transition": true,
+        "gapAfterTransitionS": 3.6,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s",
+          "search_playback_docs@+1.2s"
+        ],
+        "summary": "\"We're on an iPad with a Focusrite interf\" -> 0.4s silence, then transition: \"Let me check that.\" -> 3.6s gap -> \"In Playback's Bus Settings, what output \" [delegate@+0.0s, search_playback_docs@+1.2s]"
+      },
+      {
+        "caller": "Yes. In Playback the click and guide are already on their own output, separate from the music. The mixer still gets everything and the in-ears get nothing",
+        "silenceS": 0.2,
+        "firstHeard": "Okay.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"Yes. In Playback the click and guide are\" -> 0.2s silence, then answer: \"Okay.\" [delegate@+0.0s]"
+      },
+      {
+        "caller": "No. That's okay. I'll ask our sound person to look at the mixer",
+        "silenceS": 0.6,
+        "firstHeard": "Got it.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"No. That's okay. I'll ask our sound pers\" -> 0.6s silence, then answer: \"Got it.\" [delegate@+0.0s]"
+      },
+      {
+        "caller": "No. That's everything. Thanks",
+        "silenceS": 0.2,
+        "firstHeard": "Thanks so much for calling MultiTracks Playback support. Have a great day, and goodbye!",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [],
+        "summary": "\"No. That's everything. Thanks\" -> 0.2s silence, then answer: \"Thanks so much for calling MultiTracks Playback su\""
+      }
+    ],
+    "longestSilenceS": 0.6,
+    "longestGapAfterTransitionS": 3.6,
+    "repeatedAckTurns": 0
+  },
+  "convexToolEvents": [
+    "search_playback_docs succeeded 412ms 6 result(s)"
+  ],
+  "liveEvents": [
+    "32.9s TOOL-CALLS delegate({})",
+    "35.0s TOOL-CALLS search_playback_docs({\"query\":\"iPad Playback route click and guide to in-ear monitors while music goes to front of house through Focusrite audio interface; buses audio output setup\",\"category\":\"audio-output\",\"platform\":\"iPadOS\"})",
+    "60.6s TOOL-CALLS delegate({})",
+    "86.0s TOOL-CALLS delegate({})"
+  ],
+  "transcript": [
+    "AGENT: Hi there! Thank you for calling MultiTracks Playback support. I'm Penny, your virtual AI support assistant. How can I have the pleasure of helping you today?",
+    "CALLER: We're on an iPad with a Focusrite interface. The band wants the click and guide in their in-ears and only the music out front, but the click and guide are coming through the main mixer and nothing is in the in-ears",
+    "AGENT: Let me check that.",
+    "AGENT: In Playback's Bus Settings, what output is the click or guide bus currently assigned to?",
+    "CALLER: Yes. In Playback the click and guide are already on their own output, separate from the music. The mixer still gets everything and the in-ears get nothing",
+    "AGENT: Okay.",
+    "AGENT: Sounds like the app routing is set, so it's likely something between the Focusrite outputs, your mixer, and the in-ear feed. Would you like me to connect you with a Playback specialist now?",
+    "CALLER: No. That's okay. I'll ask our sound person to look at the mixer",
+    "AGENT: Got it.",
+    "AGENT: That makes sense. Your sound person can check the Focusrite output, and the mixer's in-ear send. Is there anything else I can help you with today?",
+    "CALLER: No. That's everything. Thanks",
+    "AGENT: Thanks so much for calling MultiTracks Playback support. Have a great day, and goodbye!"
+  ]
+}

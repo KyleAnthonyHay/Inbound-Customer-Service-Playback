@@ -1,0 +1,100 @@
+{
+  "scenario": "ambiguous-info",
+  "expectedIntent": "song-loading",
+  "callId": "01a19f4c-a76b-7ffb-b863-a41cb62c756d",
+  "endedReason": "assistant-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "delegate",
+    "delegate",
+    "search_playback_docs",
+    "delegate",
+    "endCall"
+  ],
+  "timing": {
+    "turns": [
+      {
+        "caller": "It's just not working",
+        "silenceS": 0.2,
+        "firstHeard": "Got it.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.6s"
+        ],
+        "summary": "\"It's just not working\" -> 0.2s silence, then answer: \"Got it.\" [delegate@+0.6s]"
+      },
+      {
+        "caller": "The songs, they won't go",
+        "silenceS": 0.4,
+        "firstHeard": "Gotcha.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.8s"
+        ],
+        "summary": "\"The songs, they won't go\" -> 0.4s silence, then answer: \"Gotcha.\" [delegate@+0.8s]"
+      },
+      {
+        "caller": "Oh, they won't download. It's stuck loading. I'm on an iPad. I don't know the version",
+        "silenceS": 0.2,
+        "firstHeard": "Oh, okay.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s",
+          "search_playback_docs@+0.6s"
+        ],
+        "summary": "\"Oh, they won't download. It's stuck load\" -> 0.2s silence, then answer: \"Oh, okay.\" [delegate@+0.0s, search_playback_docs@+0.6s]"
+      },
+      {
+        "caller": "Okay, thanks. I'll try that. Bye",
+        "silenceS": 0.6,
+        "firstHeard": "Great, you've got it.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s",
+          "endCall@+1.4s"
+        ],
+        "summary": "\"Okay, thanks. I'll try that. Bye\" -> 0.6s silence, then answer: \"Great, you've got it.\" [delegate@+0.0s, endCall@+1.4s]"
+      }
+    ],
+    "longestSilenceS": 0.6,
+    "longestGapAfterTransitionS": 0,
+    "repeatedAckTurns": 0
+  },
+  "convexToolEvents": [
+    "search_playback_docs succeeded 282ms 6 result(s)"
+  ],
+  "liveEvents": [
+    "23.1s TOOL-CALLS delegate({})",
+    "41.6s TOOL-CALLS delegate({})",
+    "62.8s TOOL-CALLS delegate({})",
+    "67.1s TOOL-CALLS search_playback_docs({\"query\":\"iPad songs stuck loading and will not download in Playback\",\"category\":\"song-loading\",\"platform\":\"iPadOS\"})",
+    "86.2s TOOL-CALLS delegate({})",
+    "87.3s TOOL-CALLS endCall({})",
+    "88.0s STATUS ended assistant-ended-call",
+    "88.0s hangup"
+  ],
+  "transcript": [
+    "AGENT: Hi there! Thank you for calling MultiTracks Playback support. I'm Penny, your virtual AI support assistant. How can I have the pleasure of helping you today?",
+    "CALLER: It's just not working",
+    "AGENT: Got it.",
+    "AGENT: Oh, I'm sorry. Let's",
+    "AGENT: get that fixed. What's happening in Playback today? What are you trying to do when it stops working?",
+    "CALLER: The songs, they won't go",
+    "AGENT: Gotcha.",
+    "AGENT: Okay, let's get 'em moving again.",
+    "AGENT: What happens on the screen when you try to start one of the songs?",
+    "CALLER: Oh, they won't download. It's stuck loading. I'm on an iPad. I don't know the version",
+    "AGENT: Oh, okay.",
+    "AGENT: Sure thing. What exact message, if any, shows up while that download is stuck?",
+    "CALLER: Okay, thanks. I'll try that. Bye",
+    "AGENT: Great, you've got it."
+  ]
+}

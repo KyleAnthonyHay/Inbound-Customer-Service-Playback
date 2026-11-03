@@ -1,0 +1,76 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "scenario": "callback-consent",
+  "expectedIntent": "callback-availability-without-booking-consent",
+  "failure": null,
+  "reportedTextCost": 0.0175,
+  "turns": [
+    {
+      "input": "I'd like a Playback support callback tomorrow at 11 AM Eastern about a song download problem. I'm Taylor and my callback number is +1 202 555 0146. Please check the time, but don't book anything yet.",
+      "chatId": "b9468dad-6e12-4766-bc17-b4d9d4460b10",
+      "reply": "Let me check that time.\n\nTue, Nov 3, 11:00 AM EST is open for a Playback support callback about the song download problem.",
+      "tools": [
+        {
+          "name": "get_callback_slots",
+          "arguments": {
+            "teamId": "playback-support",
+            "preferredDate": "tomorrow",
+            "preferredTime": "11 AM",
+            "timeZone": "Eastern"
+          },
+          "result": {
+            "instruction": "Tue, Nov 3, 11:00 AM EST is open. Read the full details back (time, zone, number) and get an explicit yes before calling reserve_callback with slotId j572g57y6rbch9bw7pmq0f0nr98he7y2.",
+            "now": "2026-11-03T02:42:44.729Z",
+            "nowLocal": "Mon, Nov 2, 9:42 PM EST",
+            "requested": {
+              "available": true,
+              "endAt": "2026-11-03T16:30:00.000Z",
+              "iso": "2026-11-03T16:00:00.000Z",
+              "local": "Tue, Nov 3, 11:00 AM EST",
+              "slotId": "j572g57y6rbch9bw7pmq0f0nr98he7y2"
+            },
+            "slots": [
+              {
+                "endAt": "2026-11-03T16:30:00.000Z",
+                "local": "Tue, Nov 3, 11:00 AM EST",
+                "slotId": "j572g57y6rbch9bw7pmq0f0nr98he7y2",
+                "startAt": "2026-11-03T16:00:00.000Z"
+              },
+              {
+                "endAt": "2026-11-03T16:00:00.000Z",
+                "local": "Tue, Nov 3, 10:30 AM EST",
+                "slotId": "j572nxnvr6vdr0pgm4xk4scynx8he1ys",
+                "startAt": "2026-11-03T15:30:00.000Z"
+              },
+              {
+                "endAt": "2026-11-03T17:00:00.000Z",
+                "local": "Tue, Nov 3, 11:30 AM EST",
+                "slotId": "j579yeh2zrsxyccqg6fv4w3p6n8he1wq",
+                "startAt": "2026-11-03T16:30:00.000Z"
+              },
+              {
+                "endAt": "2026-11-03T15:30:00.000Z",
+                "local": "Tue, Nov 3, 10:00 AM EST",
+                "slotId": "j57cxbc1dwxq1fccmh2sps7m2x8hf6ax",
+                "startAt": "2026-11-03T15:00:00.000Z"
+              }
+            ],
+            "source": "simulated",
+            "teamHoursLocal": "10:00 AM to 7:00 PM EST, weekdays only",
+            "timeZone": "America/New_York"
+          }
+        }
+      ],
+      "reportedCost": 0.0097
+    },
+    {
+      "input": "Actually, please don't book anything. Goodbye.",
+      "chatId": "ad987c56-9813-4e34-9447-7f569e4cd029",
+      "reply": "Thanks so much for calling MultiTracks Playback support. Have a great day, and goodbye!",
+      "tools": [],
+      "reportedCost": 0.0078
+    }
+  ]
+}

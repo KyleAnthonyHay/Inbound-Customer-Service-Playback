@@ -1,0 +1,106 @@
+{
+  "scenario": "callback-unavailable-time",
+  "expectedIntent": "callback",
+  "callId": "01a19f52-4043-7000-8c7d-39e4ce54b8c6",
+  "endedReason": "assistant-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "check_team_availability",
+    "delegate",
+    "get_callback_slots",
+    "delegate",
+    "delegate",
+    "reserve_callback",
+    "endCall"
+  ],
+  "timing": {
+    "turns": [
+      {
+        "caller": "I'd rather just talk to someone from the team. Can they call me back",
+        "silenceS": 0,
+        "firstHeard": "Let me check who's available.",
+        "transition": true,
+        "gapAfterTransitionS": 5.2,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s",
+          "check_team_availability@+0.8s"
+        ],
+        "summary": "\"I'd rather just talk to someone from the\" -> 0s silence, then transition: \"Let me check who's available.\" -> 5.2s gap -> \"No one's available right now, but I can \" [delegate@+0.0s, check_team_availability@+0.8s]"
+      },
+      {
+        "caller": "Monday at 8 p.m. works for me. I'm in Eastern Time",
+        "silenceS": 0.2,
+        "firstHeard": "Got it.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+-0.0s",
+          "get_callback_slots@+0.6s"
+        ],
+        "summary": "\"Monday at 8 p.m. works for me. I'm in Ea\" -> 0.2s silence, then answer: \"Got it.\" [delegate@+-0.0s, get_callback_slots@+0.6s]"
+      },
+      {
+        "caller": "Okay. Then the latest slot you have that day is fine. My number is five five five, zero one zero, zero one seven seven, and my name is Priya Natarajan",
+        "silenceS": 0.2,
+        "firstHeard": "Okay.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": true,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"Okay. Then the latest slot you have that\" -> 0.2s silence, then answer: \"Okay.\" [delegate@+0.0s] [REPEATED ACK]"
+      },
+      {
+        "caller": "Yes, book it. Thanks. Bye",
+        "silenceS": 0.6,
+        "firstHeard": "Okay.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s",
+          "reserve_callback@+0.8s",
+          "endCall@+0.8s"
+        ],
+        "summary": "\"Yes, book it. Thanks. Bye\" -> 0.6s silence, then answer: \"Okay.\" [delegate@+0.0s, reserve_callback@+0.8s, endCall@+0.8s]"
+      }
+    ],
+    "longestSilenceS": 0.6,
+    "longestGapAfterTransitionS": 5.2,
+    "repeatedAckTurns": 1
+  },
+  "convexToolEvents": [
+    "check_team_availability succeeded 30ms Playback Technical Support: unavailable",
+    "get_callback_slots succeeded 58ms Mon, Nov 9, 8:00 PM EST not available (outside-hours)",
+    "reserve_callback succeeded 34ms confirmed"
+  ],
+  "liveEvents": [
+    "25.3s TOOL-CALLS delegate({})",
+    "28.5s TOOL-CALLS check_team_availability({\"teamId\":\"playback-support\"})",
+    "48.7s TOOL-CALLS delegate({})",
+    "50.1s TOOL-CALLS get_callback_slots({\"teamId\":\"playback-support\",\"preferredDate\":\"Monday\",\"preferredTime\":\"8 p.m.\",\"timeZone\":\"Eastern\"})",
+    "80.2s TOOL-CALLS delegate({})",
+    "103.4s TOOL-CALLS delegate({})",
+    "106.7s TOOL-CALLS reserve_callback({\"teamId\":\"playback-support\",\"slotId\":\"j57ehjmhgjd27rw4va3j4ryjch8hekqw\",\"callerName\":\"Priya Natarajan\",\"callbackNumber\":\"5550100177\",\"timeZone\":\"Eastern\",\"reason\":\"Caller requested Playback support callback.\"})",
+    "109.3s TOOL-CALLS endCall({})",
+    "110.0s STATUS ended assistant-ended-call",
+    "110.0s hangup"
+  ],
+  "transcript": [
+    "AGENT: Hi there! Thank you for calling MultiTracks Playback support. I'm Penny, your virtual AI support assistant. How can I have the pleasure of helping you today?",
+    "CALLER: I'd rather just talk to someone from the team. Can they call me back",
+    "AGENT: Let me check who's available.",
+    "AGENT: No one's available right now, but I can schedule a callback with the Playback support team. When would you be available?",
+    "CALLER: Monday at 8 p.m. works for me. I'm in Eastern Time",
+    "AGENT: Got it.",
+    "AGENT: That’s a little too late for their callback hours. The closest slots are Monday at 4:30, 4, 3:30, or 3 p.m. Eastern. Does any of those work?",
+    "CALLER: Okay. Then the latest slot you have that day is fine. My number is five five five, zero one zero, zero one seven seven, and my name is Priya Natarajan",
+    "AGENT: Okay.",
+    "AGENT: Okay, I have Monday at 4:30 p.m. Eastern for Priya Natarajan, at the number ending in 0177. Would you like me to book that?",
+    "CALLER: Yes, book it. Thanks. Bye",
+    "AGENT: Okay."
+  ]
+}

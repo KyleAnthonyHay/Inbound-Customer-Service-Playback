@@ -1,0 +1,88 @@
+{
+  "scenario": "missing-team-sharing-permission",
+  "expectedIntent": "song-loading",
+  "callId": "01a19f61-e7e5-788b-ad1d-733f804dbf10",
+  "endedReason": "assistant-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "search_playback_docs",
+    "get_planning_center_service_context",
+    "delegate",
+    "lookup_demo_customer",
+    "delegate",
+    "endCall"
+  ],
+  "timing": {
+    "turns": [
+      {
+        "caller": "I'm on our worship team and I can see the setlist for Sunday but none of the songs will download for me. They work fine on the leader's iPad",
+        "silenceS": 0,
+        "firstHeard": "Let me check that.",
+        "transition": true,
+        "gapAfterTransitionS": 5.4,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s",
+          "search_playback_docs@+0.6s",
+          "get_planning_center_service_context@+0.6s"
+        ],
+        "summary": "\"I'm on our worship team and I can see th\" -> 0s silence, then transition: \"Let me check that.\" -> 5.4s gap -> \"What message comes up when you try to do\" [delegate@+0.0s, search_playback_docs@+0.6s, get_planning_center_service_context@+0.6s]"
+      },
+      {
+        "caller": "My email is sam dot okafor at example dot org",
+        "silenceS": 0,
+        "firstHeard": "Gotcha.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s",
+          "lookup_demo_customer@+0.4s"
+        ],
+        "summary": "\"My email is sam dot okafor at example do\" -> 0s silence, then answer: \"Gotcha.\" [delegate@+0.0s, lookup_demo_customer@+0.4s]"
+      },
+      {
+        "caller": "Ah. So it's a permission thing, not my app. I'll ask John to add me. Thanks. Bye",
+        "silenceS": 0.4,
+        "firstHeard": "Okay.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+-0.0s",
+          "endCall@+0.6s"
+        ],
+        "summary": "\"Ah. So it's a permission thing, not my a\" -> 0.4s silence, then answer: \"Okay.\" [delegate@+-0.0s, endCall@+0.6s]"
+      }
+    ],
+    "longestSilenceS": 0.4,
+    "longestGapAfterTransitionS": 5.4,
+    "repeatedAckTurns": 0
+  },
+  "convexToolEvents": [
+    "get_planning_center_service_context succeeded 591ms 3 demo service song(s) — actual Services API read",
+    "search_playback_docs succeeded 377ms 6 result(s)",
+    "lookup_demo_customer succeeded 31ms missing-team-sharing"
+  ],
+  "liveEvents": [
+    "28.6s TOOL-CALLS delegate({})",
+    "31.4s TOOL-CALLS search_playback_docs({\"query\":\"Playback songs will not download from setlist; troubleshooting song downloads and access\",\"category\":\"song-loading\"}), get_planning_center_service_context({})",
+    "55.2s TOOL-CALLS delegate({})",
+    "57.6s TOOL-CALLS lookup_demo_customer({\"email\":\"sam.okafor@example.org\"})",
+    "86.9s TOOL-CALLS delegate({})",
+    "90.4s TOOL-CALLS endCall({})",
+    "91.1s STATUS ended assistant-ended-call",
+    "91.1s hangup"
+  ],
+  "transcript": [
+    "AGENT: Hi there! Thank you for calling MultiTracks Playback support. I'm Penny, your virtual AI support assistant. How can I have the pleasure of helping you today?",
+    "CALLER: I'm on our worship team and I can see the setlist for Sunday but none of the songs will download for me. They work fine on the leader's iPad",
+    "AGENT: Let me check that.",
+    "AGENT: What message comes up when you try to download one? The demo service plan shows Sunday’s songs, but it doesn’t confirm that download access is set up on your device.",
+    "CALLER: My email is sam dot okafor at example dot org",
+    "AGENT: Gotcha.",
+    "AGENT: Thanks. Your church subscription is active, but your team member account doesn’t have Playback Team Sharing enabled, so the songs won’t download. Your organization admin can enable that for you on the People page at MultiTracks dot com.",
+    "CALLER: Ah. So it's a permission thing, not my app. I'll ask John to add me. Thanks. Bye",
+    "AGENT: Okay."
+  ]
+}

@@ -1,0 +1,176 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "scenario": "human-request",
+  "expectedIntent": "human-request",
+  "failure": null,
+  "reportedTextCost": 0.054400000000000004,
+  "turns": [
+    {
+      "input": "I don't want to troubleshoot, I just want to talk to a real person please.",
+      "chatId": "d2cc1eee-0d77-498d-a6ce-b192e3634c94",
+      "reply": "Of course. Let me see who's available. One moment please.\n\nNo Playback specialist is available right now, but I can schedule a callback; when are you next available?",
+      "tools": [
+        {
+          "name": "check_team_availability",
+          "arguments": {
+            "teamId": "playback-support"
+          },
+          "result": {
+            "source": "simulated",
+            "teams": [
+              {
+                "canTransferNow": false,
+                "description": "Song loading, audio output, device and version issues.",
+                "label": "Playback Technical Support",
+                "status": "available",
+                "teamId": "playback-support",
+                "withinHours": false
+              }
+            ],
+            "handoffStarted": false,
+            "actionPerformed": "availability-lookup-only"
+          }
+        }
+      ],
+      "reportedCost": 0.0167
+    },
+    {
+      "input": "Yes, a callback is fine. Any time tomorrow afternoon, I'm in Central time, my number is 555 010 0199, and my name is Marcus Bell.",
+      "chatId": "76d6d089-4c52-467d-8d7a-f1740808f1c3",
+      "reply": "Let me check that time.\n\nLet me check that time.\n\nTue, Nov 3, 1:00 PM CST is available, Marcus. Shall I book it for 555 010 0199?",
+      "tools": [
+        {
+          "name": "get_callback_slots",
+          "arguments": {
+            "teamId": "playback-support",
+            "preferredDate": "tomorrow",
+            "timeZone": "Central"
+          },
+          "result": {
+            "instruction": "Offer these times using their 'local' strings. If the caller names a specific day and time, call this tool again with preferredDate, preferredTime and timeZone to check that exact time.",
+            "now": "2026-11-03T02:40:16.988Z",
+            "nowLocal": "Mon, Nov 2, 8:40 PM CST",
+            "slots": [
+              {
+                "endAt": "2026-11-03T15:30:00.000Z",
+                "local": "Tue, Nov 3, 9:00 AM CST",
+                "slotId": "j57cxbc1dwxq1fccmh2sps7m2x8hf6ax",
+                "startAt": "2026-11-03T15:00:00.000Z"
+              },
+              {
+                "endAt": "2026-11-03T16:00:00.000Z",
+                "local": "Tue, Nov 3, 9:30 AM CST",
+                "slotId": "j572nxnvr6vdr0pgm4xk4scynx8he1ys",
+                "startAt": "2026-11-03T15:30:00.000Z"
+              },
+              {
+                "endAt": "2026-11-03T16:30:00.000Z",
+                "local": "Tue, Nov 3, 10:00 AM CST",
+                "slotId": "j572g57y6rbch9bw7pmq0f0nr98he7y2",
+                "startAt": "2026-11-03T16:00:00.000Z"
+              },
+              {
+                "endAt": "2026-11-03T17:00:00.000Z",
+                "local": "Tue, Nov 3, 10:30 AM CST",
+                "slotId": "j579yeh2zrsxyccqg6fv4w3p6n8he1wq",
+                "startAt": "2026-11-03T16:30:00.000Z"
+              }
+            ],
+            "source": "simulated",
+            "teamHoursLocal": "9:00 AM to 6:00 PM CST, weekdays only",
+            "timeZone": "America/Chicago"
+          }
+        },
+        {
+          "name": "get_callback_slots",
+          "arguments": {
+            "teamId": "playback-support",
+            "preferredDate": "tomorrow",
+            "preferredTime": "1 PM",
+            "timeZone": "Central"
+          },
+          "result": {
+            "instruction": "Tue, Nov 3, 1:00 PM CST is open. Read the full details back (time, zone, number) and get an explicit yes before calling reserve_callback with slotId j574s3p2yy9dppqsg8c3azq5th8hf82m.",
+            "now": "2026-11-03T02:40:18.986Z",
+            "nowLocal": "Mon, Nov 2, 8:40 PM CST",
+            "requested": {
+              "available": true,
+              "endAt": "2026-11-03T19:30:00.000Z",
+              "iso": "2026-11-03T19:00:00.000Z",
+              "local": "Tue, Nov 3, 1:00 PM CST",
+              "slotId": "j574s3p2yy9dppqsg8c3azq5th8hf82m"
+            },
+            "slots": [
+              {
+                "endAt": "2026-11-03T19:30:00.000Z",
+                "local": "Tue, Nov 3, 1:00 PM CST",
+                "slotId": "j574s3p2yy9dppqsg8c3azq5th8hf82m",
+                "startAt": "2026-11-03T19:00:00.000Z"
+              },
+              {
+                "endAt": "2026-11-03T19:00:00.000Z",
+                "local": "Tue, Nov 3, 12:30 PM CST",
+                "slotId": "j57f39t9abnqzbhjdgw0d7k3pn8he97e",
+                "startAt": "2026-11-03T18:30:00.000Z"
+              },
+              {
+                "endAt": "2026-11-03T20:00:00.000Z",
+                "local": "Tue, Nov 3, 1:30 PM CST",
+                "slotId": "j5780a93wb5a83078c3bzd5s6s8he8f5",
+                "startAt": "2026-11-03T19:30:00.000Z"
+              },
+              {
+                "endAt": "2026-11-03T18:30:00.000Z",
+                "local": "Tue, Nov 3, 12:00 PM CST",
+                "slotId": "j57evkc1bz5amcq9k2k62ft68d8hfnv4",
+                "startAt": "2026-11-03T18:00:00.000Z"
+              }
+            ],
+            "source": "simulated",
+            "teamHoursLocal": "9:00 AM to 6:00 PM CST, weekdays only",
+            "timeZone": "America/Chicago"
+          }
+        }
+      ],
+      "reportedCost": 0.017
+    },
+    {
+      "input": "Yes, that time works, go ahead and book it.",
+      "chatId": "3b16ca5a-25b3-4fc1-ba70-56aee63d9788",
+      "reply": "Booking that now.\n\nYour callback is confirmed for Tue, Nov 3, 1:00 PM CST. Thanks so much for calling MultiTracks Playback support. Have a great day, and goodbye!",
+      "tools": [
+        {
+          "name": "reserve_callback",
+          "arguments": {
+            "slotId": "j574s3p2yy9dppqsg8c3azq5th8hf82m",
+            "callerName": "Marcus Bell",
+            "callbackNumber": "555 010 0199",
+            "timeZone": "Central",
+            "reason": "Caller requested a real person rather than troubleshooting.",
+            "customerId": ""
+          },
+          "result": {
+            "bookingId": "j979yrbztpnqwgvs9x1waqtts58hgpv4",
+            "duplicate": false,
+            "endAt": "2026-11-03T19:30:00.000Z",
+            "local": "Tue, Nov 3, 1:00 PM CST",
+            "ok": true,
+            "source": "simulated",
+            "startAt": "2026-11-03T19:00:00.000Z",
+            "usedCallerId": false
+          }
+        }
+      ],
+      "reportedCost": 0.0121
+    },
+    {
+      "input": "Great, thanks, bye.",
+      "chatId": "8d032199-ca52-47d8-b7f2-c8396145b816",
+      "reply": "",
+      "tools": [],
+      "reportedCost": 0.0086
+    }
+  ]
+}

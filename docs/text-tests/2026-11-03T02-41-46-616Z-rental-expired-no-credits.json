@@ -1,0 +1,67 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "scenario": "rental-expired-no-credits",
+  "expectedIntent": "subscription",
+  "failure": null,
+  "reportedTextCost": 0.0313,
+  "turns": [
+    {
+      "input": "Build My Life won't play anymore, it's asking me to unlock it with a rental credit but I already rented it last month.",
+      "chatId": "12a0aa81-c11a-438c-9254-2afb136e04f1",
+      "reply": "What six-digit Organization ID do you see in Playback under Settings, then About? That will let me check the rental access for “Build My Life.”",
+      "tools": [],
+      "reportedCost": 0.0075
+    },
+    {
+      "input": "The organization ID is 7 1 4 3 1 8.",
+      "chatId": "9faaccf3-862c-403f-80d3-fe986f3fb2d7",
+      "reply": "Let me check whether that song is in your library.\n\nThe rental for “Build My Life” has expired, and your organization has no rental credits left this cycle, so Playback is correctly asking to unlock it again. Would you like me to connect you with our billing team to review the options?",
+      "tools": [
+        {
+          "name": "check_song_access",
+          "arguments": {
+            "songTitle": "Build My Life",
+            "orgId": "714318"
+          },
+          "result": {
+            "access": "rental-expired",
+            "next": "No credits remain this cycle, so the tracks cannot be rented again until the cycle renews or the song is purchased on MultiTracks.com. That is a purchase or billing matter: say so and offer billing.",
+            "ok": true,
+            "organization": {
+              "name": "Cedar Ridge Church (demo)",
+              "orgId": "714318",
+              "plan": "Rentals",
+              "subscriptionStatus": "active"
+            },
+            "song": {
+              "artist": "Pat Barrett",
+              "expiresAt": "2026-10-26",
+              "kind": "rental",
+              "status": "expired",
+              "title": "Build My Life"
+            },
+            "source": "simulated",
+            "summary": "The rental of \"Build My Life\" expired on 2026-10-26; the organization has 0 rental credit(s) left."
+          }
+        }
+      ],
+      "reportedCost": 0.0093
+    },
+    {
+      "input": "Got it, so the rental ran out and we're out of credits. Can you get billing to call me? I'm Tasha, 555 010 0142, Central time, tomorrow afternoon is fine.",
+      "chatId": "e028050c-3b02-4831-bddc-da1d331f31c5",
+      "reply": "What time tomorrow afternoon would you prefer for the billing callback, Tasha?",
+      "tools": [],
+      "reportedCost": 0.0074
+    },
+    {
+      "input": "Yes, that works, book it.",
+      "chatId": "cb1162f1-ee56-43f3-8cf6-982481f7fab6",
+      "reply": "I don’t have a specific callback time selected yet; what time tomorrow afternoon would you like the billing team to call?",
+      "tools": [],
+      "reportedCost": 0.0071
+    }
+  ]
+}

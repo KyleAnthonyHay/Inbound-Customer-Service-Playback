@@ -1,0 +1,342 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "scenario": "genuinely-expired-subscription",
+  "expectedIntent": "subscription",
+  "failure": null,
+  "reportedTextCost": 0.0635,
+  "turns": [
+    {
+      "input": "Playback says my Cloud Pro expired and I can't download songs anymore.",
+      "chatId": "4c8e66bc-bcf6-4cda-99de-82569706cef4",
+      "reply": "Absolutely, let me pull that up. One moment please.\n\nCloud Pro ending can affect how long purchased downloads remain available, but I can’t confirm the cause from that message alone. What device are you using Playback on?",
+      "tools": [
+        {
+          "name": "search_playback_docs",
+          "arguments": {
+            "query": "Playback Cloud Pro expired cannot download songs subscription expiration downloads",
+            "category": "subscription"
+          },
+          "result": {
+            "ok": true,
+            "source": "documentation",
+            "provider": "MultiTracks Help Center (bounded snapshot)",
+            "snapshotRetrievedAt": "2026-10-31",
+            "query": "Playback Cloud Pro expired cannot download songs subscription expiration downloads",
+            "found": 6,
+            "results": [
+              {
+                "id": "get-started-cloud-pro-subscription",
+                "title": "GET STARTED | Cloud Pro Subscription",
+                "category": "subscription",
+                "url": "https://helpcenter.multitracks.com/en/articles/5242856-get-started-cloud-pro-subscription",
+                "retrievedAt": "2026-10-30",
+                "appliesTo": [],
+                "summary": "What Cloud Pro gates for Playback: click and guide tracks for every catalog song in setlists (with key/tempo/arrangement edits persisting when tracks are later purchased or rented), saved Custom Arrangements (fader mix, key/tempo, sections), Cloud Songs with uploaded stems/charts/MIDI, custom click and guide cues, cloud-saved MIDI Cues, editing cloud sections, and 10 Playback Team Sharing licenses. Storage 'starts at 50GB' per this article (the pricing page lists other tiers). Cloud Pro also removes the 48-hour download expiration on purchased downloads. No activation or sign-in steps are given.",
+                "steps": [],
+                "hasDisruptiveSteps": false,
+                "relevance": 19
+              },
+              {
+                "id": "playback-subscriptions-explained",
+                "title": "Playback Subscriptions | Explained",
+                "category": "subscription",
+                "url": "https://helpcenter.multitracks.com/en/articles/8106819-playback-subscriptions-explained",
+                "retrievedAt": "2026-10-30",
+                "appliesTo": [
+                  "iOS",
+                  "iPadOS",
+                  "macOS"
+                ],
+                "summary": "Separates Playback Features (Intro, Premium, Cloud Pro, Live Bundle), Playback Content (Rentals, purchased tracks, Sounds, uploaded Cloud Songs, click and guide), and Playback Access (Team Sharing seats). Playback Intro is free on iOS, iPadOS, and macOS but limited to a single stereo output and excludes Premium features (editing arrangements, Playback Remote, Playback Sync). Cloud Pro adds click and guide for every song, Team Sharing seats, and saved custom-named arrangements; uploading Cloud Songs requires Cloud Pro. Rentals are device-specific and not shared. The article does not explain how to check or manage the subscription in-app.",
+                "steps": [],
+                "hasDisruptiveSteps": false,
+                "relevance": 15
+              },
+              {
+                "id": "managing-chartbuilder-and-playback-devices",
+                "title": "Managing ChartBuilder and Playback Devices",
+                "category": "subscription",
+                "url": "https://helpcenter.multitracks.com/en/articles/10602113-managing-chartbuilder-and-playback-devices",
+                "retrievedAt": "2026-10-30",
+                "appliesTo": [],
+                "summary": "Each Playback user may be signed in on two devices; a user with a Playback Premium seat gets three. Devices are viewed and removed from the Playback Devices section of the user's account page on MultiTracks.com. TestFlight/beta builds register as separate devices.",
+                "steps": [
+                  {
+                    "n": 1,
+                    "text": "View or manage Playback devices: 'Playback Devices' section of your user-account page, or https://www.multitracks.com/premium/playback/devices.aspx",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 2,
+                    "text": "Remove a device: on the Devices page under your username account page, click the 'X' next to the device. This signs that user out of the device and frees a slot.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 3,
+                    "text": "Add a device: confirm an 'Available device' is listed, then sign in to Playback with the user's credentials.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 4,
+                    "text": "Beta/TestFlight builds typically register as separate devices even on the same hardware, so running both can reach the limit faster.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 5,
+                    "text": "To give more people access, add them as users and grant seats and setlist access; the per-user limit itself cannot be raised except via the Premium seat.",
+                    "disruptive": false
+                  }
+                ],
+                "hasDisruptiveSteps": false,
+                "relevance": 4
+              }
+            ],
+            "note": "Only give steps that appear in these results. Give non-disruptive steps first. Say a disruptive step's caution once per call, in one short sentence, unless the caller already told you their timing; then act on what they said and skip the caution.",
+            "manual": {
+              "ok": true,
+              "source": "manual",
+              "provider": "Playback User Guide (MultiTracks help center, snapshot in Pinecone)",
+              "query": "Playback Cloud Pro expired cannot download songs subscription expiration downloads",
+              "found": 3,
+              "results": [
+                {
+                  "id": "playback-user-guide:playback-settings-about-tab:1",
+                  "score": 0.413,
+                  "sectionPath": "Playback User Guide > Playback Settings > About Tab",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide",
+                  "category": "subscription",
+                  "scope": "adjacent",
+                  "part": 1,
+                  "parts": 1,
+                  "imageIds": [
+                    "img-41",
+                    "img-42"
+                  ],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "- Restore Purchases: If an iTunes subscription is expired or not being confirmed by Playback, reconcile any issues with payment info in the App Store and Tap Restore Purchases to reconnect your In-App Subscription.\n- Manage Subscription: Explore the paid versions of Playback and what features they have to offer. Learn More Here.\n- Manual: opens up this user guide.\n- Reset Tool Tips: If a new feature seems confusing, Tap to reset and see the tool tip tour again.\n- Contact Support: will send an email to support with all of the currently-opened setlist details and device information helpful for troubleshooting any potential issues.\n- Become a Beta Tester: Interested in early access to upcoming new features? Apply to become a Playback beta tester.\n- Acknowledgments: Playback software acknowledgments.\n- Playback Version and build information is listed at the very bottom.",
+                  "steps": [
+                    {
+                      "n": 1,
+                      "text": "Restore Purchases: If an iTunes subscription is expired or not being confirmed by Playback, reconcile any issues with payment info in the App Store and Tap Restore Purchases to reconnect your In-App Subscription.",
+                      "disruptive": true,
+                      "kind": "update",
+                      "caution": "Updating the app closes Playback and takes a few minutes; don't do this during a service."
+                    },
+                    {
+                      "n": 2,
+                      "text": "Manage Subscription: Explore the paid versions of Playback and what features they have to offer. Learn More Here.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 3,
+                      "text": "Manual: opens up this user guide.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 4,
+                      "text": "Reset Tool Tips: If a new feature seems confusing, Tap to reset and see the tool tip tour again.",
+                      "disruptive": true,
+                      "kind": "settings-change",
+                      "caution": "Changing this setting takes effect immediately and can cut audio for a moment."
+                    },
+                    {
+                      "n": 5,
+                      "text": "Contact Support: will send an email to support with all of the currently-opened setlist details and device information helpful for troubleshooting any potential issues.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 6,
+                      "text": "Become a Beta Tester: Interested in early access to upcoming new features? Apply to become a Playback beta tester.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 7,
+                      "text": "Acknowledgments: Playback software acknowledgments.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 8,
+                      "text": "Playback Version and build information is listed at the very bottom.",
+                      "disruptive": false
+                    }
+                  ],
+                  "hasDisruptiveSteps": true
+                },
+                {
+                  "id": "playback-user-guide:login-requirements-organizational-content-permissions:1",
+                  "score": 0.311,
+                  "sectionPath": "Playback User Guide > App Overview > Login Requirements > Organizational Content Permissions",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_247f735c64",
+                  "category": "setup",
+                  "scope": "in-scope",
+                  "part": 1,
+                  "parts": 1,
+                  "imageIds": [
+                    "img-03"
+                  ],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "If you are logging into your own organization, then you are ready to start downloading your organization’s purchased content or Rental credits immediately. When logging into another organization, certain permission subscriptions need to be added to your account in order for you to access purchased tracks, spend Rental credits, or save Cloud changes to setlists, song arrangements, and MIDI Cues.\n\nFor more information about managing your organization’s team members, subscriptions, and content permissions, check out: 📖 Managing Roles and Permissions\n\nOnce logged in, you’re ready to start building a setlist!",
+                  "steps": [],
+                  "hasDisruptiveSteps": false
+                },
+                {
+                  "id": "playback-user-guide:adding-a-song-settings-available-when-adding-a-song:3",
+                  "score": 0.294,
+                  "sectionPath": "Playback User Guide > Building a Setlist > Adding a song > Settings available when adding a song:",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_0ef9eca3a1",
+                  "category": "song-loading",
+                  "scope": "in-scope",
+                  "part": 3,
+                  "parts": 3,
+                  "imageIds": [],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "After confirming the song is loading in with the desired settings, tap Add in the top right corner of the menu, and the song will begin downloading on your device.\n\nContinuing adding additional songs to the setlist by repeating the steps as needed, and make sure to always Save to cloud when finished making any setlist changes. Saving your setlist to the cloud not only protects your changes but also synchronizes the setlist to all devices logged into your MultiTracks.com account, ensuring consistent access during rehearsals and performances.",
+                  "steps": [],
+                  "hasDisruptiveSteps": false
+                }
+              ],
+              "outOfScope": [
+                {
+                  "id": "playback-user-guide:cloud-song-sections-edit-mode-video-overview:1",
+                  "sectionPath": "Playback User Guide > Customizing Setlists > Cloud Song Sections Edit Mode > Video Overview",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_29d220d044"
+                },
+                {
+                  "id": "playback-user-guide:customizing-setlists-playback-edit-modes-overview:2",
+                  "sectionPath": "Playback User Guide > Customizing Setlists > Playback Edit Modes: Overview",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_766ca00b13"
+                },
+                {
+                  "id": "playback-user-guide:cloud-song-sections-edit-mode-add-song-section-markers:1",
+                  "sectionPath": "Playback User Guide > Customizing Setlists > Cloud Song Sections Edit Mode > Add Song Section Markers",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_7e084e2f60"
+                }
+              ],
+              "note": "Manual sections describe how the app works; give only steps that appear in the text, and cite 'the Playback User Guide'. Sections listed under outOfScope are documented but outside this agent's support scope: name the topic and offer a handoff, do not troubleshoot them."
+            }
+          }
+        }
+      ],
+      "reportedCost": 0.0146
+    },
+    {
+      "input": "My email is priya dot n at example dot org.",
+      "chatId": "8a881bf9-aab3-410b-bd14-d05577d1a7f4",
+      "reply": "Let me pull up that account.\n\nThe demo account confirms Cloud Pro expired on September 2; purchased songs should still download, but Cloud Pro features won’t. Would you like me to connect you with our billing team to review the subscription?",
+      "tools": [
+        {
+          "name": "lookup_demo_customer",
+          "arguments": {
+            "email": "priya.n@example.org"
+          },
+          "result": {
+            "customer": {
+              "customerId": "DEMO-1002",
+              "email": "priya.n@example.org",
+              "entitlements": [],
+              "expiredAt": "2026-09-02",
+              "memberships": [
+                {
+                  "orgId": "517204",
+                  "rentals": true,
+                  "role": "Org Admin",
+                  "teamSharing": true
+                }
+              ],
+              "name": "Priya Natarajan",
+              "notes": "Cloud Pro subscription genuinely expired on 2026-09-02. Sees 'Cloud Pro expired' message; a software update will not resolve this.",
+              "orgId": "517204",
+              "organization": "Harbor Light Fellowship (demo)",
+              "plan": "Cloud Pro",
+              "subscriptionStatus": "expired"
+            },
+            "diagnosis": {
+              "code": "expired",
+              "next": "This is a billing matter you cannot resolve. Say the subscription ended, say what still works, and offer a handoff or callback with billing. Do not suggest an update or reinstall.",
+              "summary": "Cloud Pro expired on 2026-09-02. Purchased songs still download; click and guide, cloud songs and other subscription features do not."
+            },
+            "library": {
+              "count": 2,
+              "songs": [
+                {
+                  "artist": "Leeland",
+                  "kind": "purchased",
+                  "status": "active",
+                  "title": "Way Maker"
+                },
+                {
+                  "artist": "Hillsong Worship",
+                  "kind": "purchased",
+                  "status": "active",
+                  "title": "King of Kings"
+                }
+              ]
+            },
+            "membership": {
+              "orgId": "517204",
+              "rentals": true,
+              "role": "Org Admin",
+              "teamSharing": true
+            },
+            "next": "This is a billing matter you cannot resolve. Say the subscription ended, say what still works, and offer a handoff or callback with billing. Do not suggest an update or reinstall.",
+            "ok": true,
+            "organization": {
+              "expiredAt": "2026-09-02",
+              "name": "Harbor Light Fellowship (demo)",
+              "notes": "Cloud Pro genuinely expired on 2026-09-02. Purchased songs still download; click and guide and cloud features do not.",
+              "orgId": "517204",
+              "plan": "Cloud Pro",
+              "simulated": true,
+              "subscriptionStatus": "expired",
+              "teamSharingSeats": {
+                "total": 10,
+                "used": 2
+              }
+            },
+            "otherOrganizations": [],
+            "source": "simulated"
+          }
+        }
+      ],
+      "reportedCost": 0.0145
+    },
+    {
+      "input": "Okay so I actually need to renew. Can you just do that for me?",
+      "chatId": "b2db0706-e23b-4a9a-be3f-0cbd35b0820f",
+      "reply": "Of course. Let me see who's available. One moment please.\n\nThe billing team isn’t available for a transfer right now, and I can’t renew subscriptions myself. I can schedule a callback with them—when are you next available?",
+      "tools": [
+        {
+          "name": "check_team_availability",
+          "arguments": {
+            "teamId": "billing"
+          },
+          "result": {
+            "source": "simulated",
+            "teams": [
+              {
+                "canTransferNow": false,
+                "description": "Subscriptions, refunds, and account administration.",
+                "label": "Billing & Accounts",
+                "status": "busy",
+                "teamId": "billing",
+                "withinHours": false
+              }
+            ],
+            "handoffStarted": false,
+            "actionPerformed": "availability-lookup-only"
+          }
+        }
+      ],
+      "reportedCost": 0.027
+    },
+    {
+      "input": "Alright, I'll handle it with billing. Bye.",
+      "chatId": "985ffddd-6232-4bd0-8e0a-735255b6f8f3",
+      "reply": "Thanks so much for calling MultiTracks Playback support. Have a great day, and goodbye!",
+      "tools": [],
+      "reportedCost": 0.0074
+    }
+  ]
+}

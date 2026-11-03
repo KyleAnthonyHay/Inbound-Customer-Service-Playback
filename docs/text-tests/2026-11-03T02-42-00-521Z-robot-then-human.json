@@ -1,0 +1,54 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "scenario": "robot-then-human",
+  "expectedIntent": "human-request",
+  "failure": null,
+  "reportedTextCost": 0.031100000000000003,
+  "turns": [
+    {
+      "input": "Are you a robot?",
+      "chatId": "85118d77-1e82-42ab-a0ab-6189b3f9178f",
+      "reply": "Yes, I’m Penny, an AI assistant for MultiTracks Playback support. I can help with song-loading or audio-output issues, or get you to a person if you prefer.",
+      "tools": [],
+      "reportedCost": 0.0067
+    },
+    {
+      "input": "Yeah no, can I just speak to a human please?",
+      "chatId": "577bea28-7b9f-4461-8d0a-e0ec46270c6f",
+      "reply": "Of course. Let me see who's available. One moment please.\n\nNobody is available to take a transfer right now, but I can schedule a callback with Playback Support. When are you next available?",
+      "tools": [
+        {
+          "name": "check_team_availability",
+          "arguments": {
+            "teamId": "playback-support"
+          },
+          "result": {
+            "source": "simulated",
+            "teams": [
+              {
+                "canTransferNow": false,
+                "description": "Song loading, audio output, device and version issues.",
+                "label": "Playback Technical Support",
+                "status": "available",
+                "teamId": "playback-support",
+                "withinHours": false
+              }
+            ],
+            "handoffStarted": false,
+            "actionPerformed": "availability-lookup-only"
+          }
+        }
+      ],
+      "reportedCost": 0.0173
+    },
+    {
+      "input": "Okay, thank you.",
+      "chatId": "994adae8-a7e1-46f9-b4cd-ac4beff160ac",
+      "reply": "Would you like to schedule a callback with Playback Support?",
+      "tools": [],
+      "reportedCost": 0.0071
+    }
+  ]
+}
