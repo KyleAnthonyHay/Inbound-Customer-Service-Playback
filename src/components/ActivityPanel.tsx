@@ -1250,9 +1250,6 @@ function View({ open, onToggle, callId, status: browserStatus, startedAt: browse
               {toolCount} tool{toolCount === 1 ? "" : "s"} · <span className={SOURCE.live.text}>{liveCount} live</span> ·{" "}
               <span className={SOURCE.simulated.text}>{simCount} simulated</span>
             </span>
-            {shownTranscript.length > 0 && (
-              <span className="rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1 tabular-nums">Transcript {shownTranscript.length}</span>
-            )}
             {viewingPast && (
               <span className="rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1">
                 Past call{callRow?.endedReason ? ` · ${callRow.endedReason.replace(/-/g, " ")}` : ""}{callRow?.callerNumber ? ` · from ${formatCallerNumber(callRow.callerNumber)}` : ""}
