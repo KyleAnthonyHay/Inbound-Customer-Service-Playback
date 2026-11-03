@@ -1,0 +1,41 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "caseId": "explicit-leave",
+  "variant": 1,
+  "testId": "text-poc-606992ee-9819-4185-9ebe-2a8c9bbfab6b",
+  "configurationHash": "3120292301be8e428f0a7b51543c5b4e964d18ac2c492375530fcf5f26a53729",
+  "toolRuntime": "deployed-development",
+  "fixture": {
+    "id": "explicit-leave",
+    "intent": "closing",
+    "handling": "end",
+    "openings": [
+      "Sorry, I called by mistake. I've got to go—bye."
+    ],
+    "reviewOnly": {
+      "facts": "Explicit request to leave; the normal completion check must not trap the caller.",
+      "expected": "Brief goodbye without lookup or another closing question. Text cannot prove native disconnect."
+    }
+  },
+  "failure": null,
+  "done": true,
+  "cleanupComplete": true,
+  "reportedTextCost": 0.0082,
+  "turns": [
+    {
+      "input": "Sorry, I called by mistake. I've got to go—bye.",
+      "chatId": "d96a3ee6-63a6-4a58-a618-6cc8e48d3cf4",
+      "reply": "Give me a moment\n\nThanks so much for calling MultiTracks Playback support. Have a great day, and goodbye!",
+      "tools": [
+        {
+          "name": "endCall",
+          "arguments": {},
+          "result": "Unknown tool endCall"
+        }
+      ],
+      "reportedCost": 0.0082
+    }
+  ]
+}

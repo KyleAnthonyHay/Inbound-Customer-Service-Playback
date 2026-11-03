@@ -1,3 +1,5 @@
+**Current caller reference:** [Developer caller backgrounds](curated-caller-worksheet.md) and [parallel text audit](text-tests/parallel-suite-2026-11-03/review.md) supersede the older script details below. Use the current fixed observations and caller-stated goals; do not add hidden channel-count requirements. This page remains historical context.
+
 # Ten natural test conversations
 
 Use the **opening only** to start. Everything else is private background, not a speech to read out. Answer the question actually asked, in your own words. If you don’t know a technical term or where a setting is, ask for help finding it. Don’t invent unlisted settings or output numbers.
@@ -116,6 +118,6 @@ The outcomes below are targets to evaluate, not answers to feed the agent. These
 
 ---
 
-**Every normal completion:** the agent asks “Is there anything else I can help with?” and waits. When you decline, it says “Okay, thanks for calling MultiTracks Support. Goodbye.” and disconnects. You can answer naturally; no exact caller sign-off is required. Text tests cannot prove full spoken playback or actual disconnect.
+**Every normal completion:** the agent asks “Is there anything else I can help you with today?” and waits. When you decline, it says “Thanks so much for calling MultiTracks Playback support. Have a great day, and goodbye!” and disconnects. You can answer naturally; no exact caller sign-off is required. Text tests cannot prove full spoken playback or actual disconnect.
 
 **Every human outcome:** a completed simulated handoff or confirmed callback is success; an availability check alone is not. Transfers do not reach real staff.

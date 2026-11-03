@@ -1,0 +1,41 @@
+{
+  "name": "three-feedback-regression",
+  "kind": "development-text-proof-of-concept",
+  "voiceCallCreated": false,
+  "cases": [
+    {
+      "id": "04-false-expired",
+      "intent": "version",
+      "handling": "agent",
+      "openings": [
+        "We've already paid for Cloud Pro, but Playback on our iPad says it's expired.",
+        "We paid for this. Why's it asking me to pay again?"
+      ],
+      "reviewOnly": {
+        "facts": "Caller reports installed version 8.6.1 when asked; this overrides the synthetic record's last-known 8.6.2 note. Active status is verified through the demo lookup. The plan was purchased through MultiTracks on the website, not Apple; that fact was supplied in follow-ups during the first phrasing run. Version 8.6.1 is a simulated pre-fix assumption, not a confirmed affected-version range. Device: iPad Air 5; iPadOS 18; org 480113. Restore Purchases already failed if asked to try it.",
+        "expected": "Check simulated account status and installed version; retrieve documented false-expiration fix introduced in 8.6.3, consider live current-version metadata/coverage gaps, recommend a safe targeted update and obtain simulated caller confirmation. Do not renew or charge the customer. Regression focus: after organization-only lookup succeeds, do not ask for email/name merely to reconfirm organization-level subscription; do not infer member rights. Keep the ordinary update prerequisites.",
+        "callerProfile": {
+          "goal": "Understand and remove the paid-account warning without buying again.",
+          "knows": [
+            "Using an iPad.",
+            "Name John Doe.",
+            "Purchased through the MultiTracks website, not Apple.",
+            "Already tried Restore Purchases with no change."
+          ],
+          "canReadWithHelp": {
+            "Exact warning": "Cloud Pro expired",
+            "Settings > About > Organization ID": "480113",
+            "Selected organization": "Riverbend Community Church",
+            "Playback About": "8.6.1",
+            "iPad Settings > General > About": "iPad Air 5; iPadOS 18"
+          },
+          "cannotVerify": [
+            "Does not know the installed app or OS version from memory.",
+            "Cannot independently establish billing status or diagnose a version defect."
+          ],
+          "scriptedOutcome": "Unchanged after Restore Purchases. Only after an applicable, prerequisite-checked update attempt report that the original warning disappeared; do not suggest updating to the agent."
+        }
+      }
+    }
+  ]
+}

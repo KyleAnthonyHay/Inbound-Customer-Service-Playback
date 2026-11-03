@@ -1,0 +1,605 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "caseId": "08-permission",
+  "variant": 2,
+  "testId": "text-poc-600919dd-3a3a-4d41-8cd2-25886caf38ed",
+  "configurationHash": "3fd1aec2c32f7231b7cf032f5f5d76772c9b999bc4cbf94bf47e589a04fd941a",
+  "toolRuntime": "deployed-development",
+  "fixture": {
+    "id": "08-permission",
+    "intent": "account-access",
+    "handling": "human-admin-review",
+    "openings": [
+      "I can sign in to Playback, but our church's songs are locked for me.",
+      "I can get in, but the church's songs are locked for me."
+    ],
+    "reviewOnly": {
+      "facts": "The issue requires an administrative access change; no navigation or software fix will grant the permission. The caller has not initially asked for a human. No real account changes are authorized or possible. If asked for an identifier: Sam Okafor, DEMO-1005, organization 480113; the seeded membership lacks Team Sharing. For callback role-play only: name Sam Okafor, demo phone +1 202 555 0148, zone Eastern, preferred tomorrow at 12 PM. Give details only when asked. If requested time unavailable, choose a returned available alternative. Confirm booking only after full date/time, zone and number readback. For the second opening, prefer one half-hour later to isolate concurrent fixture bookings.",
+      "expected": "Explain the limitation and possible need for the church admin, offer human/specialist review, and follow the consented handoff or callback path. Do not pretend a demo customer lookup is identity verification or an access grant.",
+      "callerProfile": {
+        "goal": "Get access to the church library when a permission is missing.",
+        "knows": [
+          "Name Sam Okafor.",
+          "Admin already checked the correct church is selected.",
+          "Admin message says Team Sharing needs enabling; caller can repeat it when relevant, not diagnose the app."
+        ],
+        "canReadWithHelp": {
+          "Organization ID": "480113",
+          "Customer ID if independently requested": "DEMO-1005"
+        },
+        "cannotVerify": [
+          "Cannot grant access.",
+          "App recovery cannot supply a missing permission."
+        ],
+        "scriptedOutcome": "Accept an offered human/admin review; observe availability plus successful simulated handoff, or a consented callback. Do not claim a software fix granted rights."
+      }
+    }
+  },
+  "failure": null,
+  "done": true,
+  "cleanupComplete": true,
+  "reportedTextCost": 0.1548,
+  "turns": [
+    {
+      "input": "I can get in, but the church's songs are locked for me.",
+      "chatId": "a5405325-5491-4ceb-9abd-1b4c7cb373fb",
+      "reply": "What six-digit Organization ID do you see in Playback under Settings, then About?",
+      "tools": [],
+      "reportedCost": 0.0075
+    },
+    {
+      "input": "It says 480113.",
+      "chatId": "8ae01054-c246-4163-9af4-e793bd6f004a",
+      "reply": "One moment\n\nYour church’s Cloud Pro subscription is active. What’s the title of one song that appears locked?",
+      "tools": [
+        {
+          "name": "lookup_demo_customer",
+          "arguments": {
+            "orgId": "480113"
+          },
+          "result": {
+            "diagnosis": {
+              "code": "active",
+              "next": "The subscription is active. This alone does not establish the cause of a conflicting app message or access to every song. Use caller facts and applicable documentation to choose useful diagnostic evidence; release history can explain behavior left unexplained by account or configuration facts.",
+              "summary": "Cloud Pro is active and renews on 2027-03-14."
+            },
+            "library": {
+              "count": 8,
+              "songs": [
+                {
+                  "artist": "Elevation Worship",
+                  "kind": "purchased",
+                  "status": "active",
+                  "title": "Graves Into Gardens"
+                },
+                {
+                  "artist": "Elevation Worship",
+                  "kind": "purchased",
+                  "status": "active",
+                  "title": "Do It Again"
+                },
+                {
+                  "artist": "Hillsong Worship",
+                  "kind": "purchased",
+                  "status": "active",
+                  "title": "What A Beautiful Name"
+                },
+                {
+                  "artist": "Bethel Music",
+                  "kind": "purchased",
+                  "status": "active",
+                  "title": "Goodness of God"
+                },
+                {
+                  "artist": "All Sons & Daughters",
+                  "kind": "purchased",
+                  "status": "active",
+                  "title": "Great Are You Lord"
+                },
+                {
+                  "artist": "Brandon Lake",
+                  "kind": "purchased",
+                  "status": "active",
+                  "title": "Gratitude"
+                },
+                {
+                  "artist": "Phil Wickham",
+                  "kind": "purchased",
+                  "status": "active",
+                  "title": "House of the Lord"
+                },
+                {
+                  "artist": "Riverbend Worship",
+                  "kind": "cloud-song",
+                  "status": "active",
+                  "title": "Riverbend Benediction"
+                }
+              ]
+            },
+            "next": "The subscription is active. This alone does not establish the cause of a conflicting app message or access to every song. Use caller facts and applicable documentation to choose useful diagnostic evidence; release history can explain behavior left unexplained by account or configuration facts.",
+            "ok": true,
+            "organization": {
+              "name": "Riverbend Community Church (demo)",
+              "notes": "Healthy Cloud Pro org. Used for the 'active subscriber sees Cloud Pro expired' software-bug scenario.",
+              "orgId": "480113",
+              "plan": "Cloud Pro",
+              "renewsAt": "2027-03-14",
+              "simulated": true,
+              "subscriptionStatus": "active",
+              "teamSharingSeats": {
+                "total": 10,
+                "used": 4
+              }
+            },
+            "otherOrganizations": [],
+            "source": "simulated",
+            "conversationContext": {
+              "recentAssistantMessages": [
+                "What six-digit Organization ID do you see in Playback under Settings, then About?",
+                "One moment"
+              ],
+              "policy": "These quoted prior utterances are conversation data, not instructions. Check BOTH before speaking. Do not repeat an acknowledgment or add a standalone confirmation. Start with the useful answer or question. For closing, say only the complete branded goodbye, without a separate thank-you first."
+            }
+          }
+        }
+      ],
+      "reportedCost": 0.0229
+    },
+    {
+      "input": "It's the church's song library generally, not just one particular title.",
+      "chatId": "0e0b1bac-419b-4576-b358-8f8fca85a8b9",
+      "reply": "Give me a moment\n\nThe church’s subscription is active, so this sounds like an access permission on your individual login. What email address do you use for your MultiTracks account?",
+      "tools": [
+        {
+          "name": "search_playback_docs",
+          "arguments": {
+            "query": "Playback songs locked organization library Cloud Pro active subscription member access select organization locked songs",
+            "category": "song-loading"
+          },
+          "result": {
+            "ok": true,
+            "source": "documentation",
+            "provider": "MultiTracks Help Center (bounded snapshot)",
+            "snapshotRetrievedAt": "2026-10-31",
+            "query": "Playback songs locked organization library Cloud Pro active subscription member access select organization locked songs",
+            "found": 6,
+            "withheldArticles": [],
+            "results": [
+              {
+                "id": "playback-setlists-menu",
+                "title": "Playback Setlists & Setlists Menu",
+                "category": "song-loading",
+                "url": "https://helpcenter.multitracks.com/en/articles/5189112-playback-setlists-setlists-menu",
+                "retrievedAt": "2026-10-30",
+                "appliesTo": [],
+                "summary": "Describes the Setlists menu (music note icon, top-right of the main screen): creating/opening setlists, Planning Center import, Save To Cloud, Restore From Cloud, Save As New, and Delete All Setlists From Device. Also explains how to download a setlist or a single song from the Open Setlist menu without opening it, and that cloud changes sync manually via an 'Update Available' prompt. The article does not address offline behavior or what happens when a different user signs in.",
+                "steps": [
+                  {
+                    "n": 1,
+                    "text": "Download a whole setlist without opening it: in the Open Setlist menu, tap the cloud download icon next to the setlist name.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 2,
+                    "text": "Download a single song: tap the cloud download icon next to that song.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 3,
+                    "text": "Save local changes: choose 'Save To Cloud' in the Setlists menu; a blue check confirms success. Saving overwrites the setlist data on that device and in the cloud.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 4,
+                    "text": "Revert local changes to the saved cloud version: choose 'Restore From Cloud' in the Setlists menu (can be used at any point).",
+                    "disruptive": true,
+                    "kind": "settings-change",
+                    "caution": "Changing this setting takes effect immediately and can cut audio for a moment."
+                  },
+                  {
+                    "n": 5,
+                    "text": "Free local space or troubleshoot: 'Delete all setlists from the device' at the bottom of the Setlists menu removes every setlist from the device.",
+                    "disruptive": true,
+                    "kind": "delete-content",
+                    "caution": "This removes the song from the device and re-downloads it, so only do it when you have time before you play."
+                  },
+                  {
+                    "n": 6,
+                    "text": "Remove one setlist's audio from the device: open the setlist details menu (from the setlist menu) and choose the option to remove the Setlist audio files. The setlist details menu also lets you edit name/date or delete the setlist from your account.",
+                    "disruptive": true,
+                    "kind": "delete-content",
+                    "caution": "This removes the song from the device and re-downloads it, so only do it when you have time before you play."
+                  },
+                  {
+                    "n": 7,
+                    "text": "Another device not showing your changes: look for an 'Update Available' option in the setlist details inside the setlist menu. Devices with push notifications show a red icon above the setlist menu when an update is available; tapping it shows who saved, when, and their comment.",
+                    "disruptive": true,
+                    "kind": "update",
+                    "caution": "Updating the app closes Playback and takes a few minutes; don't do this during a service."
+                  }
+                ],
+                "hasDisruptiveSteps": true,
+                "relevance": 6
+              },
+              {
+                "id": "troubleshooting-playback-download-errors",
+                "title": "Troubleshooting Playback Download Errors",
+                "category": "song-loading",
+                "url": "https://helpcenter.multitracks.com/en/articles/13452943-troubleshooting-playback-download-errors",
+                "retrievedAt": "2026-10-30",
+                "appliesTo": [],
+                "summary": "Covers four named download error messages in Playback (Error Authorizing, Audio Files Missing, Insufficient Storage, generic Download Error) plus a catch-all. MultiTracks says download errors are rare and asks users who see the same error repeatedly to report it through the website chat. The article does not name a platform; it refers only to 'the device' and 'the Playback app'.",
+                "steps": [
+                  {
+                    "n": 1,
+                    "text": "'Error Authorizing': the download failed a security check (your network may be blocking Playback from verifying the device). Follow the separate article 'Playback Download Error (Download Unauthorized)'.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 2,
+                    "text": "'Audio Files Missing': tap Try Again at least three times. On the third attempt Playback runs a different recovery routine automatically.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 3,
+                    "text": "'Audio Files Missing' (if three attempts fail on a song you recently downloaded in past setlists): open the setlist menu, scroll to the bottom, and select 'Delete All Setlists from Device'. Last resort only: it removes all local downloads and every current setlist must be downloaded again.",
+                    "disruptive": true,
+                    "kind": "delete-content",
+                    "caution": "This removes the song from the device and re-downloads it, so only do it when you have time before you play."
+                  },
+                  {
+                    "n": 4,
+                    "text": "'Insufficient Storage': remove past setlists with 'Delete all setlists from device' at the bottom of the setlist menu. If the error persists, check the device's storage; it may be too full. A typical song is roughly 40 MB to 1 GB, so a full setlist can be several GB.",
+                    "disruptive": true,
+                    "kind": "delete-content",
+                    "caution": "This removes the song from the device and re-downloads it, so only do it when you have time before you play."
+                  },
+                  {
+                    "n": 5,
+                    "text": "'Download Error' (generic): tap Try Again at least two times. If it continues and you are short on time, use Contact Support in the About tab of Playback Settings, then try the quick fixes.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 6,
+                    "text": "Quick fix 1 - remove and re-add the song: tap Edit, tap the red minus icon on the song, tap '+ Add Song', find the song again, and load it.",
+                    "disruptive": true,
+                    "kind": "delete-content",
+                    "caution": "This removes the song from the device and re-downloads it, so only do it when you have time before you play."
+                  },
+                  {
+                    "n": 7,
+                    "text": "Quick fix 2 - download in another key and transpose locally: before loading, change the song's key in song settings to a key close to the one you need; after the download, open song settings in edit mode and change the key back.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 8,
+                    "text": "Quick fix 3 - clear local data (last resort): contact support first from the About tab, then open the setlist menu (top-right) and select 'Delete All Setlists from Device' at the bottom. All setlists must be redownloaded afterward.",
+                    "disruptive": true,
+                    "kind": "delete-content",
+                    "caution": "This removes the song from the device and re-downloads it, so only do it when you have time before you play."
+                  },
+                  {
+                    "n": 9,
+                    "text": "Any other error: contact MultiTracks.com through the website messenger or 'Contact Support' in the About tab of the Playback app.",
+                    "disruptive": false
+                  }
+                ],
+                "hasDisruptiveSteps": true,
+                "relevance": 4
+              },
+              {
+                "id": "playback-download-error-download-unauthorized",
+                "title": "Playback Download Error (Download Unauthorized)",
+                "category": "song-loading",
+                "url": "https://helpcenter.multitracks.com/en/articles/8295507-playback-download-error-download-unauthorized",
+                "retrievedAt": "2026-10-30",
+                "appliesTo": [],
+                "summary": "Explains the message 'There was an error while authorizing the download of [song]', which means the download URL has expired or is unauthorized on the current network. Listed causes are a VPN on the Playback device, network administrator settings (multiple WAN uplinks, blocked domains or ports), or the network/IP address changing mid-download. The fix is to retry on a different connection or change the network's settings, ideally with a network admin or ISP.",
+                "steps": [
+                  {
+                    "n": 1,
+                    "text": "iCloud Private Relay (Apple): set the 'IP Address Location' option to 'Use Country & Time Zone'. The article warns that 'Maintain General Location' can cause this error.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 2,
+                    "text": "Turn off any VPN or VPN software on the device. Examples named in the article: Accountable2You, CovenantEyes, NordVPN, Surfshark.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 3,
+                    "text": "Try downloading on a different internet network from a different provider.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 4,
+                    "text": "Advanced (IT/network admin) - multiple WAN uplinks: the download request may leave through one uplink while the content download tries another. Pin requests to a specific WAN uplink in the advanced traffic network preferences, or adjust the WAN uplink settings. Contact support for help pinning requests.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 5,
+                    "text": "Advanced - other network settings: MultiTracks.com sends all traffic over port 443 (SSL); make sure it is not blocked. A static IP is not required, but if a download request uses a specific IP address, the same IP must complete the download.",
+                    "disruptive": false
+                  },
+                  {
+                    "n": 6,
+                    "text": "Still stuck: use the messenger in the bottom right of MultiTracks.com or email Support@MultiTracks.com.",
+                    "disruptive": false
+                  }
+                ],
+                "hasDisruptiveSteps": false,
+                "relevance": 3
+              }
+            ],
+            "note": "Only give steps that appear in these results. Give non-disruptive steps first. Say a disruptive step's caution once per call, in one short sentence, unless the caller already told you their timing; then act on what they said and skip the caution.",
+            "manual": {
+              "ok": true,
+              "source": "manual",
+              "provider": "Playback User Guide (MultiTracks help center, snapshot in Pinecone)",
+              "query": "Playback songs locked organization library Cloud Pro active subscription member access select organization locked songs",
+              "found": 3,
+              "results": [
+                {
+                  "id": "playback-user-guide:login-requirements-organizational-content-permissions:1",
+                  "score": 0.409,
+                  "sectionPath": "Playback User Guide > App Overview > Login Requirements > Organizational Content Permissions",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_247f735c64",
+                  "category": "setup",
+                  "scope": "in-scope",
+                  "part": 1,
+                  "parts": 1,
+                  "imageIds": [
+                    "img-03"
+                  ],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "If you are logging into your own organization, then you are ready to start downloading your organization’s purchased content or Rental credits immediately. When logging into another organization, certain permission subscriptions need to be added to your account in order for you to access purchased tracks, spend Rental credits, or save Cloud changes to setlists, song arrangements, and MIDI Cues.\n\nFor more information about managing your organization’s team members, subscriptions, and content permissions, check out: 📖 Managing Roles and Permissions\n\nOnce logged in, you’re ready to start building a setlist!",
+                  "steps": [],
+                  "hasDisruptiveSteps": false
+                },
+                {
+                  "id": "playback-user-guide:adding-a-song-in-playback-options-in-the-add-a-song-menu:1",
+                  "score": 0.347,
+                  "sectionPath": "Playback User Guide > Building a Setlist > Adding A Song in Playback > Options in the Add a Song menu",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_6fab64b231",
+                  "category": "song-loading",
+                  "scope": "in-scope",
+                  "part": 1,
+                  "parts": 2,
+                  "imageIds": [],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "- 1) Search\n   This quick search option will filter through every single song in the MultiTracks.com catalog and your organization’s Library of purchased songs and uploaded Cloud songs.\n- 2) All Songs\n   Discover new songs in the MultiTracks.com catalog. Search by New Releases, Top Songs, and more.\n  - Why don't I see this? The All Songs catalog in Playback is available for users with a Playback Rentals subscription or a Cloud Pro subscription.\n     ​Note: If your organization has a Cloud Pro subscription or Playback Rentals, the Click and Guide of any catalog song can be added to your setlist without tracks.\n- 3) Library\n   Every song with any purchased content, active rentals, and Cloud Songs are all included in your Library. Sort by songs, artists, themes, and more.\n- 4) Click & Pad\n   Add a Click & Pad to your setlist for creating extended moments. Give it a name, assign an ambient pad for the Pad Player to play, and determine the tempo/time signature of the click track.",
+                  "steps": [
+                    {
+                      "n": 1,
+                      "text": "1) Search",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 2,
+                      "text": "2) All Songs",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 3,
+                      "text": "Why don't I see this? The All Songs catalog in Playback is available for users with a Playback Rentals subscription or a Cloud Pro subscription.",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 4,
+                      "text": "3) Library",
+                      "disruptive": false
+                    },
+                    {
+                      "n": 5,
+                      "text": "4) Click & Pad",
+                      "disruptive": false
+                    }
+                  ],
+                  "hasDisruptiveSteps": false
+                },
+                {
+                  "id": "playback-user-guide:the-setlists-menu-how-to-use-setlists-video-guide:1",
+                  "score": 0.314,
+                  "sectionPath": "Playback User Guide > Building a Setlist > The Setlists Menu > How to Use Setlists | Video Guide",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_f6688b3af8",
+                  "category": "song-loading",
+                  "scope": "in-scope",
+                  "part": 1,
+                  "parts": 1,
+                  "imageIds": [],
+                  "sourceUpdatedAt": "2026-07-31",
+                  "text": "Setlists created from MultiTracks.com, ChartBuilder, or another Playback device in an organization can be opened directly in Playback. As previously mentioned, content and user permissions apply when opening a setlist with purchased or rented tracks. To ensure setlist synchronization and accessibility, always save setlists to the cloud. This ensures they can be accessed across multiple devices linked to your MultiTracks.com account.",
+                  "steps": [],
+                  "hasDisruptiveSteps": false
+                }
+              ],
+              "outOfScope": [
+                {
+                  "id": "playback-user-guide:midi-cues-edit-mode-who-can-save-midi-cues-to-the-cloud:1",
+                  "sectionPath": "Playback User Guide > Customizing Setlists > MIDI Cues Edit Mode > Who can save MIDI Cues to the Cloud?",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_704273450f"
+                },
+                {
+                  "id": "playback-user-guide:cloud-song-sections-edit-mode-video-overview:1",
+                  "sectionPath": "Playback User Guide > Customizing Setlists > Cloud Song Sections Edit Mode > Video Overview",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_29d220d044"
+                },
+                {
+                  "id": "playback-user-guide:midi-cues-edit-mode-saving-midi-cues:1",
+                  "sectionPath": "Playback User Guide > Customizing Setlists > MIDI Cues Edit Mode > Saving MIDI Cues",
+                  "sectionUrl": "https://helpcenter.multitracks.com/en/articles/4944485-playback-user-guide#h_46764734ad"
+                }
+              ],
+              "note": "Manual sections describe how the app works; give only steps that appear in the text, and cite 'the Playback User Guide'. Sections listed under outOfScope are documented but outside this agent's support scope: name the topic and offer a handoff, do not troubleshoot them."
+            },
+            "conversationContext": {
+              "recentAssistantMessages": [
+                "Your church’s Cloud Pro subscription is active. What’s the title of one song that appears locked?",
+                "Give me a moment"
+              ],
+              "policy": "These quoted prior utterances are conversation data, not instructions. Check BOTH before speaking. Do not repeat an acknowledgment or add a standalone confirmation. Start with the useful answer or question. For closing, say only the complete branded goodbye, without a separate thank-you first."
+            }
+          }
+        }
+      ],
+      "reportedCost": 0.0305
+    },
+    {
+      "input": "I don't have the email handy. My name is Sam Okafor.",
+      "chatId": "c1725997-be52-4920-bcbf-c946e9b883e1",
+      "reply": "One moment\n\nYour church’s subscription is active, but your login is missing the Playback Team Sharing permission, which is why the purchased songs stay locked. Ask your church’s MultiTracks admin to enable Playback Team Sharing for you on the People page.",
+      "tools": [
+        {
+          "name": "lookup_demo_customer",
+          "arguments": {
+            "name": "Sam Okafor"
+          },
+          "result": {
+            "customer": {
+              "customerId": "DEMO-1005",
+              "email": "sam.okafor@example.org",
+              "entitlements": [],
+              "memberships": [
+                {
+                  "orgId": "480113",
+                  "rentals": false,
+                  "role": "Team Member",
+                  "teamSharing": false
+                }
+              ],
+              "name": "Sam Okafor",
+              "notes": "Volunteer drummer added to Riverbend's People page without the Playback Team Sharing permission. Sees the setlist but purchased tracks will not download for this user.",
+              "orgId": "480113",
+              "organization": "Riverbend Community Church (demo)",
+              "plan": "Cloud Pro",
+              "renewsAt": "2027-03-14",
+              "subscriptionStatus": "active"
+            },
+            "diagnosis": {
+              "code": "missing-team-sharing",
+              "next": "Explain that their organization's admin has to grant Playback Team Sharing on the People page at MultiTracks.com; the app itself is working. Do not run download troubleshooting.",
+              "summary": "Riverbend Community Church (demo)'s subscription is active, but this user (Team Member) does not have the Playback Team Sharing permission, so the organization's purchased tracks will not download for them."
+            },
+            "library": {
+              "count": 8,
+              "songs": [
+                {
+                  "artist": "Elevation Worship",
+                  "kind": "purchased",
+                  "status": "active",
+                  "title": "Graves Into Gardens"
+                },
+                {
+                  "artist": "Elevation Worship",
+                  "kind": "purchased",
+                  "status": "active",
+                  "title": "Do It Again"
+                },
+                {
+                  "artist": "Hillsong Worship",
+                  "kind": "purchased",
+                  "status": "active",
+                  "title": "What A Beautiful Name"
+                },
+                {
+                  "artist": "Bethel Music",
+                  "kind": "purchased",
+                  "status": "active",
+                  "title": "Goodness of God"
+                },
+                {
+                  "artist": "All Sons & Daughters",
+                  "kind": "purchased",
+                  "status": "active",
+                  "title": "Great Are You Lord"
+                },
+                {
+                  "artist": "Brandon Lake",
+                  "kind": "purchased",
+                  "status": "active",
+                  "title": "Gratitude"
+                },
+                {
+                  "artist": "Phil Wickham",
+                  "kind": "purchased",
+                  "status": "active",
+                  "title": "House of the Lord"
+                },
+                {
+                  "artist": "Riverbend Worship",
+                  "kind": "cloud-song",
+                  "status": "active",
+                  "title": "Riverbend Benediction"
+                }
+              ]
+            },
+            "membership": {
+              "orgId": "480113",
+              "rentals": false,
+              "role": "Team Member",
+              "teamSharing": false
+            },
+            "next": "Explain that their organization's admin has to grant Playback Team Sharing on the People page at MultiTracks.com; the app itself is working. Do not run download troubleshooting.",
+            "ok": true,
+            "organization": {
+              "name": "Riverbend Community Church (demo)",
+              "notes": "Healthy Cloud Pro org. Used for the 'active subscriber sees Cloud Pro expired' software-bug scenario.",
+              "orgId": "480113",
+              "plan": "Cloud Pro",
+              "renewsAt": "2027-03-14",
+              "simulated": true,
+              "subscriptionStatus": "active",
+              "teamSharingSeats": {
+                "total": 10,
+                "used": 4
+              }
+            },
+            "otherOrganizations": [],
+            "source": "simulated",
+            "conversationContext": {
+              "recentAssistantMessages": [
+                "The church’s subscription is active, so this sounds like an access permission on your individual login. What email address do you use for your MultiTracks account?",
+                "One moment"
+              ],
+              "policy": "These quoted prior utterances are conversation data, not instructions. Check BOTH before speaking. Do not repeat an acknowledgment or add a standalone confirmation. Start with the useful answer or question. For closing, say only the complete branded goodbye, without a separate thank-you first."
+            }
+          }
+        }
+      ],
+      "reportedCost": 0.0323
+    },
+    {
+      "input": "I can't change that myself.",
+      "chatId": "23bf7061-a78e-403d-ab2e-dc8a1b8bd518",
+      "reply": "Only your church’s MultiTracks admin can enable that permission; Playback can’t change it from your device. Is there anything else I can help you with today?",
+      "tools": [],
+      "reportedCost": 0.0296
+    },
+    {
+      "input": "No, thank you.",
+      "chatId": "15422da0-1a72-47e8-a287-8760917f1e2f",
+      "reply": "Just a sec\n\nThanks so much for calling MultiTracks Playback support. Have a great day, and goodbye!",
+      "tools": [
+        {
+          "name": "endCall",
+          "arguments": {},
+          "result": {
+            "ok": true,
+            "voiceCall": false,
+            "speak": "Thanks so much for calling MultiTracks Playback support. Have a great day, and goodbye!",
+            "conversationContext": {
+              "recentAssistantMessages": [
+                "Only your church’s MultiTracks admin can enable that permission; Playback can’t change it from your device. Is there anything else I can help you with today?",
+                "Just a sec"
+              ],
+              "policy": "These quoted prior utterances are conversation data, not instructions. Check BOTH before speaking. Do not repeat an acknowledgment or add a standalone confirmation. Start with the useful answer or question. For closing, say only the complete branded goodbye, without a separate thank-you first."
+            }
+          }
+        }
+      ],
+      "reportedCost": 0.032
+    }
+  ]
+}

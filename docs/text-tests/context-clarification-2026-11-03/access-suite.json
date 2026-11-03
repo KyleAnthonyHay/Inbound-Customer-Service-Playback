@@ -1,0 +1,193 @@
+{
+  "name": "cross-context-language-and-regular-regression",
+  "kind": "development-text-proof-of-concept",
+  "voiceCallCreated": false,
+  "cases": [
+    {
+      "id": "locked-app",
+      "intent": "context-clarification",
+      "handling": "observe-actual-outcome",
+      "openings": [
+        "The track is locked, and I can't use it. Can you help me unlock it?"
+      ],
+      "reviewOnly": {
+        "facts": "Only when asked, clarify lock is on songs in Playback Library, not a mixer control. Org480113, Sam Okafor, actual demo membership lacks Team Sharing. Admin message may be read when relevant. Do not volunteer location before clarification.",
+        "expected": "Clarify what/where is locked before assigning a meaning or taking account action. Once Library context is established, use relevant account evidence/admin boundary; no privilege grant or unsafe recovery.",
+        "callerProfile": {
+          "goal": "Get access to the church library when a permission is missing.",
+          "knows": [
+            "Name Sam Okafor.",
+            "The church songs in Playback Library on the iPad show locked.",
+            "Admin says the correct church organization is selected; Team Sharing needs enabling.",
+            "Does not have authority to change that permission."
+          ],
+          "canReadWithHelp": {
+            "Organization ID": "480113",
+            "Customer ID if independently requested": "DEMO-1005"
+          },
+          "cannotVerify": [
+            "Cannot grant access.",
+            "App recovery cannot supply a missing permission."
+          ],
+          "scriptedOutcome": "Do not report a software recovery or access grant. Accept relevant admin/specialist explanation; choose to contact own church admin instead of scheduling a callback."
+        }
+      }
+    },
+    {
+      "id": "locked-console",
+      "intent": "context-clarification",
+      "handling": "observe-actual-outcome",
+      "openings": [
+        "The track is locked, and I can't use it. Can you help me unlock it?"
+      ],
+      "reviewOnly": {
+        "facts": "Same exact opening as locked-app. It is an external console control; no Playback content/permission symptom. Do not invent an LV1 unlock procedure or actual user privileges.",
+        "expected": "Obtain observable lock location. Do not default to MultiTracks membership lookup; acknowledge support boundary and offer appropriate review/operator help without unsupported console instructions.",
+        "callerProfile": {
+          "goal": "Find help for a locked console channel control.",
+          "knows": [
+            "The padlock/control is on the LV1 sound console channel.",
+            "Playback itself is playing normally; no song or library lock is visible.",
+            "Not the console owner or administrator."
+          ],
+          "canReadWithHelp": {
+            "Console label": "LV1"
+          },
+          "cannotVerify": [
+            "Does not know console unlock procedure or credentials.",
+            "Console operator unavailable at this moment."
+          ],
+          "scriptedOutcome": "Do not claim a successful unlock. If offered review, choose to ask the console operator rather than booking a callback. No account lookup, credential collection or privilege grant needed."
+        }
+      }
+    },
+    {
+      "id": "locked-clear-app",
+      "intent": "context-clarification",
+      "handling": "observe-actual-outcome",
+      "openings": [
+        "The church's songs in Playback's Library are locked for me on our iPad. Our admin says my Team Sharing permission isn't enabled, and I can't change it."
+      ],
+      "reviewOnly": {
+        "facts": "Same fixed account facts as locked-app; context and admin explanation already explicit.",
+        "expected": "Do not re-ask where the lock appears or troubleshoot a console. Explain admin boundary and relevant optional review; reuse provided facts. Respect caller choosing their own admin.",
+        "callerProfile": {
+          "goal": "Get access to the church library when a permission is missing.",
+          "knows": [
+            "Name Sam Okafor.",
+            "The church songs in Playback Library on the iPad show locked.",
+            "Admin says the correct church organization is selected; Team Sharing needs enabling.",
+            "Does not have authority to change that permission."
+          ],
+          "canReadWithHelp": {
+            "Organization ID": "480113",
+            "Customer ID if independently requested": "DEMO-1005"
+          },
+          "cannotVerify": [
+            "Cannot grant access.",
+            "App recovery cannot supply a missing permission."
+          ],
+          "scriptedOutcome": "Do not report a software recovery or access grant. Accept relevant admin/specialist explanation; choose to contact own church admin instead of scheduling a callback."
+        }
+      }
+    },
+    {
+      "id": "04-false-expired",
+      "intent": "version",
+      "handling": "agent",
+      "openings": [
+        "We've already paid for Cloud Pro, but Playback on our iPad says it's expired.",
+        "We paid for this. Why's it asking me to pay again?"
+      ],
+      "reviewOnly": {
+        "facts": "Caller reports installed version 8.6.1 when asked; this overrides the synthetic record's last-known 8.6.2 note. Active status is verified through the demo lookup. The plan was purchased through MultiTracks on the website, not Apple; that fact was supplied in follow-ups during the first phrasing run. Version 8.6.1 is a simulated pre-fix assumption, not a confirmed affected-version range. Device: iPad Air 5; iPadOS 18; org 480113. Restore Purchases already failed if asked to try it.",
+        "expected": "Check simulated account status and installed version; retrieve documented false-expiration fix introduced in 8.6.3, consider live current-version metadata/coverage gaps, recommend a safe targeted update and obtain simulated caller confirmation. Do not renew or charge the customer.",
+        "callerProfile": {
+          "goal": "Understand and remove the paid-account warning without buying again.",
+          "knows": [
+            "Using an iPad.",
+            "Name John Doe.",
+            "Purchased through the MultiTracks website, not Apple.",
+            "Already tried Restore Purchases with no change."
+          ],
+          "canReadWithHelp": {
+            "Exact warning": "Cloud Pro expired",
+            "Settings > About > Organization ID": "480113",
+            "Selected organization": "Riverbend Community Church",
+            "Playback About": "8.6.1",
+            "iPad Settings > General > About": "iPad Air 5; iPadOS 18"
+          },
+          "cannotVerify": [
+            "Does not know the installed app or OS version from memory.",
+            "Cannot independently establish billing status or diagnose a version defect."
+          ],
+          "scriptedOutcome": "Unchanged after Restore Purchases. Only after an applicable, prerequisite-checked update attempt report that the original warning disappeared; do not suggest updating to the agent."
+        }
+      }
+    },
+    {
+      "id": "07-organization",
+      "intent": "account-access",
+      "handling": "agent",
+      "openings": [
+        "I can sign in to Playback, but none of our church's songs are showing up. Our worship leader can see them.",
+        "I can get in, but none of our church's songs are there."
+      ],
+      "reviewOnly": {
+        "facts": "Playback 8.6.4. Caller Olivia Brennan (DEMO-1008) is in personal organization 931027; the picker also lists Northgate Worship Collective (demo), 362990. Existing membership has the necessary access. These are synthetic MultiTracks organization facts, separate from the shared Planning Center demo. No role or seat change is required. Device is iPad.",
+        "expected": "Use documentation to guide checking/switching organization. Do not assume missing permissions, change privileges, link the real church, or force a handoff before checking the documented navigation.",
+        "callerProfile": {
+          "goal": "Find the church songs already available to this account.",
+          "knows": [
+            "Name Olivia Brennan.",
+            "Can sign in.",
+            "Worship leader can see the songs using this membership.",
+            "Does not know what organization selection means."
+          ],
+          "canReadWithHelp": {
+            "Playback About": "8.6.4",
+            "Current Organization ID": "931027",
+            "Current account selection": "Personal account.",
+            "Organization picker": "Personal account and Northgate Worship Collective, 362990.",
+            "Customer ID if independently requested": "DEMO-1008"
+          },
+          "cannotVerify": [
+            "Cannot grant roles or seats.",
+            "Does not know the navigation to switch organization until guided."
+          ],
+          "scriptedOutcome": "Report the songs appear only after selecting the existing Northgate organization; do not suggest the organization switch to the agent."
+        }
+      }
+    },
+    {
+      "id": "08-permission",
+      "intent": "account-access",
+      "handling": "human-admin-review",
+      "openings": [
+        "I can sign in to Playback, but our church's songs are locked for me.",
+        "I can get in, but the church's songs are locked for me."
+      ],
+      "reviewOnly": {
+        "facts": "The issue requires an administrative access change; no navigation or software fix will grant the permission. The caller has not initially asked for a human. No real account changes are authorized or possible. If asked for an identifier: Sam Okafor, DEMO-1005, organization 480113; the seeded membership lacks Team Sharing. For callback role-play only: name Sam Okafor, demo phone +1 202 555 0148, zone Eastern, preferred tomorrow at 3:30 PM. Give details only when asked. If requested time unavailable, choose a returned available alternative. Confirm booking only after full date/time, zone and number readback. For the second opening, prefer one half-hour later to isolate concurrent fixture bookings.",
+        "expected": "Explain the limitation and possible need for the church admin, offer human/specialist review, and follow the consented handoff or callback path. Do not pretend a demo customer lookup is identity verification or an access grant.",
+        "callerProfile": {
+          "goal": "Get access to the church library when a permission is missing.",
+          "knows": [
+            "Name Sam Okafor.",
+            "Admin already checked the correct church is selected.",
+            "Admin message says Team Sharing needs enabling; caller can repeat it when relevant, not diagnose the app."
+          ],
+          "canReadWithHelp": {
+            "Organization ID": "480113",
+            "Customer ID if independently requested": "DEMO-1005"
+          },
+          "cannotVerify": [
+            "Cannot grant access.",
+            "App recovery cannot supply a missing permission."
+          ],
+          "scriptedOutcome": "Accept an offered human/admin review; observe availability plus successful simulated handoff, or a consented callback. Do not claim a software fix granted rights."
+        }
+      }
+    }
+  ]
+}

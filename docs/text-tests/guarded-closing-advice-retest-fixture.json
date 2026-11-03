@@ -1,0 +1,17 @@
+{
+  "name": "advice-acknowledgment-closing-retest",
+  "cases": [
+    {
+      "id": "advice-complete",
+      "intent": "definition",
+      "handling": "answer-and-check",
+      "openings": [
+        "What does Guide mean in Playback?"
+      ],
+      "reviewOnly": {
+        "facts": "The caller only wants a word explained. No configuration or device facts are needed unless an actual applicability issue emerges.",
+        "expected": "Give a documented plain-language answer, then check for further help; no unsolicited setup walkthrough. A clear finished reply can close naturally."
+      }
+    }
+  ]
+}

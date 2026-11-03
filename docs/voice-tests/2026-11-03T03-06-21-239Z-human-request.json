@@ -1,0 +1,84 @@
+{
+  "scenario": "human-request",
+  "expectedIntent": "human-request",
+  "callId": "01a19f5d-32e9-7449-ad62-6cf498878d24",
+  "endedReason": "customer-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "get_callback_slots",
+    "delegate"
+  ],
+  "timing": {
+    "turns": [
+      {
+        "caller": "I don't want to troubleshoot. I just want to talk to a real person, please",
+        "silenceS": 0.6,
+        "firstHeard": "Let me check who's available. We don't have anyone free right now, but I can take a number for a callback or keep helping you now.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [],
+        "summary": "\"I don't want to troubleshoot. I just wan\" -> 0.6s silence, then answer: \"Let me check who's available. We don't have anyone\""
+      },
+      {
+        "caller": "Yes, a callback is fine, any time tomorrow afternoon. I'm in Central Time. My number is 555-010-0199 and my name is Marcus Bell",
+        "silenceS": 0.2,
+        "firstHeard": "Okay.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": true,
+        "tools": [
+          "delegate@+0.0s",
+          "get_callback_slots@+0.4s"
+        ],
+        "summary": "\"Yes, a callback is fine, any time tomorr\" -> 0.2s silence, then answer: \"Okay.\" [delegate@+0.0s, get_callback_slots@+0.4s] [REPEATED ACK]"
+      },
+      {
+        "caller": "Yes. That time works. Go ahead and book it",
+        "silenceS": 0.6,
+        "firstHeard": "Sure.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"Yes. That time works. Go ahead and book \" -> 0.6s silence, then answer: \"Sure.\" [delegate@+0.0s]"
+      },
+      {
+        "caller": "Great, thanks. Bye",
+        "silenceS": 0.4,
+        "firstHeard": "Thanks so much for calling MultiTracks Playback support. Have a great day, and goodbye!",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [],
+        "summary": "\"Great, thanks. Bye\" -> 0.4s silence, then answer: \"Thanks so much for calling MultiTracks Playback su\""
+      }
+    ],
+    "longestSilenceS": 0.6,
+    "longestGapAfterTransitionS": 0,
+    "repeatedAckTurns": 1
+  },
+  "convexToolEvents": [
+    "get_callback_slots succeeded 93ms 4 open slot(s)"
+  ],
+  "liveEvents": [
+    "63.5s TOOL-CALLS delegate({})",
+    "66.8s TOOL-CALLS get_callback_slots({\"teamId\":\"playback-support\",\"preferredDate\":\"tomorrow\",\"timeZone\":\"Central\"})",
+    "90.3s TOOL-CALLS delegate({})"
+  ],
+  "transcript": [
+    "AGENT: Hi there! Thank you for calling MultiTracks Playback support. I'm Penny, your virtual AI support assistant. How can I have the pleasure of helping you today?",
+    "CALLER: I don't want to troubleshoot. I just want to talk to a real person, please",
+    "AGENT: Let me check who's available. We don't have anyone free right now, but I can take a number for a callback or keep helping you now.",
+    "CALLER: Yes, a callback is fine, any time tomorrow afternoon. I'm in Central Time. My number is 555-010-0199 and my name is Marcus Bell",
+    "AGENT: Okay.",
+    "AGENT: Thanks, Marcus. We don't have afternoon slots open then, but I can do 9, 9:30, 10, or 10:30 AM Central on Tuesday, November 3rd. Which one works for you?",
+    "CALLER: Yes. That time works. Go ahead and book it",
+    "AGENT: Sure.",
+    "AGENT: Great. Which morning time should I lock in: 9, 9:30, 10, or 10:30 AM Central?",
+    "CALLER: Great, thanks. Bye",
+    "AGENT: Thanks so much for calling MultiTracks Playback support. Have a great day, and goodbye!"
+  ]
+}

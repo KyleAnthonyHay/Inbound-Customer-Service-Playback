@@ -1,0 +1,98 @@
+{
+  "scenario": "song-loading-older-version",
+  "expectedIntent": "song-loading",
+  "callId": "01a19f3f-78db-7ee9-b030-a3be387d079e",
+  "endedReason": "assistant-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "delegate",
+    "search_playback_docs",
+    "delegate",
+    "delegate",
+    "endCall"
+  ],
+  "timing": {
+    "turns": [
+      {
+        "caller": "Hi, my song won't download. It keeps saying download error",
+        "silenceS": 0.4,
+        "firstHeard": "Let me check that.",
+        "transition": true,
+        "gapAfterTransitionS": 2,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"Hi, my song won't download. It keeps say\" -> 0.4s silence, then transition: \"Let me check that.\" -> 2s gap -> \"What device are you running Playback on?\" [delegate@+0.0s]"
+      },
+      {
+        "caller": "I'm on an iPad, Playback version eight point six point two. We don't play until Sunday so I have time",
+        "silenceS": 0,
+        "firstHeard": "Got it.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s",
+          "search_playback_docs@+0.4s"
+        ],
+        "summary": "\"I'm on an iPad, Playback version eight p\" -> 0s silence, then answer: \"Got it.\" [delegate@+0.0s, search_playback_docs@+0.4s]"
+      },
+      {
+        "caller": "Okay, I tried that and it still says download error",
+        "silenceS": 0.2,
+        "firstHeard": "Okay.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"Okay, I tried that and it still says dow\" -> 0.2s silence, then answer: \"Okay.\" [delegate@+0.0s]"
+      },
+      {
+        "caller": "Thanks. That's all I needed. Bye",
+        "silenceS": 0.4,
+        "firstHeard": "[lip smack] Thanks.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s",
+          "endCall@+1.2s"
+        ],
+        "summary": "\"Thanks. That's all I needed. Bye\" -> 0.4s silence, then answer: \"[lip smack] Thanks.\" [delegate@+0.0s, endCall@+1.2s]"
+      }
+    ],
+    "longestSilenceS": 0.4,
+    "longestGapAfterTransitionS": 2,
+    "repeatedAckTurns": 0
+  },
+  "convexToolEvents": [
+    "search_playback_docs succeeded 406ms 6 result(s)"
+  ],
+  "liveEvents": [
+    "24.9s TOOL-CALLS delegate({})",
+    "47.2s TOOL-CALLS delegate({})",
+    "49.0s TOOL-CALLS search_playback_docs({\"query\":\"Playback iPad song download error troubleshooting download error\",\"category\":\"song-loading\",\"platform\":\"iPadOS\"})",
+    "68.4s TOOL-CALLS delegate({})",
+    "95.1s TOOL-CALLS delegate({})",
+    "97.9s TOOL-CALLS endCall({})",
+    "98.5s STATUS ended assistant-ended-call",
+    "98.5s hangup"
+  ],
+  "transcript": [
+    "AGENT: Hi, thanks for calling MultiTracks Playback support. I'm an AI assistant. What can I help you with today?",
+    "CALLER: Hi, my song won't download. It keeps saying download error",
+    "AGENT: Let me check that.",
+    "AGENT: What device are you running Playback on?",
+    "CALLER: I'm on an iPad, Playback version eight point six point two. We don't play until Sunday so I have time",
+    "AGENT: Got it.",
+    "AGENT: For that \"Download Error,\" tap \"Try again\" two times; does it still show the same message after the second attempt?",
+    "CALLER: Okay, I tried that and it still says download error",
+    "AGENT: Okay.",
+    "AGENT: Remove and re-add just that song: tap Edit, tap the red minus beside it, then tap \"Add Song\" and load it again. That removes its local download, so it'll need to download again. Does it download successfully after you add it back?",
+    "CALLER: Thanks. That's all I needed. Bye",
+    "AGENT: [lip smack] Thanks."
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "kind": "development-three-feedback-activation",
+  "activatedAt": "2026-11-03T11:06:59.028Z",
+  "developmentOnly": true,
+  "reasonerCurrent": true,
+  "speakerCurrent": true,
+  "functionToolsCurrent": true,
+  "toolServersPreserved": true,
+  "reviewDescriptionCurrent": true,
+  "reviewSchemaCurrent": true,
+  "unrelatedStructuredOutputsPreserved": true,
+  "voicePreserved": true,
+  "firstMessagePreserved": true,
+  "productionAssistantUnchanged": true,
+  "automatedVoiceCallsCreated": false
+}

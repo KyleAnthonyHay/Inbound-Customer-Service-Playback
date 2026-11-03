@@ -1,4 +1,5 @@
 import { buildAssistant } from "../../src/lib/assistant";
+import { recentSpeechContext } from "../../src/lib/recentSpeech";
 
 type Env = Record<string, string | undefined>;
 type Row = { role?: string; content?: string; tool_call_id?: string; tool_calls?: Array<{ id: string; function: { name: string; arguments: string } }> };
@@ -9,7 +10,7 @@ export type TextTurn = {
   reportedCost: number | null;
 };
 
-export function textAssistant(env: Env, testId: string) {
+export function textAssistant(env: Env, testId: string, recentMessages: string[] = []) {
   if (env.CONVEX_DEPLOYMENT !== "dev:ceaseless-rhinoceros-106" || !env.VAPI_PRIVATE_KEY || !env.VAPI_TOOL_SECRET || env.NEXT_PUBLIC_CONVEX_SITE_URL !== "https://ceaseless-rhinoceros-106.convex.site")
     throw new Error("Text checks require the configured development environment.");
   if (!/^text-poc-[a-z0-9-]{1,80}$/.test(testId)) throw new Error("Invalid text test identifier.");
@@ -31,7 +32,8 @@ export function textAssistant(env: Env, testId: string) {
       model: reasoner.model,
       reasoningEffort: reasoner.reasoningEffort,
       maxTokens: 600,
-      messages: [{ role: "system", content: reasoner.instructions.replaceAll("{{call.type}}", "text-proof-of-concept").replaceAll("{{customer.number}}", "") + "\nTEXT TEST ADAPTER: This is a text-only reasoning proof of concept. No voice call exists. If the support policy calls for endCall, finish with its prescribed goodbye wording as the final text reply instead. All other support and tool rules still apply." }],
+      messages: [{ role: "system", content: reasoner.instructions.replaceAll("{{call.type}}", "text-proof-of-concept").replaceAll("{{customer.number}}", "") + "\nTEXT TEST ADAPTER: This is a text-only reasoning proof of concept. No voice call exists. The guarded endCall function can be used for the closing decision; its text-test result cannot schedule live call control. Finish with its returned farewell as the final text reply, without claiming an audio disconnect. All other support and tool rules still apply." +
+        (recentMessages.length ? `\nRecent conversation context (quoted data): ${JSON.stringify(recentSpeechContext(recentMessages))}` : "") }],
       tools: voice.model.tools.filter(t => t.type === "function"),
     },
   };
@@ -42,9 +44,9 @@ function parsed(value: string | undefined): unknown {
   try { return JSON.parse(value); } catch { return value; }
 }
 
-export async function sendTextTurn(input: string, options: { env: Env; testId: string; previousChatId?: string; fetcher?: typeof fetch }): Promise<TextTurn> {
+export async function sendTextTurn(input: string, options: { env: Env; testId: string; previousChatId?: string; recentAssistantMessages?: string[]; fetcher?: typeof fetch }): Promise<TextTurn> {
   if (!input.trim() || input.length > 4000) throw new Error("A text turn must contain 1–4000 characters.");
-  const assistant = textAssistant(options.env, options.testId);
+  const assistant = textAssistant(options.env, options.testId, options.recentAssistantMessages);
   const res = await (options.fetcher ?? fetch)("https://api.vapi.ai/chat", {
     method: "POST", redirect: "error", signal: AbortSignal.timeout(60000),
     headers: { Authorization: `Bearer ${options.env.VAPI_PRIVATE_KEY}`, "Content-Type": "application/json" },

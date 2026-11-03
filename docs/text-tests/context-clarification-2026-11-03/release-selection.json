@@ -1,0 +1,11 @@
+{
+  "selectedAt": "2026-11-03T12:16:20.649Z",
+  "selectedCandidate": "C",
+  "selectedConfig": "final-config.json",
+  "rejectedCandidate": "D",
+  "reason": "D did not improve the ambiguous account pair and stalled regular04 with repeated screen questions. C preserved all ten regular support outcomes while improving track/lock context handling; retain its known account ambiguity and plain-language limitations.",
+  "allSelectedSourceHashesMatch": true,
+  "noFurtherInferencePlanned": true,
+  "voiceCallsCreated": false,
+  "productionChanges": false
+}

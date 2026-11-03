@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { DEMO_ORGANIZATION_NAME, getPlanningCenterServiceContext } from "../src/lib/tools/planningCenter";
+import { DEMO_ORGANIZATION_NAME, getPlanningCenterServiceContext, planningContextForAgent } from "../src/lib/tools/planningCenter";
 import { buildToolDefinitions } from "../src/lib/vapiTools";
 import { SYSTEM_PROMPT } from "../src/lib/assistant";
 import { TOOL_META } from "../src/lib/tools/meta";
@@ -30,6 +30,20 @@ function harness(replies: Reply[]) {
 }
 const mock = (bodies = baseline()) => harness(bodies.map(body => ({ body })));
 
+test("agent-facing planning context keeps useful content while omitting provider identifiers", async () => {
+  const result = await mock().run();
+  const agent = planningContextForAgent(result);
+  assert.ok(agent.ok);
+  if (!agent.ok) return;
+  assert.equal(agent.organization.name, DEMO_ORGANIZATION_NAME);
+  assert.equal(agent.service.startsAt, serviceTime.attributes.starts_at);
+  assert.equal(agent.songs[0].title, "Fictional Morning Light");
+  for (const id of [config.organizationId, config.serviceTypeId, plan.id, song.id, "900006"])
+    assert.equal(JSON.stringify(agent).includes(id), false);
+  assert.match(agent.organization.namespace, /not a MultiTracks account/);
+  assert.equal(result.ok && result.organization.id, config.organizationId, "Internal authenticated helper retains its verified audit identity");
+});
+
 test("Planning Center mock: actual-API provenance, fictional content, ordered songs and service start (not plan sort date)", async () => {
   const h = mock();
   const result = await h.run();
@@ -37,6 +51,8 @@ test("Planning Center mock: actual-API provenance, fictional content, ordered so
   if (!result.ok) return;
   assert.equal(result.source, "live");
   assert.equal(result.fictionalData, true);
+  assert.match(result.contextNote, /authenticated live API read/);
+  assert.match(result.contextNote, /caller's service context within the simulation/);
   assert.equal(result.service.startsAt, serviceTime.attributes.starts_at);
   assert.equal(result.songs.length, 1);
   assert.deepEqual(result.songs[0], { itemId: "900005", songId: "900006", title: "Fictional Morning Light", key: "D", arrangement: "Demo arrangement", sequence: 2 });

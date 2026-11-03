@@ -1,0 +1,85 @@
+{
+  "scenario": "audio-device-selection",
+  "expectedIntent": "audio-output",
+  "callId": "01a19f48-6596-7ee0-a261-41882a4fdee7",
+  "endedReason": "customer-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "search_playback_docs",
+    "delegate"
+  ],
+  "timing": {
+    "turns": [
+      {
+        "caller": "Hey, I'm not getting any sound out of playback. It's playing but nothing comes out of my speakers",
+        "silenceS": 0.2,
+        "firstHeard": "Got it.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.6s",
+          "search_playback_docs@+0.6s"
+        ],
+        "summary": "\"Hey, I'm not getting any sound out of pl\" -> 0.2s silence, then answer: \"Got it.\" [delegate@+0.6s, search_playback_docs@+0.6s]"
+      },
+      {
+        "caller": "I'm on a MacBook with a USB interface plugged in. We don't play until tomorrow",
+        "silenceS": 0.8,
+        "firstHeard": "Okay, thanks.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+1.6s"
+        ],
+        "summary": "\"I'm on a MacBook with a USB interface pl\" -> 0.8s silence, then answer: \"Okay, thanks.\" [delegate@+1.6s]"
+      },
+      {
+        "caller": "Oh. It was set to the laptop speakers. I switched it to the interface and now I hear it. Thank you",
+        "silenceS": 0.6,
+        "firstHeard": "Great, glad that did it. Is there anything else I can help you with today?",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [],
+        "summary": "\"Oh. It was set to the laptop speakers. I\" -> 0.6s silence, then answer: \"Great, glad that did it. Is there anything else I \""
+      },
+      {
+        "caller": "That's everything. Bye",
+        "silenceS": 0,
+        "firstHeard": "Thanks so much for calling MultiTracks Playback support. Have a great day, and goodbye!",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [],
+        "summary": "\"That's everything. Bye\" -> 0s silence, then answer: \"Thanks so much for calling MultiTracks Playback su\""
+      }
+    ],
+    "longestSilenceS": 0.8,
+    "longestGapAfterTransitionS": 0,
+    "repeatedAckTurns": 0
+  },
+  "convexToolEvents": [
+    "search_playback_docs succeeded 127ms 6 result(s)"
+  ],
+  "liveEvents": [
+    "28.0s TOOL-CALLS delegate({})",
+    "30.4s TOOL-CALLS search_playback_docs({\"query\":\"Playback app plays but no sound from speakers; audio output troubleshooting and selecting outputs\",\"category\":\"audio-output\"})",
+    "53.9s TOOL-CALLS delegate({})"
+  ],
+  "transcript": [
+    "AGENT: Hi there! Thank you for calling MultiTracks Playback support. I'm Penny, your virtual AI support assistant. How can I have the pleasure of helping you today?",
+    "CALLER: Hey, I'm not getting any sound out of playback. It's playing but nothing comes out of my speakers",
+    "AGENT: Got it.",
+    "AGENT: What device are you running, playback on?",
+    "CALLER: I'm on a MacBook with a USB interface plugged in. We don't play until tomorrow",
+    "AGENT: Okay, thanks.",
+    "AGENT: [clear throat]",
+    "AGENT: In Playback, open Settings and look under General for Audio Device. What name does it show there?",
+    "CALLER: Oh. It was set to the laptop speakers. I switched it to the interface and now I hear it. Thank you",
+    "AGENT: Great, glad that did it. Is there anything else I can help you with today?",
+    "CALLER: That's everything. Bye",
+    "AGENT: Thanks so much for calling MultiTracks Playback support. Have a great day, and goodbye!"
+  ]
+}

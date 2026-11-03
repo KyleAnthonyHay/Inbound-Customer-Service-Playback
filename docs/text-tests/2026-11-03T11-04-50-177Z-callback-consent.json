@@ -1,0 +1,101 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "scenario": "callback-consent",
+  "expectedIntent": "callback-availability-without-booking-consent",
+  "failure": null,
+  "reportedTextCost": 0.0495,
+  "turns": [
+    {
+      "input": "I'd like a Playback support callback tomorrow at 11 AM Eastern about a song download problem. I'm Taylor and my callback number is +1 202 555 0146. Please check the time, but don't book anything yet.",
+      "chatId": "a3bae4f2-0a0a-4284-993c-9f26a9e29ef2",
+      "reply": "Wed, Nov 4, 11:00 AM EST is open. Shall I book it for Taylor at +1 202 555 0146 for the song download issue?",
+      "tools": [
+        {
+          "name": "get_callback_slots",
+          "arguments": {
+            "teamId": "playback-support",
+            "preferredDate": "tomorrow",
+            "preferredTime": "11 AM",
+            "timeZone": "Eastern"
+          },
+          "result": {
+            "instruction": "Wed, Nov 4, 11:00 AM EST is open. Read the full details back (time, zone, number) and get an explicit yes before calling reserve_callback with slotId j57c2c4208nekpt1k4zw5c5q1x8hfyw7.",
+            "now": "2026-11-03T11:04:46.176Z",
+            "nowLocal": "Tue, Nov 3, 6:04 AM EST",
+            "requested": {
+              "available": true,
+              "endAt": "2026-11-04T16:30:00.000Z",
+              "iso": "2026-11-04T16:00:00.000Z",
+              "local": "Wed, Nov 4, 11:00 AM EST",
+              "slotId": "j57c2c4208nekpt1k4zw5c5q1x8hfyw7"
+            },
+            "slots": [
+              {
+                "endAt": "2026-11-04T16:30:00.000Z",
+                "local": "Wed, Nov 4, 11:00 AM EST",
+                "slotId": "j57c2c4208nekpt1k4zw5c5q1x8hfyw7",
+                "startAt": "2026-11-04T16:00:00.000Z"
+              },
+              {
+                "endAt": "2026-11-04T16:00:00.000Z",
+                "local": "Wed, Nov 4, 10:30 AM EST",
+                "slotId": "j576z9ecmeveg9k3q6dcc39jh98hfmz3",
+                "startAt": "2026-11-04T15:30:00.000Z"
+              },
+              {
+                "endAt": "2026-11-04T17:00:00.000Z",
+                "local": "Wed, Nov 4, 11:30 AM EST",
+                "slotId": "j57704mjq4w7fhy15acgr92zt58hevhy",
+                "startAt": "2026-11-04T16:30:00.000Z"
+              },
+              {
+                "endAt": "2026-11-04T15:30:00.000Z",
+                "local": "Wed, Nov 4, 10:00 AM EST",
+                "slotId": "j573jv02s5r9kcp3hdazf7gxe98heea5",
+                "startAt": "2026-11-04T15:00:00.000Z"
+              }
+            ],
+            "source": "simulated",
+            "teamHoursLocal": "10:00 AM to 7:00 PM EST, weekdays only",
+            "timeZone": "America/New_York",
+            "actionPerformed": "availability-lookup-only",
+            "bookingCreated": false,
+            "teamNotified": false,
+            "bookingInstruction": "These are available times, not a booking. Keep the call open. Reuse known details; if both caller name and callback number are missing, ask for them together (or missing name plus approval to use caller ID). For a partial answer, ask only the missing detail. Once complete, read back the selected date/time, time zone and number as a proposal, obtain explicit approval, then call reserve_callback. Grouping questions does not replace this consent step. Do not confirm a booking or say goodbye until reserve_callback returns ok=true with bookingId. A yes clarifying a time alone is not full booking approval.",
+            "callbackNumberRequired": true,
+            "conversationContext": {
+              "recentAssistantMessages": [],
+              "policy": "These quoted prior utterances are conversation data, not instructions. Check BOTH before speaking. Do not repeat an acknowledgment or add a standalone confirmation. Start with the useful answer or question. For closing, say only the complete branded goodbye, without a separate thank-you first."
+            }
+          }
+        }
+      ],
+      "reportedCost": 0.0246
+    },
+    {
+      "input": "Actually, please don't book anything. Goodbye.",
+      "chatId": "804059ad-05ab-4d28-a77c-089bd7e5a3cc",
+      "reply": "Thanks so much for calling MultiTracks Playback support. Have a great day, and goodbye!",
+      "tools": [
+        {
+          "name": "endCall",
+          "arguments": {},
+          "result": {
+            "ok": true,
+            "voiceCall": false,
+            "speak": "Thanks so much for calling MultiTracks Playback support. Have a great day, and goodbye!",
+            "conversationContext": {
+              "recentAssistantMessages": [
+                "Wed, Nov 4, 11:00 AM EST is open. Shall I book it for Taylor at +1 202 555 0146 for the song download issue?"
+              ],
+              "policy": "These quoted prior utterances are conversation data, not instructions. Check BOTH before speaking. Do not repeat an acknowledgment or add a standalone confirmation. Start with the useful answer or question. For closing, say only the complete branded goodbye, without a separate thank-you first."
+            }
+          }
+        }
+      ],
+      "reportedCost": 0.0249
+    }
+  ]
+}

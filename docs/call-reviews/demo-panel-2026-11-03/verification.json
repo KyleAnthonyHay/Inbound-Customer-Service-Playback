@@ -1,0 +1,45 @@
+{
+  "verifiedAt": "2026-11-03T12:27:55.050Z",
+  "environment": "development",
+  "selected": 10,
+  "reviewed": 10,
+  "metrics": {
+    "containment": {
+      "denominator": 10,
+      "numerator": 7,
+      "percent": 70
+    },
+    "intentAccuracy": {
+      "denominator": 10,
+      "numerator": 10,
+      "percent": 100
+    },
+    "resolution": {
+      "denominator": 10,
+      "numerator": 7,
+      "percent": 70
+    },
+    "resolutionAmongNoEscalation": {
+      "denominator": 7,
+      "numerator": 7,
+      "percent": 100
+    }
+  },
+  "selectedIdsRestored": true,
+  "sourceCallsUnchanged": true,
+  "immutableSnapshotUnchanged": true,
+  "snapshotComparison": "Compared all exported fields after projecting nested review to the original flattened export; full reviews also match pre-UI source baseline.",
+  "browserChecks": [
+    "Demo view displays ten selected voice calls and independent scorecards",
+    "Remove callback case: nine reviewed, seven contained and resolved",
+    "Choose original reviewed call and save: restored ten, 100/70/70",
+    "Swap empty state explains scenario labeling prerequisite",
+    "Open call shows original stored transcript"
+  ],
+  "checks": {
+    "tests": 176,
+    "typecheck": "passed",
+    "lint": "passed"
+  },
+  "voiceCallsLaunched": 0
+}

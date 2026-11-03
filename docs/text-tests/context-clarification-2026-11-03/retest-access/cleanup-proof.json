@@ -1,0 +1,144 @@
+{
+  "kind": "context-clarification-access-retest-development-cleanup",
+  "voiceCallsCreated": false,
+  "frozenSourceHashesVerified": true,
+  "sourceChecks": [
+    {
+      "path": "src/lib/assistant.ts",
+      "expected": "3f59fff4702ccc6e6128c477ca9ed4baafee7a8b1d87d3b938b27f51ce3404df",
+      "actual": "3f59fff4702ccc6e6128c477ca9ed4baafee7a8b1d87d3b938b27f51ce3404df"
+    },
+    {
+      "path": "src/lib/vapiTools.ts",
+      "expected": "1e4997efacc3419b9864ea462d1efede7394a4c126e35bf0c2d076eb572c9fe8",
+      "actual": "1e4997efacc3419b9864ea462d1efede7394a4c126e35bf0c2d076eb572c9fe8"
+    },
+    {
+      "path": "scripts/lib/text-agent.ts",
+      "expected": "5ecf7db31b758b530a5a3ff3f03b731bfae0203de670eef045f9b05efb1ab6ec",
+      "actual": "5ecf7db31b758b530a5a3ff3f03b731bfae0203de670eef045f9b05efb1ab6ec"
+    },
+    {
+      "path": "scripts/text-cases.ts",
+      "expected": "21f30edad6c0f8960e3696227d7e3d3674e4f75303239941407584382a9498c1",
+      "actual": "21f30edad6c0f8960e3696227d7e3d3674e4f75303239941407584382a9498c1"
+    },
+    {
+      "path": "convex/vapiTools.ts",
+      "expected": "edf4f499123a8b1700f8bb086bff2b58224f324a7be318b157a53c673caf4926",
+      "actual": "edf4f499123a8b1700f8bb086bff2b58224f324a7be318b157a53c673caf4926"
+    },
+    {
+      "path": "src/lib/tools/kb.ts",
+      "expected": "2276e1c3ba4fc190c47a18aaade3373f23b8439370a5fd5367548cd07e61bfcd",
+      "actual": "2276e1c3ba4fc190c47a18aaade3373f23b8439370a5fd5367548cd07e61bfcd"
+    },
+    {
+      "path": "src/knowledge/playback-kb.json",
+      "expected": "6ccaa6eb4f05425b4258eaa4357f33ed54819bc7a6ca68ba24e2fcf77ecc021f",
+      "actual": "6ccaa6eb4f05425b4258eaa4357f33ed54819bc7a6ca68ba24e2fcf77ecc021f"
+    },
+    {
+      "path": "convex/customers.ts",
+      "expected": "28fd3a1993ad025422765915338210522d39301da25b3d59b0eeb0f103b32810",
+      "actual": "28fd3a1993ad025422765915338210522d39301da25b3d59b0eeb0f103b32810"
+    },
+    {
+      "path": "convex/lib/accountContext.ts",
+      "expected": "8eddc40f641ef10ebb504716f445c60c621b9bc5ac0068abe4da7bb5034eb20e",
+      "actual": "8eddc40f641ef10ebb504716f445c60c621b9bc5ac0068abe4da7bb5034eb20e"
+    }
+  ],
+  "fixtureChecks": [
+    {
+      "path": "suite.json",
+      "expected": "5900c063fdc5bbbd0792b037a0d90ca1b051d253b73df15474d02e6a5835a029",
+      "actual": "5900c063fdc5bbbd0792b037a0d90ca1b051d253b73df15474d02e6a5835a029"
+    },
+    {
+      "path": "routing-suite.json",
+      "expected": "c89eb7b7f77e659126ad06d83aeb409bef70d923f60560eeaa0f84875e64adaa",
+      "actual": "c89eb7b7f77e659126ad06d83aeb409bef70d923f60560eeaa0f84875e64adaa"
+    },
+    {
+      "path": "access-suite.json",
+      "expected": "95ef105e62877af8f64a56caef716e5799ae195015a08d9a531915809c9203e8",
+      "actual": "95ef105e62877af8f64a56caef716e5799ae195015a08d9a531915809c9203e8"
+    },
+    {
+      "path": "integration-suite.json",
+      "expected": "25da2f4b38bf08040d54eba28bd5c0b170d98cf42500cb024fac36019b3c5fc8",
+      "actual": "25da2f4b38bf08040d54eba28bd5c0b170d98cf42500cb024fac36019b3c5fc8"
+    }
+  ],
+  "fixtureHash": "95ef105e62877af8f64a56caef716e5799ae195015a08d9a531915809c9203e8",
+  "configurationHashes": [
+    "ae358699c46dd6824462e5e5a0c1a99b0943d95b8763509604dab9d7e0bdb32e"
+  ],
+  "totalReportedCost": 0.6265,
+  "ownBookingsRemaining": 0,
+  "protectedNonTextCallbackRowsChecked": 5,
+  "protectedNonTextCallbacksUnchanged": true,
+  "proof": [
+    {
+      "run": "04-false-expired-v1.json",
+      "reportedCost": 0.2542,
+      "turns": 8,
+      "toolCalls": 5,
+      "toolLogsCleaned": true,
+      "verifiedOwnBookings": 0,
+      "removedOwnBookings": 0,
+      "slotOpenAgain": null
+    },
+    {
+      "run": "07-organization-v1.json",
+      "reportedCost": 0.105,
+      "turns": 4,
+      "toolCalls": 2,
+      "toolLogsCleaned": true,
+      "verifiedOwnBookings": 0,
+      "removedOwnBookings": 0,
+      "slotOpenAgain": null
+    },
+    {
+      "run": "08-permission-v1.json",
+      "reportedCost": 0.0665,
+      "turns": 3,
+      "toolCalls": 2,
+      "toolLogsCleaned": true,
+      "verifiedOwnBookings": 0,
+      "removedOwnBookings": 0,
+      "slotOpenAgain": null
+    },
+    {
+      "run": "locked-app-v1.json",
+      "reportedCost": 0.10200000000000001,
+      "turns": 4,
+      "toolCalls": 2,
+      "toolLogsCleaned": true,
+      "verifiedOwnBookings": 0,
+      "removedOwnBookings": 0,
+      "slotOpenAgain": null
+    },
+    {
+      "run": "locked-clear-app-v1.json",
+      "reportedCost": 0.0455,
+      "turns": 2,
+      "toolCalls": 2,
+      "toolLogsCleaned": true,
+      "verifiedOwnBookings": 0,
+      "removedOwnBookings": 0,
+      "slotOpenAgain": null
+    },
+    {
+      "run": "locked-console-v1.json",
+      "reportedCost": 0.0533,
+      "turns": 3,
+      "toolCalls": 1,
+      "toolLogsCleaned": true,
+      "verifiedOwnBookings": 0,
+      "removedOwnBookings": 0,
+      "slotOpenAgain": null
+    }
+  ]
+}

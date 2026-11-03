@@ -1,0 +1,11 @@
+{
+  "name": "handoff-offer-no",
+  "expectedIntent": "audio-output",
+  "lines": [
+    "We're on an iPad with a Focusrite interface. The band wants the click and guide in their in-ears and only the music out front, but the click and guide are coming through the main mixer and nothing is in the in-ears.",
+    "Yes, in Playback the click and guide are already on their own output, separate from the music. The mixer still gets everything and the in-ears get nothing.",
+    "No, that's okay, I'll ask our sound person to look at the mixer.",
+    "No, that's everything. Thanks."
+  ],
+  "expect": "The specialist offer is a question. A no does not trigger initiate_handoff, a callback or an immediate hang-up; the reasoner moves to the closing check, and only after the caller declines further help does it use the branded goodbye and endCall."
+}

@@ -1,0 +1,112 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "scenario": "callback-unavailable-time",
+  "expectedIntent": "callback",
+  "failure": null,
+  "reportedTextCost": 0.0362,
+  "turns": [
+    {
+      "input": "I'd rather just talk to someone from the team, can they call me back?",
+      "chatId": "064bdfea-7c76-4726-a92b-69b15c93d83b",
+      "reply": "What day and time would work best for a Playback support callback, and what time zone are you in?",
+      "tools": [],
+      "reportedCost": 0.0073
+    },
+    {
+      "input": "Monday at 8 PM works for me, I'm in Eastern time.",
+      "chatId": "b76e0259-457f-41f1-9ad0-fb8e58f471cf",
+      "reply": "Let me check that time.\n\nMonday, November 9 at 8:00 PM EST isn’t available because it’s outside the team’s callback hours of 10:00 AM to 7:00 PM EST on weekdays. The nearest options are Monday, November 9 at 5:00 PM EST, 4:30 PM EST, 4:00 PM EST, or 3:30 PM EST; which would you prefer?",
+      "tools": [
+        {
+          "name": "get_callback_slots",
+          "arguments": {
+            "teamId": "playback-support",
+            "preferredDate": "Monday",
+            "preferredTime": "8 PM",
+            "timeZone": "Eastern"
+          },
+          "result": {
+            "instruction": "NOT AVAILABLE: Mon, Nov 9, 8:00 PM EST is not open because that is outside the team's callback hours (10:00 AM to 7:00 PM EST, weekdays only). Tell the caller this plainly first, in those words, then offer the nearest alternatives using their 'local' strings. Never present an alternative as if it were the time they asked for.",
+            "now": "2026-11-03T02:39:24.975Z",
+            "nowLocal": "Mon, Nov 2, 9:39 PM EST",
+            "requested": {
+              "available": false,
+              "detail": "that is outside the team's callback hours (10:00 AM to 7:00 PM EST, weekdays only)",
+              "iso": "2026-11-10T01:00:00.000Z",
+              "local": "Mon, Nov 9, 8:00 PM EST",
+              "reason": "outside-hours"
+            },
+            "slots": [
+              {
+                "endAt": "2026-11-09T22:30:00.000Z",
+                "local": "Mon, Nov 9, 5:00 PM EST",
+                "slotId": "j57bwppfkywf2pgg3jdv71k7y58hea0f",
+                "startAt": "2026-11-09T22:00:00.000Z"
+              },
+              {
+                "endAt": "2026-11-09T22:00:00.000Z",
+                "local": "Mon, Nov 9, 4:30 PM EST",
+                "slotId": "j57ehjmhgjd27rw4va3j4ryjch8hekqw",
+                "startAt": "2026-11-09T21:30:00.000Z"
+              },
+              {
+                "endAt": "2026-11-09T21:30:00.000Z",
+                "local": "Mon, Nov 9, 4:00 PM EST",
+                "slotId": "j575cxnqrmb3t5az7032tr30cn8hfsnx",
+                "startAt": "2026-11-09T21:00:00.000Z"
+              },
+              {
+                "endAt": "2026-11-09T21:00:00.000Z",
+                "local": "Mon, Nov 9, 3:30 PM EST",
+                "slotId": "j5715tnthh5wbch5ykp494essh8hfjnw",
+                "startAt": "2026-11-09T20:30:00.000Z"
+              }
+            ],
+            "source": "simulated",
+            "teamHoursLocal": "10:00 AM to 7:00 PM EST, weekdays only",
+            "timeZone": "America/New_York"
+          }
+        }
+      ],
+      "reportedCost": 0.0108
+    },
+    {
+      "input": "Oh okay. Then the latest slot you have that day is fine. My number is 555 010 0177 and my name is Priya Natarajan.",
+      "chatId": "7b948fbb-d425-4502-a5e7-91fe3d3dfdf6",
+      "reply": "I can schedule Monday, November 9 at 5:00 PM EST, using 555-010-0177 for Priya Natarajan. Do you confirm those details?",
+      "tools": [],
+      "reportedCost": 0.0084
+    },
+    {
+      "input": "Yes, book it. Thanks, bye.",
+      "chatId": "9312b247-bd13-4540-9404-10e075acb1b5",
+      "reply": "Booking that now.\n\nYour callback is confirmed for Mon, Nov 9, 5:00 PM EST. Thanks so much for calling MultiTracks Playback support. Have a great day, and goodbye!",
+      "tools": [
+        {
+          "name": "reserve_callback",
+          "arguments": {
+            "slotId": "j57bwppfkywf2pgg3jdv71k7y58hea0f",
+            "callerName": "Priya Natarajan",
+            "callbackNumber": "555 010 0177",
+            "timeZone": "Eastern",
+            "reason": "Requested Playback support callback",
+            "customerId": ""
+          },
+          "result": {
+            "bookingId": "j978x63955qyx8h1tzv3xj3t918hhdj0",
+            "duplicate": false,
+            "endAt": "2026-11-09T22:30:00.000Z",
+            "local": "Mon, Nov 9, 5:00 PM EST",
+            "ok": true,
+            "source": "simulated",
+            "startAt": "2026-11-09T22:00:00.000Z",
+            "usedCallerId": false
+          }
+        }
+      ],
+      "reportedCost": 0.0097
+    }
+  ]
+}

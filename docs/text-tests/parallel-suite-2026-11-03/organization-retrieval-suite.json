@@ -1,0 +1,41 @@
+{
+  "name": "open-ended-ten-caller-situations",
+  "kind": "development-text-proof-of-concept",
+  "voiceCallCreated": false,
+  "cases": [
+    {
+      "id": "07-organization",
+      "intent": "account-access",
+      "handling": "agent",
+      "openings": [
+        "I can sign in to Playback, but none of our church's songs are showing up. Our worship leader can see them.",
+        "I can get in, but none of our church's songs are there."
+      ],
+      "reviewOnly": {
+        "facts": "Playback 8.6.4. Caller Olivia Brennan (DEMO-1008) is in personal organization 931027; the picker also lists Northgate Worship Collective (demo), 362990. Existing membership has the necessary access. These are synthetic MultiTracks organization facts, separate from the shared Planning Center demo. No role or seat change is required. Device is iPad.",
+        "expected": "Use documentation to guide checking/switching organization. Do not assume missing permissions, change privileges, link the real church, or force a handoff before checking the documented navigation.",
+        "callerProfile": {
+          "goal": "Find the church songs already available to this account.",
+          "knows": [
+            "Name Olivia Brennan.",
+            "Can sign in.",
+            "Worship leader can see the songs using this membership.",
+            "Does not know what organization selection means."
+          ],
+          "canReadWithHelp": {
+            "Playback About": "8.6.4",
+            "Current Organization ID": "931027",
+            "Current account selection": "Personal account.",
+            "Organization picker": "Personal account and Northgate Worship Collective, 362990.",
+            "Customer ID if independently requested": "DEMO-1008"
+          },
+          "cannotVerify": [
+            "Cannot grant roles or seats.",
+            "Does not know the navigation to switch organization until guided."
+          ],
+          "scriptedOutcome": "Report the songs appear only after selecting the existing Northgate organization; do not suggest the organization switch to the agent."
+        }
+      }
+    }
+  ]
+}

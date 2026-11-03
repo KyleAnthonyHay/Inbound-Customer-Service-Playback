@@ -1,0 +1,50 @@
+{
+  "kind": "read-only-historical-review-reinterpretation",
+  "callId": "01a1a0f8-29b1-7000-aa6b-5069c61a70b2",
+  "scenarioId": "06-borrowed-mixer",
+  "scenarioTitle": "6. USB connection compatibility and routing",
+  "storedReviewUnchanged": true,
+  "primaryIntent": "routing",
+  "secondaryIntents": [
+    "compatibility",
+    "callback",
+    "human-request"
+  ],
+  "expectedMatch": true,
+  "backendOverview": {
+    "channels": [
+      {
+        "channel": "phone",
+        "contained": 0,
+        "evaluated": 0,
+        "resolved": 0
+      },
+      {
+        "channel": "browser",
+        "contained": 9,
+        "evaluated": 20,
+        "resolved": 9
+      },
+      {
+        "channel": "harness",
+        "contained": 0,
+        "evaluated": 0,
+        "resolved": 0
+      },
+      {
+        "channel": "unknown",
+        "contained": 0,
+        "evaluated": 0,
+        "resolved": 0
+      }
+    ],
+    "completed": 118,
+    "contained": 9,
+    "correct": 10,
+    "evaluated": 20,
+    "labeled": 10,
+    "resolved": 9,
+    "unknownResolution": 3,
+    "window": 121
+  }
+}

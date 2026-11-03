@@ -1,0 +1,97 @@
+{
+  "kind": "development-only-parallel-suite-activation",
+  "activatedAt": "2026-11-03T07:24:33.925Z",
+  "developmentOnly": true,
+  "reasonerMatchesSource": true,
+  "speakerMatchesSource": true,
+  "toolChecks": [
+    {
+      "name": "get_planning_center_service_context",
+      "functionMatches": true,
+      "messagesMatch": true,
+      "blankStartExactlyOnce": true,
+      "serverPreserved": true
+    },
+    {
+      "name": "search_playback_docs",
+      "functionMatches": true,
+      "messagesMatch": true,
+      "blankStartExactlyOnce": true,
+      "serverPreserved": true
+    },
+    {
+      "name": "get_current_playback_app_info",
+      "functionMatches": true,
+      "messagesMatch": true,
+      "blankStartExactlyOnce": true,
+      "serverPreserved": true
+    },
+    {
+      "name": "get_relevant_changes_since_version",
+      "functionMatches": true,
+      "messagesMatch": true,
+      "blankStartExactlyOnce": true,
+      "serverPreserved": true
+    },
+    {
+      "name": "lookup_demo_customer",
+      "functionMatches": true,
+      "messagesMatch": true,
+      "blankStartExactlyOnce": true,
+      "serverPreserved": true
+    },
+    {
+      "name": "check_song_access",
+      "functionMatches": true,
+      "messagesMatch": true,
+      "blankStartExactlyOnce": true,
+      "serverPreserved": true
+    },
+    {
+      "name": "check_team_availability",
+      "functionMatches": true,
+      "messagesMatch": true,
+      "blankStartExactlyOnce": true,
+      "serverPreserved": true
+    },
+    {
+      "name": "get_callback_slots",
+      "functionMatches": true,
+      "messagesMatch": true,
+      "blankStartExactlyOnce": true,
+      "serverPreserved": true
+    },
+    {
+      "name": "reserve_callback",
+      "functionMatches": true,
+      "messagesMatch": true,
+      "blankStartExactlyOnce": true,
+      "serverPreserved": true
+    },
+    {
+      "name": "initiate_handoff",
+      "functionMatches": true,
+      "messagesMatch": true,
+      "blankStartExactlyOnce": true,
+      "serverPreserved": true
+    },
+    {
+      "name": "endCall",
+      "functionMatches": true,
+      "messagesMatch": true,
+      "blankStartExactlyOnce": true,
+      "serverPreserved": true
+    }
+  ],
+  "productionAssistantUnchanged": true,
+  "artifactPlanPreserved": true,
+  "voicePreserved": true,
+  "firstMessagePreserved": true,
+  "localChecks": {
+    "testsPassed": 157,
+    "typecheckPassed": true,
+    "lintPassed": true
+  },
+  "automatedVoiceCallsCreated": false,
+  "readbackComparison": "Semantic object equality; vendor JSON key ordering differs from local construction."
+}

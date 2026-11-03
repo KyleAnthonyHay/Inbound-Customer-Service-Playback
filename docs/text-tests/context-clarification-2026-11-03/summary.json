@@ -1,0 +1,821 @@
+{
+  "kind": "context-evaluation-accounting",
+  "developmentOnly": true,
+  "automatedVoiceCallsCreated": false,
+  "selectedCandidate": "C",
+  "attemptedConversations": 76,
+  "recordedTurns": 389,
+  "transportFailures": 1,
+  "fixtureBlockedConversations": 1,
+  "reportedTextCost": 11.5056,
+  "failedRequestCostUnreported": true,
+  "allClosed": true,
+  "allHarnessLogsCleaned": true,
+  "selectedRelease": {
+    "ambiguousOpeningsNeutral": 5,
+    "ambiguousOpenings": 6,
+    "clearControlsReused": 3,
+    "clearControls": 3,
+    "regularCoreSupportTargetsMet": 10,
+    "regularScenarios": 10,
+    "allQualityDimensionsPassed": false
+  },
+  "rounds": [
+    {
+      "candidate": "A",
+      "attempts": 19,
+      "turns": 84,
+      "transportFailures": 0,
+      "reportedTextCost": 2.5335,
+      "runs": [
+        {
+          "file": "runs-routing/01-click-guide-v1.json",
+          "caseId": "01-click-guide",
+          "turns": 7,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.1879,
+          "toolCalls": 2
+        },
+        {
+          "file": "runs-routing/02-reconnect-v1.json",
+          "caseId": "02-reconnect",
+          "turns": 6,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.1647,
+          "toolCalls": 2
+        },
+        {
+          "file": "runs-routing/03-audio-device-v1.json",
+          "caseId": "03-audio-device",
+          "turns": 5,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.1597,
+          "toolCalls": 3
+        },
+        {
+          "file": "runs-routing/track-app-v1.json",
+          "caseId": "track-app",
+          "turns": 1,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.0148,
+          "toolCalls": 1
+        },
+        {
+          "file": "runs-routing/track-clear-console-v1.json",
+          "caseId": "track-clear-console",
+          "turns": 5,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.1391,
+          "toolCalls": 2
+        },
+        {
+          "file": "runs-routing/track-console-v1.json",
+          "caseId": "track-console",
+          "turns": 6,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.1619,
+          "toolCalls": 2
+        },
+        {
+          "file": "runs-access/04-false-expired-v1.json",
+          "caseId": "04-false-expired",
+          "turns": 8,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.3042,
+          "toolCalls": 7
+        },
+        {
+          "file": "runs-access/07-organization-v1.json",
+          "caseId": "07-organization",
+          "turns": 5,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.1612,
+          "toolCalls": 3
+        },
+        {
+          "file": "runs-access/08-permission-v1.json",
+          "caseId": "08-permission",
+          "turns": 7,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.2176,
+          "toolCalls": 5
+        },
+        {
+          "file": "runs-access/locked-app-v1.json",
+          "caseId": "locked-app",
+          "turns": 1,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.0311,
+          "toolCalls": 1
+        },
+        {
+          "file": "runs-access/locked-clear-app-v1.json",
+          "caseId": "locked-clear-app",
+          "turns": 2,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.0652,
+          "toolCalls": 2
+        },
+        {
+          "file": "runs-access/locked-console-v1.json",
+          "caseId": "locked-console",
+          "turns": 1,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.017,
+          "toolCalls": 1
+        },
+        {
+          "file": "runs-integration/05-supported-setup-v1.json",
+          "caseId": "05-supported-setup",
+          "turns": 4,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.1046,
+          "toolCalls": 2
+        },
+        {
+          "file": "runs-integration/06-borrowed-mixer-v1.json",
+          "caseId": "06-borrowed-mixer",
+          "turns": 6,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.2275,
+          "toolCalls": 6
+        },
+        {
+          "file": "runs-integration/09-loading-recovery-v1.json",
+          "caseId": "09-loading-recovery",
+          "turns": 5,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.1424,
+          "toolCalls": 4
+        },
+        {
+          "file": "runs-integration/10-loading-unresolved-v1.json",
+          "caseId": "10-loading-unresolved",
+          "turns": 7,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.2386,
+          "toolCalls": 6
+        },
+        {
+          "file": "runs-integration/account-clear-playback-v1.json",
+          "caseId": "account-clear-playback",
+          "turns": 3,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.0777,
+          "toolCalls": 2
+        },
+        {
+          "file": "runs-integration/account-planning-v1.json",
+          "caseId": "account-planning",
+          "turns": 2,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.0438,
+          "toolCalls": 1
+        },
+        {
+          "file": "runs-integration/account-playback-v1.json",
+          "caseId": "account-playback",
+          "turns": 3,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.0745,
+          "toolCalls": 2
+        }
+      ]
+    },
+    {
+      "candidate": "B",
+      "attempts": 19,
+      "turns": 97,
+      "transportFailures": 1,
+      "reportedTextCost": 2.7487,
+      "runs": [
+        {
+          "file": "retest-routing/01-click-guide-v1.json",
+          "caseId": "01-click-guide",
+          "turns": 5,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": "fetch failed",
+          "reportedTextCost": 0.1296,
+          "toolCalls": 2
+        },
+        {
+          "file": "retest-routing/02-reconnect-v1.json",
+          "caseId": "02-reconnect",
+          "turns": 7,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.1926,
+          "toolCalls": 2
+        },
+        {
+          "file": "retest-routing/03-audio-device-v1.json",
+          "caseId": "03-audio-device",
+          "turns": 5,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.1357,
+          "toolCalls": 2
+        },
+        {
+          "file": "retest-routing/track-app-v1.json",
+          "caseId": "track-app",
+          "turns": 8,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.2465,
+          "toolCalls": 2
+        },
+        {
+          "file": "retest-routing/track-clear-console-v1.json",
+          "caseId": "track-clear-console",
+          "turns": 5,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.138,
+          "toolCalls": 2
+        },
+        {
+          "file": "retest-routing/track-console-v1.json",
+          "caseId": "track-console",
+          "turns": 11,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.3087,
+          "toolCalls": 2
+        },
+        {
+          "file": "retest-access/04-false-expired-v1.json",
+          "caseId": "04-false-expired",
+          "turns": 8,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.2542,
+          "toolCalls": 5
+        },
+        {
+          "file": "retest-access/07-organization-v1.json",
+          "caseId": "07-organization",
+          "turns": 4,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.105,
+          "toolCalls": 2
+        },
+        {
+          "file": "retest-access/08-permission-v1.json",
+          "caseId": "08-permission",
+          "turns": 3,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.0665,
+          "toolCalls": 2
+        },
+        {
+          "file": "retest-access/locked-app-v1.json",
+          "caseId": "locked-app",
+          "turns": 4,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.102,
+          "toolCalls": 2
+        },
+        {
+          "file": "retest-access/locked-clear-app-v1.json",
+          "caseId": "locked-clear-app",
+          "turns": 2,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.0455,
+          "toolCalls": 2
+        },
+        {
+          "file": "retest-access/locked-console-v1.json",
+          "caseId": "locked-console",
+          "turns": 3,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.0533,
+          "toolCalls": 1
+        },
+        {
+          "file": "retest-integration/05-supported-setup-v1.json",
+          "caseId": "05-supported-setup",
+          "turns": 3,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.0789,
+          "toolCalls": 3
+        },
+        {
+          "file": "retest-integration/06-borrowed-mixer-v1.json",
+          "caseId": "06-borrowed-mixer",
+          "turns": 7,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.2849,
+          "toolCalls": 6
+        },
+        {
+          "file": "retest-integration/09-loading-recovery-v1.json",
+          "caseId": "09-loading-recovery",
+          "turns": 5,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.1425,
+          "toolCalls": 4
+        },
+        {
+          "file": "retest-integration/10-loading-unresolved-v1.json",
+          "caseId": "10-loading-unresolved",
+          "turns": 7,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.234,
+          "toolCalls": 6
+        },
+        {
+          "file": "retest-integration/account-clear-playback-v1.json",
+          "caseId": "account-clear-playback",
+          "turns": 3,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.0775,
+          "toolCalls": 2
+        },
+        {
+          "file": "retest-integration/account-planning-v1.json",
+          "caseId": "account-planning",
+          "turns": 4,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.0756,
+          "toolCalls": 1
+        },
+        {
+          "file": "retest-integration/account-playback-v1.json",
+          "caseId": "account-playback",
+          "turns": 3,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.0777,
+          "toolCalls": 2
+        }
+      ]
+    },
+    {
+      "candidate": "C",
+      "attempts": 19,
+      "turns": 104,
+      "transportFailures": 0,
+      "reportedTextCost": 3.1439,
+      "runs": [
+        {
+          "file": "final-routing/01-click-guide-v1.json",
+          "caseId": "01-click-guide",
+          "turns": 7,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.1926,
+          "toolCalls": 2
+        },
+        {
+          "file": "final-routing/02-reconnect-v1.json",
+          "caseId": "02-reconnect",
+          "turns": 6,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.1845,
+          "toolCalls": 2
+        },
+        {
+          "file": "final-routing/03-audio-device-v1.json",
+          "caseId": "03-audio-device",
+          "turns": 6,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.2042,
+          "toolCalls": 4
+        },
+        {
+          "file": "final-routing/track-app-v1.json",
+          "caseId": "track-app",
+          "turns": 9,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.2593,
+          "toolCalls": 2
+        },
+        {
+          "file": "final-routing/track-clear-console-v1.json",
+          "caseId": "track-clear-console",
+          "turns": 8,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.2356,
+          "toolCalls": 2
+        },
+        {
+          "file": "final-routing/track-console-v1.json",
+          "caseId": "track-console",
+          "turns": 7,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.2071,
+          "toolCalls": 2
+        },
+        {
+          "file": "final-access/04-false-expired-v1.json",
+          "caseId": "04-false-expired",
+          "turns": 9,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.3313,
+          "toolCalls": 6
+        },
+        {
+          "file": "final-access/07-organization-v1.json",
+          "caseId": "07-organization",
+          "turns": 6,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.2167,
+          "toolCalls": 3
+        },
+        {
+          "file": "final-access/08-permission-v1.json",
+          "caseId": "08-permission",
+          "turns": 6,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.1914,
+          "toolCalls": 5
+        },
+        {
+          "file": "final-access/locked-app-v1.json",
+          "caseId": "locked-app",
+          "turns": 4,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.1022,
+          "toolCalls": 3
+        },
+        {
+          "file": "final-access/locked-clear-app-v1.json",
+          "caseId": "locked-clear-app",
+          "turns": 2,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.0468,
+          "toolCalls": 2
+        },
+        {
+          "file": "final-access/locked-console-v1.json",
+          "caseId": "locked-console",
+          "turns": 3,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.0539,
+          "toolCalls": 1
+        },
+        {
+          "file": "final-integration/05-supported-setup-v1.json",
+          "caseId": "05-supported-setup",
+          "turns": 3,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.0771,
+          "toolCalls": 2
+        },
+        {
+          "file": "final-integration/06-borrowed-mixer-v1.json",
+          "caseId": "06-borrowed-mixer",
+          "turns": 6,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.2316,
+          "toolCalls": 6
+        },
+        {
+          "file": "final-integration/09-loading-recovery-v1.json",
+          "caseId": "09-loading-recovery",
+          "turns": 5,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.1397,
+          "toolCalls": 3
+        },
+        {
+          "file": "final-integration/10-loading-unresolved-v1.json",
+          "caseId": "10-loading-unresolved",
+          "turns": 7,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.2357,
+          "toolCalls": 6
+        },
+        {
+          "file": "final-integration/account-clear-playback-v1.json",
+          "caseId": "account-clear-playback",
+          "turns": 3,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.0785,
+          "toolCalls": 2
+        },
+        {
+          "file": "final-integration/account-planning-v1.json",
+          "caseId": "account-planning",
+          "turns": 4,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.0758,
+          "toolCalls": 1
+        },
+        {
+          "file": "final-integration/account-playback-v1.json",
+          "caseId": "account-playback",
+          "turns": 3,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.0799,
+          "toolCalls": 2
+        }
+      ]
+    },
+    {
+      "candidate": "D",
+      "attempts": 19,
+      "turns": 104,
+      "transportFailures": 0,
+      "reportedTextCost": 3.0795,
+      "runs": [
+        {
+          "file": "gate-routing/01-click-guide-v1.json",
+          "caseId": "01-click-guide",
+          "turns": 9,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.2907,
+          "toolCalls": 3
+        },
+        {
+          "file": "gate-routing/02-reconnect-v1.json",
+          "caseId": "02-reconnect",
+          "turns": 6,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.1704,
+          "toolCalls": 2
+        },
+        {
+          "file": "gate-routing/03-audio-device-v1.json",
+          "caseId": "03-audio-device",
+          "turns": 6,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.1922,
+          "toolCalls": 3
+        },
+        {
+          "file": "gate-routing/track-app-v1.json",
+          "caseId": "track-app",
+          "turns": 9,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.28,
+          "toolCalls": 3
+        },
+        {
+          "file": "gate-routing/track-clear-console-v1.json",
+          "caseId": "track-clear-console",
+          "turns": 6,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.167,
+          "toolCalls": 2
+        },
+        {
+          "file": "gate-routing/track-console-v1.json",
+          "caseId": "track-console",
+          "turns": 7,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.1901,
+          "toolCalls": 2
+        },
+        {
+          "file": "gate-access/04-false-expired-v1.json",
+          "caseId": "04-false-expired",
+          "turns": 4,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.1035,
+          "toolCalls": 2
+        },
+        {
+          "file": "gate-access/07-organization-v1.json",
+          "caseId": "07-organization",
+          "turns": 7,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.2202,
+          "toolCalls": 3
+        },
+        {
+          "file": "gate-access/08-permission-v1.json",
+          "caseId": "08-permission",
+          "turns": 8,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.237,
+          "toolCalls": 6
+        },
+        {
+          "file": "gate-access/locked-app-v1.json",
+          "caseId": "locked-app",
+          "turns": 4,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.0988,
+          "toolCalls": 2
+        },
+        {
+          "file": "gate-access/locked-clear-app-v1.json",
+          "caseId": "locked-clear-app",
+          "turns": 2,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.0454,
+          "toolCalls": 2
+        },
+        {
+          "file": "gate-access/locked-console-v1.json",
+          "caseId": "locked-console",
+          "turns": 3,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.0683,
+          "toolCalls": 1
+        },
+        {
+          "file": "gate-integration/05-supported-setup-v1.json",
+          "caseId": "05-supported-setup",
+          "turns": 3,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.0809,
+          "toolCalls": 2
+        },
+        {
+          "file": "gate-integration/06-borrowed-mixer-v1.json",
+          "caseId": "06-borrowed-mixer",
+          "turns": 6,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.2283,
+          "toolCalls": 6
+        },
+        {
+          "file": "gate-integration/09-loading-recovery-v1.json",
+          "caseId": "09-loading-recovery",
+          "turns": 5,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.1604,
+          "toolCalls": 3
+        },
+        {
+          "file": "gate-integration/10-loading-unresolved-v1.json",
+          "caseId": "10-loading-unresolved",
+          "turns": 7,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.2226,
+          "toolCalls": 6
+        },
+        {
+          "file": "gate-integration/account-clear-playback-v1.json",
+          "caseId": "account-clear-playback",
+          "turns": 3,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.0788,
+          "toolCalls": 2
+        },
+        {
+          "file": "gate-integration/account-planning-v1.json",
+          "caseId": "account-planning",
+          "turns": 5,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.147,
+          "toolCalls": 2
+        },
+        {
+          "file": "gate-integration/account-playback-v1.json",
+          "caseId": "account-playback",
+          "turns": 4,
+          "done": true,
+          "cleanupComplete": true,
+          "failure": null,
+          "reportedTextCost": 0.0979,
+          "toolCalls": 2
+        }
+      ]
+    }
+  ]
+}

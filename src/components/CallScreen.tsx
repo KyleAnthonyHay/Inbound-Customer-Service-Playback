@@ -257,7 +257,8 @@ export function CallScreen({
         <>
           <p
             className={cn(
-              "absolute inset-x-0 top-[119px] text-center text-[22px] font-normal leading-[27px] tabular-nums text-[#8b8b8f]",
+              "absolute inset-x-0 top-[119px] text-center text-[22px] font-normal leading-[27px] tabular-nums",
+              status === "connecting" ? "text-[#ff9f0a]" : status === "active" ? "text-[#63d392]" : status === "error" ? "text-[#ff8a8f]" : "text-[#8b8b8f]",
               status === "connecting" && "motion-safe:animate-pulse"
             )}
             aria-live="polite"

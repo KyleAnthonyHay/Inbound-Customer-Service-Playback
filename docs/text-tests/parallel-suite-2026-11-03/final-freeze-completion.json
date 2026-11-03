@@ -1,0 +1,136 @@
+{
+  "checkedAt": "2026-11-03T07:23:13.200Z",
+  "allFinalSourcesMatched": true,
+  "attempts": 21,
+  "evaluableConversations": 20,
+  "allConversationsClosed": true,
+  "allHarnessCleanupComplete": true,
+  "runs": [
+    {
+      "file": "final-access-loading/07-organization-v1.json",
+      "done": true,
+      "cleanupComplete": true,
+      "failure": false
+    },
+    {
+      "file": "final-access-loading/07-organization-v2.json",
+      "done": true,
+      "cleanupComplete": true,
+      "failure": false
+    },
+    {
+      "file": "final-access-loading/08-permission-v1.json",
+      "done": true,
+      "cleanupComplete": true,
+      "failure": false
+    },
+    {
+      "file": "final-access-loading/08-permission-v2.json",
+      "done": true,
+      "cleanupComplete": true,
+      "failure": false
+    },
+    {
+      "file": "final-access-loading/09-loading-recovery-v1.json",
+      "done": true,
+      "cleanupComplete": true,
+      "failure": false
+    },
+    {
+      "file": "final-access-loading/09-loading-recovery-v2.json",
+      "done": true,
+      "cleanupComplete": true,
+      "failure": false
+    },
+    {
+      "file": "final-access-loading/10-loading-unresolved-v1.json",
+      "done": true,
+      "cleanupComplete": true,
+      "failure": false
+    },
+    {
+      "file": "final-access-loading/10-loading-unresolved-v2.json",
+      "done": true,
+      "cleanupComplete": true,
+      "failure": false
+    },
+    {
+      "file": "final-routing/01-click-guide-v1.json",
+      "done": true,
+      "cleanupComplete": true,
+      "failure": false
+    },
+    {
+      "file": "final-routing/01-click-guide-v2.json",
+      "done": true,
+      "cleanupComplete": true,
+      "failure": false
+    },
+    {
+      "file": "final-routing/02-reconnect-v1.json",
+      "done": true,
+      "cleanupComplete": true,
+      "failure": false
+    },
+    {
+      "file": "final-routing/02-reconnect-v2.json",
+      "done": true,
+      "cleanupComplete": true,
+      "failure": false
+    },
+    {
+      "file": "final-routing/03-audio-device-v1.json",
+      "done": true,
+      "cleanupComplete": true,
+      "failure": false
+    },
+    {
+      "file": "final-routing/03-audio-device-v2.json",
+      "done": true,
+      "cleanupComplete": true,
+      "failure": false
+    },
+    {
+      "file": "final-version-compatibility/04-false-expired-v1.json",
+      "done": true,
+      "cleanupComplete": true,
+      "failure": false
+    },
+    {
+      "file": "final-version-compatibility/04-false-expired-v2.json",
+      "done": true,
+      "cleanupComplete": true,
+      "failure": false
+    },
+    {
+      "file": "final-version-compatibility/05-supported-setup-v1.json",
+      "done": true,
+      "cleanupComplete": true,
+      "failure": false
+    },
+    {
+      "file": "final-version-compatibility/05-supported-setup-v2.json",
+      "done": true,
+      "cleanupComplete": true,
+      "failure": true
+    },
+    {
+      "file": "final-version-compatibility/06-borrowed-mixer-v1.json",
+      "done": true,
+      "cleanupComplete": true,
+      "failure": false
+    },
+    {
+      "file": "final-version-compatibility/06-borrowed-mixer-v2.json",
+      "done": true,
+      "cleanupComplete": true,
+      "failure": false
+    },
+    {
+      "file": "final-version-compatibility-replacement05v2/05-supported-setup-v1.json",
+      "done": true,
+      "cleanupComplete": true,
+      "failure": false
+    }
+  ]
+}

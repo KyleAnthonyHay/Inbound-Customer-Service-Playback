@@ -1,6 +1,59 @@
+**Latest context/plain-language update:** [Paired ambiguity tests and regular scenario regressions](context-clarification-2026-11-03/review.md) records the general policy, nine context cases, ten regular scenarios and four revisions. The selected balanced development version still has an ambiguous-account assumption and occasional jargon; the stricter variant was rejected after over-clarification. Text results do not establish voice delivery or disconnect.
+
+[Account reuse, mixed intent labels and grouped callback questions](three-feedback-2026-11-03/review.md) and the [earlier parallel ten-case audit](parallel-suite-2026-11-03/review.md) retain their original configurations and findings.
+
 **Current workflow:** [Open-ended developer conversations](../open-ended-test-method.md), with [the completed ten-conversation review](open-ended-review.md). The findings below are historical; Jordan now has one informal usability try-out, not a ten-call script.
 
 # Text reasoning proof-of-concept review
+
+## No-audio prerequisite and callback completion follow-up
+
+The [follow-up review](audio-device-callback-review-2026-11-03.md) supersedes the blanket external-output mapping prerequisite from the routing change below. A novice no-audio case now checks Playback's selected device; callback availability, reservation and guarded closing are distinct, with positive/negative text evidence and development activation readback. Fresh voice disconnect remains a manual check.
+
+## Click/Guide output routing regression
+
+The [November 3 review](routing-output-review-2026-11-03.md) retains the reported voice failure, an incomplete first text candidate, and a corrected output-routing retest. Version-restricted legacy procedures are now gated in retrieval. Text checks do not establish live speaker or audio behavior.
+
+## Post-call measurements
+
+[Call metrics](../call-metrics.md) defines the ten expected scenario labels, blind structured-output review, denominator rules and phone timing limits. Native post-call previews on three existing calls are [recorded separately](../call-reviews/post-call-metrics-2026-11-03.md); they do not create voice calls or validate live voice behavior.
+
+## Planning Center simulation and real access
+
+The [two-turn access check](2026-11-03T05-06-32-077Z-planning-center-api-access.json)
+used one successful live Services API read, returned the three scheduled songs,
+then affirmed read access to the connected demo plan without a second lookup.
+Reported text cost: $0.0399. The tool description, success metadata and both
+prompts now distinguish fictional scenario content from a real API connection.
+Successful data is the working caller context in the simulation; actual failures
+must still be reported truthfully. This is development text evidence, not a
+passing voice test or a production activation.
+
+Development activation is complete: [saved-agent readback](planning-center-api-access-activation.json)
+matched the revised speaker/reasoner prompts and tool description, with production
+unchanged. The [deployed webhook check](planning-center-api-access-webhook.json)
+confirmed the new successful-result guidance and three songs from a live API
+read; its isolated tool log was removed.
+
+## Guarded closing and recent speech
+
+The [closing change and validation](../call-closing.md) replace immediate model hang-up with a protected function that waits for farewell and speech-completion evidence. Three focused text controls and an advice retest retain both the initial premature advice ending and the corrected further-help check. Text does not establish voice timing or acknowledgment quality; the manual voice recheck remains outstanding.
+
+The [duplicate acknowledgment regression](../acknowledgment-regression.md) adds
+actual-call excerpt tests and a reusable final-transcript check. It flags three
+duplicate openings in the recorded failing call. This verifies detection of the
+reported defect; a fresh manual dev voice check must establish the speaker fix.
+
+The [subsequent browser closing/context fix](../call-closing.md#follow-up-browser-goodbye-without-disconnect)
+addresses the observed farewell-without-disconnect and separate thank-you before
+goodbye. Its four-turn text check passed with explicit last-two-reply context;
+118 local tests passed, and the deployed dev webhook verified context projection.
+The saved development agent was synchronized; production was unchanged. Browser
+audio completion has simulated event coverage and awaits a fresh manual call.
+
+## Single reviewer demo script
+
+The [five-turn reviewer sample](reviewer-demo-review.md) combines documented song recovery with a live Planning Center API read and reuse of the returned setlist. It is separate from the ten curated developer conversations. The [concise caller script](../reviewer-demo-script.md) supplies ordinary observations without requiring Playback knowledge. Final text cost was $0.0532; voice delivery and disconnect remain manual checks.
 
 These are actual Vapi **Chat API** responses using a transient text configuration
 derived from the development voice agent's reasoner, instructions and tools. No

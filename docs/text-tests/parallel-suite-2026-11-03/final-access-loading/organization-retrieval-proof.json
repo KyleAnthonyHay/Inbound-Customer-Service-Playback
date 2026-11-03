@@ -1,0 +1,29 @@
+{
+  "kind": "read-only-keyword-retrieval-diagnostic",
+  "queries": [
+    {
+      "query": "Playback signed in but church songs are not showing while another team member can see them; organization selection and permissions",
+      "category": "song-loading"
+    },
+    {
+      "query": "Playback check selected organization when organization Library is empty and purchased songs missing; Settings About organization",
+      "category": "setup"
+    }
+  ],
+  "setupArticleCount": 0,
+  "withSetupFilter": [],
+  "withoutCategoryFilter": [
+    "playback-user-guide",
+    "troubleshooting-playback-download-errors",
+    "playback-subscriptions-explained"
+  ],
+  "sideMenuSource": [
+    {
+      "id": "playback-user-guide",
+      "category": "general",
+      "steps": [
+        "Side menu (stack icon) shows user name, organization name and ID, Switch Organizations, and Log Out."
+      ]
+    }
+  ]
+}

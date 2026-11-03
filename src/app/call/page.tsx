@@ -11,6 +11,7 @@ import { config, isVapiConfigured } from "@/lib/config";
 import { useVapiCall, type CallStatus } from "@/lib/useVapiCall";
 import { NO_REMOTE_CALL, useRemoteCall, type RemoteCall } from "@/lib/useRemoteCall";
 import { formatCallerNumber } from "@/lib/tools/callerId";
+import { BrowserClosingBridge } from "@/components/BrowserClosingBridge";
 
 /**
  * The page needs Convex to follow calls the agent takes on the phone line. The provider only
@@ -28,6 +29,7 @@ function CallPageWithRemote() {
 }
 
 function CallPageView({ remote, onBrowserStatus }: { remote: RemoteCall; onBrowserStatus?: (s: CallStatus) => void }) {
+  const convexReady = useConvexReady();
   const call = useVapiCall();
   const configured = isVapiConfigured();
   useEffect(() => onBrowserStatus?.(call.status), [call.status, onBrowserStatus]);
@@ -58,15 +60,24 @@ function CallPageView({ remote, onBrowserStatus }: { remote: RemoteCall; onBrows
   }, []);
 
   const openPastCall = (id: string) => {
+    call.clearActivity();
     setCallIdOverride(id);
     setPanelOpen(true);
     const url = new URL(window.location.href);
     url.searchParams.set("callId", id);
     window.history.replaceState(null, "", url);
   };
+  const clearPanel = () => {
+    call.clearActivity();
+    setCallIdOverride(null);
+    const url = new URL(window.location.href);
+    url.searchParams.delete("callId");
+    window.history.replaceState(null, "", url);
+  };
 
   return (
     <main className="relative min-h-[100dvh] bg-background">
+      {convexReady && <BrowserClosingBridge callId={call.callId} active={call.status === "active"} onRequested={call.closingRequested} />}
       <Link
         href="/"
         className="fixed left-4 z-10 flex min-h-[44px] items-center gap-1.5 rounded-full bg-white/10 px-4 text-[15px] text-white/85 backdrop-blur hover:bg-white/15 sm:min-h-0 sm:py-1.5 sm:text-sm"
@@ -75,7 +86,7 @@ function CallPageView({ remote, onBrowserStatus }: { remote: RemoteCall; onBrows
         <ArrowLeft size={16} /> Home
       </Link>
 
-      <PhoneFrame>
+      <PhoneFrame shifted={panelOpen}>
       <CallScreen
         status={phone.status}
         label={config.inboundNumber || config.callerLabel}
@@ -83,7 +94,7 @@ function CallPageView({ remote, onBrowserStatus }: { remote: RemoteCall; onBrows
         startedAt={phone.startedAt}
         muted={call.muted}
         assistantSpeaking={call.assistantSpeaking}
-        onStart={call.start}
+        onStart={() => { clearPanel(); void call.start(); }}
         onEnd={call.stop}
         onToggleMute={call.toggleMute}
         onViewLog={() => setPanelOpen(true)}
@@ -96,7 +107,7 @@ function CallPageView({ remote, onBrowserStatus }: { remote: RemoteCall; onBrows
       <ActivityPanel
         open={panelOpen}
         onToggle={() => setPanelOpen((o) => !o)}
-        callId={call.callId ?? remote.callId ?? callIdOverride}
+        callId={callIdOverride ?? call.callId ?? remote.callId}
         status={call.status}
         startedAt={call.startedAt}
         assistantSpeaking={call.assistantSpeaking}
@@ -104,12 +115,19 @@ function CallPageView({ remote, onBrowserStatus }: { remote: RemoteCall; onBrows
         clientEvents={call.events}
         transcript={call.transcript}
         onOpenPastCall={openPastCall}
+        onClearPanel={clearPanel}
+        viewingHistory={callIdOverride !== null}
         onRemoteCall={() => setPanelOpen(true)}
       />
 
       {demo && (
         <div className="fixed bottom-4 right-4 z-30 flex flex-col gap-2 rounded-xl border border-white/10 bg-[#111113]/95 p-3 text-xs text-white/80">
           <span className="text-white/50">Dev simulation (synthetic client messages)</span>
+          {process.env.NODE_ENV === "development" && <button
+            type="button"
+            className="rounded-md bg-white/10 px-3 py-1.5 text-left hover:bg-white/15"
+            onClick={() => { setPanelOpen(true); call.debugClosing(); }}
+          >Simulate closing without SDK result</button>}
           <button
             type="button"
             className="rounded-md bg-white/10 px-3 py-1.5 text-left hover:bg-white/15"

@@ -1,0 +1,18 @@
+{
+  "kind": "frozen-development-text-suite",
+  "voiceCallsAuthorized": false,
+  "caseCount": 10,
+  "openingCount": 20,
+  "files": {
+    "src/lib/assistant.ts": "7cd1fa0134d8d92c6c485579cd953b7194edf2269c37aae7a670a7ff7796868a",
+    "src/lib/vapiTools.ts": "c8f6ee9641ee72b389a7d4e51ced46b2e4e3ec732ee764dbfe3b08d6a4dbe92b",
+    "scripts/lib/text-agent.ts": "5ecf7db31b758b530a5a3ff3f03b731bfae0203de670eef045f9b05efb1ab6ec",
+    "scripts/text-cases.ts": "21f30edad6c0f8960e3696227d7e3d3674e4f75303239941407584382a9498c1",
+    "convex/vapiTools.ts": "b26f34e478fb244702e84c00e69b20ad857a7375245b2fc7867ea54b323b7f9f",
+    "convex/callbacks.ts": "cf985af81132fa50148b76b875997f65d6511424d0e3cdf3dca44ad2dfdfea59",
+    "src/lib/tools/kb.ts": "bd78ab0cdc4828f91328a8801438839f2227ef1854c3e6b6ff4bd3c2c4f92e80",
+    "src/knowledge/playback-kb.json": "16deea3cc6ca016978b570a6b1ee3f7be864b177349a7c9d62a559e96aa7b548",
+    "src/lib/tools/releases.ts": "5f77ed5df7d6a1e6bf0c4e8210be0b29baf796830837d03227f91098c2d90875",
+    "src/lib/tools/manual.ts": "d8aae21651e1efb599c1a5a31201c77f28d8730c96b6a9059085568a2f46b486"
+  }
+}

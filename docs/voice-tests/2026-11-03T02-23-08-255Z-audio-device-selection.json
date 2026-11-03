@@ -1,0 +1,98 @@
+{
+  "scenario": "audio-device-selection",
+  "expectedIntent": "audio-output",
+  "callId": "01a19f36-266d-7449-ab5c-4e3761691130",
+  "endedReason": "assistant-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "search_playback_docs",
+    "delegate",
+    "delegate",
+    "delegate",
+    "endCall"
+  ],
+  "timing": {
+    "turns": [
+      {
+        "caller": "Hey, I'm not getting any sound out of playback. It's playing but nothing comes out of my speakers",
+        "silenceS": 0.2,
+        "firstHeard": "Okay, got it.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s",
+          "search_playback_docs@+1.0s"
+        ],
+        "summary": "\"Hey, I'm not getting any sound out of pl\" -> 0.2s silence, then answer: \"Okay, got it.\" [delegate@+0.0s, search_playback_docs@+1.0s]"
+      },
+      {
+        "caller": "I'm on a MacBook with a USB interface plugged in. We don't play until tomorrow",
+        "silenceS": 0.2,
+        "firstHeard": "Okay.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"I'm on a MacBook with a USB interface pl\" -> 0.2s silence, then answer: \"Okay.\" [delegate@+0.0s]"
+      },
+      {
+        "caller": "Oh. It was set to the laptop speakers. I switched it to the interface and now I hear it. Thank you",
+        "silenceS": 1.2,
+        "firstHeard": "Great.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"Oh. It was set to the laptop speakers. I\" -> 1.2s silence, then answer: \"Great.\" [delegate@+0.0s]"
+      },
+      {
+        "caller": "That's everything. Bye",
+        "silenceS": 0.6,
+        "firstHeard": "Okay.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+-0.0s",
+          "endCall@+0.8s"
+        ],
+        "summary": "\"That's everything. Bye\" -> 0.6s silence, then answer: \"Okay.\" [delegate@+-0.0s, endCall@+0.8s]"
+      }
+    ],
+    "longestSilenceS": 1.2,
+    "longestGapAfterTransitionS": 0,
+    "repeatedAckTurns": 0
+  },
+  "convexToolEvents": [
+    "search_playback_docs succeeded 450ms 6 result(s)"
+  ],
+  "liveEvents": [
+    "27.1s TOOL-CALLS delegate({})",
+    "28.3s TOOL-CALLS search_playback_docs({\"query\":\"Playback app playing but no sound from speakers audio output troubleshooting\",\"category\":\"audio-output\"})",
+    "48.7s TOOL-CALLS delegate({})",
+    "74.4s TOOL-CALLS delegate({})",
+    "91.9s TOOL-CALLS delegate({})",
+    "93.9s TOOL-CALLS endCall({})",
+    "94.6s STATUS ended assistant-ended-call",
+    "94.6s hangup"
+  ],
+  "transcript": [
+    "AGENT: Hi, thanks for calling MultiTracks Playback support. I'm an AI assistant. What can I help you with today?",
+    "CALLER: Hey, I'm not getting any sound out of playback. It's playing but nothing comes out of my speakers",
+    "AGENT: Okay, got it.",
+    "AGENT: What device are you running Playback on?",
+    "CALLER: I'm on a MacBook with a USB interface plugged in. We don't play until tomorrow",
+    "AGENT: Okay.",
+    "AGENT: In Playback, open Settings, then General, and tell me what's shown beside Audio Device, the setting that chooses where Playback sends sound.",
+    "CALLER: Oh. It was set to the laptop speakers. I switched it to the interface and now I hear it. Thank you",
+    "AGENT: Great.",
+    "AGENT: Is there anything else I can help with?",
+    "CALLER: That's everything. Bye",
+    "AGENT: Okay."
+  ]
+}

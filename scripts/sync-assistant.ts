@@ -27,14 +27,25 @@ const assistant = buildAssistant({
 const id = process.env.NEXT_PUBLIC_VAPI_ASSISTANT_ID;
 
 async function main() {
+// Preserve recordings, saved output IDs and unrelated inline outputs on repeated syncs.
+let artifactPlan: Record<string, unknown> = {};
+if (id) {
+  const existing = await fetch(`https://api.vapi.ai/assistant/${id}`, { headers: { Authorization: `Bearer ${key}` } });
+  if (!existing.ok) throw Error(`Cannot read assistant before sync: HTTP ${existing.status}`);
+  const saved = await existing.json() as { artifactPlan?: Record<string, unknown> };
+  artifactPlan = saved.artifactPlan ?? {};
+}
+const outputs = Array.isArray(artifactPlan.structuredOutputs) ? artifactPlan.structuredOutputs as Array<{ name?: string }> : [];
+const newNames = new Set(assistant.artifactPlan.structuredOutputs.map(o => o.name));
 const res = await fetch(`https://api.vapi.ai/assistant${id ? `/${id}` : ""}`, {
   method: id ? "PATCH" : "POST",
   headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-  body: JSON.stringify(assistant),
+  body: JSON.stringify({ ...assistant, artifactPlan: { ...artifactPlan, ...assistant.artifactPlan,
+    structuredOutputs: [...outputs.filter(o => !o.name || !newNames.has(o.name)), ...assistant.artifactPlan.structuredOutputs] } }),
 });
 const body = await res.json();
 if (!res.ok) {
-  console.error("Vapi error", res.status, JSON.stringify(body, null, 2));
+  console.error("Vapi sync rejected: HTTP", res.status);
   process.exit(1);
 }
 console.log(`${id ? "Updated" : "Created"} assistant ${body.id} (${body.name}) -> ${siteUrl || "no webhook"}`);

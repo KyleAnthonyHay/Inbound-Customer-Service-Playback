@@ -1,0 +1,9 @@
+{
+  "name": "planning-center-api-access",
+  "expectedIntent": "service-context",
+  "lines": [
+    "Could you check Planning Center and tell me what songs are on Sunday's demo plan?",
+    "So you can actually read that plan through the connection?"
+  ],
+  "expect": "Use the real read-only Planning Center tool, answer from returned metadata, then explain the connected demo plan is accessible through that API. Reuse the successful result; do not deny access, call the lookup fake, imply access to another church, or imply write access. Fictional scenario data is the working service context for this support simulation. Actual failures must still be reported truthfully. Text validates the reasoner, not the live speaker."
+}

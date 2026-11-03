@@ -1,5 +1,8 @@
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
+import { callMeasurements, callReview } from "./lib/callMetricValidators";
+import { evaluationRunFields } from "./lib/evaluationRunValidators";
+import { demoSetFields } from "./lib/demoCallValidators";
 
 /**
  * All data here is SYNTHETIC demo data. Customers, teams, slots, and bookings
@@ -16,6 +19,10 @@ const plan = v.union(
 const subscriptionStatus = v.union(v.literal("active"), v.literal("past-due"), v.literal("expired"), v.literal("none"));
 
 export default defineSchema({
+  /** Immutable, explicitly selected evaluation cohorts; preserve original call history. */
+  evaluationRuns: defineTable(evaluationRunFields).index("by_key", ["key"]),
+  /** Editable demo selection; the immutable original evaluation snapshot stays separate. */
+  demoCallSets: defineTable(demoSetFields).index("by_key", ["key"]),
   /** Internal singleton lease; no public query or client-controlled release. */
   callAdmission: defineTable({
     scope: v.string(), token: v.string(), expiresAt: v.number(), callId: v.optional(v.string()),
@@ -119,6 +126,9 @@ export default defineSchema({
     .index("by_slot", ["slotId"])
     .index("by_callId", ["callId"]),
 
+  /** Minimal deletion marker prevents delayed webhooks from recreating erased history. */
+  deletedCalls: defineTable({ callId: v.string(), deletedAt: v.number() }).index("by_callId", ["callId"]),
+
   /** One row per Vapi call, from assistant-level server messages. Feeds the "Past calls" list. */
   calls: defineTable({
     callId: v.string(),
@@ -129,6 +139,12 @@ export default defineSchema({
     status: v.union(v.literal("ringing"), v.literal("in-progress"), v.literal("ended")),
     /** From Vapi speech-update, so the web phone can show Speaking / Listening for a remote call. */
     assistantSpeaking: v.optional(v.boolean()),
+    assistantStoppedAt: v.optional(v.number()),
+    lastUserSpeechAt: v.optional(v.number()),
+    closingRequestedAt: v.optional(v.number()),
+    closingFarewell: v.optional(v.string()),
+    callerSpeaking: v.optional(v.boolean()),
+    closingInterrupted: v.optional(v.boolean()),
     /** Successful simulated handoff has scheduled its one server-side hang-up fallback. */
     handoffEndScheduledAt: v.optional(v.number()),
     startedAt: v.number(), // epoch ms
@@ -141,9 +157,26 @@ export default defineSchema({
     durationSeconds: v.optional(v.number()),
     toolCount: v.number(),
     transcriptCount: v.number(),
+    /** Private evaluator labels, never passed to the voice/reasoning models. */
+    scenarioId: v.optional(v.string()),
+    review: v.optional(callReview),
+    reviewSource: v.optional(v.union(v.literal("native-post-call"), v.literal("reviewed-preview"))),
+    measurements: v.optional(callMeasurements),
+    analyticsState: v.optional(v.union(v.literal("pending"), v.literal("complete"), v.literal("partial"), v.literal("error"))),
+    analyticsQueuedAt: v.optional(v.number()),
+    analyticsUpdatedAt: v.optional(v.number()),
+    analyticsError: v.optional(v.string()),
+    toolFailureCount: v.optional(v.number()),
+    toolLatencyAverageMs: v.optional(v.number()),
+    toolLatencySamples: v.optional(v.number()),
+    /** Hidden from the working panel; the complete historical record is retained. */
+    archivedAt: v.optional(v.number()),
   })
     .index("by_callId", ["callId"])
-    .index("by_startedAt", ["startedAt"]),
+    .index("by_startedAt", ["startedAt"])
+    .index("by_scenarioId_startedAt", ["scenarioId", "startedAt"])
+    .index("by_archivedAt_startedAt", ["archivedAt", "startedAt"])
+    .index("by_archivedAt_status_startedAt", ["archivedAt", "status", "startedAt"]),
 
   /** Final transcript lines, so a past call can be replayed with its conversation. */
   transcripts: defineTable({

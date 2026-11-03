@@ -1,0 +1,110 @@
+{
+  "id": "01a19fba-9ea0-7bb0-9c65-da4f62e62698",
+  "environment": "development",
+  "createdAt": "2026-11-03T04:46:10.080Z",
+  "status": "ended",
+  "endedReason": "assistant-ended-call",
+  "resolution": "A manual HTTP end request was accepted while the user was also hanging up. Not an automatic-closing pass.",
+  "dialogue": [
+    {
+      "role": "bot",
+      "text": "Hi there! Thank you for calling MultiTracks",
+      "seconds": 1
+    },
+    {
+      "role": "user",
+      "text": "Oh",
+      "seconds": 2.6
+    },
+    {
+      "role": "bot",
+      "text": "Playback support. I'm Penny, your virtual AI support assistant. How can I have the pleasure of helping you today?",
+      "seconds": 3
+    },
+    {
+      "role": "user",
+      "text": "I'm getting ready for a rehearsal on our iPad, but Graves into Gardens won't open. I've pressed try again and it gets stuck",
+      "seconds": 10.6
+    },
+    {
+      "role": "bot",
+      "text": "Okay, checking that",
+      "seconds": 19
+    },
+    {
+      "role": "bot",
+      "text": "Thanks for waiting. Could you check whether other",
+      "seconds": 22.2
+    },
+    {
+      "role": "bot",
+      "text": "songs open normally, and tell me what you see on the screen when it gets stuck?",
+      "seconds": 24.4
+    },
+    {
+      "role": "user",
+      "text": "It says audio files missing",
+      "seconds": 33.4
+    },
+    {
+      "role": "bot",
+      "text": "Okay. Uh, checking that.",
+      "seconds": 38
+    },
+    {
+      "role": "bot",
+      "text": "Please tap Try Again until you've tried it three times total. After that third try, does Graves Into Gardens open for you?",
+      "seconds": 40.8
+    },
+    {
+      "role": "user",
+      "text": "Yes, it did. Wow, thank you",
+      "seconds": 51.4
+    },
+    {
+      "role": "bot",
+      "text": "You're welcome.",
+      "seconds": 54.8
+    },
+    {
+      "role": "bot",
+      "text": "I'm glad that recovery worked and the song is opening now. Is there anything else I can help you with today?",
+      "seconds": 56.8
+    },
+    {
+      "role": "user",
+      "text": "Yes, could you check planning center and tell me what other songs are on Sunday's demo plan",
+      "seconds": 64.8
+    },
+    {
+      "role": "bot",
+      "text": "Sure, let me check.",
+      "seconds": 70.8
+    },
+    {
+      "role": "bot",
+      "text": "Sunday's demo plan also has Do It Again and What A Beautiful Name. Is there anything else I can help you with today?",
+      "seconds": 73.6
+    },
+    {
+      "role": "user",
+      "text": "No, that's everything, thank you",
+      "seconds": 82.4
+    },
+    {
+      "role": "bot",
+      "text": "Great, okay.",
+      "seconds": 84.6
+    },
+    {
+      "role": "bot",
+      "text": "Thanks so much for calling",
+      "seconds": 86.8
+    },
+    {
+      "role": "bot",
+      "text": "MultiTracks Playback support. Have a great day, and goodbye! Just checking in, are you still there?",
+      "seconds": 87.8
+    }
+  ]
+}

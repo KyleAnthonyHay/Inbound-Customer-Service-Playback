@@ -1,0 +1,8 @@
+{
+  "kind": "development-text-callback-write-and-cleanup",
+  "callbackRecordConfirmed": true,
+  "reserveThenEndCall": true,
+  "isolatedBookingRemoved": 1,
+  "slotReleasedAfterCleanup": true,
+  "realVoiceCallsCreated": 0
+}

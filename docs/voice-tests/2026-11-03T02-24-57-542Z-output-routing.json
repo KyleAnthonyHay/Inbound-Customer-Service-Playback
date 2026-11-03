@@ -1,0 +1,81 @@
+{
+  "scenario": "output-routing",
+  "expectedIntent": "audio-output",
+  "callId": "01a19f38-1f6c-7ffb-b754-5a7dbe2103c1",
+  "endedReason": "assistant-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "search_playback_docs",
+    "delegate",
+    "delegate",
+    "endCall"
+  ],
+  "timing": {
+    "turns": [
+      {
+        "caller": "My click track is coming out of the main speakers instead of just my in-ears",
+        "silenceS": 0.2,
+        "firstHeard": "Okay, got it.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s",
+          "search_playback_docs@+1.2s"
+        ],
+        "summary": "\"My click track is coming out of the main\" -> 0.2s silence, then answer: \"Okay, got it.\" [delegate@+0.0s, search_playback_docs@+1.2s]"
+      },
+      {
+        "caller": "iPhone, with a USB interface. I have time. We're not playing right now",
+        "silenceS": 0.4,
+        "firstHeard": "Great, thanks.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"iPhone, with a USB interface. I have tim\" -> 0.4s silence, then answer: \"Great, thanks.\" [delegate@+0.0s]"
+      },
+      {
+        "caller": "Got it. I'll set up the click on its own bus . Thanks. That's all",
+        "silenceS": 0.6,
+        "firstHeard": "Good.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s",
+          "endCall@+0.8s"
+        ],
+        "summary": "\"Got it. I'll set up the click on its own\" -> 0.6s silence, then answer: \"Good.\" [delegate@+0.0s, endCall@+0.8s]"
+      }
+    ],
+    "longestSilenceS": 0.6,
+    "longestGapAfterTransitionS": 0,
+    "repeatedAckTurns": 0
+  },
+  "convexToolEvents": [
+    "search_playback_docs succeeded 85ms 6 result(s)"
+  ],
+  "liveEvents": [
+    "25.2s TOOL-CALLS delegate({})",
+    "27.6s TOOL-CALLS search_playback_docs({\"query\":\"Playback click track coming through main speakers route click only to in-ear monitors audio output buses\",\"category\":\"audio-output\"})",
+    "48.6s TOOL-CALLS delegate({})",
+    "71.5s TOOL-CALLS delegate({})",
+    "74.1s TOOL-CALLS endCall({})",
+    "74.7s STATUS ended assistant-ended-call",
+    "74.7s hangup"
+  ],
+  "transcript": [
+    "AGENT: Hi, thanks for calling MultiTracks Playback support. I'm an AI assistant. What can I help you with today?",
+    "CALLER: My click track is coming out of the main speakers instead of just my in-ears",
+    "AGENT: Okay, got it.",
+    "AGENT: What device are you running Playback on?",
+    "CALLER: iPhone, with a USB interface. I have time. We're not playing right now",
+    "AGENT: Great, thanks.",
+    "AGENT: In Playback, open Settings, then the Buses tab, then tap the Click bus and tell me which output it shows.",
+    "CALLER: Got it. I'll set up the click on its own bus . Thanks. That's all",
+    "AGENT: Good."
+  ]
+}

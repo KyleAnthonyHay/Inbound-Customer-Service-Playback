@@ -1,6 +1,10 @@
-import { mutation, query, type MutationCtx } from "./_generated/server";
+import { mutation, query, internalMutation, internalQuery, type MutationCtx } from "./_generated/server";
 import { v } from "convex/values";
+import { paginationOptsValidator, paginationResultValidator } from "convex/server";
+import schema from "./schema";
+import { archiveCall, archivePanelBatch, restoreCall, deleteArchivedCall, deleteCallLogBatch, isDeletedCall } from "./lib/callHistory";
 import { assistantSpeakingAfter, isLiveStatus, REMOTE_STALE_MS, storedStatusOf, type StoredCallStatus } from "../src/lib/tools/callState";
+import { queueAnalytics } from "./callAnalytics";
 
 /**
  * Call history for the activity panel's "Past calls" list. Rows are written by Vapi's
@@ -22,6 +26,7 @@ export async function ensureCall(
   callId: string,
   patch?: { channel?: string; startedAt?: number; callerNumber?: string; status?: StoredCallStatus }
 ) {
+  if (await isDeletedCall(ctx, callId)) throw Error("Call history was permanently deleted");
   const existing = await ctx.db.query("calls").withIndex("by_callId", (q) => q.eq("callId", callId)).unique();
   if (existing) {
     if (patch?.channel && existing.channel === "unknown") await ctx.db.patch(existing._id, { channel: channelOf(patch.channel) });
@@ -52,6 +57,7 @@ export const statusUpdate = mutation({
     if (next === "ended") await ctx.db.patch(id, { status: "ended", endedAt: Date.now(), endedReason: a.endedReason, assistantSpeaking: false });
     // ringing -> in-progress only moves forward; an ended row never reopens.
     else if (next === "in-progress" && row.status === "ringing") await ctx.db.patch(id, { status: "in-progress" });
+    if (next === "ended") await queueAnalytics(ctx, a.callId);
     return { ok: true };
   },
 });
@@ -108,6 +114,7 @@ export const endOfCallReport = mutation({
       transcriptCount,
       title,
     });
+    await queueAnalytics(ctx, a.callId);
     return { ok: true };
   },
 });
@@ -125,7 +132,15 @@ export const touch = mutation({
     const id = await ensureCall(ctx, a.callId, { channel: a.callType, callerNumber: a.callerNumber });
     const row = (await ctx.db.get(id))!;
     const speaking = assistantSpeakingAfter(a.role, a.speechStatus);
-    const patch: { status?: "in-progress"; assistantSpeaking?: boolean } = {};
+    const patch: { status?: "in-progress"; assistantSpeaking?: boolean; assistantStoppedAt?: number; lastUserSpeechAt?: number; callerSpeaking?: boolean; closingInterrupted?: boolean } = {};
+    if (a.role === "user" && (a.speechStatus === "started" || a.speechStatus === "stopped")) {
+      patch.callerSpeaking = a.speechStatus === "started";
+      if (a.speechStatus === "started") {
+        if (row.closingRequestedAt !== undefined) patch.closingInterrupted = true;
+        else patch.lastUserSpeechAt = Date.now();
+      }
+    }
+    if (speaking === false) patch.assistantStoppedAt = Date.now();
     if (row.status === "ringing") patch.status = "in-progress";
     if (speaking !== undefined && row.status !== "ended" && speaking !== row.assistantSpeaking) patch.assistantSpeaking = speaking;
     if (Object.keys(patch).length) await ctx.db.patch(id, patch);
@@ -161,7 +176,50 @@ export const syncConversation = mutation({
 /** Newest first. Capped so the sidebar list never grows unbounded; the UI pages within it. */
 export const list = query({
   args: { limit: v.optional(v.number()) },
-  handler: async (ctx, a) => ctx.db.query("calls").withIndex("by_startedAt").order("desc").take(Math.min(a.limit ?? 50, 200)),
+  handler: async (ctx, a) => ctx.db.query("calls").withIndex("by_archivedAt_startedAt", q => q.eq("archivedAt", undefined))
+    .order("desc").take(Math.min(Math.max(1, a.limit ?? 50), 200)),
+});
+
+/** Permanent saved history includes calls cleared from the working panel. */
+export const history = query({
+  args: { paginationOpts: paginationOptsValidator },
+  returns: paginationResultValidator(v.object({ ...schema.tables.calls.validator.fields, _id: v.id("calls"), _creationTime: v.number() })),
+  handler: async (ctx, args) => ctx.db.query("calls").withIndex("by_startedAt").order("desc").paginate(args.paginationOpts),
+});
+
+export const archived = query({
+  args: { paginationOpts: paginationOptsValidator },
+  returns: paginationResultValidator(v.object({ ...schema.tables.calls.validator.fields, _id: v.id("calls"), _creationTime: v.number() })),
+  handler: async (ctx, args) => ctx.db.query("calls")
+    .withIndex("by_archivedAt_startedAt", q => q.gt("archivedAt", undefined)).order("desc").paginate(args.paginationOpts),
+});
+
+export const archive = mutation({
+  args: { callId: v.string() },
+  returns: v.object({ ok: v.boolean(), archived: v.boolean(), reason: v.optional(v.string()) }),
+  handler: (ctx, args) => archiveCall(ctx, args.callId),
+});
+
+export const restore = mutation({
+  args: { callId: v.string() },
+  returns: v.object({ ok: v.boolean(), restored: v.boolean(), reason: v.optional(v.string()) }),
+  handler: (ctx, args) => restoreCall(ctx, args.callId),
+});
+
+export const deleteArchived = mutation({
+  args: { callId: v.string() },
+  returns: v.object({ ok: v.boolean(), removed: v.boolean(), reason: v.optional(v.string()) }),
+  handler: (ctx, args) => deleteArchivedCall(ctx, args.callId),
+});
+
+export const deleteArchivedNextBatch = internalMutation({
+  args: { callId: v.string() }, returns: v.null(),
+  handler: async (ctx, args) => { await deleteCallLogBatch(ctx, args.callId); return null; },
+});
+
+export const isPermanentlyDeleted = internalQuery({
+  args: { callId: v.string() }, returns: v.boolean(),
+  handler: (ctx, args) => isDeletedCall(ctx, args.callId),
 });
 
 /**
@@ -184,7 +242,7 @@ export const get = query({
 
 export const transcriptByCall = query({
   args: { callId: v.string() },
-  handler: async (ctx, a) => (a.callId ? ctx.db.query("transcripts").withIndex("by_call", (q) => q.eq("callId", a.callId)).order("asc").take(500) : []),
+  handler: async (ctx, a) => (a.callId && !await isDeletedCall(ctx, a.callId) ? ctx.db.query("transcripts").withIndex("by_call", (q) => q.eq("callId", a.callId)).order("asc").take(500) : []),
 });
 
 /** Remove one call and everything logged for it (cleanup of smoke-test rows). */
@@ -199,19 +257,14 @@ export const remove = mutation({
   },
 });
 
-/** "Clear past calls": removes finished calls, their transcripts and their tool events. A call in progress is kept. */
+/** Clear the working panel while preserving complete saved history. */
 export const clearAll = mutation({
   args: {},
-  handler: async (ctx) => {
-    const calls = await ctx.db.query("calls").collect();
-    let removed = 0;
-    for (const c of calls) {
-      if (isLiveStatus(c.status) && Date.now() - c.startedAt < REMOTE_STALE_MS) continue;
-      for (const t of await ctx.db.query("transcripts").withIndex("by_call", (q) => q.eq("callId", c.callId)).collect()) await ctx.db.delete(t._id);
-      for (const e of await ctx.db.query("callEvents").withIndex("by_call", (q) => q.eq("callId", c.callId)).collect()) await ctx.db.delete(e._id);
-      await ctx.db.delete(c._id);
-      removed++;
-    }
-    return { ok: true, removed };
-  },
+  returns: v.object({ ok: v.boolean(), archived: v.number(), continuing: v.boolean() }),
+  handler: ctx => archivePanelBatch(ctx, Date.now()),
+});
+
+export const archiveNextBatch = internalMutation({
+  args: { before: v.number() }, returns: v.null(),
+  handler: async (ctx, args) => { await archivePanelBatch(ctx, args.before); return null; },
 });

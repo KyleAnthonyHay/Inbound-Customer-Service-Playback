@@ -4,6 +4,9 @@ import { api, internal } from "./_generated/api";
 import { DEV_SITE, startDevCall } from "./lib/callAdmission";
 import { tools, summarize } from "./vapiTools";
 import { callInfoOf } from "../src/lib/tools/callerId";
+import { recentAssistantMessages, recentSpeechContext } from "../src/lib/recentSpeech";
+import { appendRecentSpeakerContext } from "./lib/speakerContext";
+import { measureCall, reviewFromOutputs, type ArtifactMessage } from "../src/lib/callMetrics";
 
 /**
  * Vapi tool webhook, served straight from the Convex deployment at
@@ -68,7 +71,8 @@ http.route({
     const secret = process.env.VAPI_TOOL_SECRET;
     if (secret && request.headers.get("x-demo-secret") !== secret) return json({ error: "unauthorized" }, 401);
 
-    const body = (await request.json().catch(() => ({}))) as { message?: { type?: string; toolCallList?: ToolCall[]; call?: CallFields } };
+    const body = (await request.json().catch(() => ({}))) as { message?: { type?: string; toolCallList?: ToolCall[]; call?: CallFields;
+      artifact?: { messages?: Array<{ role?: string; message?: string; content?: unknown }> } } };
     const msg = body.message;
     if (!msg || msg.type !== "tool-calls" || !Array.isArray(msg.toolCallList)) return json({ results: [] });
     // Phone calls carry the caller's number (caller ID) on every webhook; browser calls do not.
@@ -77,7 +81,17 @@ http.route({
     const textTestId = new URL(request.url).searchParams.get("textTestId");
     if (!msg.call?.id && textTestId && /^text-poc-[a-z0-9-]{1,80}$/.test(textTestId)) call.callId = textTestId;
     const callId = call.callId;
+    if (await ctx.runQuery(internal.calls.isPermanentlyDeleted, { callId }))
+      return json({ results: msg.toolCallList.map(tc => ({ toolCallId: tc.id, error: "Call history was permanently deleted" })) });
     if (call.callerNumber) await ctx.runMutation(api.calls.touch, { callId, callType: call.callType, callerNumber: call.callerNumber });
+    const readRecentSpeech = async () => {
+      const fromWebhook = recentAssistantMessages(msg.artifact?.messages ?? []);
+      if (fromWebhook.length) return fromWebhook;
+      try {
+        return recentAssistantMessages((await ctx.runQuery(api.calls.transcriptByCall, { callId }))
+          .map(line => ({ role: line.role, content: line.text })));
+      } catch { return []; } // Optional style context must not turn a completed tool action into a failure.
+    };
 
     const results = await Promise.all(
       msg.toolCallList.map(async (tc) => {
@@ -91,7 +105,12 @@ http.route({
         const started = Date.now();
         await ctx.runMutation(api.callEvents.log, { callId, kind: "tool-start", tool: name, toolCallId: tc.id, label: def.label, status: "running", source: def.source, args: clip(args, 800) });
         try {
-          const out = await def.run(args, ctx, call);
+          const result = await def.run(args, ctx, call);
+          // Prefer the signed tool webhook's live transcript. Browser history is a
+          // fallback because final transcripts can trail concurrent speaker audio.
+          const recent = await readRecentSpeech();
+          const out = result && typeof result === "object" && !Array.isArray(result)
+            ? { ...result, conversationContext: recentSpeechContext(recent) } : result;
           const durationMs = Date.now() - started;
           const ok = !(out && typeof out === "object" && "ok" in out && (out as { ok: unknown }).ok === false);
           await ctx.runMutation(api.callEvents.log, {
@@ -106,6 +125,16 @@ http.route({
         }
       })
     );
+    // The reasoner reads tool results; the speaker needs its own context update.
+    // Keep this per webhook, not per tool in a parallel batch.
+    const fallback = await readRecentSpeech();
+    if (fallback.length && call.controlUrl) {
+      const submitted = await appendRecentSpeakerContext({ callId, controlUrl: call.controlUrl, messages: fallback }, { publicKey: process.env.VAPI_PUBLIC_KEY });
+      await ctx.runMutation(api.callEvents.log, { callId, kind: "note", label: "Recent speech context", source: "internal",
+        status: submitted ? "succeeded" : "failed", detail: submitted
+          ? `Submitted ${fallback.length} recent assistant messages to the speaker without requesting speech.`
+          : "Speaker context update was unavailable; transcript and prompt checks still apply." }).catch(() => {});
+    }
     return json({ results });
   }),
 });
@@ -124,7 +153,9 @@ type ServerMessage = {
   call?: CallFields;
   analysis?: { summary?: string };
   summary?: string;
-  artifact?: { messages?: Array<{ role?: string; message?: string; time?: number; secondsFromStart?: number }> };
+  artifact?: { messages?: ArtifactMessage[]; structuredOutputs?: unknown };
+  cost?: number;
+  usageComplete?: boolean;
   /** conversation-update: the running message list (Vapi sends both shapes). */
   conversation?: Array<{ role?: string; content?: string }>;
   messages?: Array<{ role?: string; message?: string; content?: string; time?: number }>;
@@ -143,6 +174,7 @@ http.route({
     const m = body.message;
     const callId = m?.call?.id;
     if (!m || !callId) return json({ ok: true });
+    if (await ctx.runQuery(internal.calls.isPermanentlyDeleted, { callId })) return json({ ok: true });
     const callerNumber = callInfoOf(m.call).callerNumber;
     console.log(`vapi event ${m.type} call=${callId}` + (m.type === "end-of-call-report" ? ` keys=${Object.keys(m).join(",")} msgs=${m.artifact?.messages?.length ?? 0}` : ""));
     switch (m.type) {
@@ -150,6 +182,8 @@ http.route({
         await ctx.runMutation(api.calls.statusUpdate, { callId, status: m.status ?? "", callType: m.call?.type, endedReason: m.endedReason, startedAt: m.call?.startedAt, callerNumber });
         break;
       case "transcript":
+        if ((m.role === "assistant" || (m.role === "user" && m.transcriptType === "final")) && m.transcript)
+          await ctx.runMutation(internal.closing.observeTranscript, { callId, role: m.role, text: m.transcript });
         // Browser calls are mirrored by the web client itself (ActivityPanel), so skip server copies for them.
         if (m.call?.type === "webCall") break;
         if (m.transcriptType === "final" && (m.role === "user" || m.role === "assistant") && m.transcript)
@@ -159,13 +193,17 @@ http.route({
         await ctx.runMutation(api.calls.touch, { callId, callType: m.call?.type, callerNumber, role: m.role, speechStatus: m.status });
         break;
       case "conversation-update": {
-        if (m.call?.type === "webCall") break;
         const src: Array<{ role?: string; text?: string; time?: number }> = m.messages?.length
           ? m.messages.map((x) => ({ role: x.role, text: x.message ?? x.content, time: x.time }))
           : (m.conversation ?? []).map((c) => ({ role: c.role, text: c.content }));
         const lines = src
           .filter((x) => (x.role === "user" || x.role === "bot" || x.role === "assistant") && x.text)
           .map((x) => ({ role: x.role === "user" ? ("user" as const) : ("assistant" as const), text: x.text!, at: x.time ?? 0 }));
+        // Closing must also see browser speech when these messages are available;
+        // history mirroring below remains client-owned for browser calls.
+        const last = lines.at(-1);
+        if (last?.role === "assistant") await ctx.runMutation(internal.closing.observeTranscript, { callId, role: last.role, text: last.text });
+        if (m.call?.type === "webCall") break;
         await ctx.runMutation(api.calls.syncConversation, { callId, callType: m.call?.type, messages: lines });
         break;
       }
@@ -178,6 +216,13 @@ http.route({
             .filter((x) => (x.role === "user" || x.role === "bot" || x.role === "assistant") && x.message)
             .map((x) => ({ role: x.role === "user" ? ("user" as const) : ("assistant" as const), text: x.message!, at: x.time ?? 0 })),
         });
+        {
+          const review = reviewFromOutputs(m.artifact?.structuredOutputs);
+          const measurements = m.artifact?.messages?.length ? measureCall({ ...m, startedAt: m.startedAt ?? m.call?.startedAt }) : undefined;
+          if (review || measurements) await ctx.runMutation(internal.callAnalytics.save, {
+            callId, ...(review ? { review } : {}), ...(measurements ? { measurements } : {}), final: false,
+          });
+        }
         break;
     }
     if (process.env.CONVEX_SITE_URL === DEV_SITE && (m.type === "end-of-call-report" || (m.type === "status-update" && m.status === "ended")))

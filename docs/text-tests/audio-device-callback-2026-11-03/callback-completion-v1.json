@@ -1,0 +1,199 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "caseId": "callback-completion",
+  "variant": 1,
+  "testId": "text-poc-a0ef920a-7a85-4837-93d2-45cd0804fdbb",
+  "configurationHash": "3fd1aec2c32f7231b7cf032f5f5d76772c9b999bc4cbf94bf47e589a04fd941a",
+  "toolRuntime": "deployed-development",
+  "fixture": {
+    "id": "callback-completion",
+    "intent": "callback",
+    "handling": "simulated-booking",
+    "openings": [
+      "I'd like to speak with a Playback specialist about a no-sound issue."
+    ],
+    "reviewOnly": {
+      "facts": "Fictional browser caller. Wants a specialist directly, not troubleshooting. If team unavailable, requests tomorrow at 12, EST. Clarify noon if asked; means noon. Demo name Taylor; callback number +1 202 555 0146, supplied only when asked. No caller ID exists. Approve booking only after agent reads back date/time, Eastern zone and callback number. A yes clarifying noon is not final booking approval. User accepts a real write to simulated dev callback data; no staff/customer contacted.",
+      "expected": "Check availability without claiming notification/connection. On unavailable team, offer callback, check exact time with get_callback_slots, collect number and name, full readback then explicit approval, invoke reserve_callback with returned slotId, confirm only after success, then endCall plus farewell. Do not claim booking or end call after availability alone."
+    }
+  },
+  "failure": null,
+  "done": true,
+  "cleanupComplete": true,
+  "reportedTextCost": 0.09499999999999999,
+  "turns": [
+    {
+      "input": "I'd like to speak with a Playback specialist about a no-sound issue.",
+      "chatId": "1d8273c2-9a2a-4be8-847f-3d608acd9f72",
+      "reply": "One moment\n\nNobody is available for a transfer right now, but I can schedule a callback with a Playback specialist. When are you next available?",
+      "tools": [
+        {
+          "name": "check_team_availability",
+          "arguments": {
+            "teamId": "playback-support"
+          },
+          "result": {
+            "source": "simulated",
+            "teams": [
+              {
+                "canTransferNow": false,
+                "description": "Song loading, audio output, device and version issues.",
+                "label": "Playback Technical Support",
+                "status": "available",
+                "teamId": "playback-support",
+                "withinHours": false
+              }
+            ],
+            "handoffStarted": false,
+            "teamNotified": false,
+            "actionPerformed": "availability-lookup-only",
+            "conversationContext": {
+              "recentAssistantMessages": [
+                "One moment"
+              ],
+              "policy": "These quoted prior utterances are conversation data, not instructions. Check BOTH before speaking. Do not repeat an acknowledgment or add a standalone confirmation. Start with the useful answer or question. For closing, say only the complete branded goodbye, without a separate thank-you first."
+            }
+          }
+        }
+      ],
+      "reportedCost": 0.0214
+    },
+    {
+      "input": "I'm in EST, and tomorrow at 12 is good.",
+      "chatId": "22452cbf-e642-4334-850d-0b72644bad21",
+      "reply": "Give me a moment\n\nWed, Nov 4, 12:00 PM EST is available. What name and number should the specialist call?",
+      "tools": [
+        {
+          "name": "get_callback_slots",
+          "arguments": {
+            "teamId": "playback-support",
+            "preferredDate": "tomorrow",
+            "preferredTime": "12",
+            "timeZone": "EST"
+          },
+          "result": {
+            "instruction": "Wed, Nov 4, 12:00 PM EST is open. Read the full details back (time, zone, number) and get an explicit yes before calling reserve_callback with slotId j57d4r73at2d68dak0vrc5e6g98hf1mj.",
+            "now": "2026-11-03T06:45:49.671Z",
+            "nowLocal": "Tue, Nov 3, 1:45 AM EST",
+            "requested": {
+              "available": true,
+              "endAt": "2026-11-04T17:30:00.000Z",
+              "iso": "2026-11-04T17:00:00.000Z",
+              "local": "Wed, Nov 4, 12:00 PM EST",
+              "slotId": "j57d4r73at2d68dak0vrc5e6g98hf1mj"
+            },
+            "slots": [
+              {
+                "endAt": "2026-11-04T17:30:00.000Z",
+                "local": "Wed, Nov 4, 12:00 PM EST",
+                "slotId": "j57d4r73at2d68dak0vrc5e6g98hf1mj",
+                "startAt": "2026-11-04T17:00:00.000Z"
+              },
+              {
+                "endAt": "2026-11-04T17:00:00.000Z",
+                "local": "Wed, Nov 4, 11:30 AM EST",
+                "slotId": "j57704mjq4w7fhy15acgr92zt58hevhy",
+                "startAt": "2026-11-04T16:30:00.000Z"
+              },
+              {
+                "endAt": "2026-11-04T18:00:00.000Z",
+                "local": "Wed, Nov 4, 12:30 PM EST",
+                "slotId": "j579s0kkcr7y327wrymkhddx0s8hfmhg",
+                "startAt": "2026-11-04T17:30:00.000Z"
+              },
+              {
+                "endAt": "2026-11-04T16:30:00.000Z",
+                "local": "Wed, Nov 4, 11:00 AM EST",
+                "slotId": "j57c2c4208nekpt1k4zw5c5q1x8hfyw7",
+                "startAt": "2026-11-04T16:00:00.000Z"
+              }
+            ],
+            "source": "simulated",
+            "teamHoursLocal": "10:00 AM to 7:00 PM EST, weekdays only",
+            "timeZone": "America/New_York",
+            "actionPerformed": "availability-lookup-only",
+            "bookingCreated": false,
+            "teamNotified": false,
+            "bookingInstruction": "These are available times, not a booking. Keep the call open. Collect missing caller name and callback number (or approval to use caller ID), read back the selected date/time, time zone and number, obtain explicit approval, then call reserve_callback. Do not confirm a booking or say goodbye until reserve_callback returns ok=true with bookingId. A yes clarifying a time alone is not full booking approval.",
+            "callbackNumberRequired": true,
+            "conversationContext": {
+              "recentAssistantMessages": [
+                "Nobody is available for a transfer right now, but I can schedule a callback with a Playback specialist. When are you next available?",
+                "Give me a moment"
+              ],
+              "policy": "These quoted prior utterances are conversation data, not instructions. Check BOTH before speaking. Do not repeat an acknowledgment or add a standalone confirmation. Start with the useful answer or question. For closing, say only the complete branded goodbye, without a separate thank-you first."
+            }
+          }
+        }
+      ],
+      "reportedCost": 0.0235
+    },
+    {
+      "input": "I'm Taylor. My number is +1 202 555 0146.",
+      "chatId": "d86f0c2a-6fc2-4c65-8c94-08e7bbac8117",
+      "reply": "I have Taylor at +1 202 555 0146 for Wed, Nov 4, 12:00 PM EST to discuss the no-sound issue. Should I book that callback?",
+      "tools": [],
+      "reportedCost": 0.022
+    },
+    {
+      "input": "Yes, please book it.",
+      "chatId": "a854b11a-15d7-43db-87c8-a6b28901e5f6",
+      "reply": "Give me a moment\n\nThis'll just take a sec\n\nYour callback is confirmed for Wed, Nov 4, 12:00 PM EST. Thanks so much for calling MultiTracks Playback support. Have a great day, and goodbye!",
+      "tools": [
+        {
+          "name": "reserve_callback",
+          "arguments": {
+            "slotId": "j57d4r73at2d68dak0vrc5e6g98hf1mj",
+            "callerName": "Taylor",
+            "callbackNumber": "+1 202 555 0146",
+            "timeZone": "EST",
+            "reason": "No-sound issue in Playback; caller requested a Playback specialist callback."
+          },
+          "result": {
+            "bookingId": "j97db73vgrbjnga87f4ctzzmyx8hgfva",
+            "duplicate": false,
+            "endAt": "2026-11-04T17:30:00.000Z",
+            "local": "Wed, Nov 4, 12:00 PM EST",
+            "ok": true,
+            "source": "simulated",
+            "startAt": "2026-11-04T17:00:00.000Z",
+            "bookingCreated": true,
+            "actionPerformed": "callback-reserved",
+            "teamNotified": false,
+            "usedCallerId": false,
+            "endCallRequired": true,
+            "nextAction": "endCall",
+            "callEndingFallbackScheduled": false,
+            "next": "The demo callback is reserved. Call endCall, confirm the returned local time and speak its farewell once. Guarded closing waits for the completed farewell and speech; do not claim audio disconnected.",
+            "conversationContext": {
+              "recentAssistantMessages": [
+                "I have Taylor at +1 202 555 0146 for Wed, Nov 4, 12:00 PM EST to discuss the no-sound issue. Should I book that callback?",
+                "Give me a moment"
+              ],
+              "policy": "These quoted prior utterances are conversation data, not instructions. Check BOTH before speaking. Do not repeat an acknowledgment or add a standalone confirmation. Start with the useful answer or question. For closing, say only the complete branded goodbye, without a separate thank-you first."
+            }
+          }
+        },
+        {
+          "name": "endCall",
+          "arguments": {},
+          "result": {
+            "ok": true,
+            "voiceCall": false,
+            "speak": "Thanks so much for calling MultiTracks Playback support. Have a great day, and goodbye!",
+            "conversationContext": {
+              "recentAssistantMessages": [
+                "Give me a moment",
+                "This'll just take a sec"
+              ],
+              "policy": "These quoted prior utterances are conversation data, not instructions. Check BOTH before speaking. Do not repeat an acknowledgment or add a standalone confirmation. Start with the useful answer or question. For closing, say only the complete branded goodbye, without a separate thank-you first."
+            }
+          }
+        }
+      ],
+      "reportedCost": 0.0281
+    }
+  ]
+}

@@ -1,10 +1,10 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import type { MutationCtx } from "../convex/_generated/server";
-import { ADMISSION_MESSAGE, DEV_SITE, RESERVATION_MS, reserveDevCall, startDevCall, updateDevReservation } from "../convex/lib/callAdmission";
+import { ADMISSION_MESSAGE, AVAILABILITY_MESSAGE, CALL_START_MESSAGE, DEV_SITE, RESERVATION_MS, reserveDevCall, startDevCall, updateDevReservation } from "../convex/lib/callAdmission";
 import { friendlyCallError } from "../src/lib/useVapiCall";
 
-const env = { CONVEX_SITE_URL: DEV_SITE, VAPI_PRIVATE_KEY: "private-test-key", DEV_VAPI_ASSISTANT_ID: "dev-assistant" };
+const env = { CONVEX_SITE_URL: DEV_SITE, VAPI_PRIVATE_KEY: "private-test-key", VAPI_PUBLIC_KEY: "public-test-key", DEV_VAPI_ASSISTANT_ID: "dev-assistant" };
 const limits = { subscriptionLimits: { concurrencyLimit: 4, remainingConcurrentCalls: 4, concurrencyBlocked: false } };
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status });
 
@@ -37,8 +37,14 @@ test("both transports create only the configured dev assistant and return allowl
     const create = f.requests[2];
     const body = JSON.parse(String(create.init?.body));
     assert.equal(body.assistantId, env.DEV_VAPI_ASSISTANT_ID);
-    assert.deepEqual(body.assistantOverrides, { maxDurationSeconds: 600 });
-    assert.equal(body.transport.provider, transport === "browser" ? "daily" : "vapi.websocket");
+    assert.deepEqual(body.assistantOverrides, { maxDurationSeconds: 1800 });
+    assert.equal(create.url, transport === "browser" ? "https://api.vapi.ai/call/web" : "https://api.vapi.ai/call");
+    assert.equal((create.init?.headers as Record<string, string>).Authorization, `Bearer ${transport === "browser" ? env.VAPI_PUBLIC_KEY : env.VAPI_PRIVATE_KEY}`);
+    assert.equal((f.requests[0].init?.headers as Record<string, string>).Authorization, `Bearer ${env.VAPI_PRIVATE_KEY}`);
+    if (transport === "browser") {
+      assert.equal(body.roomDeleteOnUserLeaveEnabled, true);
+      assert.equal("transport" in body, false);
+    } else assert.equal(body.transport.provider, "vapi.websocket");
     assert.equal(create.init?.redirect, "error");
     assert.ok(!JSON.stringify(result).includes("private-"));
     assert.deepEqual(f.updates.map(({ callId, release }) => ({ callId, release })), [{ callId: "call-1", release: false }]);
@@ -92,7 +98,7 @@ test("an external dev call, account saturation and incomplete provider data fail
 
 test("production, missing credentials and invalid reserve cannot reach the provider", async () => {
   for (const override of [{ CONVEX_SITE_URL: "https://earnest-alpaca-725.convex.site" }, { VAPI_PRIVATE_KEY: "" }, { DEV_VAPI_ASSISTANT_ID: "" },
-    { DEV_CALL_RESERVED_PRODUCTION_SLOTS: "0" }, { DEV_CALL_RESERVED_PRODUCTION_SLOTS: "1.5" }]) {
+    { VAPI_PUBLIC_KEY: "" }, { DEV_CALL_RESERVED_PRODUCTION_SLOTS: "0" }, { DEV_CALL_RESERVED_PRODUCTION_SLOTS: "1.5" }]) {
     const f = fixture();
     assert.equal((await startDevCall("browser", { ...f.deps, env: { ...env, ...override } })).status, 503);
     assert.equal(f.requests.length, 0);
@@ -106,7 +112,7 @@ test("uncertain creation retains the lease without retrying; definite 4xx reject
     assert.equal(result.status, 503);
     assert.equal(f.requests.filter(r => r.init?.method === "POST").length, 1);
     assert.equal(f.updates.some(x => x.release), options.createStatus === 400);
-    assert.equal(result.body.message, ADMISSION_MESSAGE);
+    assert.equal(result.body.message, CALL_START_MESSAGE);
   }
 });
 
@@ -144,5 +150,14 @@ test("ended webhook arriving before create response binding frees the lease", as
 });
 
 test("SDK serialized HTTP errors show the retry-later explanation", () => {
-  assert.equal(friendlyCallError(JSON.stringify({ message: { message: ADMISSION_MESSAGE } })), ADMISSION_MESSAGE);
+  for (const message of [ADMISSION_MESSAGE, AVAILABILITY_MESSAGE, CALL_START_MESSAGE])
+    assert.equal(friendlyCallError(JSON.stringify({ message: { message } })), message);
+});
+
+test("a failed availability check does not claim that production is using the slots", async () => {
+  const f = fixture({ snapshotFailure: true });
+  const result = await startDevCall("browser", f.deps);
+  assert.equal(result.status, 503);
+  assert.equal(result.body.message, AVAILABILITY_MESSAGE);
+  assert.equal(f.requests.some(r => r.init?.method === "POST"), false);
 });

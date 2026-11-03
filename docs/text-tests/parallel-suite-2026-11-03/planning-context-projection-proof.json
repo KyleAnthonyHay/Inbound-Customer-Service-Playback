@@ -1,0 +1,9 @@
+{
+  "kind": "deployed-read-only-context-projection",
+  "liveApiSuccess": true,
+  "organizationIdOmitted": true,
+  "serviceIdsOmitted": true,
+  "songIdsOmitted": true,
+  "serviceTimeRetained": true,
+  "songCount": 3
+}

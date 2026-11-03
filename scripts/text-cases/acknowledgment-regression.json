@@ -1,0 +1,15 @@
+{
+  "name": "acknowledgment-regression",
+  "kind": "development-text-proof-of-concept",
+  "voiceCallCreated": false,
+  "cases": [{
+    "id": "acknowledgment-regression",
+    "intent": "song-loading",
+    "handling": "agent-target",
+    "openings": ["I'm on an iPad. Graves Into Gardens won't open, and I've pressed Try Again once already."],
+    "reviewOnly": {
+      "facts": "Novice caller. Error visible when asked: Audio Files Missing. One prior retry. A guided second attempt still fails; a guided third attempt opens the song. Don't supply the cause or volunteer the expected recovery procedure. Demo customer John Doe, ID 111 if asked. No other issue. Finish after the further-help check.",
+      "expected": "Review each actual reply before answering. The reasoner should get to its useful question or guidance without stacked or duplicate acknowledgment openings. Run the offline acknowledgment checker on the completed report. This text POC cannot establish GPT-Live speaker behavior. A manual dev voice replay of the same observations must independently have at most one acknowledgment across the speaker's holding line and substantive answer to each caller turn, let the caller finish, and speak the branded goodbye before disconnecting. This is a regression check separate from the ten curated conversations."
+    }
+  }]
+}

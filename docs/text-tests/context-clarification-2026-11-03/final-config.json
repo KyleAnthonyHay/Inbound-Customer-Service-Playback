@@ -1,0 +1,44 @@
+{
+  "kind": "frozen-context-clarification-final-candidate",
+  "voiceCallsAuthorized": false,
+  "caseCount": 19,
+  "openingVariantsPerCase": 1,
+  "ambiguityFamilies": [
+    "track",
+    "locked",
+    "account"
+  ],
+  "ambiguousBranches": 6,
+  "clearControls": 3,
+  "regularScenarios": 10,
+  "files": {
+    "src/lib/assistant.ts": "15388edce9b3ebc9ef72522cb15613a827159a0067a396dab66382489539a9d5",
+    "src/lib/vapiTools.ts": "5fa6472a7597fb5a85ef7528f9815147cd0a10ddcab5fbcef1d24a9582588406",
+    "scripts/lib/text-agent.ts": "5ecf7db31b758b530a5a3ff3f03b731bfae0203de670eef045f9b05efb1ab6ec",
+    "scripts/text-cases.ts": "21f30edad6c0f8960e3696227d7e3d3674e4f75303239941407584382a9498c1",
+    "convex/vapiTools.ts": "edf4f499123a8b1700f8bb086bff2b58224f324a7be318b157a53c673caf4926",
+    "src/lib/tools/kb.ts": "7f3e2839f9efb7cc18cbdb0ba105f3074788d5e6ba7071af4a0bcc7a5ed588ec",
+    "src/knowledge/playback-kb.json": "6ccaa6eb4f05425b4258eaa4357f33ed54819bc7a6ca68ba24e2fcf77ecc021f",
+    "convex/customers.ts": "28fd3a1993ad025422765915338210522d39301da25b3d59b0eeb0f103b32810",
+    "convex/lib/accountContext.ts": "8eddc40f641ef10ebb504716f445c60c621b9bc5ac0068abe4da7bb5034eb20e"
+  },
+  "fixtureHashes": {
+    "suite.json": "5900c063fdc5bbbd0792b037a0d90ca1b051d253b73df15474d02e6a5835a029",
+    "routing-suite.json": "c89eb7b7f77e659126ad06d83aeb409bef70d923f60560eeaa0f84875e64adaa",
+    "access-suite.json": "95ef105e62877af8f64a56caef716e5799ae195015a08d9a531915809c9203e8",
+    "integration-suite.json": "25da2f4b38bf08040d54eba28bd5c0b170d98cf42500cb024fac36019b3c5fc8"
+  },
+  "preflightCorrection": "Copied track-app selector readout corrected before routing inference: Guide is Output2, consistent with Buses and intended app-level assignment state.",
+  "changesSinceInitial": [
+    "Neutral context questions cannot embed an unconfirmed application/control",
+    "Support-line name/retrieved docs do not establish caller context",
+    "Explicit caller corrections replace earlier interpretation; respect actual scope",
+    "Corrected app-selector fixture before fresh retest; initial blocked run retained"
+  ],
+  "deployedDevelopment": true,
+  "changesSinceRetest": [
+    "Documentation explicitly reports product-evidence scope and establishesCallerContext=false",
+    "Search-tool description identifies this boundary before retrieval",
+    "Responsible-admin instructions are not by themselves an offer of assistance; preserve general human-review policy"
+  ]
+}

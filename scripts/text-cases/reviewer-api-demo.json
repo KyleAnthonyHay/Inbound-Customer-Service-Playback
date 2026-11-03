@@ -1,0 +1,45 @@
+{
+  "name": "reviewer-api-demo-script",
+  "kind": "development-text-proof-of-concept",
+  "voiceCallCreated": false,
+  "cases": [
+    {
+      "id": "reviewer-api-false-expired",
+      "intent": "version",
+      "handling": "agent-target",
+      "openings": [
+        "Playback on our iPad says our Cloud Pro expired, but we already paid for it."
+      ],
+      "reviewOnly": {
+        "facts": "Reviewer demo of the account personalization path (curated scenario 4). Caller is John Doe, Riverbend Community Church, Organization ID 480113. Paid on the MultiTracks website, not Apple. iPad Air 5, iPadOS 18, Playback 8.6.1. Warning says Cloud Pro expired.",
+        "expected": "lookup_demo_customer with orgId 480113 (and name John Doe) shows active Cloud Pro renewing 2027-03-14 without asking for an email; get_relevant_changes_since_version finds the 8.6.3 false-expired fix with live current 8.6.4; checks iPadOS before advising the update; after recovery, check_song_access for Way Maker returns not in Riverbend's library without offering to buy; branded goodbye on finish.",
+        "callerProfile": {
+          "goal": "Remove the false expired warning without paying again, then check whether Way Maker is in the church library.",
+          "knows": ["Using an iPad.", "Paid on the MultiTracks website.", "Name John Doe.", "Organization ID 480113."],
+          "canReadWithHelp": { "Playback About": "8.6.1", "iPad Settings > General > About": "iPadOS 18" },
+          "cannotVerify": ["Cannot diagnose a version defect."],
+          "scriptedOutcome": "Follow docs/reviewer-api-demo-script.md lines exactly: line 2 when asked for payment/account details, 3 when asked for version, 4 if asked for iPadOS, 5 only after the agent advises updating, 6 after the further-help question."
+        }
+      }
+    },
+    {
+      "id": "reviewer-api-really-expired",
+      "intent": "account-access",
+      "handling": "agent-target",
+      "openings": [
+        "Playback on our iPad says our Cloud Pro expired, but we already paid for it."
+      ],
+      "reviewOnly": {
+        "facts": "Contrast run: Priya Natarajan, Harbor Light Fellowship, Organization ID 517204. Cloud Pro genuinely expired 2026-09-02. Paid on the MultiTracks website. iPad, Playback 8.6.1, iPadOS 18 if asked.",
+        "expected": "lookup_demo_customer with orgId 517204 shows the plan genuinely expired on 2026-09-02; the agent says so plainly and does not recommend an app update as the fix; explains renewal or offers billing help within scope.",
+        "callerProfile": {
+          "goal": "Find out why Playback says Cloud Pro expired.",
+          "knows": ["Using an iPad.", "Paid on the MultiTracks website.", "Name Priya Natarajan.", "Organization ID 517204."],
+          "canReadWithHelp": { "Playback About": "8.6.1", "iPad Settings > General > About": "iPadOS 18" },
+          "cannotVerify": ["Does not know the renewal date."],
+          "scriptedOutcome": "Give name and Organization ID 517204 when asked for account details. Accept the agent's explanation. Decline a callback if offered ('No thanks, I'll renew it myself'). Finish with 'No, that's everything. Thanks!'"
+        }
+      }
+    }
+  ]
+}

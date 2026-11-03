@@ -1,0 +1,79 @@
+{
+  "id": "01a19fa4-74a4-7ffb-bdad-a887fb45b5a8",
+  "environment": "development",
+  "createdAt": "2026-11-03T04:21:57.540Z",
+  "status": "ended",
+  "endedReason": "customer-ended-call",
+  "dialogue": [
+    {
+      "role": "bot",
+      "text": "Hi there! Thank you for calling MultiTracks Playback support. I'm Penny, your virtual AI support assistant. How can I have the pleasure of helping you today?",
+      "seconds": 1
+    },
+    {
+      "role": "user",
+      "text": "I'm getting ready for rehearsal on our iPad, but Graves into Gardens won't open. I press try again once and it still stuck",
+      "seconds": 10.8
+    },
+    {
+      "role": "bot",
+      "text": "Thanks for sharing that. Let me check",
+      "seconds": 18
+    },
+    {
+      "role": "bot",
+      "text": "on it.",
+      "seconds": 19.4
+    },
+    {
+      "role": "bot",
+      "text": "That song is in your plan. Can you tap Try Again once more and tell me exactly what message you see if it still stays stuck?",
+      "seconds": 23.4
+    },
+    {
+      "role": "user",
+      "text": "It says audio files missing",
+      "seconds": 33.2
+    },
+    {
+      "role": "bot",
+      "text": "Okay, good to know. Let me take a look.",
+      "seconds": 35.8
+    },
+    {
+      "role": "bot",
+      "text": "Can you tap Try Again one more time? The third attempt runs a different recovery routine. Did Graves Into Gardens open after that?",
+      "seconds": 38
+    },
+    {
+      "role": "user",
+      "text": "Uh, the next try still didn't work but I pressed it again and it opened now. Thank you",
+      "seconds": 48.2
+    },
+    {
+      "role": "bot",
+      "text": "Thanks for letting me know.",
+      "seconds": 53.8
+    },
+    {
+      "role": "bot",
+      "text": "Glad it's opening now. Is there anything else I can help you with today?",
+      "seconds": 55.4
+    },
+    {
+      "role": "user",
+      "text": "No, that's it. Thank you",
+      "seconds": 61.2
+    },
+    {
+      "role": "bot",
+      "text": "Thank you.",
+      "seconds": 63
+    },
+    {
+      "role": "bot",
+      "text": "Thanks so much for calling MultiTracks Playback support. Have a great day, and goodbye! Just checking in, are you still there?",
+      "seconds": 65.8
+    }
+  ]
+}

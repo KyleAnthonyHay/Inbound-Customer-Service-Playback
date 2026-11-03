@@ -28,10 +28,81 @@ test("searchDocs returns documented song-loading steps with source URLs", () => 
   assert.ok(r.results[0].steps.length > 0);
 });
 
+test("download quick fixes retain their generic-error section instead of becoming universal recovery steps", () => {
+  const result = searchDocs("Audio Files Missing", { category: "song-loading" });
+  const article = result.results.find(a => a.id === "troubleshooting-playback-download-errors");
+  assert.ok(article);
+  const quick = article.steps.filter(s => /Quick fix/.test(s.text));
+  assert.equal(quick.length, 3);
+  for (const step of quick) assert.match(step.text, /^'Download Error' \(generic section/);
+  assert.match(result.note, /named error/);
+});
+
 test("searchDocs returns nothing for unrelated queries and says not to invent", () => {
   const r = searchDocs("lasagna recipe");
   assert.equal(r.found, 0);
   assert.match(r.note, /Do not invent/);
+});
+
+test("a matched product guide does not establish the caller's application or control context", () => {
+  const r = searchDocs("switch organization wrong account", { category: "setup" });
+  assert.ok(r.found > 0);
+  assert.equal(r.evidenceScope, "product-documentation");
+  assert.equal(r.establishesCallerContext, false);
+  assert.match(r.note, /does not establish caller context/);
+  assert.equal(searchDocs("unrelated lasagna recipe").establishesCallerContext, false);
+});
+
+test("category preferences retain stronger organization navigation evidence from the master guide", () => {
+  for (const category of ["setup", "song-loading"]) {
+    const r = searchDocs("Switch Organizations", { category });
+    assert.equal(r.results[0].id, "playback-user-guide");
+    assert.ok(r.results[0].steps.some(s => /Side menu.*Switch Organizations/.test(s.text)));
+  }
+  const reported = searchDocs("Playback check selected organization when organization Library is empty and purchased songs missing; Settings About organization", { category: "setup" });
+  assert.equal(reported.results[0].id, "playback-user-guide");
+});
+
+test("category preference only breaks lexical ties and cannot invent relevance", () => {
+  for (const query of ["lasagna recipe", ""]) {
+    assert.equal(searchDocs(query, { category: "audio-output" }).found, 0);
+  }
+  const preferred = searchDocs("Playback", { category: "audio-output", limit: 5 });
+  assert.equal(preferred.results[0].category, "audio-output");
+  // Soft categories must not weaken the independent platform restriction.
+  const mac = searchDocs("USB iPad interface powered hub", { category: "audio-output", platform: "macOS", limit: 5 });
+  assert.ok(mac.found > 0);
+  assert.ok(mac.results.every(a => !a.appliesTo.length || a.appliesTo.some(p => /macOS/i.test(p))));
+});
+
+test("routing retrieval withholds obsolete bus-creation steps for unknown/current versions", () => {
+  for (const installedVersion of [undefined, "7.6", "8.6.2", "unknown 7.5", "latest"]) {
+    const result = searchDocs("click guide separate buses outputs Aux tracks", { category: "audio-output", installedVersion });
+    assert.ok(result.results.some(a => a.id === "track-and-bus-routing-in-playback"));
+    assert.equal(result.results.some(a => a.id === "route-click-guide-to-separate-busses"), false);
+    const historical = result.withheldArticles.find(a => a.id === "route-click-guide-to-separate-busses");
+    assert.ok(historical); assert.equal("steps" in historical, false); assert.equal("summary" in historical, false);
+    assert.equal(JSON.stringify(result.results).includes("Free up a bus"), false);
+  }
+});
+
+test("a caller-confirmed older version can retrieve its applicable historical procedure", () => {
+  const result = searchDocs("click guide separate buses outputs Aux tracks", { category: "audio-output", installedVersion: "7.5.9" });
+  assert.ok(result.results.find(a => a.id === "route-click-guide-to-separate-busses")?.steps.some(s => s.text.includes("Free up a bus")));
+  assert.equal(result.withheldArticles.length, 0);
+});
+
+test("shared output symptom retrieves current routing guidance without requiring a routine version lookup", () => {
+  const result = searchDocs("Playback spoken guide and click get quieter together when guide volume is turned down; audio output routing buses", { category: "audio-output", platform: "macOS" });
+  assert.equal(result.results[0].id, "track-and-bus-routing-in-playback");
+  assert.match(result.results[0].summary, /Separate buses assigned to the same output/);
+});
+
+test("interface advice carries linked MultiOut feature requirements without making every two-feed goal Premium-only", () => {
+  const result = searchDocs("Focusrite 4i4 tested interface", { category: "audio-output" });
+  const article = result.results.find(a => a.id === "playback-supported-audio-interfaces");
+  assert.ok(article?.requirements?.some(r => /MultiOuts.*Premium/.test(r.text) && r.sourceUrl.includes("4439220")));
+  assert.ok(article?.requirements?.some(r => /not every basic two-feed Auto-Pan/.test(r.text)));
 });
 
 test("older version with Cloud Pro symptom surfaces the documented 8.6.3 fix", async () => {

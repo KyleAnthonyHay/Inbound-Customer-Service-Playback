@@ -1,0 +1,54 @@
+{
+  "src/lib/assistant.ts": {
+    "expected": "ba96bad8097bd3c47e0cfc2cfa17bb1d318f4b52fa24c19e23413e34c98c23a2",
+    "actual": "ba96bad8097bd3c47e0cfc2cfa17bb1d318f4b52fa24c19e23413e34c98c23a2"
+  },
+  "src/lib/vapiTools.ts": {
+    "expected": "5fa6472a7597fb5a85ef7528f9815147cd0a10ddcab5fbcef1d24a9582588406",
+    "actual": "5fa6472a7597fb5a85ef7528f9815147cd0a10ddcab5fbcef1d24a9582588406"
+  },
+  "scripts/lib/text-agent.ts": {
+    "expected": "5ecf7db31b758b530a5a3ff3f03b731bfae0203de670eef045f9b05efb1ab6ec",
+    "actual": "5ecf7db31b758b530a5a3ff3f03b731bfae0203de670eef045f9b05efb1ab6ec"
+  },
+  "scripts/text-cases.ts": {
+    "expected": "21f30edad6c0f8960e3696227d7e3d3674e4f75303239941407584382a9498c1",
+    "actual": "21f30edad6c0f8960e3696227d7e3d3674e4f75303239941407584382a9498c1"
+  },
+  "convex/vapiTools.ts": {
+    "expected": "edf4f499123a8b1700f8bb086bff2b58224f324a7be318b157a53c673caf4926",
+    "actual": "edf4f499123a8b1700f8bb086bff2b58224f324a7be318b157a53c673caf4926"
+  },
+  "src/lib/tools/kb.ts": {
+    "expected": "7f3e2839f9efb7cc18cbdb0ba105f3074788d5e6ba7071af4a0bcc7a5ed588ec",
+    "actual": "7f3e2839f9efb7cc18cbdb0ba105f3074788d5e6ba7071af4a0bcc7a5ed588ec"
+  },
+  "src/knowledge/playback-kb.json": {
+    "expected": "6ccaa6eb4f05425b4258eaa4357f33ed54819bc7a6ca68ba24e2fcf77ecc021f",
+    "actual": "6ccaa6eb4f05425b4258eaa4357f33ed54819bc7a6ca68ba24e2fcf77ecc021f"
+  },
+  "convex/customers.ts": {
+    "expected": "28fd3a1993ad025422765915338210522d39301da25b3d59b0eeb0f103b32810",
+    "actual": "28fd3a1993ad025422765915338210522d39301da25b3d59b0eeb0f103b32810"
+  },
+  "convex/lib/accountContext.ts": {
+    "expected": "8eddc40f641ef10ebb504716f445c60c621b9bc5ac0068abe4da7bb5034eb20e",
+    "actual": "8eddc40f641ef10ebb504716f445c60c621b9bc5ac0068abe4da7bb5034eb20e"
+  },
+  "docs/text-tests/context-clarification-2026-11-03/suite.json": {
+    "expected": "5900c063fdc5bbbd0792b037a0d90ca1b051d253b73df15474d02e6a5835a029",
+    "actual": "5900c063fdc5bbbd0792b037a0d90ca1b051d253b73df15474d02e6a5835a029"
+  },
+  "docs/text-tests/context-clarification-2026-11-03/routing-suite.json": {
+    "expected": "c89eb7b7f77e659126ad06d83aeb409bef70d923f60560eeaa0f84875e64adaa",
+    "actual": "c89eb7b7f77e659126ad06d83aeb409bef70d923f60560eeaa0f84875e64adaa"
+  },
+  "docs/text-tests/context-clarification-2026-11-03/access-suite.json": {
+    "expected": "95ef105e62877af8f64a56caef716e5799ae195015a08d9a531915809c9203e8",
+    "actual": "95ef105e62877af8f64a56caef716e5799ae195015a08d9a531915809c9203e8"
+  },
+  "docs/text-tests/context-clarification-2026-11-03/integration-suite.json": {
+    "expected": "25da2f4b38bf08040d54eba28bd5c0b170d98cf42500cb024fac36019b3c5fc8",
+    "actual": "25da2f4b38bf08040d54eba28bd5c0b170d98cf42500cb024fac36019b3c5fc8"
+  }
+}

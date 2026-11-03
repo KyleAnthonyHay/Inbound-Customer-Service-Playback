@@ -1,0 +1,25 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "scenario": "out-of-scope-refund",
+  "expectedIntent": "out-of-scope",
+  "failure": null,
+  "reportedTextCost": 0.0138,
+  "turns": [
+    {
+      "input": "I got charged twice this month and I want a refund.",
+      "chatId": "5c59c0ee-3f9d-45ed-be6e-1422690773c9",
+      "reply": "Refunds and duplicate charges are handled by our billing team. Would you like me to connect you with a billing specialist now?",
+      "tools": [],
+      "reportedCost": 0.0072
+    },
+    {
+      "input": "No, nothing else. Bye.",
+      "chatId": "f68a976a-3aee-4f62-9496-19b27c4e4763",
+      "reply": "Thanks so much for calling MultiTracks Playback support. Have a great day, and goodbye!",
+      "tools": [],
+      "reportedCost": 0.0066
+    }
+  ]
+}

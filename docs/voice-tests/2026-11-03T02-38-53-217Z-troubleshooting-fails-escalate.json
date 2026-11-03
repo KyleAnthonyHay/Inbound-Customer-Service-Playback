@@ -1,0 +1,111 @@
+{
+  "scenario": "troubleshooting-fails-escalate",
+  "expectedIntent": "audio-output",
+  "callId": "01a19f43-f739-7ffb-b805-5772e5e02d33",
+  "endedReason": "customer-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "search_playback_docs",
+    "delegate",
+    "delegate",
+    "delegate",
+    "delegate"
+  ],
+  "timing": {
+    "turns": [
+      {
+        "caller": "No sound from my USB interface in Playback; I'm on an iPad, version 8.6.4, and I have time",
+        "silenceS": 0.2,
+        "firstHeard": "Okay.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s",
+          "search_playback_docs@+0.4s"
+        ],
+        "summary": "\"No sound from my USB interface in Playba\" -> 0.2s silence, then answer: \"Okay.\" [delegate@+0.0s, search_playback_docs@+0.4s]"
+      },
+      {
+        "caller": "I checked the audio device setting. It's set to the interface. Still nothing",
+        "silenceS": 0.6,
+        "firstHeard": "Got it.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"I checked the audio device setting. It's\" -> 0.6s silence, then answer: \"Got it.\" [delegate@+0.0s]"
+      },
+      {
+        "caller": "Tried a different cable and a powered hub too. Still no sound",
+        "silenceS": 0.4,
+        "firstHeard": "Okay.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"Tried a different cable and a powered hu\" -> 0.4s silence, then answer: \"Okay.\" [delegate@+0.0s]"
+      },
+      {
+        "caller": "Yeah, okay, let's set up a callback. Tomorrow morning, Central time. Five five five, zero one zero, zero one four two. Name is Elena Cruz",
+        "silenceS": 1.2,
+        "firstHeard": "Okay.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"Yeah, okay, let's set up a callback. Tom\" -> 1.2s silence, then answer: \"Okay.\" [delegate@+0.0s]"
+      },
+      {
+        "caller": "Yes. Confirm it. Bye",
+        "silenceS": 0.6,
+        "firstHeard": "Got it.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": true,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"Yes. Confirm it. Bye\" -> 0.6s silence, then answer: \"Got it.\" [delegate@+0.0s] [REPEATED ACK]"
+      }
+    ],
+    "longestSilenceS": 1.2,
+    "longestGapAfterTransitionS": 0,
+    "repeatedAckTurns": 1
+  },
+  "convexToolEvents": [
+    "search_playback_docs succeeded 322ms 6 result(s)"
+  ],
+  "liveEvents": [
+    "28.6s TOOL-CALLS delegate({})",
+    "30.9s TOOL-CALLS search_playback_docs({\"query\":\"Playback on iPad has no sound through a connected USB audio interface; troubleshooting audio output selection and routing\",\"category\":\"audio-output\",\"platform\":\"iPadOS\"})",
+    "51.9s TOOL-CALLS delegate({})",
+    "71.3s TOOL-CALLS delegate({})",
+    "99.5s TOOL-CALLS delegate({})",
+    "117.7s TOOL-CALLS delegate({})"
+  ],
+  "transcript": [
+    "AGENT: Hi, thanks for calling MultiTracks Playback support. I'm an AI assistant. What can I help you with today?",
+    "CALLER: No sound from my USB interface in Playback; I'm on an iPad, version 8.6.4, and I have time",
+    "AGENT: Okay.",
+    "AGENT: What interface are you connecting to the iPad?",
+    "CALLER: I checked the audio device setting. It's set to the interface. Still nothing",
+    "AGENT: Got it.",
+    "AGENT: What make and model is the interface?",
+    "CALLER: Tried a different cable and a powered hub too. Still no sound",
+    "AGENT: Okay.",
+    "AGENT: What make and model is the interface?",
+    "CALLER: Yeah, okay, let's set up a callback. Tomorrow morning, Central time. Five five five, zero one zero, zero one four two. Name is Elena Cruz",
+    "AGENT: Okay.",
+    "AGENT: What time tomorrow morning would you prefer for the callback, Elena?",
+    "CALLER: Yes. Confirm it. Bye",
+    "AGENT: Got it.",
+    "AGENT: Okay, thanks for calling MultiTracks Support. Goodbye."
+  ]
+}

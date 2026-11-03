@@ -1,0 +1,41 @@
+{
+  "name": "single-reviewer-demo-script",
+  "kind": "development-text-proof-of-concept",
+  "voiceCallCreated": false,
+  "cases": [
+    {
+      "id": "reviewer-song-loading",
+      "intent": "song-loading",
+      "handling": "agent-target",
+      "openings": [
+        "I'm getting ready for rehearsal on our iPad, but Graves Into Gardens won't open. I've pressed Try Again once and it's still stuck."
+      ],
+      "reviewOnly": {
+        "facts": "One fixed fictional rehearsal scenario, separate from the ten curated situations. Caller is a novice using an iPad. Song: Graves Into Gardens. The screen says Audio Files Missing. Caller already pressed Try Again once before calling; it did not help. A second total retry still fails; the third total retry opens the song. Reveal the count only when asked about attempts or when reporting what happened after another attempt. Caller does not know a cause, a fix, or what a third retry does. If an account identifier is needed, name is John Doe, demo customer ID 111; the visible Organization ID is 480113 and organization is Riverbend Community Church. The ordinary default simulated account is active; do not manufacture an entitlement problem. App version is 8.6.4, readable only with guidance if needed. iPad Air 5, iPadOS 18 if relevant and guided. This is role-play: no actual Playback device or hardware is operated. Do not introduce a second symptom, deadline, human request or arbitrary yes/no variation.",
+        "expected": "Ground the error-specific recovery in retrieved official guidance, use the prior retry count, and guide only the remaining attempts without the caller suggesting a fix. Retrieve shared Planning Center demo context proactively if relevant, without representing it as this caller's real church or making it a prerequisite. Obtain simulated caller confirmation that the song opens and ask whether further help is needed. The caller then asks one predeclared follow-up: what other songs are on Sunday's demo plan? Answer from live returned metadata and reuse already-retrieved context instead of repeating a lookup. Let the caller finish and deliver the branded goodbye. Judge grounding, personalization, context reuse and completion separately. No handoff is required if supported recovery succeeds. Record any mismatch instead of changing caller facts to secure a pass. Text evidence does not prove speaker delivery or native disconnect.",
+        "callerProfile": {
+          "goal": "Get the one rehearsal song to open without understanding the cause, then check the other songs on Sunday's shared demo plan.",
+          "knows": [
+            "Using an iPad to get ready for rehearsal.",
+            "The song title is Graves Into Gardens.",
+            "Already pressed Try Again once before the call.",
+            "Fictional name John Doe and demo customer ID 111 if asked."
+          ],
+          "canReadWithHelp": {
+            "Song error message": "Audio Files Missing",
+            "Playback Settings > About > Organization ID": "480113",
+            "Selected organization": "Riverbend Community Church",
+            "Playback About": "8.6.4",
+            "iPad Settings > General > About": "iPad Air 5; iPadOS 18"
+          },
+          "cannotVerify": [
+            "Cannot diagnose a software defect, subscription problem or network problem.",
+            "Does not know why a retry might work.",
+            "Does not know app or OS versions from memory."
+          ],
+          "scriptedOutcome": "Keep a total retry count starting at one. Only when the agent actually guides another Try Again does the count advance. Total retry two still shows Audio Files Missing; total retry three opens the song. Do not report recovery after an unrelated action or introduce the documented third-retry behavior as a caller hint. After recovery and the further-help question, ask Yes, what other songs are on Sunday's demo plan? After an answer grounded in returned plan metadata, finish with That's everything I needed. Thank you! Do not demand a particular song list or invent a second technical issue."
+        }
+      }
+    }
+  ]
+}

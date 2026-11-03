@@ -1,0 +1,99 @@
+{
+  "scenario": "genuinely-expired-subscription",
+  "expectedIntent": "subscription",
+  "callId": "01a19f56-4b32-7777-9c26-ca4e782cd644",
+  "endedReason": "assistant-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "delegate",
+    "lookup_demo_customer",
+    "delegate",
+    "delegate",
+    "endCall"
+  ],
+  "timing": {
+    "turns": [
+      {
+        "caller": "Playback says my Cloud Pro expired and I can't download songs anymore",
+        "silenceS": 0.8,
+        "firstHeard": "Okay. Um. Let",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"Playback says my Cloud Pro expired and I\" -> 0.8s silence, then answer: \"Okay. Um. Let\" [delegate@+0.0s]"
+      },
+      {
+        "caller": "My email is Priya dot N at example dot org",
+        "silenceS": 0.2,
+        "firstHeard": "Thanks, that helps.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s",
+          "lookup_demo_customer@+0.8s"
+        ],
+        "summary": "\"My email is Priya dot N at example dot o\" -> 0.2s silence, then answer: \"Thanks, that helps.\" [delegate@+0.0s, lookup_demo_customer@+0.8s]"
+      },
+      {
+        "caller": "Okay, so I actually need to renew. Can you just do that for me",
+        "silenceS": 0.2,
+        "firstHeard": "No worries, happy to get you connected.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"Okay, so I actually need to renew. Can y\" -> 0.2s silence, then answer: \"No worries, happy to get you connected.\" [delegate@+0.0s]"
+      },
+      {
+        "caller": "Alright. I'll handle it with billing. Bye",
+        "silenceS": 0.2,
+        "firstHeard": "Okay.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s",
+          "endCall@+0.4s"
+        ],
+        "summary": "\"Alright. I'll handle it with billing. By\" -> 0.2s silence, then answer: \"Okay.\" [delegate@+0.0s, endCall@+0.4s]"
+      }
+    ],
+    "longestSilenceS": 0.8,
+    "longestGapAfterTransitionS": 0,
+    "repeatedAckTurns": 0
+  },
+  "convexToolEvents": [
+    "lookup_demo_customer succeeded 27ms expired"
+  ],
+  "liveEvents": [
+    "25.2s TOOL-CALLS delegate({})",
+    "46.4s TOOL-CALLS delegate({})",
+    "47.8s TOOL-CALLS lookup_demo_customer({\"email\":\"priya.n@example.org\"})",
+    "72.3s TOOL-CALLS delegate({})",
+    "92.9s TOOL-CALLS delegate({})",
+    "96.5s TOOL-CALLS endCall({})",
+    "97.2s STATUS ended assistant-ended-call",
+    "97.2s hangup"
+  ],
+  "transcript": [
+    "AGENT: Hi there! Thank you for calling MultiTracks Playback support. I'm Penny, your virtual AI support assistant. How can I have the pleasure of helping you today?",
+    "CALLER: Playback says my Cloud Pro expired and I can't download songs anymore",
+    "AGENT: Okay. Um. Let",
+    "AGENT: me check on that. What's the six-digit Organization ID you see in Playback under Settings, then About?",
+    "CALLER: My email is Priya dot N at example dot org",
+    "AGENT: Thanks, that helps.",
+    "AGENT: Um. Let me check that.",
+    "AGENT: That demo account's Cloud Pro ended on September 2nd, so the cloud songs won't download, though any purchased songs still can. If you'd like, I can connect you with a billing specialist now.",
+    "CALLER: Okay, so I actually need to renew. Can you just do that for me",
+    "AGENT: No worries, happy to get you connected.",
+    "AGENT: I can't renew it myself, but a billing specialist can help you with that right away. Would you like me to connect you now?",
+    "CALLER: Alright. I'll handle it with billing. Bye",
+    "AGENT: Okay."
+  ]
+}

@@ -7,6 +7,7 @@ import { buildAssistant } from "./assistant";
 import { toolMeta, type ToolSource } from "./tools/meta";
 import { playCue, primeCues, startRingback, stopRingback } from "./cues";
 import { parseHandoffResult } from "./handoff";
+import { createBrowserClosing } from "./browserClosing";
 
 export type CallStatus = "idle" | "connecting" | "active" | "ended" | "error";
 
@@ -105,6 +106,10 @@ export function errorText(e: unknown): string {
 export function friendlyCallError(raw: string): string {
   if (/keep capacity available for production/i.test(raw))
     return "Development calling is temporarily unavailable to keep capacity available for production. Please try again later.";
+  if (/couldn't verify call availability/i.test(raw))
+    return "We couldn't verify call availability. Please try again shortly.";
+  if (/couldn't start the development call/i.test(raw))
+    return "We couldn't start the development call. Please try again shortly.";
   if (/permission denied|notallowederror|not allowed/i.test(raw))
     return "Microphone access was denied. Allow the mic for this site, or open the page in Chrome; embedded browser panes block it.";
   if (/notfounderror|no microphone|device not found/i.test(raw)) return "No microphone was found. Connect one and try again.";
@@ -126,12 +131,9 @@ const nextId = () => `${Date.now()}-${idCounter++}`;
 /**
  * After a successful simulated handoff the transfer cue plays and the demo
  * call ends: the "transfer" is not real, so there is nothing to stay on the
- * line for. Native endCall should follow the goodbye; the delayed SDK stop
- * is a fallback if the model fails to end, leaving room for the farewell.
+ * line for. The server closing handler waits for the farewell and stopped
+ * speech; a client timer must not cut that sequence short.
  */
-// Leave room for the simulated-handoff announcement and branded goodbye.
-// Native endCall normally disconnects first; this also covers SDK-only calls.
-const HANDOFF_END_DELAY_MS = 15_000;
 
 export type Handoff = { team: string; at: number };
 
@@ -139,7 +141,6 @@ export function useVapiCall() {
   const vapiRef = useRef<Vapi | null>(null);
   const toolStartTimes = useRef<Map<string, number>>(new Map());
   const toolNames = useRef<Map<string, string>>(new Map());
-  const backstopRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const unmuteConsoleRef = useRef<(() => void) | null>(null);
   /** Vapi's status-update "ended" usually lands before Daily's left-meeting, so keep the reason for the "Call ended" row. */
   const endedReasonRef = useRef<string | null>(null);
@@ -153,10 +154,33 @@ export function useVapiCall() {
   const [callId, setCallId] = useState<string | null>(null);
   const [transcript, setTranscript] = useState<TranscriptLine[]>([]);
   const [events, setEvents] = useState<ActivityEvent[]>([]);
+  const closingRef = useRef<ReturnType<typeof createBrowserClosing> | null>(null);
 
   const pushEvent = useCallback((e: Omit<ActivityEvent, "id" | "at">) => {
     setEvents((prev) => [...prev, { ...e, id: nextId(), at: Date.now() }]);
   }, []);
+  const closingRequested = useCallback((requestedAt: number) => {
+    if (!closingRef.current?.serverRequested(requestedAt)) return;
+    setEvents(prev => prev.map(event => event.tool === "endCall" && event.status === "running"
+      ? { ...event, status: "succeeded", detail: "Server accepted closing; waiting for goodbye audio." } : event));
+    pushEvent({ kind: "call", label: "Closing confirmed by server", status: "running", detail: "Waiting for the goodbye and completed audio." });
+  }, [pushEvent]);
+  const makeClosingController = useCallback((stopCall: () => void) => createBrowserClosing({
+    schedule: (callback, ms) => setTimeout(callback, ms),
+    clear: timer => clearTimeout(timer as ReturnType<typeof setTimeout>),
+    onPhase: phase => {
+      if (phase === "idle") return;
+      setEvents(prev => prev.map(event => event.label === "Closing confirmed by server" && event.status === "running"
+        ? { ...event, detail: phase } : event));
+    },
+    stop: () => {
+      setEvents(prev => prev.map(event => event.label === "Closing confirmed by server"
+        ? { ...event, status: "succeeded", detail: "Goodbye and completed audio observed; SDK stop requested." }
+        : event.tool === "endCall" ? { ...event, status: "succeeded", detail: "Goodbye complete; SDK stop requested." } : event));
+      pushEvent({ kind: "call", label: "Goodbye complete; closing call", status: "succeeded" });
+      stopCall();
+    },
+  }), [pushEvent]);
   /** GPT-Live sends no result for its internal delegate step; close those rows when the agent moves on. */
   const settleThinking = useCallback(() => {
     setEvents((prev) =>
@@ -180,6 +204,7 @@ export function useVapiCall() {
           if (!m.transcript || !m.role || m.role === "system") return;
           const role = m.role;
           const final = m.transcriptType === "final";
+          closingRef.current?.transcript(role, m.transcript, final);
           if (role === "assistant" && final) settleThinking();
           setTranscript((prev) => {
             const last = prev[prev.length - 1];
@@ -234,19 +259,18 @@ export function useVapiCall() {
           if (!r?.toolCallId) return;
           const started = toolStartTimes.current.get(r.toolCallId);
           const name = r.name ?? toolNames.current.get(r.toolCallId);
+          if (name === "endCall" && !r.error) {
+            let result: unknown = r.result;
+            if (typeof result === "string") { try { result = JSON.parse(result); } catch { result = null; } }
+            if (result && typeof result === "object" && "ok" in result && result.ok === true && "closingPending" in result && result.closingPending === true)
+              closingRef.current?.arm();
+          }
           if (name === "initiate_handoff") {
             const parsed = parseHandoffResult(r.result);
             if (parsed?.ok) {
               setHandoff({ team: parsed.team, at: Date.now() });
               pushEvent({ kind: "transfer", label: "Transfer sound (browser)", status: "succeeded" });
-              if (backstopRef.current) clearTimeout(backstopRef.current);
-              void playCue("transfer").then(() => {
-                backstopRef.current = setTimeout(() => {
-                  backstopRef.current = null;
-                  pushEvent({ kind: "call", label: "Ending demo call after handoff", status: "succeeded" });
-                  vapiRef.current?.stop();
-                }, HANDOFF_END_DELAY_MS);
-              });
+              void playCue("transfer");
             }
           }
           setEvents((prev) =>
@@ -298,6 +322,8 @@ export function useVapiCall() {
         config.convexSiteUrl === "https://ceaseless-rhinoceros-106.convex.site"
           ? `${config.convexSiteUrl}/dev-call` : undefined);
       vapiRef.current = vapi;
+      closingRef.current?.reset();
+      closingRef.current = makeClosingController(() => vapi.stop());
 
       vapi.on("call-start", () => {
         stopRingback();
@@ -308,7 +334,7 @@ export function useVapiCall() {
         pushEvent({ kind: "call", label: "Connected", status: "succeeded" });
       });
       vapi.on("call-end", () => {
-        if (backstopRef.current) clearTimeout(backstopRef.current);
+        closingRef.current?.reset();
         // The SDK's cleanup runs right after call-end; give it a moment before restoring.
         const unmute = unmuteConsoleRef.current;
         unmuteConsoleRef.current = null;
@@ -319,9 +345,9 @@ export function useVapiCall() {
         setAssistantSpeaking(false);
         pushEvent({ kind: "call", label: "Call ended", detail: endedReasonRef.current ?? undefined });
       });
-      vapi.on("speech-start", () => setAssistantSpeaking(true));
-      vapi.on("speech-end", () => setAssistantSpeaking(false));
-      vapi.on("volume-level", (v: number) => setVolume(v));
+      vapi.on("speech-start", () => { closingRef.current?.speech(true); setAssistantSpeaking(true); });
+      vapi.on("speech-end", () => { closingRef.current?.speech(false); setAssistantSpeaking(false); });
+      vapi.on("volume-level", (v: number) => { closingRef.current?.audioLevel(v); setVolume(v); });
       vapi.on("message", handleMessage);
       vapi.on("error", (e: unknown) => {
         const raw = errorText(e);
@@ -358,9 +384,10 @@ export function useVapiCall() {
       settleRunning("failed");
       pushEvent({ kind: "error", label: "Start failed", detail: msg, status: "failed" });
     }
-  }, [handleMessage, pushEvent, settleRunning, settleThinking]);
+  }, [handleMessage, makeClosingController, pushEvent, settleRunning, settleThinking]);
 
   const stop = useCallback(() => {
+    closingRef.current?.reset();
     vapiRef.current?.stop();
     setStatus((s) => (s === "active" || s === "connecting" ? "ended" : s));
   }, []);
@@ -374,6 +401,12 @@ export function useVapiCall() {
     void playCue(next ? "mute" : "unmute");
   }, []);
 
+  const clearActivity = useCallback(() => {
+    if (status === "active" || status === "connecting") return;
+    setTranscript([]); setEvents([]); setCallId(null); setStartedAt(null);
+    setHandoff(null); setError(null); setStatus("idle");
+  }, [status]);
+
   // Ringback while connecting; stops on answer, hang-up, error, or unmount.
   useEffect(() => {
     if (status !== "connecting") return;
@@ -383,15 +416,33 @@ export function useVapiCall() {
 
   useEffect(() => {
     return () => {
-      if (backstopRef.current) clearTimeout(backstopRef.current);
       unmuteConsoleRef.current?.();
       unmuteConsoleRef.current = null;
+      closingRef.current?.reset();
       vapiRef.current?.stop();
     };
   }, []);
 
   /** Dev-only: feed a synthetic server message through the same handler. */
   const debugInject = useCallback((message: unknown) => handleMessage(message), [handleMessage]);
+  /** Uses the real message handler/controller, with an SDK stop stub and no voice session. */
+  const debugClosing = useCallback(() => {
+    if (process.env.NODE_ENV !== "development" || status === "active" || status === "connecting") return;
+    closingRef.current?.reset();
+    closingRef.current = makeClosingController(() => {
+      setStatus("ended"); setAssistantSpeaking(false);
+      pushEvent({ kind: "call", label: "Call ended", detail: "Synthetic SDK stop; no voice call created.", status: "succeeded" });
+    });
+    setStatus("active"); setStartedAt(Date.now()); setCallId(null); setTranscript([]); setEvents([]);
+    handleMessage({ type: "transcript", role: "user", transcriptType: "final", transcript: "No, that's everything. Thank you." });
+    handleMessage({ type: "tool-calls", toolCallList: [{ id: "synthetic-closing", function: { name: "endCall" } }] });
+    closingRef.current.speech(true); closingRef.current.audioLevel(0.4);
+    handleMessage({ type: "transcript", role: "assistant", transcriptType: "final", transcript: "Thanks so much for calling" });
+    handleMessage({ type: "transcript", role: "assistant", transcriptType: "final", transcript: "MultiTracks Playback support. Have a great day, and goodbye!" });
+    closingRef.current.speech(false);
+    // Deliberately no tool-calls-result; the backend signal arrives after the audio.
+    closingRequested(Date.now());
+  }, [status, makeClosingController, pushEvent, handleMessage, closingRequested]);
 
   return {
     status,
@@ -408,5 +459,8 @@ export function useVapiCall() {
     stop,
     toggleMute,
     debugInject,
+    debugClosing,
+    closingRequested,
+    clearActivity,
   };
 }

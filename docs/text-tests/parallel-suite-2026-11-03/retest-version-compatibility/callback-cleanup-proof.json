@@ -1,0 +1,9 @@
+{
+  "kind": "isolated-text-booking-cleanup",
+  "run": "06-borrowed-mixer-v1",
+  "bookingConfirmed": true,
+  "verifiedBookingIncludedInEndCallSpeak": true,
+  "postWriteConfirmationSpoken": true,
+  "isolatedBookingRemoved": 1,
+  "slotReopened": true
+}

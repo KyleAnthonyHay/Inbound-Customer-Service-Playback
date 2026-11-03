@@ -37,7 +37,8 @@ async function runPhase(dir: string, replies: Reply[]) {
         if (run.turns.length >= 12) throw Error("Twelve-turn limit reached.");
         try {
           const previousChatId = run.turns.at(-1)?.chatId;
-          const turn = await sendTextTurn(item.input, { env: process.env, testId: run.testId, previousChatId });
+          const turn = await sendTextTurn(item.input, { env: process.env, testId: run.testId, previousChatId,
+            recentAssistantMessages: run.turns.slice(-2).map(turn => turn.reply) });
           run.turns.push({ input: item.input, ...turn });
           run.reportedTextCost += turn.reportedCost ?? 0;
         } catch (error) {

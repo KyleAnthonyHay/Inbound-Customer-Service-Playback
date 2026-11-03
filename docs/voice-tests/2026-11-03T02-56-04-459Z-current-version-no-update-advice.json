@@ -1,0 +1,90 @@
+{
+  "scenario": "current-version-no-update-advice",
+  "expectedIntent": "subscription",
+  "callId": "01a19f54-75ec-7552-9f63-ec68099e8c81",
+  "endedReason": "assistant-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "lookup_demo_customer",
+    "search_playback_docs",
+    "delegate",
+    "lookup_demo_customer",
+    "delegate",
+    "endCall"
+  ],
+  "timing": {
+    "turns": [
+      {
+        "caller": "I keep getting a Cloud Pro expired message, but my subscription is active",
+        "silenceS": 0.4,
+        "firstHeard": "Okay.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": true,
+        "tools": [
+          "delegate@+-0.0s",
+          "lookup_demo_customer@+0.6s",
+          "search_playback_docs@+2.2s"
+        ],
+        "summary": "\"I keep getting a Cloud Pro expired messa\" -> 0.4s silence, then answer: \"Okay.\" [delegate@+-0.0s, lookup_demo_customer@+0.6s, search_playback_docs@+2.2s] [REPEATED ACK]"
+      },
+      {
+        "caller": "I'm on Playback eight, six, four on my iPad, the latest one. My customer ID is demo one thousand one",
+        "silenceS": 0.4,
+        "firstHeard": "Gotcha.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+-0.0s",
+          "lookup_demo_customer@+0.8s"
+        ],
+        "summary": "\"I'm on Playback eight, six, four on my i\" -> 0.4s silence, then answer: \"Gotcha.\" [delegate@+-0.0s, lookup_demo_customer@+0.8s]"
+      },
+      {
+        "caller": "Okay, I'll try that. Thanks. Bye",
+        "silenceS": 0.4,
+        "firstHeard": "Okay.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s",
+          "endCall@+0.6s"
+        ],
+        "summary": "\"Okay, I'll try that. Thanks. Bye\" -> 0.4s silence, then answer: \"Okay.\" [delegate@+0.0s, endCall@+0.6s]"
+      }
+    ],
+    "longestSilenceS": 0.4,
+    "longestGapAfterTransitionS": 0,
+    "repeatedAckTurns": 1
+  },
+  "convexToolEvents": [
+    "lookup_demo_customer failed 31ms not-found",
+    "search_playback_docs succeeded 420ms 6 result(s)",
+    "lookup_demo_customer failed 28ms not-found"
+  ],
+  "liveEvents": [
+    "25.7s TOOL-CALLS delegate({})",
+    "26.8s TOOL-CALLS lookup_demo_customer({\"name\":\"caller\"})",
+    "29.3s TOOL-CALLS search_playback_docs({\"query\":\"Playback shows Cloud Pro expired even though subscription is active; how to verify subscription or resolve expiration message\",\"category\":\"subscription\"})",
+    "55.0s TOOL-CALLS delegate({})",
+    "57.4s TOOL-CALLS lookup_demo_customer({\"customerId\":\"1001\"})",
+    "81.8s TOOL-CALLS delegate({})",
+    "84.1s TOOL-CALLS endCall({})",
+    "84.8s STATUS ended assistant-ended-call",
+    "84.8s hangup"
+  ],
+  "transcript": [
+    "AGENT: Hi there! Thank you for calling MultiTracks Playback support. I'm Penny, your virtual AI support assistant. How can I have the pleasure of helping you today?",
+    "CALLER: I keep getting a Cloud Pro expired message, but my subscription is active",
+    "AGENT: Okay.",
+    "AGENT: Let me check that.",
+    "AGENT: Okay, that message can mean Playback hasn't reconnected to your in-app subscription yet. What device are you running Playback on?",
+    "CALLER: I'm on Playback eight, six, four on my iPad, the latest one. My customer ID is demo one thousand one",
+    "AGENT: Gotcha.",
+    "AGENT: I couldn't find an account with that customer ID. In playback, open Settings then About. Tap Restore Purchases and tell me if that clears the expired message.",
+    "CALLER: Okay, I'll try that. Thanks. Bye",
+    "AGENT: Okay."
+  ]
+}

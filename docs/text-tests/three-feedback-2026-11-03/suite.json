@@ -1,0 +1,107 @@
+{
+  "name": "three-feedback-regression",
+  "kind": "development-text-proof-of-concept",
+  "voiceCallCreated": false,
+  "cases": [
+    {
+      "id": "04-false-expired",
+      "intent": "version",
+      "handling": "agent",
+      "openings": [
+        "We've already paid for Cloud Pro, but Playback on our iPad says it's expired.",
+        "We paid for this. Why's it asking me to pay again?"
+      ],
+      "reviewOnly": {
+        "facts": "Caller reports installed version 8.6.1 when asked; this overrides the synthetic record's last-known 8.6.2 note. Active status is verified through the demo lookup. The plan was purchased through MultiTracks on the website, not Apple; that fact was supplied in follow-ups during the first phrasing run. Version 8.6.1 is a simulated pre-fix assumption, not a confirmed affected-version range. Device: iPad Air 5; iPadOS 18; org 480113. Restore Purchases already failed if asked to try it.",
+        "expected": "Check simulated account status and installed version; retrieve documented false-expiration fix introduced in 8.6.3, consider live current-version metadata/coverage gaps, recommend a safe targeted update and obtain simulated caller confirmation. Do not renew or charge the customer. Regression focus: after organization-only lookup succeeds, do not ask for email/name merely to reconfirm organization-level subscription; do not infer member rights. Keep the ordinary update prerequisites.",
+        "callerProfile": {
+          "goal": "Understand and remove the paid-account warning without buying again.",
+          "knows": [
+            "Using an iPad.",
+            "Name John Doe.",
+            "Purchased through the MultiTracks website, not Apple.",
+            "Already tried Restore Purchases with no change."
+          ],
+          "canReadWithHelp": {
+            "Exact warning": "Cloud Pro expired",
+            "Settings > About > Organization ID": "480113",
+            "Selected organization": "Riverbend Community Church",
+            "Playback About": "8.6.1",
+            "iPad Settings > General > About": "iPad Air 5; iPadOS 18"
+          },
+          "cannotVerify": [
+            "Does not know the installed app or OS version from memory.",
+            "Cannot independently establish billing status or diagnose a version defect."
+          ],
+          "scriptedOutcome": "Unchanged after Restore Purchases. Only after an applicable, prerequisite-checked update attempt report that the original warning disappeared; do not suggest updating to the agent."
+        }
+      }
+    },
+    {
+      "id": "06-borrowed-mixer",
+      "intent": "compatibility",
+      "handling": "human-review",
+      "openings": [
+        "We've borrowed a mixer with a USB socket. Can we plug our iPad straight into it for Playback and keep click and guide out of the audience's music?",
+        "This borrowed sound desk has a USB hole. Can we use that with our iPad?"
+      ],
+      "reviewOnly": {
+        "facts": "Borrowed mixer model is Mackie ProFX12v3, revealed when asked. Caller does not know USB class compliance or the supported iPad connection requirements for this model. This model is not in the bounded tested-interface list. That absence is not proof of incompatibility. The model name is a real hardware example; the scenario is simulated and its end-to-end compatibility has not been verified. For callback role-play only: name Jamie Demo, demo phone +1 202 555 0146, zone Eastern, preferred tomorrow at 2 PM. Give details only when asked. If requested time unavailable, choose a returned available alternative. Confirm booking only after full date/time, zone and number readback. For the second opening, prefer one half-hour later to isolate concurrent fixture bookings. Fixed role-play connection state: this is capability advice before using/connecting this configuration, not a current no-audio fault. Do not volunteer a repair problem or a request for setup.",
+        "expected": "Ask for relevant model details, search available resources, distinguish general USB guidance from verification of this exact connection, acknowledge any remaining evidence gap and offer specialist review. Do not declare the mixer incompatible merely because it is unlisted. Regression focus: compatibility and routing are separate valid underlying intents, not a borrowed-equipment category. Collect availability/time zone together, then missing name/number together; preserve complete readback and explicit consent.",
+        "callerProfile": {
+          "goal": "Find out whether the borrowed mixer connection can be verified, with specialist help if needed.",
+          "knows": [
+            "Using an iPad.",
+            "Borrowed desk has a USB socket.",
+            "Wants band cues kept out of the room music."
+          ],
+          "canReadWithHelp": {
+            "Mixer label": "Mackie ProFX12v3",
+            "iPad connector": "USB-C"
+          },
+          "cannotVerify": [
+            "Cannot determine USB class compliance, driver support, internal routing, or exact iPad connection support.",
+            "Borrowed equipment owner is unavailable.",
+            "After a plain explanation the remaining equipment investigation is beyond this caller."
+          ],
+          "scriptedOutcome": "Do not invent compatibility. Accept an offered specialist review. If nobody is available, explore a callback; booking still needs explicit consent. No caller prompt supplies the expected handoff before the agent offers it."
+        }
+      }
+    },
+    {
+      "id": "10-loading-unresolved",
+      "intent": "song-loading",
+      "handling": "human-review",
+      "openings": [
+        "Graves Into Gardens won't open on our iPad. I've pressed Try Again three times, and it still hasn't worked.",
+        "My song still won't open. I've tried again a few times."
+      ],
+      "reviewOnly": {
+        "facts": "Three retries have failed. The caller declines content deletion/clearing/re-download changes before service. Other content is ready and must stay intact. No safe applicable documented recovery remains in this fixture; root cause is not asserted. If an account check is relevant: John Doe, 111, organization 480113; the song is a synthetic purchase. Reveal the exact error and retry count only when asked; do not assume the agent knows either from the opening. Device is iPad; Playback 8.6.4; exact error Audio Files Missing. For callback role-play only: name John Doe, demo phone +1 202 555 0150, zone Eastern, preferred tomorrow at 2:30 PM. Give details only when asked. If requested time unavailable, choose a returned available alternative. Confirm booking only after full date/time, zone and number readback. For the second opening, prefer one half-hour later to isolate concurrent fixture bookings.",
+        "expected": "Respect prior failed steps and timing, consult documentation, acknowledge inability to resolve with suitable supported steps, offer specialist review and follow availability/handoff/callback after acceptance. Regression focus: group missing callback details; after a partial answer, ask only its missing part. Do not ask again for retained availability/contact information. Readback approval still precedes reserve_callback.",
+        "callerProfile": {
+          "goal": "Get help for the song that still fails without risking ready downloads.",
+          "knows": [
+            "Using an iPad.",
+            "Song is Graves Into Gardens.",
+            "Has pressed the retry button three times; all failed.",
+            "If destructive recovery comes up, explain that service is starting and ready downloads cannot be removed.",
+            "Name John Doe if needed."
+          ],
+          "canReadWithHelp": {
+            "Error dialog": "Audio Files Missing",
+            "Playback About": "8.6.4",
+            "Organization ID": "480113",
+            "iPad Settings > General > About": "iPadOS 18"
+          },
+          "cannotVerify": [
+            "Cannot identify the root cause.",
+            "Cannot accept deleting/clearing ready songs before service.",
+            "No supported safe recovery in this fixture has succeeded."
+          ],
+          "scriptedOutcome": "Do not report recovery from an unrelated step. Accept an offered specialist once no suitable supported step remains; give callback preferences only if needed."
+        }
+      }
+    }
+  ]
+}

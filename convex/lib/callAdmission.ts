@@ -1,9 +1,12 @@
 import type { MutationCtx } from "../_generated/server";
+import { MAX_CALL_DURATION_SECONDS } from "../../src/lib/callLimits";
 
 export const DEV_SITE = "https://ceaseless-rhinoceros-106.convex.site";
 export const ADMISSION_MESSAGE = "Development calling is temporarily unavailable to keep capacity available for production. Please try again later.";
-// Longer than the enforced 10-minute call duration plus provider setup/join time.
-export const RESERVATION_MS = 20 * 60_000;
+export const AVAILABILITY_MESSAGE = "We couldn't verify call availability. Please try again shortly.";
+export const CALL_START_MESSAGE = "We couldn't start the development call. Please try again shortly.";
+// Longer than the enforced maximum call duration plus provider setup/join time.
+export const RESERVATION_MS = (MAX_CALL_DURATION_SECONDS + 10 * 60) * 1000;
 const scope = "development";
 
 /** Convex executes the indexed read and write in one serializable transaction. */
@@ -38,11 +41,12 @@ type AdmissionDeps = {
 
 /** Never forwards caller-supplied assistants, overrides, destinations or credentials. */
 export async function startDevCall(transport: "browser" | "websocket", deps: AdmissionDeps): Promise<{ status: number; body: Record<string, unknown> }> {
-  const blocked = (status = 429) => ({ status, body: { message: ADMISSION_MESSAGE } });
+  const blocked = (status = 429, message = ADMISSION_MESSAGE) => ({ status, body: { message } });
   const env = deps.env;
   const reserved = Number(env.DEV_CALL_RESERVED_PRODUCTION_SLOTS ?? "1");
   if (env.CONVEX_SITE_URL !== DEV_SITE || !env.VAPI_PRIVATE_KEY || !env.DEV_VAPI_ASSISTANT_ID ||
-    !Number.isSafeInteger(reserved) || reserved < 1) return blocked(503);
+    (transport === "browser" && !env.VAPI_PUBLIC_KEY) ||
+    !Number.isSafeInteger(reserved) || reserved < 1) return blocked(503, AVAILABILITY_MESSAGE);
 
   const token = crypto.randomUUID();
   if (!await deps.reserve(token)) return blocked();
@@ -79,32 +83,39 @@ export async function startDevCall(transport: "browser" | "websocket", deps: Adm
       return blocked();
     }
     creationAttempted = true;
-    const response = await fetcher("https://api.vapi.ai/call", {
-      method: "POST", headers, redirect: "error", signal: AbortSignal.timeout(15000),
+    // Match the Web SDK's browser endpoint, DTO and public-key scope. The
+    // private create-call endpoint remains for the websocket harness only.
+    const response = await fetcher(transport === "browser" ? "https://api.vapi.ai/call/web" : "https://api.vapi.ai/call", {
+      method: "POST",
+      headers: transport === "browser" ? { ...headers, Authorization: `Bearer ${env.VAPI_PUBLIC_KEY}` } : headers,
+      redirect: "error", signal: AbortSignal.timeout(15000),
       body: JSON.stringify({
         assistantId: env.DEV_VAPI_ASSISTANT_ID,
-        assistantOverrides: { maxDurationSeconds: 600 },
-        transport: transport === "browser" ? { provider: "daily", roomDeleteOnUserLeaveEnabled: true } : {
-          provider: "vapi.websocket", audioFormat: { format: "pcm_s16le", container: "raw", sampleRate: 24000 },
-        },
+        assistantOverrides: { maxDurationSeconds: MAX_CALL_DURATION_SECONDS },
+        ...(transport === "browser" ? { roomDeleteOnUserLeaveEnabled: true } : {
+          transport: { provider: "vapi.websocket", audioFormat: { format: "pcm_s16le", container: "raw", sampleRate: 24000 } },
+        }),
       }),
     });
     if (!response.ok) {
       // 5xx/timeouts may have created a call. Keep the reservation; never retry.
       if (response.status >= 400 && response.status < 500) await deps.update({ token, release: true });
-      return blocked(503);
+      // No provider response body: it can echo private assistant configuration.
+      console.warn("Development call creation rejected", { transport, status: response.status });
+      return blocked(503, CALL_START_MESSAGE);
     }
     const call = await response.json();
     if (typeof call.id !== "string") throw Error("Missing call ID");
     await deps.update({ token, callId: call.id, release: false });
     const url = transport === "browser" ? call.transport?.callUrl ?? call.webCallUrl : call.transport?.websocketCallUrl;
-    if (typeof url !== "string") return blocked(503);
+    if (typeof url !== "string") throw Error("Missing call connection URL");
     // Explicit allowlist: Vapi's full response can echo webhook credentials.
     return { status: 201, body: transport === "browser" ? { id: call.id, webCallUrl: url } : {
       id: call.id, transport: { websocketCallUrl: url },
     } };
   } catch {
     if (!creationAttempted) await deps.update({ token, release: true });
-    return blocked(503);
+    console.warn("Development call unavailable", { transport, stage: creationAttempted ? "creation" : "availability" });
+    return blocked(503, creationAttempted ? CALL_START_MESSAGE : AVAILABILITY_MESSAGE);
   }
 }

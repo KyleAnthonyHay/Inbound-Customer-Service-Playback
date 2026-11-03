@@ -1,4 +1,4 @@
-import { mutation, query } from "./_generated/server";
+import { mutation, query, internalMutation, internalQuery } from "./_generated/server";
 import { v } from "convex/values";
 
 import { formatHour, formatLocal, localToUtcMs, normalizeTime, normalizeTimeZone, partsIn, resolveDate, WEEKEND, weekdayIn } from "./time";
@@ -192,4 +192,34 @@ export const reserve = mutation({
 export const list = query({
   args: {},
   handler: async (ctx) => ctx.db.query("callbacks").order("desc").take(50),
+});
+
+/** Verified closing wording comes from the completed write, never a proposed slot. */
+export const confirmationForCall = internalQuery({
+  args: { callId: v.string() }, returns: v.union(v.null(), v.object({ bookingId: v.id("callbacks"), local: v.string() })),
+  handler: async (ctx, { callId }) => {
+    const rows = await ctx.db.query("callbacks").withIndex("by_callId", q => q.eq("callId", callId)).take(20);
+    const booking = rows.find(row => row.status === "confirmed");
+    if (!booking) return null;
+    const slot = await ctx.db.get(booking.slotId);
+    return slot ? { bookingId: booking._id, local: formatLocal(slot.startAt, normalizeTimeZone(booking.timeZone) ?? "America/Chicago") } : null;
+  },
+});
+
+/** Admin-only teardown of this project's isolated text-harness bookings; never voice calls. */
+export const cleanupTextTest = internalMutation({
+  args: { callId: v.string() }, returns: v.number(),
+  handler: async (ctx, { callId }) => {
+    if (process.env.CONVEX_SITE_URL !== "https://ceaseless-rhinoceros-106.convex.site" || !/^text-poc-[0-9a-f]{8}-[0-9a-f-]{27}$/i.test(callId)) throw Error("Isolated development text tests only");
+    const bookings = await ctx.db.query("callbacks").withIndex("by_callId", q => q.eq("callId", callId)).take(2);
+    if (bookings.length > 1) throw Error("Unexpected duplicate test bookings");
+    for (const booking of bookings) {
+      const peers = await ctx.db.query("callbacks").withIndex("by_slot", q => q.eq("slotId", booking.slotId)).take(100);
+      if (peers.length === 100) throw Error("Slot requires manual review");
+      const slot = await ctx.db.get(booking.slotId);
+      await ctx.db.delete(booking._id);
+      if (slot && !peers.some(peer => peer._id !== booking._id && peer.status === "confirmed")) await ctx.db.patch(slot._id, { reserved: false });
+    }
+    return bookings.length;
+  },
 });

@@ -1,0 +1,98 @@
+{
+  "scenario": "handoff-offer-yes",
+  "expectedIntent": "audio-output",
+  "callId": "01a19f5a-d7c3-7bb0-9694-6fc94841a39b",
+  "endedReason": "customer-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "search_playback_docs",
+    "delegate",
+    "delegate",
+    "check_team_availability",
+    "delegate"
+  ],
+  "timing": {
+    "turns": [
+      {
+        "caller": "We're on an iPad with a Focusrite interface . The band wants the click and guide in their in-ears and only the music out front . But the click and guide are coming through the main mixer and nothing is in the in-ears",
+        "silenceS": 0.2,
+        "firstHeard": "Okay.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s",
+          "search_playback_docs@+0.4s"
+        ],
+        "summary": "\"We're on an iPad with a Focusrite interf\" -> 0.2s silence, then answer: \"Okay.\" [delegate@+0.0s, search_playback_docs@+0.4s]"
+      },
+      {
+        "caller": "Yes. In Playback the Click & Guide are already on their own output , separate from the music . The mixer still gets everything and the in-ears get nothing",
+        "silenceS": 0.2,
+        "firstHeard": "All right.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"Yes. In Playback the Click & Guide are a\" -> 0.2s silence, then answer: \"All right.\" [delegate@+0.0s]"
+      },
+      {
+        "caller": "Yes please. Get me a Playback team member",
+        "silenceS": 0.4,
+        "firstHeard": "Let me check who's available.",
+        "transition": true,
+        "gapAfterTransitionS": 2.4,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s",
+          "check_team_availability@+1.2s"
+        ],
+        "summary": "\"Yes please. Get me a Playback team membe\" -> 0.4s silence, then transition: \"Let me check who's available.\" -> 2.4s gap -> \"I'm sorry, no one is available right now\" [delegate@+0.0s, check_team_availability@+1.2s]"
+      },
+      {
+        "caller": "Okay . Thank you",
+        "silenceS": 0.4,
+        "firstHeard": "You bet.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"Okay . Thank you\" -> 0.4s silence, then answer: \"You bet.\" [delegate@+0.0s]"
+      }
+    ],
+    "longestSilenceS": 0.4,
+    "longestGapAfterTransitionS": 2.4,
+    "repeatedAckTurns": 0
+  },
+  "convexToolEvents": [
+    "search_playback_docs succeeded 387ms 6 result(s)",
+    "check_team_availability succeeded 24ms Playback Technical Support: unavailable"
+  ],
+  "liveEvents": [
+    "32.3s TOOL-CALLS delegate({})",
+    "34.8s TOOL-CALLS search_playback_docs({\"query\":\"iPad Playback Focusrite interface route click and guide to in-ear monitors while music goes to main mixer; Buses audio output routing\",\"category\":\"audio-output\",\"platform\":\"iPadOS\"})",
+    "61.4s TOOL-CALLS delegate({})",
+    "82.6s TOOL-CALLS delegate({})",
+    "83.9s TOOL-CALLS check_team_availability({\"teamId\":\"playback-support\"})",
+    "102.3s TOOL-CALLS delegate({})"
+  ],
+  "transcript": [
+    "AGENT: Hi there! Thank you for calling MultiTracks Playback support. I'm Penny, your virtual AI support assistant. How can I have the pleasure of helping you today?",
+    "CALLER: We're on an iPad with a Focusrite interface . The band wants the click and guide in their in-ears and only the music out front . But the click and guide are coming through the main mixer and nothing is in the in-ears",
+    "AGENT: Okay.",
+    "AGENT: In the Playback app, open Settings and the Buses tab. Tell me what outputs the Click & Guide bus and the music buses are currently set to.",
+    "CALLER: Yes. In Playback the Click & Guide are already on their own output , separate from the music . The mixer still gets everything and the in-ears get nothing",
+    "AGENT: All right.",
+    "AGENT: It sounds like the app is set, but the signal is not reaching the right outputs. Would you like me to connect you with a Playback specialist now?",
+    "CALLER: Yes please. Get me a Playback team member",
+    "AGENT: Let me check who's available.",
+    "AGENT: I'm sorry, no one is available right now, but I can schedule a callback with Playback support, when are you next available?",
+    "CALLER: Okay . Thank you",
+    "AGENT: You bet.",
+    "AGENT: Is there anything else I can help you with today?"
+  ]
+}

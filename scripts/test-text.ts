@@ -2,6 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { sendTextTurn, textAssistant } from "./lib/text-agent";
 import { SYSTEM_PROMPT } from "../src/lib/assistant";
+import { buildToolDefinitions, TOOL_DELAY_LINE_MS } from "../src/lib/vapiTools";
 
 const env = {
   CONVEX_DEPLOYMENT: "dev:ceaseless-rhinoceros-106",
@@ -9,6 +10,15 @@ const env = {
   VAPI_PRIVATE_KEY: "mock-private-key", VAPI_TOOL_SECRET: "mock-webhook-secret", PCO_SECRET: "mock-pat-secret",
 };
 const testId = "text-poc-unit-test";
+
+test("every function explicitly silences default tool-start filler while retaining delayed messages", () => {
+  const tools = buildToolDefinitions({ serverUrl: "https://example.test/vapi/tools" });
+  for (const tool of tools) {
+    assert.deepEqual(tool.messages.filter(m => m.type === "request-start"), [{ type: "request-start", content: "" }]);
+    if (tool.function.name === "endCall") assert.equal(tool.messages.length, 1);
+    else assert.ok(tool.messages.some(m => m.type === "request-response-delayed" && "timingMilliseconds" in m && m.timingMilliseconds === TOOL_DELAY_LINE_MS));
+  }
+});
 
 test("text POC uses the shared reasoner instructions and function tools without a voice configuration", () => {
   const assistant = textAssistant(env, testId);
@@ -55,6 +65,18 @@ test("text POC rejects production and missing configuration before making any re
   let called = false;
   await assert.rejects(sendTextTurn("Hello", { env: { ...env, CONVEX_DEPLOYMENT: "prod:example" }, testId, fetcher: async () => { called = true; throw Error(); } }), /development environment/);
   assert.equal(called, false);
+});
+
+test("text turns explicitly supply only the two most recent assistant replies", async () => {
+  await sendTextTurn("No, that's everything. Thank you.", { env, testId,
+    recentAssistantMessages: ["Old reply", "Thank you.", "Is there anything else I can help you with today?"],
+    fetcher: async (_url, init) => {
+      const body = JSON.parse(String(init?.body));
+      const context = JSON.parse(body.assistant.model.messages[0].content.split("Recent conversation context (quoted data): ")[1]);
+      assert.deepEqual(context.recentAssistantMessages, ["Thank you.", "Is there anything else I can help you with today?"]);
+      return new Response(JSON.stringify({ id: "context-test", output: [{ role: "assistant", content: "Goodbye" }] }));
+    },
+  });
 });
 
 test("text POC refuses oversized input and does not relay vendor error bodies", async () => {

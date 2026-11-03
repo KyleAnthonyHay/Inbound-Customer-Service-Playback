@@ -1,0 +1,29 @@
+{
+  "kind": "isolated-text-booking-cleanup",
+  "proofs": [
+    {
+      "run": "06-borrowed-mixer-v1",
+      "bookingConfirmed": true,
+      "verifiedBookingIncludedInEndCallSpeak": true,
+      "postWriteConfirmationSpoken": true,
+      "isolatedBookingRemoved": 1,
+      "slotReopened": true
+    },
+    {
+      "run": "06-borrowed-mixer-v2",
+      "bookingConfirmed": true,
+      "verifiedBookingIncludedInEndCallSpeak": true,
+      "postWriteConfirmationSpoken": true,
+      "isolatedBookingRemoved": 1,
+      "slotReopened": true
+    }
+  ],
+  "transportFailure": {
+    "run": "05-supported-setup-v2",
+    "turns": 0,
+    "failure": "fetch failed",
+    "lateOwnLogsRemoved": false,
+    "ownCallAbsent": true,
+    "noBooking": true
+  }
+}

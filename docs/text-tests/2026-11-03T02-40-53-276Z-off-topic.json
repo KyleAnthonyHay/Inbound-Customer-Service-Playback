@@ -1,0 +1,32 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "scenario": "off-topic",
+  "expectedIntent": "off-topic",
+  "failure": null,
+  "reportedTextCost": 0.020200000000000003,
+  "turns": [
+    {
+      "input": "Hey, can you give me a good recipe for lasagna?",
+      "chatId": "4a08071b-155f-470c-9362-72b2d615a327",
+      "reply": "I’m here for MultiTracks Playback help with song-loading or audio-output problems. What’s happening in Playback today?",
+      "tools": [],
+      "reportedCost": 0.0066
+    },
+    {
+      "input": "Ha, okay fine. Actually my song won't download. iPad, 8.6.4, and I have time.",
+      "chatId": "dc0c6116-b6d9-4628-8563-7e779e99a7ca",
+      "reply": "What happens on the iPad when you try to download the song—what do you see on screen?",
+      "tools": [],
+      "reportedCost": 0.007
+    },
+    {
+      "input": "Alright I'll try that, thanks, bye.",
+      "chatId": "c93dca6e-03e0-4033-80fe-de0d359d8545",
+      "reply": "Thanks so much for calling MultiTracks Playback support. Have a great day, and goodbye!",
+      "tools": [],
+      "reportedCost": 0.0066
+    }
+  ]
+}

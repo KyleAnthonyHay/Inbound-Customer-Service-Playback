@@ -1,0 +1,50 @@
+[
+  {
+    "run": "01-click-guide-v1",
+    "done": true,
+    "cleanupComplete": true,
+    "callAbsent": true,
+    "transcriptCount": 0,
+    "eventCount": 0
+  },
+  {
+    "run": "02-reconnect-v1",
+    "done": true,
+    "cleanupComplete": true,
+    "callAbsent": true,
+    "transcriptCount": 0,
+    "eventCount": 0
+  },
+  {
+    "run": "03-audio-device-v1",
+    "done": true,
+    "cleanupComplete": true,
+    "callAbsent": true,
+    "transcriptCount": 0,
+    "eventCount": 0
+  },
+  {
+    "run": "track-app-v1",
+    "done": true,
+    "cleanupComplete": true,
+    "callAbsent": true,
+    "transcriptCount": 0,
+    "eventCount": 0
+  },
+  {
+    "run": "track-clear-console-v1",
+    "done": true,
+    "cleanupComplete": true,
+    "callAbsent": true,
+    "transcriptCount": 0,
+    "eventCount": 0
+  },
+  {
+    "run": "track-console-v1",
+    "done": true,
+    "cleanupComplete": true,
+    "callAbsent": true,
+    "transcriptCount": 0,
+    "eventCount": 0
+  }
+]

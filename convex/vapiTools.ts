@@ -5,10 +5,11 @@ import { searchDocs } from "../src/lib/tools/kb";
 import { searchManual } from "../src/lib/tools/manual";
 import { getCurrentPlaybackAppInfo } from "../src/lib/tools/apple";
 import { getRelevantChangesSinceVersion } from "../src/lib/tools/releases";
-import { getPlanningCenterServiceContext } from "../src/lib/tools/planningCenter";
+import { getPlanningCenterServiceContext, planningContextForAgent } from "../src/lib/tools/planningCenter";
 import { TOOL_META } from "../src/lib/tools/meta";
 import { lastFour, wantsCallerId, type CallInfo } from "../src/lib/tools/callerId";
 import { validControlUrl } from "./lib/handoffEnding";
+import { GOODBYE_MESSAGE } from "../src/lib/voicePolicy";
 
 /**
  * Server-side tool implementations, dispatched by the Vapi webhook in http.ts.
@@ -25,12 +26,31 @@ export type ToolDef = {
 const str = (v: unknown) => (typeof v === "string" ? v : undefined);
 
 export const tools: Record<string, ToolDef> = {
+  endCall: {
+    source: "internal", label: "Preparing the goodbye",
+    run: async (_args, ctx, call) => {
+      let speak = GOODBYE_MESSAGE;
+      try {
+        const booking = await ctx.runQuery(internal.callbacks.confirmationForCall, { callId: call.callId });
+        if (booking?.bookingId && booking.local) speak = `Your demo callback is confirmed for ${booking.local}. ${GOODBYE_MESSAGE}`;
+      } catch { /* Optional confirmation enrichment cannot break guarded call closing. */ }
+      if (call.callId.startsWith("text-poc-")) return { ok: true, voiceCall: false, speak };
+      const controlUrl = validControlUrl(call.callId, call.controlUrl);
+      if (!controlUrl) return { ok: false, reason: "call-control-unavailable", speak,
+        next: "Say the goodbye. Do not claim the call has disconnected." };
+      const pending = await ctx.runMutation(internal.closing.request, {
+        callId: call.callId, ...(call.callType ? { callType: call.callType } : {}), controlUrl,
+      });
+      return { ok: pending, closingPending: pending, actionPerformed: "closing-requested", disconnected: false, speak,
+        next: "Say the farewell now and let it finish. The service will disconnect after observing it; do not call another tool or ask another question. If the caller interrupts with more to discuss, continue helping." };
+    },
+  },
   get_planning_center_service_context: {
     source: "live",
     label: TOOL_META.get_planning_center_service_context.label,
     // Keep this server-to-server integration behind the existing saved-assistant webhook secret.
     run: async () => process.env.VAPI_TOOL_SECRET
-      ? getPlanningCenterServiceContext()
+      ? planningContextForAgent(await getPlanningCenterServiceContext())
       : { ok: false, source: "live", reason: "not-configured", next: "Planning Center requires the protected saved-assistant webhook. Continue documented Playback support without service context." },
   },
   search_playback_docs: {
@@ -42,7 +62,7 @@ export const tools: Record<string, ToolDef> = {
       // Help-center articles (local keyword snapshot) and the User Guide (Pinecone) in parallel;
       // the manual degrades to { ok: false } when Pinecone is not configured or slow.
       const [docs, manual] = await Promise.all([
-        Promise.resolve(searchDocs(query, { category, platform: str(a.platform), limit: 3 })),
+        Promise.resolve(searchDocs(query, { category, platform: str(a.platform), installedVersion: str(a.installedVersion), limit: 3 })),
         searchManual(query, { category, limit: 3 }),
       ]);
       return { ...docs, found: docs.found + (manual.ok ? manual.found : 0), manual };
@@ -79,6 +99,7 @@ export const tools: Record<string, ToolDef> = {
     run: async (a, ctx) => ({
       ...await ctx.runQuery(api.teams.availability, { teamId: str(a.teamId) }),
       handoffStarted: false,
+      teamNotified: false,
       actionPerformed: "availability-lookup-only",
     }),
   },
@@ -94,10 +115,12 @@ export const tools: Record<string, ToolDef> = {
         timeZone: str(a.timeZone),
         limit: 4,
       });
+      const availability = { ...out, actionPerformed: "availability-lookup-only", bookingCreated: false, teamNotified: false,
+        bookingInstruction: "These are available times, not a booking. Keep the call open. Reuse known details; if both caller name and callback number are missing, ask for them together (or missing name plus approval to use caller ID). For a partial answer, ask only the missing detail. Once complete, read back the selected date/time, time zone and number as a proposal, obtain explicit approval, then call reserve_callback. Grouping questions does not replace this consent step. Do not confirm a booking or say goodbye until reserve_callback returns ok=true with bookingId. A yes clarifying a time alone is not full booking approval." };
       // Phone callers do not have to read a number out: offer the one they are calling from.
       return call.callerNumber
-        ? { ...out, callerId: { number: call.callerNumber, lastFour: lastFour(call.callerNumber), note: "The caller is on the phone from this number. Offer to call them back on it (say only the last four digits) and pass callbackNumber 'caller-id' if they agree." } }
-        : out;
+        ? { ...availability, callerId: { number: call.callerNumber, lastFour: lastFour(call.callerNumber), note: "The caller is on the phone from this number. Offer to call them back on it (say only the last four digits) and pass callbackNumber 'caller-id' if they agree." } }
+        : { ...availability, callbackNumberRequired: true };
     },
   },
   reserve_callback: {
@@ -108,6 +131,7 @@ export const tools: Record<string, ToolDef> = {
       if (!slotId) return { ok: false, reason: "missing-slotId", source: "simulated" };
       const given = str(a.callbackNumber);
       const useCallerId = wantsCallerId(given);
+      if (!given?.trim()) return { ok: false, bookingCreated: false, reason: "missing-number", source: "simulated", next: "Ask for the best callback number before reading back and confirming the booking." };
       if (useCallerId && !call.callerNumber)
         return { ok: false, reason: "missing-number", source: "simulated", next: "This call has no caller ID (browser call). Ask the caller for the best number to reach them." };
       const out = await ctx.runMutation(api.callbacks.reserve, {
@@ -119,7 +143,18 @@ export const tools: Record<string, ToolDef> = {
         customerId: str(a.customerId),
         callId: call.callId,
       });
-      return out.ok ? { ...out, usedCallerId: useCallerId } : out;
+      if (!out.ok) return { ...out, bookingCreated: false, actionPerformed: "reservation-failed" };
+      // A completed booking arms the same guarded farewell observer as endCall.
+      // This is a fallback for omitted tool delegation, never an immediate hang-up.
+      const controlUrl = validControlUrl(call.callId, call.controlUrl);
+      let closingFallbackScheduled = false;
+      if (controlUrl) {
+        try { closingFallbackScheduled = await ctx.runMutation(internal.closing.request, { callId: call.callId, ...(call.callType ? { callType: call.callType } : {}), controlUrl }); }
+        catch { console.warn("Could not prepare completed callback closing"); }
+      }
+      return { ...out, bookingCreated: true, actionPerformed: "callback-reserved", teamNotified: false, usedCallerId: useCallerId,
+        endCallRequired: true, nextAction: "endCall", callEndingFallbackScheduled: closingFallbackScheduled,
+        next: "The demo callback is reserved. Call endCall, confirm the returned local time and speak its farewell once. Guarded closing waits for the completed farewell and speech; do not claim audio disconnected." };
     },
   },
   initiate_handoff: {
@@ -136,7 +171,7 @@ export const tools: Record<string, ToolDef> = {
       let fallbackScheduled = false;
       if (controlUrl) {
         try {
-          fallbackScheduled = await ctx.runMutation(internal.handoff.scheduleEnd, {
+          fallbackScheduled = await ctx.runMutation(internal.closing.request, {
             callId: call.callId, ...(call.callType ? { callType: call.callType } : {}), controlUrl,
           });
         } catch {

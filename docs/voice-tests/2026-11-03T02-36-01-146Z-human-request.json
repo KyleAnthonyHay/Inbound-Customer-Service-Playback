@@ -1,0 +1,24 @@
+{
+  "scenario": "human-request",
+  "expectedIntent": "human-request",
+  "callId": "01a19f41-8515-788b-ab26-118a921e67b7",
+  "vapiToolCalls": [],
+  "timing": {
+    "turns": [],
+    "longestSilenceS": 0,
+    "longestGapAfterTransitionS": 0,
+    "repeatedAckTurns": 0
+  },
+  "convexToolEvents": [
+    "check_team_availability succeeded 23ms Playback Technical Support: unavailable",
+    "get_callback_slots succeeded 75ms 4 open slot(s)"
+  ],
+  "liveEvents": [
+    "27.8s TOOL-CALLS delegate({})",
+    "29.3s TOOL-CALLS check_team_availability({\"teamId\":\"playback-support\"})",
+    "57.8s TOOL-CALLS delegate({})",
+    "60.3s TOOL-CALLS get_callback_slots({\"teamId\":\"playback-support\",\"preferredDate\":\"tomorrow\",\"timeZone\":\"Central\"})",
+    "85.4s TOOL-CALLS delegate({})"
+  ],
+  "transcript": []
+}

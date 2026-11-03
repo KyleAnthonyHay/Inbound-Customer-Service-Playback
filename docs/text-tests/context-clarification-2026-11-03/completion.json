@@ -1,0 +1,30 @@
+{
+  "kind": "context-clarification-completion",
+  "checkedAt": "2026-11-03T12:19:07.546Z",
+  "selectedCandidate": "C",
+  "selectedSourceHashesMatch": true,
+  "backendDeployedDevelopment": true,
+  "developmentAssistantVerified": true,
+  "productionUnchanged": true,
+  "localTestsPassed": 172,
+  "typecheckPassed": true,
+  "lintPassed": true,
+  "attemptedTextConversations": 76,
+  "recordedTurns": 389,
+  "reportedTextCost": 11.5056,
+  "allHarnessLogsCleaned": true,
+  "allQualityDimensionsPassed": false,
+  "remainingAmbiguousAccountMiss": true,
+  "plainLanguageInconsistenciesRemain": true,
+  "selectedRelease": {
+    "ambiguousOpeningsNeutral": 5,
+    "ambiguousOpenings": 6,
+    "clearControlsReused": 3,
+    "clearControls": 3,
+    "regularCoreSupportTargetsMet": 10,
+    "regularScenarios": 10,
+    "allQualityDimensionsPassed": false
+  },
+  "automaticVoiceCallsCreated": false,
+  "configuredSecretValueMatches": 0
+}

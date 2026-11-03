@@ -42,7 +42,10 @@ function FitScreen({ className, children }: { className: string; children: React
  * inside the device safe areas; the `.bare` class lets the screen hide its
  * drawn status bar, since the real phone shows its own.
  */
-export function PhoneFrame({ children }: { children: React.ReactNode }) {
+/** Large-screen right padding that keeps the phone centered beside the open activity panel (widths match ActivityPanel). */
+const SHIFTED = "lg:pl-24 lg:pr-[560px] xl:pl-0 xl:pr-[640px]";
+
+export function PhoneFrame({ children, shifted = false }: { children: React.ReactNode; shifted?: boolean }) {
   return (
     <>
       {/* Phone-size viewports: no frame */}
@@ -51,7 +54,7 @@ export function PhoneFrame({ children }: { children: React.ReactNode }) {
       </div>
 
       {/* Larger viewports: framed */}
-      <div className="hidden min-h-[100dvh] items-center justify-center bg-[#0b0b0c] py-6 sm:flex">
+      <div className={`hidden min-h-[100dvh] items-center justify-center bg-[#0b0b0c] py-6 transition-[padding] duration-300 sm:flex ${shifted ? SHIFTED : ""}`}>
         <div className="relative" style={{ height: "min(92dvh, 1000px)", aspectRatio: "980 / 2000" }}>
           <Image src="/iphone-frame.webp" alt="" fill priority sizes="500px" className="pointer-events-none select-none object-contain" />
           <FitScreen className="absolute inset-[2.2%_5.1%] overflow-hidden rounded-[13%/6%] bg-[#242424]">{children}</FitScreen>

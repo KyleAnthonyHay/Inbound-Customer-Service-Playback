@@ -1,0 +1,98 @@
+{
+  "scenario": "mac-dante-ethernet-adapter",
+  "expectedIntent": "audio-output",
+  "callId": "01a19f5f-b43d-7aa9-923f-945383f29a7f",
+  "endedReason": "assistant-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "search_playback_docs",
+    "delegate",
+    "delegate",
+    "delegate",
+    "endCall"
+  ],
+  "timing": {
+    "turns": [
+      {
+        "caller": "I'm trying to send audio out but no audio device is showing up. I can only pick my Mac speaker",
+        "silenceS": 0,
+        "firstHeard": "Let me check that.",
+        "transition": true,
+        "gapAfterTransitionS": 4.4,
+        "repeatedAck": true,
+        "tools": [
+          "delegate@+0.0s",
+          "search_playback_docs@+0.6s"
+        ],
+        "summary": "\"I'm trying to send audio out but no audi\" -> 0s silence, then transition: \"Let me check that.\" -> 4.4s gap -> \"Sure—what audio interface or adapter are\" [delegate@+0.0s, search_playback_docs@+0.6s] [REPEATED ACK]"
+      },
+      {
+        "caller": "It's a Mac. I'm connecting it to our network with a USB to Cat6 dongle. We use Dante",
+        "silenceS": 1.2,
+        "firstHeard": "Okay.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"It's a Mac. I'm connecting it to our net\" -> 1.2s silence, then answer: \"Okay.\" [delegate@+0.0s]"
+      },
+      {
+        "caller": "I don't think the Dante Virtual Soundcard app is actually running right now",
+        "silenceS": 0.6,
+        "firstHeard": "Got it.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": true,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"I don't think the Dante Virtual Soundcar\" -> 0.6s silence, then answer: \"Got it.\" [delegate@+0.0s] [REPEATED ACK]"
+      },
+      {
+        "caller": "Okay, yeah, it shows up now after I press start. Thanks. Bye",
+        "silenceS": 0.4,
+        "firstHeard": "Got it.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+-0.0s",
+          "endCall@+0.8s"
+        ],
+        "summary": "\"Okay, yeah, it shows up now after I pres\" -> 0.4s silence, then answer: \"Got it.\" [delegate@+-0.0s, endCall@+0.8s]"
+      }
+    ],
+    "longestSilenceS": 1.2,
+    "longestGapAfterTransitionS": 4.4,
+    "repeatedAckTurns": 2
+  },
+  "convexToolEvents": [
+    "search_playback_docs succeeded 430ms 6 result(s)"
+  ],
+  "liveEvents": [
+    "27.1s TOOL-CALLS delegate({})",
+    "29.6s TOOL-CALLS search_playback_docs({\"query\":\"macOS Playback audio output no audio device available, only Mac speakers shown\",\"category\":\"audio-output\",\"platform\":\"macOS\"})",
+    "52.3s TOOL-CALLS delegate({})",
+    "78.1s TOOL-CALLS delegate({})",
+    "106.4s TOOL-CALLS delegate({})",
+    "109.2s TOOL-CALLS endCall({})",
+    "109.9s STATUS ended assistant-ended-call",
+    "109.9s hangup"
+  ],
+  "transcript": [
+    "AGENT: Hi there! Thank you for calling MultiTracks Playback support. I'm Penny, your virtual AI support assistant. How can I have the pleasure of helping you today?",
+    "CALLER: I'm trying to send audio out but no audio device is showing up. I can only pick my Mac speaker",
+    "AGENT: Let me check that.",
+    "AGENT: Sure—what audio interface or adapter are you trying to use with your Mac?",
+    "CALLER: It's a Mac. I'm connecting it to our network with a USB to Cat6 dongle. We use Dante",
+    "AGENT: Okay.",
+    "AGENT: For Dante on a Mac, Playback will show Dante Virtual Soundcard only after that app is installed and running. Do you have Dante Virtual Soundcard open on the Mac right now?",
+    "CALLER: I don't think the Dante Virtual Soundcard app is actually running right now",
+    "AGENT: Got it.",
+    "AGENT: Okay, let's open Dante Virtual Soundcard, choose the network connection that has an IP address, hit Start, and then go back to Playback, Settings, General, and check Audio Device. Does Dante Virtual Soundcard show up now?",
+    "CALLER: Okay, yeah, it shows up now after I press start. Thanks. Bye",
+    "AGENT: Got it."
+  ]
+}

@@ -13,6 +13,7 @@ import {
 import { SYSTEM_PROMPT, SPEAKER_PROMPT } from "../src/lib/assistant";
 import { buildToolDefinitions } from "../src/lib/vapiTools";
 import { TOOL_META } from "../src/lib/tools/meta";
+import { accountResolutionMetadata, resolveAccountContext, type AccountLookupStore } from "../convex/lib/accountContext";
 
 /** Mirrors what convex/customers.ts does per customer, without a database. */
 function diagnose(customerId: string) {
@@ -178,3 +179,121 @@ test("tool definitions and prompt expose the organization-ID lookup and song che
 // Type-level guard: the shared data shape is what the seed inserts.
 const _typed: DemoCustomer[] = customers;
 void _typed;
+
+/** Exercise the resolver used by the backend with deterministic directory reads. */
+function accountStore(directory: DemoCustomer[] = customers): AccountLookupStore<DemoCustomer, (typeof organizations)[number]> {
+  return {
+    organization: async id => organizations.find(o => o.orgId === id) ?? null,
+    person: async args => {
+      const matches = args.customerId
+        ? directory.filter(c => c.customerId === args.customerId!.trim().toUpperCase().replace(/\s+/g, ""))
+        : args.email
+          ? directory.filter(c => c.email === args.email!.trim().toLowerCase())
+          : directory.filter(c => !!args.name?.trim() && c.name.toLowerCase().includes(args.name.trim().toLowerCase()));
+      if (matches.length > 1) return { status: "ambiguous", candidates: matches.map(c => c.name) };
+      return matches[0] ? { status: "found", customer: matches[0] } : { status: "not_found" };
+    },
+  };
+}
+
+test("organization-only lookup supplies subscription facts without choosing a member or verifying caller rights", async () => {
+  const r = await resolveAccountContext(accountStore(), { orgId: "4 8 0 1 1 3" });
+  assert.equal(r.ok, true);
+  if (!r.ok) return;
+  assert.equal(r.org?.subscriptionStatus, "active");
+  assert.equal(r.customer, null);
+  assert.deepEqual(accountResolutionMetadata(r), {
+    accountContext: { scope: "organization_only", identityVerified: false },
+    organizationResolution: { status: "resolved" },
+    memberResolution: { status: "not_checked" },
+  });
+  assert.equal(diagnoseSubscription(r.org!, undefined).code, "active", "org facts remain usable without a caller match");
+});
+
+test("known member resolution exposes the matched permission record without claiming identity verification", async () => {
+  const r = await resolveAccountContext(accountStore(), { orgId: "480113", name: "Sam Okafor" });
+  assert.equal(r.ok, true);
+  if (!r.ok) return;
+  assert.equal(r.customer?.customerId, "DEMO-1005");
+  assert.equal(r.memberResolution.status, "matched");
+  assert.deepEqual(r.accountContext, { scope: "organization_and_member", identityVerified: false });
+  const membership = r.customer!.memberships.find(m => m.orgId === r.org!.orgId);
+  assert.equal(diagnoseSubscription(r.org!, membership).code, "missing-team-sharing");
+});
+
+test("unresolved person name does not discard a matched org or become proof of nonmembership", async () => {
+  const r = await resolveAccountContext(accountStore(), { orgId: "480113", name: "Unmatched Caller" });
+  assert.equal(r.ok, true);
+  if (!r.ok) return;
+  assert.equal(r.org?.orgId, "480113");
+  assert.equal(r.org?.subscriptionStatus, "active");
+  assert.equal(r.customer, null);
+  assert.equal(r.memberResolution.status, "person_not_found");
+  assert.equal(r.accountContext.scope, "organization_only");
+  assert.equal(r.accountContext.identityVerified, false);
+  assert.notEqual(r.memberResolution.status, "person_found_not_member");
+});
+
+test("ambiguous name retains org context and names ambiguity rather than choosing a member", async () => {
+  const directory = [...customers, { ...customers[0], customerId: "DEMO-OTHER-JOHN", name: "John Smith", email: "other.john@example.org" }];
+  const r = await resolveAccountContext(accountStore(directory), { orgId: "480113", name: "John" });
+  assert.equal(r.ok, true);
+  if (!r.ok) return;
+  assert.equal(r.org?.orgId, "480113");
+  assert.equal(r.customer, null);
+  assert.equal(r.memberResolution.status, "ambiguous");
+  assert.deepEqual(r.memberResolution.candidates, ["John Doe", "John Smith"]);
+  assert.deepEqual(r.accountContext, { scope: "organization_only", identityVerified: false });
+});
+
+test("a resolved person's unmatched org relationship is distinct from a missing person record", async () => {
+  const r = await resolveAccountContext(accountStore(), { orgId: "480113", name: "Olivia Brennan" });
+  assert.equal(r.ok, true);
+  if (!r.ok) return;
+  assert.equal(r.org?.orgId, "480113");
+  assert.equal(r.org?.subscriptionStatus, "active");
+  assert.equal(r.customer, null, "do not attach a different organization's user to the selected org");
+  assert.equal(r.memberResolution.status, "person_found_not_member");
+  assert.deepEqual(r.accountContext, { scope: "organization_only", identityVerified: false });
+});
+
+test("person-only resolution keeps its primary org and member context; unresolved paths carry scope metadata", async () => {
+  const found = await resolveAccountContext(accountStore(), { email: " SAM.OKAFOR@EXAMPLE.ORG " });
+  assert.equal(found.ok, true);
+  if (found.ok) {
+    assert.equal(found.org?.orgId, "480113");
+    assert.equal(found.customer?.name, "Sam Okafor");
+    assert.equal(found.memberResolution.status, "matched");
+  }
+  const missing = await resolveAccountContext(accountStore(), { name: "No Such Caller" });
+  assert.equal(missing.ok, false);
+  assert.equal(missing.memberResolution.status, "person_not_found");
+  assert.deepEqual(missing.organizationResolution, { status: "not_checked" });
+  const invalid = await resolveAccountContext(accountStore(), { orgId: "111", name: "John Doe" });
+  assert.equal(invalid.ok, false);
+  assert.equal(invalid.organizationResolution.status, "invalid_id");
+  assert.equal(invalid.memberResolution.status, "not_checked");
+  const noOrg = await resolveAccountContext(accountStore(), { orgId: "999999" });
+  assert.equal(noOrg.ok, false);
+  assert.equal(noOrg.organizationResolution.status, "not_found");
+  assert.equal(noOrg.memberResolution.status, "not_checked");
+  const empty = await resolveAccountContext(accountStore(), {});
+  assert.equal(empty.ok, false);
+  assert.equal(empty.organizationResolution.status, "not_checked");
+  for (const r of [missing, invalid, noOrg, empty]) assert.deepEqual(r.accountContext, { scope: "unresolved", identityVerified: false });
+});
+
+
+test("legacy person record without membership data is not evidence of nonmembership", async () => {
+  const person = { customerId: "LEGACY", orgId: "480113" };
+  const r = await resolveAccountContext({
+    organization: async id => organizations.find(o => o.orgId === id) ?? null,
+    person: async () => ({ status: "found", customer: person }),
+  }, { orgId: "480113", customerId: "LEGACY" });
+  assert.equal(r.ok, true);
+  if (!r.ok) return;
+  assert.equal(r.org?.subscriptionStatus, "active");
+  assert.equal(r.customer, null);
+  assert.equal(r.memberResolution.status, "not_checked");
+  assert.deepEqual(r.accountContext, { scope: "organization_only", identityVerified: false });
+});

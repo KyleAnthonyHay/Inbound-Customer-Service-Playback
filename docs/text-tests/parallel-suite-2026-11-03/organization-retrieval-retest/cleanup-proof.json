@@ -1,0 +1,84 @@
+{
+  "kind": "focused-organization-retrieval-text-cleanup",
+  "voiceCallsCreated": false,
+  "frozenSourceHashesVerified": true,
+  "sourceChecks": [
+    {
+      "path": "src/lib/assistant.ts",
+      "expected": "b20125a0d9a1a30ef36bf0698be47d026c6d75950d6d0c1f119eefee9d437e5d",
+      "actual": "b20125a0d9a1a30ef36bf0698be47d026c6d75950d6d0c1f119eefee9d437e5d"
+    },
+    {
+      "path": "src/lib/vapiTools.ts",
+      "expected": "06abe47cfdfa6fd0eb0716de554b891e7b56ec071bb45548ec8f6e1a309031e2",
+      "actual": "06abe47cfdfa6fd0eb0716de554b891e7b56ec071bb45548ec8f6e1a309031e2"
+    },
+    {
+      "path": "scripts/lib/text-agent.ts",
+      "expected": "5ecf7db31b758b530a5a3ff3f03b731bfae0203de670eef045f9b05efb1ab6ec",
+      "actual": "5ecf7db31b758b530a5a3ff3f03b731bfae0203de670eef045f9b05efb1ab6ec"
+    },
+    {
+      "path": "scripts/text-cases.ts",
+      "expected": "21f30edad6c0f8960e3696227d7e3d3674e4f75303239941407584382a9498c1",
+      "actual": "21f30edad6c0f8960e3696227d7e3d3674e4f75303239941407584382a9498c1"
+    },
+    {
+      "path": "convex/vapiTools.ts",
+      "expected": "85b05c1b3b77add5228a4b91634c0a746cbee8f4e809ae8af7af8c3cb06cbc67",
+      "actual": "85b05c1b3b77add5228a4b91634c0a746cbee8f4e809ae8af7af8c3cb06cbc67"
+    },
+    {
+      "path": "convex/callbacks.ts",
+      "expected": "3b978907b2d9a262345a6a7928f814a868ae5bf44598de26d0e7f0cb644bae67",
+      "actual": "3b978907b2d9a262345a6a7928f814a868ae5bf44598de26d0e7f0cb644bae67"
+    },
+    {
+      "path": "src/lib/tools/kb.ts",
+      "expected": "2276e1c3ba4fc190c47a18aaade3373f23b8439370a5fd5367548cd07e61bfcd",
+      "actual": "2276e1c3ba4fc190c47a18aaade3373f23b8439370a5fd5367548cd07e61bfcd"
+    },
+    {
+      "path": "src/knowledge/playback-kb.json",
+      "expected": "6ccaa6eb4f05425b4258eaa4357f33ed54819bc7a6ca68ba24e2fcf77ecc021f",
+      "actual": "6ccaa6eb4f05425b4258eaa4357f33ed54819bc7a6ca68ba24e2fcf77ecc021f"
+    },
+    {
+      "path": "src/lib/tools/releases.ts",
+      "expected": "5f77ed5df7d6a1e6bf0c4e8210be0b29baf796830837d03227f91098c2d90875",
+      "actual": "5f77ed5df7d6a1e6bf0c4e8210be0b29baf796830837d03227f91098c2d90875"
+    },
+    {
+      "path": "src/lib/tools/manual.ts",
+      "expected": "d8aae21651e1efb599c1a5a31201c77f28d8730c96b6a9059085568a2f46b486",
+      "actual": "d8aae21651e1efb599c1a5a31201c77f28d8730c96b6a9059085568a2f46b486"
+    },
+    {
+      "path": "src/lib/tools/planningCenter.ts",
+      "expected": "0fa3f7b894cec8d3914591f9bd51418f2ae52d479ae477c43adba21d66008513",
+      "actual": "0fa3f7b894cec8d3914591f9bd51418f2ae52d479ae477c43adba21d66008513"
+    }
+  ],
+  "configurationHashes": [
+    "06688e6268e1a4af04bb6377bd61a3450e16a904271ba88f8baeab07162e3e1f"
+  ],
+  "totalReportedCost": 0.2924,
+  "ownBookingsCreated": 0,
+  "ownBookingsRemaining": 0,
+  "proof": [
+    {
+      "run": "07-organization-v1.json",
+      "turns": 5,
+      "reportedCost": 0.16639999999999996,
+      "done": true,
+      "toolLogsCleaned": true
+    },
+    {
+      "run": "07-organization-v2.json",
+      "turns": 5,
+      "reportedCost": 0.126,
+      "done": true,
+      "toolLogsCleaned": true
+    }
+  ]
+}

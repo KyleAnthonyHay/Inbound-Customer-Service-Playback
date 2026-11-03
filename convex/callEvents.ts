@@ -1,6 +1,7 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 import { ensureCall } from "./calls";
+import { isDeletedCall } from "./lib/callHistory";
 
 const status = v.union(v.literal("running"), v.literal("succeeded"), v.literal("failed"));
 const source = v.union(v.literal("live"), v.literal("simulated"), v.literal("internal"));
@@ -19,7 +20,9 @@ export const log = mutation({
     args: v.optional(v.string()),
     output: v.optional(v.string()),
   },
+  returns: v.union(v.id("callEvents"), v.null()),
   handler: async (ctx, args) => {
+    if (await isDeletedCall(ctx, args.callId)) return null;
     const id = await ctx.db.insert("callEvents", { ...args, at: Date.now() });
     if (args.kind === "tool-end" && args.callId && args.callId !== "unknown") {
       const callRow = await ctx.db.get(await ensureCall(ctx, args.callId));
@@ -32,7 +35,7 @@ export const log = mutation({
 export const byCall = query({
   args: { callId: v.string() },
   handler: async (ctx, { callId }) => {
-    if (!callId) return [];
+    if (!callId || await isDeletedCall(ctx, callId)) return [];
     return ctx.db
       .query("callEvents")
       .withIndex("by_call", (q) => q.eq("callId", callId))
