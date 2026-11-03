@@ -1142,6 +1142,10 @@ function View({ open, onToggle, callId, status: browserStatus, startedAt: browse
             /></>
           ) : (
           <>
+
+          {/* Live transcript: scrolls, follows the newest line; measurements sit below it. */}
+          {shownTranscript.length > 0 && <LiveTranscript transcript={shownTranscript} markers={markers} reduce={!!reduce} />}
+          {/* Agent activity steps sit below the conversation. */}
           <AnimatePresence initial={false}>
             {cardOpen && (
               <motion.section
@@ -1228,9 +1232,6 @@ function View({ open, onToggle, callId, status: browserStatus, startedAt: browse
               </motion.section>
             )}
           </AnimatePresence>
-
-          {/* Live transcript: scrolls, follows the newest line; measurements sit below it. */}
-          {shownTranscript.length > 0 && <LiveTranscript transcript={shownTranscript} markers={markers} reduce={!!reduce} />}
           {metrics}
 
           {viewingPast && callRow?.summary && (
