@@ -9,7 +9,8 @@
  *   changes (rows pushed down); everything else is opacity + blur clearing in place, no translate.
  *   Layout curve fits ease-out-quart, cubic-bezier(0.25, 1, 0.5, 1).
  *
- * Row insertion (newest on top; also mid-list), frames 113-136:
+ * Row insertion (the reference puts newest on top; this panel lists steps oldest first to match the
+ * conversation, so new rows land at the bottom), frames 113-136:
  *   1. Gap opens first. Rows below are pushed down by one row height. Measured gap: 0 / 40% / 66% / 78% /
  *      88% / 95% / 100% at 0 / 33 / 67 / 100 / 133 / 167 / ~230 ms -> 280 ms ease-out-quart, no bounce.
  *   2. The gap stays empty until it has (nearly) settled; content appears ~230 ms after the gap began
@@ -48,7 +49,7 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useMutation, useQuery, usePaginatedQuery } from "convex/react";
 import { AnimatePresence, MotionConfig, motion, useReducedMotion } from "motion/react";
-import { ChevronLeft, ChevronRight, Activity, AlertTriangle, History, Archive, ArchiveRestore, Trash2, Wrench, X, Headset, User, FlaskConical } from "lucide-react";
+import { ChevronDown, ChevronRight, Activity, AlertTriangle, Archive, ArchiveRestore, Trash2, Wrench, X, Headset, User } from "lucide-react";
 import { PERSONA_NAME } from "@/lib/voicePolicy";
 import { api } from "../../convex/_generated/api";
 import type { Doc } from "../../convex/_generated/dataModel";
@@ -631,15 +632,15 @@ function Rail({ steps }: { steps: Step[] }) {
     setSeen({ ids, intro: seen.intro, stagger });
   }
 
-  // Newest on top, like the reference.
-  const display = [...steps].reverse();
+  // Oldest first, so steps read top to bottom in the same order as the conversation.
+  const display = steps;
   const n = display.length;
   return (
-    <ol className="relative mt-2 max-h-[266px] overflow-y-auto overscroll-contain px-4 pb-1.5 [scrollbar-width:thin]">
+    <ol className="relative -mx-4 px-4">
       <AnimatePresence initial={false}>
         {display.map((s, i) => {
           const entrance: Entrance = seen.intro.has(s.id)
-            ? { mode: "intro", delay: 0.06 + (n - 1 - i) * INTRO_STAGGER }
+            ? { mode: "intro", delay: 0.06 + i * INTRO_STAGGER }
             : { mode: "insert", delay: seen.stagger.get(s.id) ?? 0 };
           return <StepRow key={s.id} step={s} entrance={entrance} first={i === 0} last={i === n - 1} expanded={openIds.has(s.id)} onToggle={() => toggle(s.id)} />;
         })}
@@ -665,7 +666,8 @@ function callClock(at: number, start: number): string {
  * Transcript as a timeline: a time column, an icon on a vertical rail, a heading per
  * speaker turn or tool call, the spoken words in a card.
  */
-function LiveTranscript({ transcript, markers, reduce }: { transcript: TranscriptLine[]; markers: Marker[]; reduce: boolean }) {
+/** `follow` (live calls): the list scrolls on its own and keeps the newest line in view. Otherwise it reads top-down with the panel. */
+function LiveTranscript({ transcript, markers, reduce, follow }: { transcript: TranscriptLine[]; markers: Marker[]; reduce: boolean; follow: boolean }) {
   const boxRef = useRef<HTMLDivElement>(null);
   const last = transcript[transcript.length - 1];
   const rows = useMemo(() => {
@@ -687,13 +689,12 @@ function LiveTranscript({ transcript, markers, reduce }: { transcript: Transcrip
   const start = rows[0]?.at ?? 0;
   useEffect(() => {
     const el = boxRef.current;
-    if (!el) return;
+    if (!el || !follow) return;
     el.scrollTo({ top: el.scrollHeight, behavior: reduce ? "auto" : "smooth" });
-  }, [rows.length, last?.text, reduce]);
+  }, [rows.length, last?.text, reduce, follow]);
   return (
-    <div className="mt-4">
-      <p className="mb-2 text-[13px] font-medium text-white/85">Conversation</p>
-      <div ref={boxRef} className="max-h-[440px] overflow-y-auto overscroll-contain pr-1 [scrollbar-width:thin]">
+    <div>
+      <div ref={boxRef} className={cn(follow && "max-h-[min(460px,55vh)] overflow-y-auto overscroll-contain pr-1 [scrollbar-width:thin]")}>
         <ol className="relative">
           {rows.map((r, i) => {
             const isLastRow = i === rows.length - 1;
@@ -780,10 +781,11 @@ function durationText(c: Doc<"calls">, now: number): string {
   return secs >= 60 ? `${Math.floor(secs / 60)}m ${secs % 60}s` : `${secs}s`;
 }
 
+
 /**
- * The panel's second view: every past call, like a chat app's conversation list. Newest first,
- * grouped by day, each row opens that call's own activity view (steps card + transcript).
- * Panel removal archives records; only an explicit Archive deletion erases history.
+ * Past calls tab: every call, like a chat app's conversation list. Newest first, grouped by day; a row
+ * opens that call in the Call tab. Removing a call from Recent archives it; only an explicit delete
+ * from Archived erases history.
  */
 function HistoryView({ calls: panelCalls, savedCalls = [], currentId, busy, onOpen, onClear, onArchive, onRestore, onDelete, onLoadMore, hasMore, loading, reduce }: {
   calls: Doc<"calls">[]; savedCalls?: Doc<"calls">[]; currentId: string | null; busy: boolean;
@@ -807,159 +809,177 @@ function HistoryView({ calls: panelCalls, savedCalls = [], currentId, busy, onOp
     else groups.push({ label, items: [c] });
   }
   const deletable = calls.filter((c) => c.status === "ended").length;
+  const iconButton = "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-white/35 transition-colors hover:bg-white/[0.08] hover:text-white/85 disabled:opacity-30";
 
   return (
-    <motion.div key="history" initial={reduce ? false : BLUR_IN} animate={SHARP} exit={reduce ? undefined : BLUR_IN} transition={{ duration: reduce ? 0 : REVEAL, ease: EASE }} className="mt-3">
-      <div className="mb-3 flex gap-1 rounded-lg bg-white/[0.04] p-1" role="tablist" aria-label="Call history view">
-        {[[false, "In this panel"], [true, "Archive"]].map(([value, label]) => (
-          <button key={String(value)} type="button" role="tab" aria-selected={saved === value}
-            onClick={() => { setSaved(value === true); setConfirm(false); setDeleteTarget(null); setError(null); }}
-            className={cn("min-h-[36px] flex-1 rounded-md px-3 text-[12px] transition-colors", saved === value ? "bg-white/10 text-white" : "text-white/55 hover:text-white/85")}>{label}</button>
-        ))}
+    <motion.div key="history" initial={reduce ? false : BLUR_IN} animate={SHARP} transition={{ duration: reduce ? 0 : REVEAL, ease: EASE }} className="mt-6">
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex gap-1 rounded-lg bg-white/[0.04] p-0.5" role="tablist" aria-label="Which calls to show">
+          {[[false, "Recent"], [true, "Archived"]].map(([value, label]) => (
+            <button key={String(value)} type="button" role="tab" aria-selected={saved === value}
+              onClick={() => { setSaved(value === true); setConfirm(false); setDeleteTarget(null); setError(null); }}
+              className={cn("min-h-[30px] rounded-md px-3 text-[12px] transition-colors", saved === value ? "bg-white/[0.1] text-white" : "text-white/50 hover:text-white/85")}>{label}</button>
+          ))}
+        </div>
+        {!saved && onClear && deletable > 0 && !confirm && (
+          <button type="button" disabled={busy || removing !== null} onClick={() => setConfirm(true)}
+            title={busy ? "Available when no call is in progress" : "Move every finished call to Archived"}
+            className="flex min-h-[30px] items-center gap-1.5 rounded-lg px-2.5 text-[12px] text-white/50 transition-colors hover:bg-white/[0.06] hover:text-white/85 disabled:opacity-40">
+            <Archive size={13} aria-hidden /> Archive all
+          </button>
+        )}
       </div>
-      {error && <p role="alert" className="mb-3 text-[12px] text-[#ff8a8f]">{error}</p>}
-      {saved && deleteTarget && onDelete && (
-        <div role="alertdialog" aria-labelledby="delete-call-title" aria-describedby="delete-call-description" className="mb-3 rounded-xl border border-[#ff5f66]/35 bg-[#ff5f66]/10 p-3">
-          <p id="delete-call-title" className="text-[13px] font-medium text-white">Delete this call permanently?</p>
-          <p className="mt-1 truncate text-[12px] text-white/75">{deleteTarget.title ?? "Playback support call"}</p>
-          <p id="delete-call-description" className="mt-1 text-[12px] text-white/60">The saved call, transcript, activity and measurements will be deleted. This cannot be undone.</p>
+
+      {confirm && onClear && (
+        <div role="alertdialog" aria-labelledby="clear-calls-title" className="mt-3 rounded-xl bg-white/[0.04] p-3">
+          <p id="clear-calls-title" className="text-[13px] text-white/85">Move all {deletable} finished calls to Archived?</p>
+          <p className="mt-0.5 text-[12px] text-white/50">You can restore them from Archived later.</p>
           <div className="mt-3 flex gap-2">
-            <button type="button" disabled={busy || removing !== null} className="min-h-[36px] rounded-lg bg-[#ff5f66] px-3 text-[12px] font-medium text-white disabled:opacity-40" onClick={async () => {
+            <button type="button" disabled={clearing} onClick={async () => {
+              setClearing(true);
+              try { await onClear(); setConfirm(false); }
+              catch (e) { setError(e instanceof Error ? e.message : "Could not archive the calls. Please try again."); }
+              finally { setClearing(false); }
+            }} className="min-h-[32px] rounded-lg bg-white px-3 text-[12px] font-medium text-black hover:bg-white/85 disabled:opacity-50">{clearing ? "Archiving…" : "Archive all"}</button>
+            <button type="button" onClick={() => setConfirm(false)} className="min-h-[32px] rounded-lg px-3 text-[12px] text-white/60 hover:text-white/90">Cancel</button>
+          </div>
+        </div>
+      )}
+      {error && <p role="alert" className="mt-3 text-[12px] text-[#ff8a8f]">{error}</p>}
+      {saved && deleteTarget && onDelete && (
+        <div role="alertdialog" aria-labelledby="delete-call-title" aria-describedby="delete-call-description" className="mt-3 rounded-xl border border-[#ff5f66]/30 bg-[#ff5f66]/[0.08] p-3">
+          <p id="delete-call-title" className="text-[13px] font-medium text-white">Delete this call permanently?</p>
+          <p className="mt-0.5 truncate text-[12px] text-white/70">{deleteTarget.title ?? "Playback support call"}</p>
+          <p id="delete-call-description" className="mt-1 text-[12px] text-white/55">The saved call, transcript, activity and measurements will be deleted. This cannot be undone.</p>
+          <div className="mt-3 flex gap-2">
+            <button type="button" disabled={busy || removing !== null} className="min-h-[32px] rounded-lg bg-[#ff5f66] px-3 text-[12px] font-medium text-white hover:bg-[#ff747a] disabled:opacity-40" onClick={async () => {
               setRemoving(deleteTarget.callId); setError(null);
               try { await onDelete(deleteTarget.callId); setDeleteTarget(null); }
               catch (e) { setError(e instanceof Error ? e.message : "Could not delete this call. Please try again."); }
               finally { setRemoving(null); }
             }}>{removing === deleteTarget.callId ? "Deleting…" : "Delete permanently"}</button>
-            <button type="button" disabled={removing !== null} onClick={() => setDeleteTarget(null)} className="min-h-[36px] rounded-lg px-3 text-[12px] text-white/70 disabled:opacity-40">Cancel</button>
+            <button type="button" disabled={removing !== null} onClick={() => setDeleteTarget(null)} className="min-h-[32px] rounded-lg px-3 text-[12px] text-white/60 hover:text-white/90 disabled:opacity-40">Cancel</button>
           </div>
         </div>
       )}
+
       {calls.length === 0 ? (
-        <p className="rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-[13px] text-white/45">
-          {saved ? (loading ? "Loading archive…" : "No archived calls.") : "This panel is clear."}
+        <p className="py-10 text-center text-[13px] text-white/40">
+          {saved ? (loading ? "Loading archived calls…" : "No archived calls.") : "No recent calls."}
         </p>
       ) : (
-        <div className="overflow-hidden rounded-xl border border-white/10 bg-white/[0.03]">
-          {groups.map((g) => (
-            <div key={g.label}>
-              <p className="px-4 pb-1 pt-3 text-[10.5px] font-medium uppercase tracking-wide text-white/35">{g.label}</p>
-              <ul>
-                {g.items.map((c) => {
-                  const current = c.callId === currentId;
-                  const live = c.status === "in-progress" || c.status === "ringing";
-                  const tools = c.measurements?.toolCallCount ?? c.toolCount;
-                  return (
-                    <li key={c._id} className="flex items-center border-t border-white/[0.05]">
-                      <button
-                        type="button"
-                        disabled={!onOpen || (busy && !current)}
-                        onClick={() => onOpen?.(c.callId)}
-                        aria-current={current ? "true" : undefined}
-                        className={cn(
-                          "flex min-h-[44px] min-w-0 flex-1 items-center gap-3 px-4 py-2.5 text-left transition-colors",
-                          current ? "bg-white/[0.06]" : "hover:bg-white/[0.04]",
-                          (!onOpen || (busy && !current)) && "cursor-default opacity-60"
-                        )}
-                      >
-                        <span className={cn("h-1.5 w-1.5 shrink-0 rounded-full", c.status === "ringing" ? "bg-[#ff9f0a] motion-safe:animate-pulse" : live ? "bg-[#63d392] motion-safe:animate-pulse" : "bg-white/25")} aria-hidden />
-                        <span className="min-w-0 flex-1">
-                          <span className={cn("block truncate text-[13px]", current ? "text-white" : "text-white/85")}>{c.title ?? "Playback support call"}</span>
-                          <span className="block truncate text-[11px] text-white/55">
-                            Intent: {c.review ? [c.review.primaryIntent, ...c.review.secondaryIntents].join(" + ") : c.status === "ended" ? "pending review" : "after call"}
-                          </span>
-                          <span className="block truncate font-mono text-[10.5px] text-white/40">
-                            {now ? relativeTime(c.startedAt, now) : ""}
-                            {now && durationText(c, now) ? ` · ${durationText(c, now)}` : ""}
-                            {` · ${tools} tool${tools === 1 ? "" : "s"}`}
-                            {c.measurements ? ` · ${c.measurements.messageCount} messages` : c.transcriptCount ? ` · ${c.transcriptCount} logged lines` : ""}
-                            {c.channel !== "unknown" ? ` · ${c.channel}` : ""}
-                            {c.callerNumber ? ` · from ${formatCallerNumber(c.callerNumber)}` : ""}
-                            {live ? " · live" : c.endedReason ? ` · ${c.endedReason.replace(/-/g, " ")}` : ""}
-                          </span>
-                        </span>
-                        <ChevronRight size={14} aria-hidden className="shrink-0 text-white/30" />
-                      </button>
-                      {onArchive && c.status === "ended" && c.archivedAt === undefined && (
-                        <button type="button" aria-label={`Remove call from panel: ${c.title ?? "Playback support call"}`}
-                          title="Move to Archive" disabled={busy || clearing || removing !== null}
-                          className="mr-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-white/40 transition-colors hover:bg-white/10 hover:text-white/85 disabled:opacity-30"
-                          onClick={async () => {
-                            setRemoving(c.callId); setError(null);
-                            try { await onArchive(c.callId); } catch (e) { setError(e instanceof Error ? e.message : "Could not clear this call. Please try again."); }
-                            finally { setRemoving(null); }
-                          }}><Archive size={15} aria-hidden /></button>
-                      )}
-                      {onRestore && c.status === "ended" && c.archivedAt !== undefined && (
-                        <button type="button" aria-label={`Restore call to panel: ${c.title ?? "Playback support call"}`}
-                          title="Restore to panel" disabled={busy || clearing || removing !== null}
-                          className="mr-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-white/40 transition-colors hover:bg-white/10 hover:text-white/85 disabled:opacity-30"
-                          onClick={async () => {
-                            setRemoving(c.callId); setError(null);
-                            try { await onRestore(c.callId); } catch (e) { setError(e instanceof Error ? e.message : "Could not restore this call. Please try again."); }
-                            finally { setRemoving(null); }
-                          }}><ArchiveRestore size={15} aria-hidden /></button>
-                      )}
-                      {saved && onDelete && c.status === "ended" && c.archivedAt !== undefined && (
-                        <button type="button" aria-label={`Delete archived call permanently: ${c.title ?? "Playback support call"}`} title="Delete permanently"
-                          disabled={busy || clearing || removing !== null}
-                          className="mr-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-[#ff8a8f]/70 transition-colors hover:bg-[#ff5f66]/15 hover:text-[#ff8a8f] disabled:opacity-30"
-                          onClick={() => { setDeleteTarget(c); setError(null); }}><Trash2 size={15} aria-hidden /></button>
-                      )}
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          ))}
-        </div>
+        groups.map((g) => (
+          <div key={g.label}>
+            <p className="pb-1 pt-5 text-[11px] font-medium uppercase tracking-wide text-white/40">{g.label}</p>
+            <ul className="-mx-2 divide-y divide-white/[0.05]">
+              {g.items.map((c) => {
+                const current = c.callId === currentId;
+                const live = c.status === "in-progress" || c.status === "ringing";
+                const tools = c.measurements?.toolCallCount ?? c.toolCount;
+                const title = c.title ?? "Playback support call";
+                const intent = c.review ? [c.review.primaryIntent, ...c.review.secondaryIntents].join(" + ") : c.status === "ended" ? "Intent pending review" : "Intent after the call";
+                const meta = [
+                  now ? relativeTime(c.startedAt, now) : "",
+                  now ? durationText(c, now) : "",
+                  `${tools} tool${tools === 1 ? "" : "s"}`,
+                  c.channel !== "unknown" ? c.channel : "",
+                  c.callerNumber ? `from ${formatCallerNumber(c.callerNumber)}` : "",
+                  live ? "live" : "",
+                ].filter(Boolean).join(" · ");
+                const disabled = !onOpen || (busy && !current);
+                return (
+                  <li key={c._id} className="flex items-center gap-1 py-0.5">
+                    <button type="button" disabled={disabled} onClick={() => onOpen?.(c.callId)} aria-current={current ? "true" : undefined}
+                      className={cn("flex min-h-[44px] min-w-0 flex-1 items-start gap-3 rounded-lg px-2 py-2 text-left transition-colors",
+                        current ? "bg-white/[0.06]" : "hover:bg-white/[0.04]", disabled && "cursor-default opacity-60")}>
+                      <span className={cn("mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full", c.status === "ringing" ? "bg-[#ff9f0a] motion-safe:animate-pulse" : live ? "bg-[#63d392] motion-safe:animate-pulse" : "bg-white/20")} aria-hidden />
+                      <span className="min-w-0 flex-1">
+                        <span className={cn("block truncate text-[13px]", current ? "text-white" : "text-white/85")}>{title}</span>
+                        <span className="mt-0.5 block truncate text-[12px] text-white/55">{intent}</span>
+                        <span className="mt-0.5 block truncate text-[11px] tabular-nums text-white/35">{meta}</span>
+                      </span>
+                    </button>
+                    {onArchive && c.status === "ended" && c.archivedAt === undefined && (
+                      <button type="button" aria-label={`Archive call: ${title}`} title="Archive" disabled={busy || clearing || removing !== null} className={iconButton}
+                        onClick={async () => {
+                          setRemoving(c.callId); setError(null);
+                          try { await onArchive(c.callId); } catch (e) { setError(e instanceof Error ? e.message : "Could not archive this call. Please try again."); }
+                          finally { setRemoving(null); }
+                        }}><Archive size={15} aria-hidden /></button>
+                    )}
+                    {onRestore && c.status === "ended" && c.archivedAt !== undefined && (
+                      <button type="button" aria-label={`Restore call: ${title}`} title="Restore to Recent" disabled={busy || clearing || removing !== null} className={iconButton}
+                        onClick={async () => {
+                          setRemoving(c.callId); setError(null);
+                          try { await onRestore(c.callId); } catch (e) { setError(e instanceof Error ? e.message : "Could not restore this call. Please try again."); }
+                          finally { setRemoving(null); }
+                        }}><ArchiveRestore size={15} aria-hidden /></button>
+                    )}
+                    {saved && onDelete && c.status === "ended" && c.archivedAt !== undefined && (
+                      <button type="button" aria-label={`Delete archived call permanently: ${title}`} title="Delete permanently" disabled={busy || clearing || removing !== null}
+                        className={cn(iconButton, "hover:bg-[#ff5f66]/15 hover:text-[#ff8a8f]")}
+                        onClick={() => { setDeleteTarget(c); setError(null); }}><Trash2 size={15} aria-hidden /></button>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ))
       )}
 
       {saved && (hasMore || loading) && <button type="button" disabled={loading} onClick={onLoadMore}
-        className="mt-3 min-h-[40px] w-full rounded-lg border border-white/10 text-[12px] text-white/70 disabled:opacity-40">{loading ? "Loading…" : "Load older calls"}</button>}
-      {!saved && onClear && deletable > 0 && (
-        <div className="mt-4 flex min-h-[44px] flex-wrap items-center gap-2">
-          {confirm ? (
-            <>
-              <span className="text-[12.5px] text-white/65">Move all finished calls to Archive?</span>
-              <button
-                type="button"
-                disabled={clearing}
-                onClick={async () => {
-                  setClearing(true);
-                  try {
-                    await onClear(); setConfirm(false);
-                  } catch (e) {
-                    setError(e instanceof Error ? e.message : "Could not clear the panel. Please try again.");
-                  } finally {
-                    setClearing(false);
-                  }
-                }}
-                className="min-h-[36px] rounded-lg bg-[#ff5f66] px-3.5 text-[13px] font-medium text-white hover:bg-[#ff747a] disabled:opacity-50"
-              >
-                {clearing ? "Clearing…" : "Clear panel"}
-              </button>
-              <button type="button" onClick={() => setConfirm(false)} className="min-h-[36px] rounded-lg px-3 text-[13px] text-white/60 hover:text-white/90">
-                Cancel
-              </button>
-            </>
-          ) : (
-            <button
-              type="button"
-              disabled={busy || removing !== null}
-              onClick={() => setConfirm(true)}
-              title={busy ? "Available when no call is in progress" : undefined}
-              className="flex min-h-[40px] items-center gap-2 rounded-lg border border-[#ff5f66]/35 bg-[#ff5f66]/[0.12] px-3.5 text-[13px] font-medium text-[#ff8a8f] transition-colors hover:bg-[#ff5f66]/20 disabled:opacity-40"
-            >
-              <Archive size={14} aria-hidden /> Clear panel
-            </button>
-          )}
-        </div>
-      )}
+        className="mt-4 min-h-[36px] w-full rounded-lg text-[12px] text-white/55 transition-colors hover:bg-white/[0.04] hover:text-white/85 disabled:opacity-40">{loading ? "Loading…" : "Load older calls"}</button>}
     </motion.div>
   );
 }
 
 /* ------------------------------------------------------------------ view */
+
+/**
+ * A collapsible section: the header (title, short summary, chevron on the right) is the toggle, and
+ * its content opens directly underneath it.
+ */
+function Section({ title, meta, open, onToggle, children }: { title: string; meta?: ReactNode; open: boolean; onToggle: () => void; children: ReactNode }) {
+  const reduce = useReducedMotion();
+  const id = `section-${title.toLowerCase().replace(/\W+/g, "-")}`;
+  return (
+    <section className="border-t border-white/[0.08]">
+      <h3>
+        <button type="button" onClick={onToggle} aria-expanded={open} aria-controls={id}
+          className="group flex min-h-[48px] w-full items-center gap-2 py-3 text-left">
+          <span className="text-[13px] font-medium text-white/90">{title}</span>
+          {meta && <span className="min-w-0 truncate text-[12px] tabular-nums text-white/40">{meta}</span>}
+          <ChevronDown size={16} aria-hidden
+            className={cn("ml-auto shrink-0 text-white/35 transition-transform duration-200 group-hover:text-white/70", open && "rotate-180")} />
+        </button>
+      </h3>
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div key="body" id={id}
+            initial={reduce ? false : { opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: reduce ? 0 : 0.24, ease: EASE }}
+            className="overflow-hidden">
+            <div className="pb-5">{children}</div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </section>
+  );
+}
+
+const SOURCE_NOTE: Record<ToolSource | "call", string> = {
+  live: "live App Store lookup",
+  simulated: "demo customers, teams and callbacks, not MultiTracks systems",
+  internal: "bounded help-center snapshot",
+  model: "GPT-Live reasoning",
+  call: "",
+};
+
+type Tab = "call" | "history" | "demo";
+type SectionId = "conversation" | "steps" | "measurements";
 
 function View({ open, onToggle, callId, status: browserStatus, startedAt: browserStartedAt, assistantSpeaking, handoff, clientEvents, transcript, onOpenPastCall, serverEvents, pastCalls, callRow, storedTranscript, onClearHistory, onArchiveCall, onRestoreCall, onDeleteCall, savedCalls, onLoadHistory, historyHasMore, historyLoading, metrics, metricsOverview, demoData }: Props & ViewData) {
   const reduce = useReducedMotion();
@@ -968,8 +988,9 @@ function View({ open, onToggle, callId, status: browserStatus, startedAt: browse
     browserStatus !== "active" && browserStatus !== "connecting" && !!callRow && (callRow.status === "in-progress" || callRow.status === "ringing") && clientEvents.length === 0;
   const status: CallStatus = remoteLive ? (callRow.status === "ringing" ? "connecting" : "active") : browserStatus;
   const startedAt = remoteLive && callRow ? callRow.startedAt : browserStartedAt;
-  const [cardOpen, setCardOpen] = useState(true);
-  const [view, setView] = useState<"activity" | "history" | "demo">("activity");
+  const [tab, setTab] = useState<Tab>("call");
+  const [sections, setSections] = useState<Record<SectionId, boolean>>({ conversation: true, steps: true, measurements: false });
+  const toggleSection = (id: SectionId) => setSections((s) => ({ ...s, [id]: !s[id] }));
   const elapsed = useElapsed(startedAt, status);
   const logged = useMemo(() => buildSteps(serverEvents, clientEvents), [serverEvents, clientEvents]);
   // Live lines while a call runs; the stored transcript when replaying a past call.
@@ -988,6 +1009,7 @@ function View({ open, onToggle, callId, status: browserStatus, startedAt: browse
         ]
       : logged;
   const liveCall = status === "active" || status === "connecting";
+  const hasCall = !!callId || steps.length > 0 || shownTranscript.length > 0;
 
   const running = steps.filter((s) => s.status === "running");
   const failed = steps.filter((s) => s.status === "failed");
@@ -996,6 +1018,7 @@ function View({ open, onToggle, callId, status: browserStatus, startedAt: browse
   const markers: Marker[] = steps.flatMap((s) => (s.tool && s.tool !== "delegate" ? [{ id: s.id, at: s.at, tool: s.tool, status: s.status, detail: s.detail }] : []));
   const liveCount = tools.filter((s) => s.source === "live").length;
   const simCount = tools.filter((s) => s.source === "simulated").length;
+  const usedSources = (["live", "simulated", "internal", "model"] as const).filter((k) => tools.some((s) => s.source === k));
 
   const statusLine =
     status === "connecting" ? "Connecting to the assistant"
@@ -1003,11 +1026,9 @@ function View({ open, onToggle, callId, status: browserStatus, startedAt: browse
     : status === "active" && handoff ? `Transferring to ${handoff.team}`
     : status === "active" && assistantSpeaking ? "Speaking"
     : status === "active" ? "Listening"
-    : status === "ended" ? "Call ended"
     : status === "error" ? "Call failed"
     : null;
   const busy = status === "connecting" || (status === "active" && (running.length > 0 || !!handoff));
-  const warn = failed.length > 0 && status !== "active";
   const activityColor = status === "connecting" ? ACTIVITY_COLOR.connecting
     : status === "error" ? ACTIVITY_COLOR.failed
     : status === "active" ? (running.length ? stepColor(running[running.length - 1]) : ACTIVITY_COLOR.connected)
@@ -1019,7 +1040,23 @@ function View({ open, onToggle, callId, status: browserStatus, startedAt: browse
     active: ["Live", ACTIVITY_COLOR.connected],
     ended: ["Ended", ACTIVITY_COLOR.idle],
     error: ["Failed", ACTIVITY_COLOR.failed],
-  }[status];
+  }[viewingPast ? "ended" : status];
+
+  const callMeta = [
+    callRow && callRow.channel !== "unknown" ? (callRow.channel === "phone" ? "Phone line" : callRow.channel === "browser" ? "Browser" : callRow.channel) : "",
+    callRow?.callerNumber ? `from ${formatCallerNumber(callRow.callerNumber)}` : "",
+    callId ? `Call ${callId.slice(0, 8)}` : "",
+  ].filter(Boolean).join(" · ");
+
+  const tabs: Array<{ id: Tab; label: string; count?: number }> = [
+    { id: "call", label: "Call" },
+    { id: "history", label: "Past calls", count: pastCalls.length },
+    ...(demoData ? [{ id: "demo" as const, label: "Demo calls", count: demoData.counts.selected }] : []),
+  ];
+  const openCall = (id: string) => {
+    onOpenPastCall?.(id);
+    setTab("call");
+  };
 
   return (
     <MotionConfig reducedMotion="user">
@@ -1060,151 +1097,116 @@ function View({ open, onToggle, callId, status: browserStatus, startedAt: browse
       >
         {/* grabber, phones only */}
         <div className="mx-auto mt-2.5 h-1 w-9 shrink-0 rounded-full bg-white/25 sm:hidden" aria-hidden />
-        <div className="flex-1 overflow-y-auto overscroll-contain px-4 pb-5 pt-4 sm:px-5 sm:pt-6">
+
+        {/* Fixed header: panel title, close, and the tabs that switch between the panel's three views. */}
+        <div className="shrink-0 px-4 pt-3 sm:px-6 sm:pt-5">
           <div className="flex items-center justify-between gap-3">
-            {view !== "activity" ? (
-              <button
-                type="button"
-                onClick={() => setView("activity")}
-                className="-ml-1 flex min-h-[44px] items-center gap-1 text-[13px] text-white/55 transition-colors hover:text-white/85 sm:min-h-0"
-              >
-                <ChevronLeft size={14} aria-hidden />
-                Activity
-                <span className="ml-2 font-medium text-white/90">{view === "demo" ? "Demo calls" : "Past calls"}</span>
-                <span className="ml-1 rounded-full bg-white/[0.08] px-1.5 py-px font-mono text-[10.5px] tabular-nums text-white/55">{view === "demo" ? demoData?.counts.selected ?? 0 : pastCalls.length}</span>
-              </button>
-            ) : (
-            <motion.button
-              type="button"
-              onClick={() => setCardOpen((o) => !o)}
-              aria-expanded={cardOpen}
-              className="flex items-center gap-1.5 text-[13px] text-white/55 transition-colors hover:text-white/85"
-              initial={reduce ? false : BLUR_IN}
-              animate={SHARP}
-              transition={{ duration: 0.22, ease: EASE }}
-            >
-              <motion.span initial={false} animate={{ rotate: cardOpen ? 90 : 0 }} transition={{ duration: reduce ? 0 : 0.2, ease: EASE }} className="flex">
-                <ChevronRight size={14} />
-              </motion.span>
-              <span className="font-medium text-white/90">Agent activity</span>
-              {/* Live status follows the title; nothing extra while idle ("Ready"). */}
-              {elapsed.prefix !== "Ready" && (
-                <Swap k={elapsed.prefix} className="ml-1">
-                  <Shimmer active={status === "active"} base={0.9} idle={0.9} rgb={activityColor}>{elapsed.prefix}</Shimmer>
-                </Swap>
-              )}
-              {/* counter ticks as a hard cut, like the reference */}
-              {elapsed.value && <span className="tabular-nums text-white/40">{elapsed.value}</span>}
-            </motion.button>
-            )}
-            <span className="flex shrink-0 items-center gap-0.5">
-              {view !== "demo" && demoData && <button type="button" onClick={() => setView("demo")} aria-label={`Demo calls (${demoData.counts.selected})`} title="Demo calls" className="flex h-11 items-center gap-1.5 rounded-full px-2 text-xs text-white/70 hover:bg-white/[0.06] sm:h-7"><FlaskConical size={14} aria-hidden /><span className="hidden sm:inline">Demo</span><span>{demoData.counts.selected}</span></button>}
-              {view !== "history" && (
-                <button
-                  type="button"
-                  onClick={() => setView("history")}
-                  aria-label={`Past calls (${pastCalls.length})`}
-                  title="Past calls"
-                  className="flex h-11 items-center gap-1.5 rounded-full px-2.5 text-[12.5px] text-white/55 transition-colors hover:bg-white/[0.06] hover:text-white/90 sm:h-7"
-                >
-                  <History size={14} aria-hidden />
-                  <span className="hidden sm:inline">Past calls</span>
-                  <span className="rounded-full bg-white/[0.08] px-1.5 py-px font-mono text-[10.5px] tabular-nums">{pastCalls.length}</span>
-                </button>
-              )}
-            {/* Open: compact close control in the header row */}
+            <h2 className="text-[15px] font-semibold text-white">Agent activity</h2>
             <button
               type="button"
               onClick={onToggle}
               aria-expanded={open}
               aria-label="Hide agent activity"
               tabIndex={open ? 0 : -1}
-              className="-mr-2 flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-white/50 transition-colors hover:bg-white/[0.06] hover:text-white/90 sm:-mr-1.5 sm:h-7 sm:w-7"
+              className="-mr-2 flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-white/45 transition-colors hover:bg-white/[0.06] hover:text-white/90 sm:h-8 sm:w-8"
             >
-              <X size={15} aria-hidden />
+              <X size={16} aria-hidden />
             </button>
-            </span>
           </div>
-
-          {view === "demo" ? (
-            <DemoCallsPanel data={demoData} busy={liveCall} onOpen={id => { onOpenPastCall?.(id); setView("activity"); }} />
-          ) : view === "history" ? (
-            <>{metricsOverview}
-            <HistoryView
-              calls={pastCalls}
-              savedCalls={savedCalls}
-              currentId={callId}
-              busy={liveCall}
-              onOpen={(id) => {
-                onOpenPastCall?.(id);
-                setView("activity");
-              }}
-              onClear={onClearHistory}
-              onArchive={onArchiveCall}
-              onRestore={onRestoreCall}
-              onDelete={onDeleteCall}
-              onLoadMore={onLoadHistory}
-              hasMore={historyHasMore}
-              loading={historyLoading}
-              reduce={!!reduce}
-            /></>
-          ) : (
-          <>
-
-          {/* Live transcript: scrolls, follows the newest line; measurements sit below it. */}
-          {shownTranscript.length > 0 && <LiveTranscript transcript={shownTranscript} markers={markers} reduce={!!reduce} />}
-          {/* Agent activity steps sit below the conversation. */}
-          <AnimatePresence initial={false}>
-            {cardOpen && (
-              <motion.section
-                key="card"
-                initial={reduce ? false : { opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: reduce ? 0 : 0.28, ease: EASE }}
-                className="mt-3 overflow-hidden rounded-xl border border-white/10 bg-white/[0.03]"
+          <div role="tablist" aria-label="Panel views" className="mt-2 flex gap-6 border-b border-white/[0.08]">
+            {tabs.map((t) => (
+              <button
+                key={t.id}
+                type="button"
+                role="tab"
+                aria-selected={tab === t.id}
+                onClick={() => setTab(t.id)}
+                className={cn(
+                  "-mb-px flex min-h-[40px] items-center gap-1.5 border-b-2 text-[13px] transition-colors",
+                  tab === t.id ? "border-white font-medium text-white" : "border-transparent text-white/50 hover:text-white/85"
+                )}
               >
-                <header className="flex items-center justify-between px-4 pt-3.5">
-                  <motion.h2
-                    className="text-[13.5px] font-semibold text-white/95"
-                    initial={reduce ? false : BLUR_IN}
-                    animate={SHARP}
-                    transition={{ duration: 0.22, ease: EASE, delay: 0.04 }}
-                  >
-                    Playback support call
-                  </motion.h2>
-                  <span className="flex items-center gap-1.5 text-[12px]" style={{ color: `rgb(${pill[1]})` }}>
+                {t.id === "call" && liveCall && <span className="h-1.5 w-1.5 rounded-full bg-[#63d392] motion-safe:animate-pulse" aria-label="live" />}
+                {t.label}
+                {t.count !== undefined && <span className="text-[11.5px] tabular-nums text-white/40">{t.count}</span>}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex-1 overflow-y-auto overscroll-contain px-4 pb-8 sm:px-6" style={{ paddingBottom: "max(32px, env(safe-area-inset-bottom))" }}>
+          {tab === "demo" ? (
+            <div className="mt-6"><DemoCallsPanel data={demoData} busy={liveCall} onOpen={openCall} /></div>
+          ) : tab === "history" ? (
+            <div className="pt-6">
+              {metricsOverview}
+              <HistoryView
+                calls={pastCalls}
+                savedCalls={savedCalls}
+                currentId={callId}
+                busy={liveCall}
+                onOpen={openCall}
+                onClear={onClearHistory}
+                onArchive={onArchiveCall}
+                onRestore={onRestoreCall}
+                onDelete={onDeleteCall}
+                onLoadMore={onLoadHistory}
+                hasMore={historyHasMore}
+                loading={historyLoading}
+                reduce={!!reduce}
+              />
+            </div>
+          ) : !hasCall ? (
+            <div className="flex flex-col items-center px-6 py-16 text-center">
+              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/[0.05] text-white/45"><Activity size={18} aria-hidden /></span>
+              <p className="mt-4 text-[14px] font-medium text-white/85">No call yet</p>
+              <p className="mt-1 max-w-[300px] text-[13px] leading-relaxed text-white/45">Start a call on the phone. The conversation and every step the agent takes will appear here as they happen.</p>
+              {pastCalls.length > 0 && (
+                <button type="button" onClick={() => setTab("history")} className="mt-5 min-h-[36px] rounded-lg border border-white/10 px-3.5 text-[12.5px] text-white/75 transition-colors hover:bg-white/[0.06] hover:text-white">
+                  Open a past call
+                </button>
+              )}
+            </div>
+          ) : (
+            <>
+              {/* Call header: what call this is and what is happening now. */}
+              <div className="pb-5 pt-6">
+                <div className="flex items-start justify-between gap-3">
+                  <p className="min-w-0 text-[16px] font-semibold leading-snug text-white">{callRow?.title ?? "Playback support call"}</p>
+                  <span className="mt-0.5 flex shrink-0 items-center gap-1.5 rounded-full bg-white/[0.05] px-2.5 py-1 text-[12px]" style={{ color: `rgb(${pill[1]})` }}>
                     <span className="h-1.5 w-1.5 rounded-full transition-colors duration-200" style={{ backgroundColor: `rgb(${pill[1]})` }} aria-hidden />
                     <Swap k={pill[0]}>{pill[0]}</Swap>
                   </span>
-                </header>
+                </div>
+                <p className="mt-1 flex flex-wrap items-center gap-x-1.5 text-[12px] text-white/45">
+                  {elapsed.prefix !== "Ready" && (
+                    <span>
+                      <Swap k={elapsed.prefix}>
+                        <Shimmer active={status === "active"} base={0.75} idle={0.5} rgb={status === "active" ? activityColor : "255, 255, 255"}>{elapsed.prefix}</Shimmer>
+                      </Swap>
+                      {elapsed.value && <span className="tabular-nums"> {elapsed.value}</span>}
+                    </span>
+                  )}
+                  {elapsed.prefix !== "Ready" && callMeta && <span aria-hidden>·</span>}
+                  {callMeta && <span>{callMeta}</span>}
+                </p>
 
-                {/* Rail */}
-                {steps.length > 0 ? (
-                  <Rail key="rail" steps={steps} />
-                ) : (
-                  <p key="empty" className="px-4 py-2.5 text-[13px] text-white/40">
-                    No steps yet. Start a call and activity appears here.
-                  </p>
-                )}
-
-                {/* Status line, like "Pushing 3 commits to origin" */}
+                {/* What the agent is doing right now (live calls only). */}
                 <AnimatePresence initial={false}>
                   {statusLine && (
                     <motion.div
                       key="status"
-                      layout="position"
                       initial={reduce ? false : { opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: "auto" }}
                       exit={{ opacity: 0, height: 0 }}
                       transition={{ duration: reduce ? 0 : 0.24, ease: EASE }}
                       className="overflow-hidden"
                     >
-                      <div className="flex items-center gap-2 border-t border-white/[0.06] px-4 py-2.5 text-[13px]">
+                      <div className="mt-4 flex items-center gap-2.5 rounded-lg bg-white/[0.04] px-3 py-2.5 text-[13px]">
                         <span className="relative flex h-3.5 w-3.5 shrink-0 items-center justify-center">
                           <AnimatePresence initial={false} mode="wait">
                             <motion.span
-                              key={busy ? "busy" : warn ? "warn" : "idle"}
+                              key={busy ? "busy" : status === "error" ? "warn" : "idle"}
                               className="flex items-center justify-center"
                               style={{ color: `rgb(${activityColor})` }}
                               initial={reduce ? false : ICON_IN}
@@ -1214,16 +1216,10 @@ function View({ open, onToggle, callId, status: browserStatus, startedAt: browse
                             >
                               {busy ? (
                                 <Spinner size={13} />
-                              ) : warn ? (
-                                <AlertTriangle size={13} className="text-[#f5c45e]" aria-hidden />
+                              ) : status === "error" ? (
+                                <AlertTriangle size={13} aria-hidden />
                               ) : (
-                                <span
-                                  className={cn(
-                                    "h-1.5 w-1.5 rounded-full",
-                                    status === "active" ? (assistantSpeaking ? "bg-[#63d392] motion-safe:animate-pulse" : "bg-[#63d392]") : "bg-white/30"
-                                  )}
-                                  aria-hidden
-                                />
+                                <span className={cn("h-1.5 w-1.5 rounded-full bg-[#63d392]", assistantSpeaking && "motion-safe:animate-pulse")} aria-hidden />
                               )}
                             </motion.span>
                           </AnimatePresence>
@@ -1237,44 +1233,66 @@ function View({ open, onToggle, callId, status: browserStatus, startedAt: browse
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </motion.section>
-            )}
-          </AnimatePresence>
-          {metrics}
 
-          {viewingPast && callRow?.summary && (
-            <div className="mt-3 rounded-xl border border-white/[0.07] bg-white/[0.02] px-3.5 py-3">
-              <p className="mb-1 text-[11px] font-medium uppercase tracking-wide text-white/35">Call summary</p>
-              <p className="text-[13px] leading-snug text-white/75">{callRow.summary}</p>
-            </div>
+                {viewingPast && callRow?.summary && <p className="mt-4 text-[13px] leading-relaxed text-white/70">{callRow.summary}</p>}
+              </div>
+
+              <Section
+                title="Conversation"
+                meta={shownTranscript.length ? `${shownTranscript.length} message${shownTranscript.length === 1 ? "" : "s"}` : undefined}
+                open={sections.conversation}
+                onToggle={() => toggleSection("conversation")}
+              >
+                {shownTranscript.length > 0 ? (
+                  <LiveTranscript transcript={shownTranscript} markers={markers} reduce={!!reduce} follow={liveCall} />
+                ) : (
+                  <p className="text-[13px] text-white/40">{liveCall ? "Waiting for the first words…" : "No conversation was recorded for this call."}</p>
+                )}
+              </Section>
+
+              <Section
+                title="Agent steps"
+                meta={
+                  <>
+                    {toolCount} tool{toolCount === 1 ? "" : "s"}
+                    {liveCount > 0 && ` · ${liveCount} live`}
+                    {simCount > 0 && ` · ${simCount} simulated`}
+                    {failed.length > 0 && <span className="text-[#ff8a8f]"> · {failed.length} failed</span>}
+                  </>
+                }
+                open={sections.steps}
+                onToggle={() => toggleSection("steps")}
+              >
+                {steps.length > 0 ? (
+                  <Rail key="rail" steps={steps} />
+                ) : (
+                  <p className="text-[13px] text-white/40">No steps yet.</p>
+                )}
+                {usedSources.length > 0 && (
+                  <ul className="mt-4 space-y-1 text-[11.5px] text-white/40">
+                    {usedSources.map((k) => (
+                      <li key={k} className="flex items-baseline gap-2">
+                        <span className={cn("shrink-0 rounded px-1.5 py-px font-mono text-[10.5px] leading-[16px]", SOURCE[k].tag)}>{SOURCE[k].name}</span>
+                        <span>{SOURCE_NOTE[k]}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </Section>
+
+              {metrics && (
+                <Section
+                  title="Call measurements"
+                  meta={callRow?.analyticsState ?? "Not evaluated"}
+                  open={sections.measurements}
+                  onToggle={() => toggleSection("measurements")}
+                >
+                  {metrics}
+                </Section>
+              )}
+            </>
           )}
-
-          {/* Chips */}
-          <motion.div layout="position" transition={{ layout: { duration: reduce ? 0 : 0.26, ease: EASE } }} className="mt-4 flex flex-wrap items-center gap-2 text-[12px] text-white/60">
-            <span className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1">
-              <span className="h-1.5 w-1.5 rounded-full transition-colors duration-200" style={{ backgroundColor: `rgb(${pill[1]})` }} aria-hidden />
-              {callId ? `Call ${callId.slice(0, 8)}` : "No call"}
-            </span>
-            <span className="rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1 tabular-nums">
-              {toolCount} tool{toolCount === 1 ? "" : "s"} · <span className={SOURCE.live.text}>{liveCount} live</span> ·{" "}
-              <span className={SOURCE.simulated.text}>{simCount} simulated</span>
-            </span>
-            {remoteLive && callRow && (
-              <span className="flex items-center gap-1.5 rounded-full border border-[#34c79a]/30 bg-[#34c79a]/10 px-2.5 py-1 text-[#6edcb8]">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#34c79a] motion-safe:animate-pulse" aria-hidden />
-                Live on {callRow.channel === "phone" ? "the phone line" : callRow.channel}{callRow.callerNumber ? ` from ${formatCallerNumber(callRow.callerNumber)}` : ""}
-              </span>
-            )}
-          </motion.div>
-
-          </>
-          )}
-
         </div>
-
-        <footer className="border-t border-white/[0.08] px-4 py-2 text-[11px] leading-snug text-white/40 sm:px-5" style={{ paddingBottom: "max(8px, env(safe-area-inset-bottom))" }}>
-          Apple = live App Store lookup. Simulated = demo customers, teams, callbacks; not MultiTracks systems. Docs = bounded help-center snapshot. Model = GPT-Live reasoning.
-        </footer>
       </aside>
     </MotionConfig>
   );
