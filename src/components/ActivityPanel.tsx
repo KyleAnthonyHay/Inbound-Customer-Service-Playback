@@ -687,7 +687,7 @@ function LiveTranscript({ transcript, markers, reduce }: { transcript: Transcrip
   }, [rows.length, last?.text, reduce]);
   return (
     <div className="mt-4">
-      <p className="mb-2 text-[13px] font-medium text-white/85">Conversation</p>
+      <p className="mb-2 text-[13px] font-medium text-white/85">Agent activity</p>
       <div ref={boxRef} className="max-h-[440px] overflow-y-auto overscroll-contain pr-1 [scrollbar-width:thin]">
         <ol className="relative">
           {rows.map((r, i) => {
@@ -1225,9 +1225,9 @@ function View({ open, onToggle, callId, status: browserStatus, startedAt: browse
             )}
           </AnimatePresence>
 
-          {metrics}
-          {/* Live transcript: scrolls, follows the newest line */}
+          {/* Live transcript: scrolls, follows the newest line; measurements sit below it. */}
           {shownTranscript.length > 0 && <LiveTranscript transcript={shownTranscript} markers={markers} reduce={!!reduce} />}
+          {metrics}
 
           {viewingPast && callRow?.summary && (
             <div className="mt-3 rounded-xl border border-white/[0.07] bg-white/[0.02] px-3.5 py-3">
