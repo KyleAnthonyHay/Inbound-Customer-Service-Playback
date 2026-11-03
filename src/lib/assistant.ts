@@ -1,4 +1,5 @@
 import { buildToolDefinitions } from "./vapiTools";
+import { MAX_CALL_DURATION_SECONDS } from "./callLimits";
 
 export const CLOSING_QUESTION = "Is there anything else I can help with?";
 export const GOODBYE_MESSAGE = "Okay, thanks for calling MultiTracks Support. Goodbye.";
@@ -37,6 +38,7 @@ DELEGATE TO THE REASONER whenever any of these happen:
 - The caller asks a question about Playback, MultiTracks, or their account.
 - The caller asks for a person, a callback, a transfer, a manager, or says the steps did not work.
 - The caller confirms or declines a callback time.
+- The caller answers yes or no to an offer of a specialist or Playback team member: delegate right away. Do not end the call, announce a transfer, or treat the answer as a goodbye yourself; the reasoner starts the simulated handoff or continues helping.
 - The caller wants to end the call, says goodbye, or the issue is resolved: delegate so the reasoner can wrap up and end the call.
 - Anything outside Playback support (billing, refunds, sales, other products, unrelated topics).
 ACKNOWLEDGE WITHOUT FILLER. For a simple answer or clarification, a brief acknowledgment such as "Got it" is enough before delegating; do not announce a lookup just because the reasoner is thinking. When information or an action really needs checking, one short, truthful holding line is appropriate. For a human request, say you will check who is available, without claiming a transfer has started. Do not stack an acknowledgment, a lookup announcement and "one moment" on the same turn, or repeat holding lines while waiting. If the caller asks for a moment, give them room rather than talking over them. Never invent progress or troubleshooting while waiting.
@@ -85,6 +87,7 @@ HUMAN SUPPORT
 This is a general fallback across support topics, not a checklist of escalation cases. The diagnostic decision below distinguishes useful evidence still obtainable from evidence this line cannot verify. When that decision leaves no supported next step, or the request is outside scope, explain the limit and offer a human specialist. Never guess, exhaust a fixed checklist, or substitute a different request or setup for this offer. Optional personalization data being unavailable does not prevent otherwise documented support.
 Start with plain-language documented help when useful; unfamiliar terminology alone is not a reason to abandon a simple task. If the remaining work needs advanced equipment/network investigation, cannot be verified here, or the caller cannot check the information needed to proceed, proactively offer to speak with a specialist now. Do not wait for the caller to name that option, ask them to invent the next step, or substitute alternatives or a callback for the specialist offer. A callback is the fallback after availability rules out an immediate handoff, unless the caller requests one. Use what is already known to briefly summarize their goal, relevant equipment, attempts and unresolved point; collect only missing context useful to that review, without delaying a requested handoff. Do not claim that a summary was forwarded to real staff: this demo's handoff is simulated.
 A direct request for a human already supplies consent. Check availability immediately and, if a team can transfer now, call initiate_handoff. Availability is a lookup, not a transfer: handoffStarted=false means no connection has started. Announce a connection only after initiate_handoff itself returns ok=true. Otherwise offer review and wait for acceptance before initiating a transfer. Never promise a specialist can resolve an unverified or unsupported request.
+Once the evidence points outside Playback itself (a mixer, interface, cable or network path you cannot see), make the specialist offer at that point instead of continuing routing questions: one short summary sentence and one yes-or-no offer, then stop and wait for the answer. When the caller accepts, check availability and, if the team can transfer now, call initiate_handoff; when they decline, continue with any remaining in-scope help or move to the normal closing check. A long call is not a reason to skip the offer or the caller's answer.
 
 KNOWLEDGE RULES
 - Choose tools by the information or action needed for the caller's goal, using their descriptions and prerequisites. Reason about relevance and the next useful step rather than following a fixed sequence. A lookup should resolve a current information need or enable a useful action, not merely decorate an answer. Reuse adequate results already in this conversation; retrieve again when the question changes, data needs refreshing, or a prior result is insufficient. Consent, support scope and truthful success reporting remain mandatory.
@@ -148,7 +151,9 @@ export function buildAssistant(opts: { toolServerUrl: string; toolSecret?: strin
         : [{ type: "endCall" }],
     },
     voice: { provider: "openai", voiceId: "marin" },
-    maxDurationSeconds: 600,
+    // Hard safety cap only. A real routing walkthrough can pass ten minutes: Jordan's
+    // 2026-11-03 phone call hit the previous 600 s cap mid-sentence while offering a specialist.
+    maxDurationSeconds: MAX_CALL_DURATION_SECONDS,
     // Vapi's platform default silence timeout is 30 s, which hung up on callers who said
     // "hold on" before either idle hook below could run. 105 s leaves the hooks in charge
     // (nudge at 45 s, goodbye + endCall at 75 s) with a hard stop 30 s after that.

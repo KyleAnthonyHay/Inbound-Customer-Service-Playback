@@ -1,9 +1,10 @@
 import type { MutationCtx } from "../_generated/server";
+import { MAX_CALL_DURATION_SECONDS } from "../../src/lib/callLimits";
 
 export const DEV_SITE = "https://ceaseless-rhinoceros-106.convex.site";
 export const ADMISSION_MESSAGE = "Development calling is temporarily unavailable to keep capacity available for production. Please try again later.";
-// Longer than the enforced 10-minute call duration plus provider setup/join time.
-export const RESERVATION_MS = 20 * 60_000;
+// Longer than the enforced maximum call duration plus provider setup/join time.
+export const RESERVATION_MS = (MAX_CALL_DURATION_SECONDS + 10 * 60) * 1000;
 const scope = "development";
 
 /** Convex executes the indexed read and write in one serializable transaction. */
@@ -83,7 +84,7 @@ export async function startDevCall(transport: "browser" | "websocket", deps: Adm
       method: "POST", headers, redirect: "error", signal: AbortSignal.timeout(15000),
       body: JSON.stringify({
         assistantId: env.DEV_VAPI_ASSISTANT_ID,
-        assistantOverrides: { maxDurationSeconds: 600 },
+        assistantOverrides: { maxDurationSeconds: MAX_CALL_DURATION_SECONDS },
         transport: transport === "browser" ? { provider: "daily", roomDeleteOnUserLeaveEnabled: true } : {
           provider: "vapi.websocket", audioFormat: { format: "pcm_s16le", container: "raw", sampleRate: 24000 },
         },
