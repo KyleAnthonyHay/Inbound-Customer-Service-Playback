@@ -687,10 +687,7 @@ function LiveTranscript({ transcript, markers, reduce }: { transcript: Transcrip
   }, [rows.length, last?.text, reduce]);
   return (
     <div className="mt-4">
-      <div className="mb-2 flex items-baseline justify-between">
-        <p className="text-[13px] font-medium text-white/85">Conversation</p>
-        <p className="text-[11px] text-white/35">Times from call start</p>
-      </div>
+      <p className="mb-2 text-[13px] font-medium text-white/85">Conversation</p>
       <div ref={boxRef} className="max-h-[440px] overflow-y-auto overscroll-contain pr-1 [scrollbar-width:thin]">
         <ol className="relative">
           {rows.map((r, i) => {
