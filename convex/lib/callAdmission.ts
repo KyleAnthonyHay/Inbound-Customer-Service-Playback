@@ -85,7 +85,7 @@ export async function startDevCall(transport: "browser" | "websocket", deps: Adm
         assistantId: env.DEV_VAPI_ASSISTANT_ID,
         assistantOverrides: { maxDurationSeconds: 600 },
         transport: transport === "browser" ? { provider: "daily", roomDeleteOnUserLeaveEnabled: true } : {
-          provider: "vapi.websocket", audioFormat: { format: "pcm_s16le", container: "raw", sampleRate: 16000 },
+          provider: "vapi.websocket", audioFormat: { format: "pcm_s16le", container: "raw", sampleRate: 24000 },
         },
       }),
     });

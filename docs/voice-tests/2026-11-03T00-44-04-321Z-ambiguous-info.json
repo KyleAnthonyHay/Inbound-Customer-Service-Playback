@@ -1,0 +1,83 @@
+{
+  "scenario": "ambiguous-info",
+  "expectedIntent": "song-loading",
+  "callId": "01a19edb-6e41-788b-a534-2941984342e4",
+  "endedReason": "assistant-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "search_playback_docs",
+    "delegate",
+    "endCall"
+  ],
+  "timing": {
+    "turns": [
+      {
+        "caller": "It's just not working",
+        "silenceS": 0.4,
+        "firstHeard": "I hear you. No sound can mean a few different things depending on your setup. Do you mean no sound from the app at all, or no sound coming out of your audio interface?",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [],
+        "summary": "\"It's just not working\" -> 0.4s silence, then answer: \"I hear you. No sound can mean a few different thin\""
+      },
+      {
+        "caller": "The songs, they won't go",
+        "silenceS": 0.6,
+        "firstHeard": "Okay. I'm with you. Just a sec while I check that.",
+        "transition": true,
+        "gapAfterTransitionS": null,
+        "tools": [],
+        "summary": "\"The songs, they won't go\" -> 0.6s silence, then transition: \"Okay. I'm with you. Just a sec while I check that.\""
+      },
+      {
+        "caller": "Oh, they won't download. It's stuck loading. I'm on an iPad. I don't know the version",
+        "silenceS": 0.4,
+        "firstHeard": "Got it. Checking that.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.0s",
+          "search_playback_docs@+1.4s"
+        ],
+        "summary": "\"Oh, they won't download. It's stuck load\" -> 0.4s silence, then answer: \"Got it. Checking that.\" [delegate@+0.0s, search_playback_docs@+1.4s]"
+      },
+      {
+        "caller": "Okay, thanks. I'll try that. Bye",
+        "silenceS": 0.4,
+        "firstHeard": "Sure.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.0s",
+          "endCall@+0.6s"
+        ],
+        "summary": "\"Okay, thanks. I'll try that. Bye\" -> 0.4s silence, then answer: \"Sure.\" [delegate@+0.0s, endCall@+0.6s]"
+      }
+    ],
+    "longestSilenceS": 0.6,
+    "longestGapAfterTransitionS": 0
+  },
+  "convexToolEvents": [
+    "search_playback_docs succeeded 433ms 6 result(s)"
+  ],
+  "liveEvents": [
+    "74.2s TOOL-CALLS delegate({})",
+    "76.1s TOOL-CALLS search_playback_docs({\"query\":\"iPad song download stuck loading troubleshooting downloads Playback\",\"category\":\"song-loading\",\"platform\":\"iPadOS\"})",
+    "94.7s TOOL-CALLS delegate({})",
+    "95.9s TOOL-CALLS endCall({})",
+    "96.5s STATUS ended assistant-ended-call",
+    "96.5s hangup"
+  ],
+  "transcript": [
+    "AGENT: Hi, thanks for calling MultiTracks Playback support. I'm an AI assistant. What can I help you with today?",
+    "CALLER: It's just not working",
+    "AGENT: I hear you. No sound can mean a few different things depending on your setup. Do you mean no sound from the app at all, or no sound coming out of your audio interface?",
+    "CALLER: The songs, they won't go",
+    "AGENT: Okay. I'm with you. Just a sec while I check that.",
+    "CALLER: Oh, they won't download. It's stuck loading. I'm on an iPad. I don't know the version",
+    "AGENT: Got it. Checking that.",
+    "AGENT: Thanks. What message, if any, do you see while the download is stuck?",
+    "CALLER: Okay, thanks. I'll try that. Bye",
+    "AGENT: Sure."
+  ]
+}

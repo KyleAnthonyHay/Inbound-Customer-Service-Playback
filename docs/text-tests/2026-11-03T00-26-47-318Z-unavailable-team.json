@@ -1,0 +1,105 @@
+{
+  "kind": "text-reasoner-proof-of-concept",
+  "voiceCallCreated": false,
+  "presentationVoiceEvidence": false,
+  "scenario": "unavailable-team",
+  "expectedIntent": "human-request-unavailable-callback",
+  "failure": null,
+  "reportedTextCost": 0.0255,
+  "turns": [
+    {
+      "input": "Please connect me with a Playback support specialist.",
+      "chatId": "03717f6e-b03f-4b17-ae16-c02f72cacba9",
+      "reply": "Of course. Let me see who's available. One moment please.\n\nNobody is available for a transfer right now, but I can schedule a callback. When would you be next available?",
+      "tools": [
+        {
+          "name": "check_team_availability",
+          "arguments": {
+            "teamId": "playback-support"
+          },
+          "result": {
+            "source": "simulated",
+            "teams": [
+              {
+                "canTransferNow": false,
+                "description": "Song loading, audio output, device and version issues.",
+                "label": "Playback Technical Support",
+                "status": "available",
+                "teamId": "playback-support",
+                "withinHours": false
+              }
+            ],
+            "handoffStarted": false,
+            "actionPerformed": "availability-lookup-only"
+          }
+        }
+      ],
+      "reportedCost": 0.0082
+    },
+    {
+      "input": "Tomorrow at 11 AM Eastern works for me. I'm Taylor and my number is +1 202 555 0146. Please check that time, but do not book yet.",
+      "chatId": "cbf249e3-e008-4fa8-bea7-c8e7c6715914",
+      "reply": "Let me check that time.\n\nTue, Nov 3, 11:00 AM EST is available. I haven’t booked it.",
+      "tools": [
+        {
+          "name": "get_callback_slots",
+          "arguments": {
+            "teamId": "playback-support",
+            "preferredDate": "tomorrow",
+            "preferredTime": "11 AM",
+            "timeZone": "Eastern"
+          },
+          "result": {
+            "instruction": "Tue, Nov 3, 11:00 AM EST is open. Read the full details back (time, zone, number) and get an explicit yes before calling reserve_callback with slotId j572g57y6rbch9bw7pmq0f0nr98he7y2.",
+            "now": "2026-11-03T00:26:45.009Z",
+            "nowLocal": "Mon, Nov 2, 7:26 PM EST",
+            "requested": {
+              "available": true,
+              "endAt": "2026-11-03T16:30:00.000Z",
+              "iso": "2026-11-03T16:00:00.000Z",
+              "local": "Tue, Nov 3, 11:00 AM EST",
+              "slotId": "j572g57y6rbch9bw7pmq0f0nr98he7y2"
+            },
+            "slots": [
+              {
+                "endAt": "2026-11-03T16:30:00.000Z",
+                "local": "Tue, Nov 3, 11:00 AM EST",
+                "slotId": "j572g57y6rbch9bw7pmq0f0nr98he7y2",
+                "startAt": "2026-11-03T16:00:00.000Z"
+              },
+              {
+                "endAt": "2026-11-03T16:00:00.000Z",
+                "local": "Tue, Nov 3, 10:30 AM EST",
+                "slotId": "j572nxnvr6vdr0pgm4xk4scynx8he1ys",
+                "startAt": "2026-11-03T15:30:00.000Z"
+              },
+              {
+                "endAt": "2026-11-03T17:00:00.000Z",
+                "local": "Tue, Nov 3, 11:30 AM EST",
+                "slotId": "j579yeh2zrsxyccqg6fv4w3p6n8he1wq",
+                "startAt": "2026-11-03T16:30:00.000Z"
+              },
+              {
+                "endAt": "2026-11-03T15:30:00.000Z",
+                "local": "Tue, Nov 3, 10:00 AM EST",
+                "slotId": "j57cxbc1dwxq1fccmh2sps7m2x8hf6ax",
+                "startAt": "2026-11-03T15:00:00.000Z"
+              }
+            ],
+            "source": "simulated",
+            "teamHoursLocal": "10:00 AM to 7:00 PM EST, weekdays only",
+            "timeZone": "America/New_York"
+          }
+        }
+      ],
+      "reportedCost": 0.0097
+    },
+    {
+      "input": "No booking for now, thank you. Goodbye.",
+      "chatId": "968059e1-3110-4e72-9fca-4d520adbe541",
+      "reply": "Okay, thanks for calling MultiTracks Support. Goodbye.",
+      "tools": [],
+      "reportedCost": 0.0076
+    }
+  ]
+}

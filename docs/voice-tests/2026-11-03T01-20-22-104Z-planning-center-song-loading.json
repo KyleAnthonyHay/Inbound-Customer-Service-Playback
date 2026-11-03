@@ -1,0 +1,96 @@
+{
+  "scenario": "planning-center-song-loading",
+  "expectedIntent": "song-loading",
+  "callId": "01a19efc-9776-7552-99a5-3616569f3891",
+  "endedReason": "assistant-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "delegate",
+    "check_song_access",
+    "search_playback_docs",
+    "delegate",
+    "delegate",
+    "endCall"
+  ],
+  "timing": {
+    "turns": [
+      {
+        "caller": "I'm John. Demo customer one-one-one. I'm on an iPad and one of my songs won't download",
+        "silenceS": 0.6,
+        "firstHeard": "Thanks. Okay, I'm pulling that up.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"I'm John. Demo customer one-one-one. I'm\" -> 0.6s silence, then answer: \"Thanks. Okay, I'm pulling that up.\" [delegate@+0.0s]"
+      },
+      {
+        "caller": "It's Graves into Gardens. The message says download error. I'm on Playback eight-six-four, and I have time to troubleshoot before rehearsal",
+        "silenceS": 0,
+        "firstHeard": "All right, I'm with you.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.0s",
+          "check_song_access@+0.8s",
+          "search_playback_docs@+0.8s"
+        ],
+        "summary": "\"It's Graves into Gardens. The message sa\" -> 0s silence, then answer: \"All right, I'm with you.\" [delegate@+0.0s, check_song_access@+0.8s, search_playback_docs@+0.8s]"
+      },
+      {
+        "caller": "After following that step, the song is downloading now. Thank you",
+        "silenceS": 0.6,
+        "firstHeard": "Sure.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"After following that step, the song is d\" -> 0.6s silence, then answer: \"Sure.\" [delegate@+0.0s]"
+      },
+      {
+        "caller": "That's everything. Goodbye",
+        "silenceS": 0.6,
+        "firstHeard": "Okay.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.0s",
+          "endCall@+0.8s"
+        ],
+        "summary": "\"That's everything. Goodbye\" -> 0.6s silence, then answer: \"Okay.\" [delegate@+0.0s, endCall@+0.8s]"
+      }
+    ],
+    "longestSilenceS": 0.6,
+    "longestGapAfterTransitionS": 0
+  },
+  "convexToolEvents": [
+    "check_song_access succeeded 29ms purchased",
+    "search_playback_docs succeeded 400ms 6 result(s)"
+  ],
+  "liveEvents": [
+    "27.5s TOOL-CALLS delegate({})",
+    "52.6s TOOL-CALLS delegate({})",
+    "54.8s TOOL-CALLS check_song_access({\"customerId\":\"111\",\"songTitle\":\"Graves into Gardens\"}), search_playback_docs({\"query\":\"Playback iPad download error song will not download troubleshooting\",\"category\":\"song-loading\",\"platform\":\"iPadOS\"})",
+    "79.9s TOOL-CALLS delegate({})",
+    "98.1s TOOL-CALLS delegate({})",
+    "100.3s TOOL-CALLS endCall({})",
+    "100.9s STATUS ended assistant-ended-call",
+    "100.9s hangup"
+  ],
+  "transcript": [
+    "AGENT: Hi, thanks for calling MultiTracks Playback support. I'm an AI assistant. What can I help you with today?",
+    "CALLER: I'm John. Demo customer one-one-one. I'm on an iPad and one of my songs won't download",
+    "AGENT: Thanks. Okay, I'm pulling that up.",
+    "AGENT: Thanks, John. Which song is refusing to download?",
+    "CALLER: It's Graves into Gardens. The message says download error. I'm on Playback eight-six-four, and I have time to troubleshoot before rehearsal",
+    "AGENT: All right, I'm with you.",
+    "AGENT: Graves Into Gardens is active and available to your organization. Since it says download error, please tap Try Again twice. Does the error still appear after the second try?",
+    "CALLER: After following that step, the song is downloading now. Thank you",
+    "AGENT: Sure.",
+    "AGENT: Glad it's downloading now. Is there anything else I can help with?",
+    "CALLER: That's everything. Goodbye",
+    "AGENT: Okay."
+  ]
+}

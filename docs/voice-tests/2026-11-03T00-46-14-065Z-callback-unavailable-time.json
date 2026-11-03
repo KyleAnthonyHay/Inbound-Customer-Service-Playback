@@ -1,0 +1,93 @@
+{
+  "scenario": "callback-unavailable-time",
+  "expectedIntent": "callback",
+  "callId": "01a19edd-1cdb-7552-9766-366ee3c28fbb",
+  "endedReason": "customer-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "delegate",
+    "get_callback_slots",
+    "delegate",
+    "delegate",
+    "reserve_callback"
+  ],
+  "timing": {
+    "turns": [
+      {
+        "caller": "I'd rather just talk to someone from the team. Can they call me back",
+        "silenceS": 0.4,
+        "firstHeard": "Okay, I'll check who's available.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"I'd rather just talk to someone from the\" -> 0.4s silence, then answer: \"Okay, I'll check who's available.\" [delegate@+0.0s]"
+      },
+      {
+        "caller": "Monday at 8 p.m. works for me. I'm in Eastern time",
+        "silenceS": 0,
+        "firstHeard": "Got it. Thanks",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.0s",
+          "get_callback_slots@+0.6s"
+        ],
+        "summary": "\"Monday at 8 p.m. works for me. I'm in Ea\" -> 0s silence, then answer: \"Got it. Thanks\" [delegate@+0.0s, get_callback_slots@+0.6s]"
+      },
+      {
+        "caller": "Oh, okay. Then the latest slot you have that day is fine. My number is five-five-five- zero-one-zero- zero-one-seven-seven and my name is Priyanata Rajan",
+        "silenceS": 0.6,
+        "firstHeard": "Thanks, one moment.",
+        "transition": true,
+        "gapAfterTransitionS": 2,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"Oh, okay. Then the latest slot you have \" -> 0.6s silence, then transition: \"Thanks, one moment.\" -> 2s gap -> \"Okay, so Monday, November 9th at 6:30 p.\" [delegate@+0.0s]"
+      },
+      {
+        "caller": "Yes. Book it. Thanks. Bye",
+        "silenceS": 0.4,
+        "firstHeard": "Sure, I'll set that up.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+-0.0s",
+          "reserve_callback@+1.4s"
+        ],
+        "summary": "\"Yes. Book it. Thanks. Bye\" -> 0.4s silence, then answer: \"Sure, I'll set that up.\" [delegate@+-0.0s, reserve_callback@+1.4s]"
+      }
+    ],
+    "longestSilenceS": 0.6,
+    "longestGapAfterTransitionS": 2
+  },
+  "convexToolEvents": [
+    "get_callback_slots succeeded 63ms Mon, Nov 9, 8:00 PM EST not available (outside-hours)",
+    "reserve_callback succeeded 43ms confirmed"
+  ],
+  "liveEvents": [
+    "25.3s TOOL-CALLS delegate({})",
+    "44.6s TOOL-CALLS delegate({})",
+    "46.1s TOOL-CALLS get_callback_slots({\"teamId\":\"playback-support\",\"preferredDate\":\"Monday\",\"preferredTime\":\"8 p.m.\",\"timeZone\":\"Eastern\"})",
+    "75.0s TOOL-CALLS delegate({})",
+    "94.8s TOOL-CALLS delegate({})",
+    "97.0s TOOL-CALLS reserve_callback({\"teamId\":\"playback-support\",\"slotId\":\"j575a88dneyb0dkn280tqjgm118hec29\",\"timeZone\":\"Eastern\",\"callerName\":\"Priyanata Rajan\",\"callbackNumber\":\"555-010-0177\",\"reason\":\"Caller requested a callback to speak with the Playback support team.\"})"
+  ],
+  "transcript": [
+    "AGENT: Hi, thanks for calling MultiTracks Playback support. I'm an AI assistant. What can I help you with today?",
+    "CALLER: I'd rather just talk to someone from the team. Can they call me back",
+    "AGENT: Okay, I'll check who's available.",
+    "AGENT: Sure, what day and time would you prefer for a callback?",
+    "CALLER: Monday at 8 p.m. works for me. I'm in Eastern time",
+    "AGENT: Got it. Thanks",
+    "AGENT: I'm sorry, that's outside the callback hours. I can do Monday at 6:30, 5, 4:30, or 4, Eastern.",
+    "CALLER: Oh, okay. Then the latest slot you have that day is fine. My number is five-five-five- zero-one-zero- zero-one-seven-seven and my name is Priyanata Rajan",
+    "AGENT: Thanks, one moment.",
+    "AGENT: Okay, so Monday, November 9th at 6:30 p.m. Eastern, at that number. Is that right?",
+    "CALLER: Yes. Book it. Thanks. Bye",
+    "AGENT: Sure, I'll set that up.",
+    "AGENT: Your callback is confirmed for Monday, November 9th at 6:30 p.m. Eastern. Okay, thanks for calling MultiTracks Support. Goodbye."
+  ]
+}

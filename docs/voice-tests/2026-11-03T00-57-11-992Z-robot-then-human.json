@@ -1,0 +1,73 @@
+{
+  "scenario": "robot-then-human",
+  "expectedIntent": "human-request",
+  "callId": "01a19ee7-c4b2-7ffb-8cda-693b4d73bdd0",
+  "endedReason": "assistant-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "check_team_availability",
+    "delegate",
+    "endCall"
+  ],
+  "timing": {
+    "turns": [
+      {
+        "caller": "Are you a robot",
+        "silenceS": 0.2,
+        "firstHeard": "Yes, I'm an AI assistant for MultiTracks Playback support. I can help you fix song-loading and audio-output problems or get you to a person. What's going on today?",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [],
+        "summary": "\"Are you a robot\" -> 0.2s silence, then answer: \"Yes, I'm an AI assistant for MultiTracks Playback \""
+      },
+      {
+        "caller": "You know. Can I just speak to a human, please",
+        "silenceS": 0,
+        "firstHeard": "Sure, I'll check who is available.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+1.0s",
+          "check_team_availability@+3.6s"
+        ],
+        "summary": "\"You know. Can I just speak to a human, p\" -> 0s silence, then answer: \"Sure, I'll check who is available.\" [delegate@+1.0s, check_team_availability@+3.6s]"
+      },
+      {
+        "caller": "Okay, thank you",
+        "silenceS": 0.6,
+        "firstHeard": "Sure.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.0s",
+          "endCall@+0.8s"
+        ],
+        "summary": "\"Okay, thank you\" -> 0.6s silence, then answer: \"Sure.\" [delegate@+0.0s, endCall@+0.8s]"
+      }
+    ],
+    "longestSilenceS": 0.6,
+    "longestGapAfterTransitionS": 0
+  },
+  "convexToolEvents": [
+    "check_team_availability succeeded 22ms Playback Technical Support: unavailable"
+  ],
+  "liveEvents": [
+    "52.6s TOOL-CALLS delegate({})",
+    "54.2s TOOL-CALLS check_team_availability({\"teamId\":\"playback-support\"})",
+    "71.9s TOOL-CALLS delegate({})",
+    "74.6s TOOL-CALLS endCall({})",
+    "75.2s STATUS ended assistant-ended-call",
+    "75.2s hangup"
+  ],
+  "transcript": [
+    "AGENT: Hi, thanks for calling MultiTracks Playback support. I'm an AI assistant. What can I help you with today?",
+    "CALLER: Are you a robot",
+    "AGENT: Yes, I'm an AI assistant for MultiTracks Playback support. I can help you fix song-loading and audio-output problems or get you to a person. What's going on today?",
+    "CALLER: You know. Can I just speak to a human, please",
+    "AGENT: Sure, I'll check who is available.",
+    "AGENT: Okay, checking now.",
+    "AGENT: Nobody's available right now, but I can schedule a callback. When would you be available?",
+    "CALLER: Okay, thank you",
+    "AGENT: Sure."
+  ]
+}

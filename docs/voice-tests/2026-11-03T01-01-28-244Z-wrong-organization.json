@@ -1,0 +1,81 @@
+{
+  "scenario": "wrong-organization",
+  "expectedIntent": "song-loading",
+  "callId": "01a19eeb-83e2-7bb0-8f96-64a95f83d86b",
+  "endedReason": "assistant-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "search_playback_docs",
+    "delegate",
+    "lookup_demo_customer",
+    "delegate",
+    "endCall"
+  ],
+  "timing": {
+    "turns": [
+      {
+        "caller": "My library in Playback is completely empty. None of our church's songs are there",
+        "silenceS": 0.8,
+        "firstHeard": "Okay. I'll help you with that.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.0s",
+          "search_playback_docs@+2.0s"
+        ],
+        "summary": "\"My library in Playback is completely emp\" -> 0.8s silence, then answer: \"Okay. I'll help you with that.\" [delegate@+0.0s, search_playback_docs@+2.0s]"
+      },
+      {
+        "caller": "I don't have the app in front of me. My email is Olivia dot Brennan at example dot org",
+        "silenceS": 0.6,
+        "firstHeard": "Thanks. I'll check with that.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+-0.0s",
+          "lookup_demo_customer@+1.4s"
+        ],
+        "summary": "\"I don't have the app in front of me. My \" -> 0.6s silence, then answer: \"Thanks. I'll check with that.\" [delegate@+-0.0s, lookup_demo_customer@+1.4s]"
+      },
+      {
+        "caller": "Oh, I probably picked my own name instead of Northgate when I logged in. Let me switch. Thanks. Bye",
+        "silenceS": 0.4,
+        "firstHeard": "Sure, one moment.",
+        "transition": true,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.0s",
+          "endCall@+1.4s"
+        ],
+        "summary": "\"Oh, I probably picked my own name instea\" -> 0.4s silence, then transition: \"Sure, one moment.\" [delegate@+0.0s, endCall@+1.4s]"
+      }
+    ],
+    "longestSilenceS": 0.8,
+    "longestGapAfterTransitionS": 0
+  },
+  "convexToolEvents": [
+    "search_playback_docs succeeded 463ms 6 result(s)",
+    "lookup_demo_customer succeeded 33ms wrong-organization"
+  ],
+  "liveEvents": [
+    "26.9s TOOL-CALLS delegate({})",
+    "30.4s TOOL-CALLS search_playback_docs({\"query\":\"Playback library empty songs missing organization selection signed in library\",\"category\":\"song-loading\"})",
+    "52.2s TOOL-CALLS delegate({})",
+    "53.6s TOOL-CALLS lookup_demo_customer({\"email\":\"olivia.brennan@example.org\"})",
+    "82.3s TOOL-CALLS delegate({})",
+    "85.5s TOOL-CALLS endCall({})",
+    "86.2s STATUS ended assistant-ended-call",
+    "86.2s hangup"
+  ],
+  "transcript": [
+    "AGENT: Hi, thanks for calling MultiTracks Playback support. I'm an AI assistant. What can I help you with today?",
+    "CALLER: My library in Playback is completely empty. None of our church's songs are there",
+    "AGENT: Okay. I'll help you with that.",
+    "AGENT: I'm sorry, that can happen. When you open the app, which organization name do you see selected?",
+    "CALLER: I don't have the app in front of me. My email is Olivia dot Brennan at example dot org",
+    "AGENT: Thanks. I'll check with that.",
+    "AGENT: Okay, I found two organizations on that demo account, and the church songs are under Northgate Worship Collective. When you have the app, use switch organizations and choose Northgate Worship Collective. Does that make sense?",
+    "CALLER: Oh, I probably picked my own name instead of Northgate when I logged in. Let me switch. Thanks. Bye",
+    "AGENT: Sure, one moment."
+  ]
+}

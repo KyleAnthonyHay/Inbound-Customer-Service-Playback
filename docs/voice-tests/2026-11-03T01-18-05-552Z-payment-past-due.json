@@ -1,0 +1,78 @@
+{
+  "scenario": "payment-past-due",
+  "expectedIntent": "subscription",
+  "callId": "01a19efa-e28a-7449-a750-4d4a4238358c",
+  "endedReason": "assistant-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "delegate",
+    "lookup_demo_customer",
+    "delegate",
+    "endCall"
+  ],
+  "timing": {
+    "turns": [
+      {
+        "caller": "Playback keeps showing a warning about our Cloud Pro payment. Is our account about to get shut off",
+        "silenceS": 0.2,
+        "firstHeard": "Okay, I’ll check that.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"Playback keeps showing a warning about o\" -> 0.2s silence, then answer: \"Okay, I’ll check that.\" [delegate@+0.0s]"
+      },
+      {
+        "caller": "Our organization ID is eight two nine four five five",
+        "silenceS": 0.8,
+        "firstHeard": "Thank you. Checking that",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.0s",
+          "lookup_demo_customer@+1.6s"
+        ],
+        "summary": "\"Our organization ID is eight two nine fo\" -> 0.8s silence, then answer: \"Thank you. Checking that\" [delegate@+0.0s, lookup_demo_customer@+1.6s]"
+      },
+      {
+        "caller": "Okay, so I have until the eleventh. I'll update the card myself. Thanks. Bye",
+        "silenceS": 0.4,
+        "firstHeard": "Sure, one moment.",
+        "transition": true,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.0s",
+          "endCall@+1.4s"
+        ],
+        "summary": "\"Okay, so I have until the eleventh. I'll\" -> 0.4s silence, then transition: \"Sure, one moment.\" [delegate@+0.0s, endCall@+1.4s]"
+      }
+    ],
+    "longestSilenceS": 0.8,
+    "longestGapAfterTransitionS": 0
+  },
+  "convexToolEvents": [
+    "lookup_demo_customer succeeded 28ms past-due"
+  ],
+  "liveEvents": [
+    "26.7s TOOL-CALLS delegate({})",
+    "47.4s TOOL-CALLS delegate({})",
+    "48.6s TOOL-CALLS lookup_demo_customer({\"orgId\":\"829455\"})",
+    "72.9s TOOL-CALLS delegate({})",
+    "75.7s TOOL-CALLS endCall({})",
+    "76.3s STATUS ended assistant-ended-call",
+    "76.3s hangup"
+  ],
+  "transcript": [
+    "AGENT: Hi, thanks for calling MultiTracks Playback support. I'm an AI assistant. What can I help you with today?",
+    "CALLER: Playback keeps showing a warning about our Cloud Pro payment. Is our account about to get shut off",
+    "AGENT: Okay, I’ll check that.",
+    "AGENT: Can I get your six-digit Organization ID from Playback Settings, then About? What number does it show?",
+    "CALLER: Our organization ID is eight two nine four five five",
+    "AGENT: Thank you. Checking that",
+    "AGENT: now.",
+    "AGENT: It looks like the renewal payment was declined, but your features will stay active through November eleventh. Do you want me to get you to the billing team?",
+    "CALLER: Okay, so I have until the eleventh. I'll update the card myself. Thanks. Bye",
+    "AGENT: Sure, one moment."
+  ]
+}

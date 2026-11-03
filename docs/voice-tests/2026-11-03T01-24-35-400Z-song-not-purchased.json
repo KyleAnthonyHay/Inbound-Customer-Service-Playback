@@ -1,0 +1,84 @@
+{
+  "scenario": "song-not-purchased",
+  "expectedIntent": "subscription",
+  "callId": "01a19f00-8f07-7000-8739-9e5c9044fcd3",
+  "endedReason": "assistant-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "search_playback_docs",
+    "get_planning_center_service_context",
+    "delegate",
+    "check_song_access",
+    "delegate",
+    "endCall"
+  ],
+  "timing": {
+    "turns": [
+      {
+        "caller": "Hi, I added waymaker to our set list but there's no tracks option. It only shows click and guide",
+        "silenceS": 0.4,
+        "firstHeard": "Hmm. Okay. I'll check on that for you.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.0s",
+          "search_playback_docs@+3.0s",
+          "get_planning_center_service_context@+3.0s"
+        ],
+        "summary": "\"Hi, I added waymaker to our set list but\" -> 0.4s silence, then answer: \"Hmm. Okay. I'll check on that for you.\" [delegate@+0.0s, search_playback_docs@+3.0s, get_planning_center_service_context@+3.0s]"
+      },
+      {
+        "caller": "Sure. Our organization ID is four eight zero one one three",
+        "silenceS": 0.4,
+        "firstHeard": "Thanks. Got it.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.0s",
+          "check_song_access@+1.2s"
+        ],
+        "summary": "\"Sure. Our organization ID is four eight \" -> 0.4s silence, then answer: \"Thanks. Got it.\" [delegate@+0.0s, check_song_access@+1.2s]"
+      },
+      {
+        "caller": "Oh, so we never actually bought it. Okay, I'll get our admin to purchase it. Thanks. Bye",
+        "silenceS": 0.2,
+        "firstHeard": "'kay. Thanks for calling MultiTracks Support.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.0s",
+          "endCall@+2.4s"
+        ],
+        "summary": "\"Oh, so we never actually bought it. Okay\" -> 0.2s silence, then answer: \"'kay. Thanks for calling MultiTracks Support.\" [delegate@+0.0s, endCall@+2.4s]"
+      }
+    ],
+    "longestSilenceS": 0.4,
+    "longestGapAfterTransitionS": 0
+  },
+  "convexToolEvents": [
+    "get_planning_center_service_context succeeded 518ms 3 demo service song(s) — actual Services API read",
+    "search_playback_docs succeeded 441ms 6 result(s)",
+    "check_song_access succeeded 28ms click-guide-only"
+  ],
+  "liveEvents": [
+    "27.5s TOOL-CALLS delegate({})",
+    "30.3s TOOL-CALLS search_playback_docs({\"query\":\"Playback song only shows click and guide, no tracks option after adding song to setlist\",\"category\":\"song-loading\"}), get_planning_center_service_context({})",
+    "60.9s TOOL-CALLS delegate({})",
+    "63.6s TOOL-CALLS check_song_access({\"orgId\":\"480113\",\"songTitle\":\"Way Maker\"})",
+    "91.1s TOOL-CALLS delegate({})",
+    "93.7s TOOL-CALLS endCall({})",
+    "94.3s STATUS ended assistant-ended-call",
+    "94.3s hangup"
+  ],
+  "transcript": [
+    "AGENT: Hi, thanks for calling MultiTracks Playback support. I'm an AI assistant. What can I help you with today?",
+    "CALLER: Hi, I added waymaker to our set list but there's no tracks option. It only shows click and guide",
+    "AGENT: Hmm. Okay. I'll check on that for you.",
+    "AGENT: That usually means Way Maker was added from the catalog, which can provide Click and Guide without the multitracks. Could you tell me the six-digit Organization ID shown in Playback Settings under About, so I can check your team's access to that song?",
+    "CALLER: Sure. Our organization ID is four eight zero one one three",
+    "AGENT: Thanks. Got it.",
+    "AGENT: It looks like Way Maker isn't in your organization's library, so Playback can load only its click and guide. The tracks would need to be purchased. Would you like me to connect you with someone who can help with that?",
+    "CALLER: Oh, so we never actually bought it. Okay, I'll get our admin to purchase it. Thanks. Bye",
+    "AGENT: 'kay. Thanks for calling MultiTracks Support."
+  ]
+}

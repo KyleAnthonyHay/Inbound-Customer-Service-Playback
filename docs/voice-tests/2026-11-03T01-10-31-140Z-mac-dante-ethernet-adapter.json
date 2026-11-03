@@ -1,0 +1,94 @@
+{
+  "scenario": "mac-dante-ethernet-adapter",
+  "expectedIntent": "audio-output",
+  "callId": "01a19ef3-814b-7aa9-8b1f-7276e633f806",
+  "endedReason": "assistant-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "search_playback_docs",
+    "delegate",
+    "delegate",
+    "delegate",
+    "endCall"
+  ],
+  "timing": {
+    "turns": [
+      {
+        "caller": "I'm trying to send audio out, but no audio device is showing up. I can only pick my Mac speaker",
+        "silenceS": 0.4,
+        "firstHeard": "Okay, let me check what's going",
+        "transition": true,
+        "gapAfterTransitionS": 0.2,
+        "tools": [
+          "delegate@+0.0s",
+          "search_playback_docs@+1.8s"
+        ],
+        "summary": "\"I'm trying to send audio out, but no aud\" -> 0.4s silence, then transition: \"Okay, let me check what's going\" -> 0.2s gap -> \"on.\" [delegate@+0.0s, search_playback_docs@+1.8s]"
+      },
+      {
+        "caller": "It's a Mac. I'm connecting it to our network with a USB to CAT 6 dongle. We use Dante",
+        "silenceS": 0.6,
+        "firstHeard": "Got it, thanks. I'll take",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+-0.0s"
+        ],
+        "summary": "\"It's a Mac. I'm connecting it to our net\" -> 0.6s silence, then answer: \"Got it, thanks. I'll take\" [delegate@+-0.0s]"
+      },
+      {
+        "caller": "I don't think the Dante virtual sound card app is actually running right now",
+        "silenceS": 0,
+        "firstHeard": "Okay, thanks. I'm checking",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"I don't think the Dante virtual sound ca\" -> 0s silence, then answer: \"Okay, thanks. I'm checking\" [delegate@+0.0s]"
+      },
+      {
+        "caller": "Okay, yeah. It shows up now after I pressed start. Thanks. Bye",
+        "silenceS": 0.4,
+        "firstHeard": "[tongue click] You're welcome. I'll wrap this up for you.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.0s",
+          "endCall@+2.8s"
+        ],
+        "summary": "\"Okay, yeah. It shows up now after I pres\" -> 0.4s silence, then answer: \"[tongue click] You're welcome. I'll wrap this up f\" [delegate@+0.0s, endCall@+2.8s]"
+      }
+    ],
+    "longestSilenceS": 0.6,
+    "longestGapAfterTransitionS": 0.2
+  },
+  "convexToolEvents": [
+    "search_playback_docs succeeded 496ms 6 result(s)"
+  ],
+  "liveEvents": [
+    "27.3s TOOL-CALLS delegate({})",
+    "29.1s TOOL-CALLS search_playback_docs({\"query\":\"Playback for Mac audio output device not showing, only Mac speakers available\",\"category\":\"audio-output\",\"platform\":\"macOS\"})",
+    "51.4s TOOL-CALLS delegate({})",
+    "74.2s TOOL-CALLS delegate({})",
+    "102.0s TOOL-CALLS delegate({})",
+    "104.9s TOOL-CALLS endCall({})",
+    "105.5s STATUS ended assistant-ended-call",
+    "105.5s hangup"
+  ],
+  "transcript": [
+    "AGENT: Hi, thanks for calling MultiTracks Playback support. I'm an AI assistant. What can I help you with today?",
+    "CALLER: I'm trying to send audio out, but no audio device is showing up. I can only pick my Mac speaker",
+    "AGENT: Okay, let me check what's going",
+    "AGENT: on.",
+    "AGENT: What audio interface or adapter are you trying to use with your Mac?",
+    "CALLER: It's a Mac. I'm connecting it to our network with a USB to CAT 6 dongle. We use Dante",
+    "AGENT: Got it, thanks. I'll take",
+    "AGENT: a look. For Dante on a Mac, you'll need Dante Virtual Soundcard running before it shows up. Is that installed and started?",
+    "CALLER: I don't think the Dante virtual sound card app is actually running right now",
+    "AGENT: Okay, thanks. I'm checking",
+    "AGENT: on that. Open Dante Virtual Soundcard, pick the network connection that has an IP address, and click Start. Then in Playback, check Settings, General, Audio Device and see if it shows up.",
+    "CALLER: Okay, yeah. It shows up now after I pressed start. Thanks. Bye",
+    "AGENT: [tongue click] You're welcome. I'll wrap this up for you."
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "scenario": "planning-center-audio-output",
+  "expectedIntent": "audio-output",
+  "callId": "01a19ee2-522c-7000-812a-9784f1524bef",
+  "endedReason": "customer-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "check_song_access",
+    "get_planning_center_service_context",
+    "lookup_demo_customer",
+    "delegate",
+    "search_playback_docs",
+    "delegate"
+  ],
+  "timing": {
+    "turns": [
+      {
+        "caller": "I'm Marcus, demo customer one thousand three. Playback is playing, but I can't hear What a Beautiful Name",
+        "silenceS": 0.8,
+        "firstHeard": "Okay, I see. Let me check on that.",
+        "transition": true,
+        "gapAfterTransitionS": 8.4,
+        "tools": [
+          "delegate@+0.0s",
+          "check_song_access@+2.4s",
+          "get_planning_center_service_context@+2.4s",
+          "lookup_demo_customer@+2.4s"
+        ],
+        "summary": "\"I'm Marcus, demo customer one thousand t\" -> 0.8s silence, then transition: \"Okay, I see. Let me check on that.\" -> 8.4s gap -> \"I can see that song on the demo service \" [delegate@+0.0s, check_song_access@+2.4s, get_planning_center_service_context@+2.4s, lookup_demo_customer@+2.4s]"
+      },
+      {
+        "caller": "I'm using an iPhone with a USB audio interface, and we have time before the service",
+        "silenceS": 0,
+        "firstHeard": "Thanks, that's helpful.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.0s",
+          "search_playback_docs@+0.8s"
+        ],
+        "summary": "\"I'm using an iPhone with a USB audio int\" -> 0s silence, then answer: \"Thanks, that's helpful.\" [delegate@+0.0s, search_playback_docs@+0.8s]"
+      },
+      {
+        "caller": "After checking the documented device and routing settings, I can hear the song now . Thanks",
+        "silenceS": 0.8,
+        "firstHeard": "You're welcome.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"After checking the documented device and\" -> 0.8s silence, then answer: \"You're welcome.\" [delegate@+0.0s]"
+      },
+      {
+        "caller": "That's all. Goodbye",
+        "silenceS": 0,
+        "firstHeard": "Okay, thanks for calling MultiTracks Support. Goodbye.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "tools": [],
+        "summary": "\"That's all. Goodbye\" -> 0s silence, then answer: \"Okay, thanks for calling MultiTracks Support. Good\""
+      }
+    ],
+    "longestSilenceS": 0.8,
+    "longestGapAfterTransitionS": 8.4
+  },
+  "convexToolEvents": [
+    "check_song_access failed 24ms not-found",
+    "get_planning_center_service_context succeeded 641ms 3 demo service song(s) — actual Services API read",
+    "lookup_demo_customer failed 17ms not-found",
+    "search_playback_docs succeeded 441ms 6 result(s)"
+  ],
+  "liveEvents": [
+    "28.7s TOOL-CALLS delegate({})",
+    "31.4s TOOL-CALLS check_song_access({\"customerId\":\"1003\",\"songTitle\":\"What a Beautiful Name\"}), get_planning_center_service_context({})",
+    "35.2s TOOL-CALLS lookup_demo_customer({\"customerId\":\"1003\"})",
+    "59.1s TOOL-CALLS delegate({})",
+    "61.3s TOOL-CALLS search_playback_docs({\"query\":\"Playback iPhone USB audio interface song plays but no sound audio output routing\",\"category\":\"audio-output\",\"platform\":\"iOS\"})",
+    "84.1s TOOL-CALLS delegate({})"
+  ],
+  "transcript": [
+    "AGENT: Hi, thanks for calling MultiTracks Playback support. I'm an AI assistant. What can I help you with today?",
+    "CALLER: I'm Marcus, demo customer one thousand three. Playback is playing, but I can't hear What a Beautiful Name",
+    "AGENT: Okay, I see. Let me check on that.",
+    "AGENT: I can see that song on the demo service plan, though, that doesn't confirm its audio access. When you press play, what do you hear from Playback, if anything?",
+    "CALLER: I'm using an iPhone with a USB audio interface, and we have time before the service",
+    "AGENT: Thanks, that's helpful.",
+    "AGENT: With the interface connected, is any sound from Playback reaching it, or is only What a Beautiful Name silent?",
+    "CALLER: After checking the documented device and routing settings, I can hear the song now . Thanks",
+    "AGENT: You're welcome.",
+    "AGENT: Great, I’m glad it’s working now. Is there anything else I can help with?",
+    "CALLER: That's all. Goodbye",
+    "AGENT: Okay, thanks for calling MultiTracks Support. Goodbye."
+  ]
+}
