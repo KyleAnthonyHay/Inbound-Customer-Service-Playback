@@ -42,7 +42,8 @@ function CallPageView({ remote, onBrowserStatus }: { remote: RemoteCall; onBrows
         handoff: null,
       }
     : { status: call.status, subtitle: "MultiTracks", startedAt: call.startedAt, handoff: call.handoff };
-  const [panelOpen, setPanelOpen] = useState(false);
+  // Open by default on every screen size; the reviewer sees the agent activity right away.
+  const [panelOpen, setPanelOpen] = useState(true);
   // Dev aid: /call?callId=<id> shows the logged events of a past call in the panel.
   const [callIdOverride, setCallIdOverride] = useState<string | null>(null);
   const [demo, setDemo] = useState(false);
@@ -76,7 +77,7 @@ function CallPageView({ remote, onBrowserStatus }: { remote: RemoteCall; onBrows
   };
 
   return (
-    <main className="relative min-h-[100dvh] bg-background">
+    <main className="relative h-[100dvh] overflow-hidden bg-background">
       {convexReady && <BrowserClosingBridge callId={call.callId} active={call.status === "active"} onRequested={call.closingRequested} />}
       <Link
         href="/"
