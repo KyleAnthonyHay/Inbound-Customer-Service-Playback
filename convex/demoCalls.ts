@@ -1,7 +1,7 @@
 import { ConvexError, v } from "convex/values";
-import { internalMutation, mutation, query } from "./_generated/server";
+import { internalMutation, internalQuery, mutation, query } from "./_generated/server";
 import { DEV_SITE } from "./lib/callAdmission";
-import { demoCandidate, demoPanel } from "./lib/demoCallValidators";
+import { demoCandidate, demoPanel, demoSetFields } from "./lib/demoCallValidators";
 import { DEMO_SET_KEY, INITIAL_DEMO_SNAPSHOT, demoPanelData, isSelectableDemoCall, replaceDemoEntry, validateDemoEntries } from "../src/lib/demoCalls";
 import { SCENARIOS } from "../src/lib/callMetrics";
 
@@ -28,11 +28,10 @@ export const initialize = internalMutation({
 export const get = query({
   args: {}, returns: v.union(v.null(), demoPanel),
   handler: async ctx => {
-    if (!development()) return null;
     const set = await ctx.db.query("demoCallSets").withIndex("by_key", q => q.eq("key", DEMO_SET_KEY)).unique();
     if (!set) return null;
     const calls = await Promise.all(set.entries.map(e => ctx.db.query("calls").withIndex("by_callId", q => q.eq("callId", e.callId)).unique()));
-    return { title: set.title, sourceSnapshotKey: set.sourceSnapshotKey, updatedAt: set.updatedAt, ...demoPanelData(set.entries, calls.filter(c => c !== null)) };
+    return { title: set.title, sourceSnapshotKey: set.sourceSnapshotKey, updatedAt: set.updatedAt, editable: development(), ...demoPanelData(set.entries, calls.filter(c => c !== null)) };
   },
 });
 
@@ -74,5 +73,55 @@ export const remove = mutation({
     if (!set) throw new ConvexError("The demo selection has not been initialized.");
     await ctx.db.patch(set._id, { entries: set.entries.filter(e => e.scenarioId !== args.scenarioId), updatedAt: Date.now() });
     return null;
+  },
+});
+
+/**
+ * Copy the selected demo calls from development to production so the read-only
+ * Demo calls panel works there too. Export on dev, then import on prod:
+ *   npx convex run demoCalls:exportSet > demo-calls.json
+ *   npx convex run --prod demoCalls:importSet "$(cat demo-calls.json)"
+ */
+export const exportSet = internalQuery({
+  args: {}, returns: v.any(),
+  handler: async ctx => {
+    requireDevelopment();
+    const set = await ctx.db.query("demoCallSets").withIndex("by_key", q => q.eq("key", DEMO_SET_KEY)).unique();
+    if (!set) throw new ConvexError("The demo selection has not been initialized.");
+    const strip = (doc: Record<string, unknown>) => Object.fromEntries(Object.entries(doc).filter(([k]) => k !== "_id" && k !== "_creationTime"));
+    const calls = [];
+    for (const entry of set.entries) {
+      const call = await ctx.db.query("calls").withIndex("by_callId", q => q.eq("callId", entry.callId)).unique();
+      if (!call) continue;
+      const transcripts = await ctx.db.query("transcripts").withIndex("by_call", q => q.eq("callId", entry.callId)).collect();
+      const events = await ctx.db.query("callEvents").withIndex("by_call", q => q.eq("callId", entry.callId)).collect();
+      calls.push({ call: strip(call), transcripts: transcripts.map(strip), events: events.map(strip) });
+    }
+    return { set: strip(set), calls };
+  },
+});
+
+/** Idempotent: replaces each demo call, its transcript and its tool activity, then the selection. */
+export const importSet = internalMutation({
+  args: { set: v.object(demoSetFields), calls: v.array(v.object({ call: v.any(), transcripts: v.array(v.any()), events: v.array(v.any()) })) },
+  returns: v.object({ calls: v.number(), transcripts: v.number(), events: v.number() }),
+  handler: async (ctx, args) => {
+    if (args.set.key !== DEMO_SET_KEY) throw new ConvexError("Unexpected demo set key.");
+    let transcripts = 0, events = 0;
+    for (const { call, transcripts: lines, events: activity } of args.calls) {
+      const callId: string = call.callId;
+      if (!args.set.entries.some(e => e.callId === callId)) throw new ConvexError(`Call ${callId} is not in the demo selection.`);
+      const existing = await ctx.db.query("calls").withIndex("by_callId", q => q.eq("callId", callId)).unique();
+      if (existing) await ctx.db.replace(existing._id, call);
+      else await ctx.db.insert("calls", call);
+      for (const row of await ctx.db.query("transcripts").withIndex("by_call", q => q.eq("callId", callId)).collect()) await ctx.db.delete(row._id);
+      for (const row of await ctx.db.query("callEvents").withIndex("by_call", q => q.eq("callId", callId)).collect()) await ctx.db.delete(row._id);
+      for (const line of lines) { if (line.callId !== callId) throw new ConvexError("Transcript call mismatch."); await ctx.db.insert("transcripts", line); transcripts++; }
+      for (const event of activity) { if (event.callId !== callId) throw new ConvexError("Event call mismatch."); await ctx.db.insert("callEvents", event); events++; }
+    }
+    const existingSet = await ctx.db.query("demoCallSets").withIndex("by_key", q => q.eq("key", DEMO_SET_KEY)).unique();
+    if (existingSet) await ctx.db.replace(existingSet._id, args.set);
+    else await ctx.db.insert("demoCallSets", args.set);
+    return { calls: args.calls.length, transcripts, events };
   },
 });

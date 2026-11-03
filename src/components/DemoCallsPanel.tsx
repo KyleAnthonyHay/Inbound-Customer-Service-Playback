@@ -58,10 +58,10 @@ export function DemoCallsPanel({ data, busy, onOpen }: { data: DemoCallsData | u
         {slot.state !== "ready" && slot.state !== "empty" && <p className="mt-1 text-xs text-amber-200">{slot.state === "label-mismatch" ? "Scenario label changed — excluded from scores" : slot.state === "unreviewed" ? "Awaiting an eligible completed voice call and review" : "Missing call — excluded from scores"}</p>}
         <div className="mt-3 flex flex-wrap gap-2">
           {slot.call && <button className={button} disabled={locked} onClick={() => onOpen(slot.call!.callId)}>Open call</button>}
-          <button className={button} disabled={locked} onClick={() => { setPicker(slot.scenarioId); setChoice(""); setError(null); }} aria-expanded={picker === slot.scenarioId}>{slot.callId ? "Swap call" : "Choose call"}</button>
-          {slot.callId && <button className={button} disabled={locked} onClick={() => void update(() => remove({ scenarioId: slot.scenarioId }))}>Remove from demo</button>}
+          {data.editable && <button className={button} disabled={locked} onClick={() => { setPicker(slot.scenarioId); setChoice(""); setError(null); }} aria-expanded={picker === slot.scenarioId}>{slot.callId ? "Swap call" : "Choose call"}</button>}
+          {data.editable && slot.callId && <button className={button} disabled={locked} onClick={() => void update(() => remove({ scenarioId: slot.scenarioId }))}>Remove from demo</button>}
         </div>
-        {picker === slot.scenarioId && <div className="mt-3 border-t border-white/15 pt-3">
+        {data.editable && picker === slot.scenarioId && <div className="mt-3 border-t border-white/15 pt-3">
           {candidates === undefined ? <p className="text-xs text-white/65" role="status">Loading reviewed calls…</p> : candidates.length === 0 ? <p className="text-xs leading-relaxed text-white/65">No other reviewed calls for this scenario among its latest 100 calls. Open a completed voice call and assign this test scenario in Call measurements first.</p> : <>
             <label className="text-xs text-white/80" htmlFor={`demo-${slot.scenarioId}`}>Replacement call</label>
             <select id={`demo-${slot.scenarioId}`} value={choice} disabled={locked} onChange={e => setChoice(e.target.value)} className="mt-1 w-full rounded-lg border border-white/25 bg-[#202023] p-2 text-xs text-white">
