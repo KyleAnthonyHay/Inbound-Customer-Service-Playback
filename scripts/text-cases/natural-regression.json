@@ -61,7 +61,7 @@
         "One of our songs just won't load."
       ],
       "reviewOnly": {
-        "facts": "Song is Graves Into Gardens. Exact message is Audio Files Missing. Playback 8.6.4. Caller has tapped Try Again once. Reveal facts only in response to relevant questions. The simulation reports recovery after the documented third retry, not after an arbitrary unrelated instruction. If an account check is relevant: Jordan Avery, DEMO-1001, organization 480113. The seeded synthetic library marks this song purchased.",
+        "facts": "Song is Graves Into Gardens. Exact message is Audio Files Missing. Playback 8.6.4. Caller has tapped Try Again once. Reveal facts only in response to relevant questions. The simulation reports recovery after the documented third retry, not after an arbitrary unrelated instruction. If an account check is relevant: John Doe, 111, organization 480113. The seeded synthetic library marks this song purchased.",
         "expected": "Retrieve applicable official guidance, distinguish this error from generic Download Error, use helpful real demo service context without assuming ownership, guide the documented retry count, and confirm caller-reported recovery."
       }
     },

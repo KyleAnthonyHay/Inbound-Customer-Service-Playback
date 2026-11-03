@@ -5,7 +5,7 @@
   },
   {
     "run": "02-expired-b-v1",
-    "input": "Yes, Playback is signed in with jordan.avery@example.org, the correct website account."
+    "input": "Yes, Playback is signed in with john.doe@example.org, the correct website account."
   },
   {
     "run": "03-progress-a-v1",

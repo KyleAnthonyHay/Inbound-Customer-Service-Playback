@@ -43,7 +43,7 @@ export default defineSchema({
 
   /** A user. Subscription fields mirror the primary organization for older rows and tests. */
   customers: defineTable({
-    customerId: v.string(), // e.g. "DEMO-1001"
+    customerId: v.string(), // e.g. "111" (primary demo) or "DEMO-1002"
     name: v.string(),
     email: v.string(),
     organization: v.string(),

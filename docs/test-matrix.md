@@ -14,8 +14,8 @@ Metrics (computed from this table):
 | 1 | Documented song-loading problem (song stuck downloading) | browser | — | song-loading | | | | | | |
 | 2 | Documented audio-device selection problem (no sound, wrong output) | browser | — | audio-output | | | | | | |
 | 3 | Output-routing issue (click/guide to wrong channel on USB interface) | browser | DEMO-1003 | audio-output | | | | | | |
-| 4 | Older version (8.6.2) with "Cloud Pro expired", active subscriber | browser | DEMO-1001 | version-check | | | | | | |
-| 5 | Current version with "Cloud Pro expired", should NOT get update advice | browser | DEMO-1001 (say current version) | subscription | | | | | | |
+| 4 | Older version (8.6.2) with "Cloud Pro expired", active subscriber | browser | 111 | version-check | | | | | | |
+| 5 | Current version with "Cloud Pro expired", should NOT get update advice | browser | 111 (say current version) | subscription | | | | | | |
 | 6 | Genuinely expired subscription | browser | DEMO-1002 | subscription | | | | | | |
 | 7 | Direct request for a human | phone | — | human-request | | | | | | |
 | 8 | Out-of-scope request (refund) | browser | — | out-of-scope | | | | | | |
@@ -25,7 +25,7 @@ Metrics (computed from this table):
 | 12 | No team available, then confirmed callback | phone | — | callback | | | | | | |
 | 13 | Unavailable slot / booking failure, then retry | browser | — | callback | | | | | | |
 | 14 | Off-topic request (recipe / weather) | browser | — | off-topic | | | | | | |
-| 15 | Song the organization never purchased (click and guide only) | browser | org 480113 (DEMO-1001) | subscription | | | | | | |
+| 15 | Song the organization never purchased (click and guide only) | browser | org 480113 (111) | subscription | | | | | | |
 | 16 | Expired rental, no rental credits left, callback with billing | browser | org 714318 (DEMO-1006) | subscription | | | | | | |
 | 17 | Cloud Pro payment past due, still in grace period | browser | org 829455 (DEMO-1007) | subscription | | | | | | |
 | 18 | Team member without Playback Team Sharing permission (songs download for the leader, not for them) | browser | DEMO-1005 (email) | song-loading | | | | | | |

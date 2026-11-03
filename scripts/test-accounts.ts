@@ -40,8 +40,8 @@ test("seed data is internally consistent: every customer and song points at a re
     assert.equal(c.subscriptionStatus, org.subscriptionStatus, `${c.customerId} legacy status mirrors the org`);
   }
   for (const s of orgSongs) assert.ok(ids.has(s.orgId), `${s.title} belongs to a real org`);
-  // The original four demo customers are still there with their original keys.
-  for (const id of ["DEMO-1001", "DEMO-1002", "DEMO-1003", "DEMO-1004"]) assert.ok(customers.some((c) => c.customerId === id), id);
+  // The primary customer uses the requested simple ID; the other customer keys are unchanged.
+  for (const id of ["111", "DEMO-1002", "DEMO-1003", "DEMO-1004"]) assert.ok(customers.some((c) => c.customerId === id), id);
   assert.equal(customers.find((c) => c.customerId === "DEMO-1002")!.email, "priya.n@example.org");
   assert.equal(new Set(customers.map((c) => c.email)).size, customers.length, "emails are unique");
 });
@@ -51,12 +51,12 @@ test("organization IDs normalize from spoken digits and reject anything else", (
   assert.equal(normalizeOrgId("4 8 0 1 1 3"), "480113");
   assert.equal(normalizeOrgId("org 480-113"), "480113");
   assert.equal(normalizeOrgId("48011"), null);
-  assert.equal(normalizeOrgId("DEMO-1001"), null);
+  assert.equal(normalizeOrgId("111"), null);
   assert.equal(normalizeOrgId(undefined), null);
 });
 
 test("active Cloud Pro diagnosis leaves the device cause open and permits relevant version evidence", () => {
-  const { diagnosis } = diagnose("DEMO-1001");
+  const { diagnosis } = diagnose("111");
   assert.equal(diagnosis.code, "active");
   assert.match(diagnosis.next, /does not establish the cause/);
   assert.match(diagnosis.next, /release history/);
@@ -101,13 +101,13 @@ test("organization never purchased the song: no subscription means nothing to do
 });
 
 test("organization with Cloud Pro but no purchase of the song gets click and guide only", () => {
-  const r = access("DEMO-1001", "Living Hope");
+  const r = access("111", "Living Hope");
   assert.equal(r.access, "click-guide-only");
   assert.match(r.summary, /not in Riverbend/);
   assert.match(r.summary, /click and guide/);
   assert.match(r.next, /has not been purchased/);
-  assert.equal(access("DEMO-1001", "goodness of god").access, "purchased");
-  assert.equal(access("DEMO-1001", "Riverbend Benediction").access, "cloud-song");
+  assert.equal(access("111", "goodness of god").access, "purchased");
+  assert.equal(access("111", "Riverbend Benediction").access, "cloud-song");
 });
 
 test("expired rental with no credits left is a purchase/billing matter; active rental is fine", () => {
@@ -138,7 +138,7 @@ test("team member without the Team Sharing permission is blocked even though the
   assert.equal(r.access, "blocked-permission");
   assert.match(r.next, /Nothing to fix in the app/);
   // Same org, admin with the permission: fine.
-  assert.equal(access("DEMO-1001", "Goodness of God").access, "purchased");
+  assert.equal(access("111", "Goodness of God").access, "purchased");
 });
 
 test("signed into the wrong (empty personal) organization is spotted from the other membership", () => {
