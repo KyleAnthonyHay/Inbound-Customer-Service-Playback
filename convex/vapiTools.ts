@@ -39,10 +39,10 @@ export const tools: Record<string, ToolDef> = {
       if (!controlUrl) return { ok: false, reason: "call-control-unavailable", speak,
         next: "Say the goodbye. Do not claim the call has disconnected." };
       const pending = await ctx.runMutation(internal.closing.request, {
-        callId: call.callId, ...(call.callType ? { callType: call.callType } : {}), controlUrl,
+        callId: call.callId, ...(call.callType ? { callType: call.callType } : {}), controlUrl, farewell: speak,
       });
       return { ok: pending, closingPending: pending, actionPerformed: "closing-requested", disconnected: false, speak,
-        next: "Say the farewell now and let it finish. The service will disconnect after observing it; do not call another tool or ask another question. If the caller interrupts with more to discuss, continue helping." };
+        next: "Say the farewell now and let it finish. The service disconnects shortly after it; do not call another tool or ask another question. If the caller interrupts with more to discuss, continue helping." };
     },
   },
   get_planning_center_service_context: {

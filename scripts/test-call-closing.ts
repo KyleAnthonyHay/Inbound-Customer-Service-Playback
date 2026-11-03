@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import type { ActionCtx, MutationCtx } from "../convex/_generated/server";
-import { CLOSING_GRACE_MS, finishCallWhenReady, hasBrandedFarewell, isBriefSignoff, requestCallClosing, type ClosingState } from "../convex/lib/callClosing";
+import { CLOSING_GRACE_MS, farewellDurationMs, finishCallWhenReady, hasBrandedFarewell, isBriefSignoff, requestCallClosing, type ClosingState } from "../convex/lib/callClosing";
 import { tools } from "../convex/vapiTools";
 import { buildAssistant } from "../src/lib/assistant";
 import { GOODBYE_MESSAGE } from "../src/lib/voicePolicy";
@@ -31,7 +31,7 @@ test("farewell matching accepts natural wording and rejects the greeting or a ba
     assert.equal(hasBrandedFarewell(line), false);
 });
 
-test("elapsed time alone, an acknowledgment, or ongoing speech cannot disconnect a call", async () => {
+test("where speech events exist, elapsed time alone, an acknowledgment, or ongoing speech cannot disconnect a call", async () => {
   for (const state of [{ ...ready, farewell: "Okay." }, { ...ready, assistantSpeaking: true },
     { ...ready, assistantSpeaking: undefined }, { ...ready, assistantStoppedAt: 900 },
     { ...ready, callerSpeaking: true }, { ...ready, closingInterrupted: true }]) {
@@ -83,6 +83,56 @@ test("a rejected or uncertain disconnect is never automatically retried", async 
     assert.equal(requests, 1);
     assert.ok(!result.includes(controlUrl));
   }
+});
+
+test("phone calls without speech events hang up once the endCall farewell's estimated duration has passed", async () => {
+  // GPT-Live phone calls deliver no speech-update/transcript webhooks: only the farewell deadline exists.
+  const silent: ClosingState = { status: "in-progress", channel: "phone", requestedAt: 1000, assistantSpeaking: false,
+    farewell: "", deadlineAt: 1000 + farewellDurationMs(GOODBYE_MESSAGE) };
+  const deadline = silent.deadlineAt!;
+  const never = async () => { throw Error("Must not send control"); };
+  assert.equal(await finishCallWhenReady(args, { now: deadline - 1, getState: async () => silent, fetcher: never }), "waiting");
+  for (const state of [{ ...silent, channel: "browser" }, { ...silent, deadlineAt: undefined }, { ...silent, deadlineAt: 900 },
+    { ...silent, assistantStoppedAt: 1500 }, { ...silent, farewell: "Thanks so much" }, { ...silent, callerSpeaking: false }])
+    assert.equal(await finishCallWhenReady(args, { now: deadline + 1, getState: async () => state, fetcher: never }), "waiting");
+  assert.equal(await finishCallWhenReady(args, { now: deadline + 1, getState: async () => ({ ...silent, resumedAt: 1001 }), fetcher: never }), "cancelled");
+  let requests = 0;
+  assert.equal(await finishCallWhenReady(args, { now: deadline, getState: async () => silent, publicKey: "test-public",
+    fetcher: async (_url, init) => { requests++; assert.deepEqual(JSON.parse(String(init?.body)), { type: "end-call" }); return new Response('{"status":"ok"}'); },
+  }), "accepted");
+  assert.equal(requests, 1);
+});
+
+test("the farewell estimate covers a spoken goodbye without leaving long dead air", () => {
+  const ms = farewellDurationMs(GOODBYE_MESSAGE);
+  // The recorded phone goodbye finished 4.4 s after endCall.
+  assert.ok(ms >= 6_000 && ms <= 10_000, String(ms));
+  assert.ok(farewellDurationMs(`Your demo callback is confirmed for Wed, Nov 4, 12:00 PM EST. ${GOODBYE_MESSAGE}`) > ms);
+});
+
+test("endCall sets the farewell deadline once, including after a handoff or booking armed closing", async t => {
+  let now = 1000;
+  t.mock.method(Date, "now", () => now);
+  const row: Record<string, unknown> = { _id: "row", status: "in-progress", channel: "phone" };
+  const jobs: Array<Record<string, unknown>> = [];
+  const ctx = { db: { query: (table: string) => ({ withIndex: () => ({ unique: async () => table === "deletedCalls" ? null : row }) }), get: async () => row,
+    patch: async (_id: unknown, value: Record<string, unknown>) => Object.assign(row, value) },
+  scheduler: { runAfter: async (_ms: number, _ref: unknown, a: Record<string, unknown>) => { jobs.push(a); } },
+  } as unknown as MutationCtx;
+  await requestCallClosing(ctx, { callId, controlUrl });
+  assert.equal(row.closingDeadlineAt, undefined);
+  now = 3000;
+  await requestCallClosing(ctx, { callId, controlUrl, farewell: GOODBYE_MESSAGE });
+  assert.equal(row.closingDeadlineAt, 3000 + farewellDurationMs(GOODBYE_MESSAGE));
+  now = 4000;
+  await requestCallClosing(ctx, { callId, controlUrl, farewell: GOODBYE_MESSAGE });
+  assert.equal(row.closingDeadlineAt, 3000 + farewellDurationMs(GOODBYE_MESSAGE));
+  assert.equal(jobs.length, 1);
+  row.closingResumedAt = 5000; now = 6000;
+  await requestCallClosing(ctx, { callId, controlUrl, farewell: GOODBYE_MESSAGE });
+  assert.equal(jobs.length, 2);
+  assert.equal(row.closingRequestedAt, 6000);
+  assert.equal(row.closingDeadlineAt, 6000 + farewellDurationMs(GOODBYE_MESSAGE));
 });
 
 test("closing requests deduplicate and re-arm after caller speech; capabilities stay out of call history", async t => {

@@ -121,3 +121,41 @@ by “Thanks for waiting,” plus “Great, okay” before the split branded goo
 The checker now recognizes those stacked words and a farewell split across
 assistant messages. Its nonzero result is retained; the previous text check is
 not evidence that the live speaker has stopped repeating acknowledgments.
+
+## Phone calls: timed hang-up after the farewell
+
+November 3, 2026. A prod phone call (`01a1a1a0…`) ran endCall and spoke the full
+branded goodbye, but stayed connected until the caller hung up about 12 seconds
+later. The assistant uses `gpt-live-1`. On these calls Vapi sends no
+`speech-update`, `transcript` or `conversation-update` webhooks. Dev rows from
+the same morning show `closingRequestedAt` set with an empty `closingFarewell`
+and no `assistantStoppedAt`, `callerSpeaking` or `lastUserSpeechAt`. So the
+evidence-based check could never pass. The browser only worked because
+`useVapiCall` stops the call itself, and a phone call has no browser.
+
+The control request was never the problem. Vapi documents the **public** key
+for `controlAuthenticationEnabled` (the private key is rejected). The HTTP
+`say` + `endCallAfterSpoken` control and the native endCall tool's goodbye
+message are not supported by GPT-Live.
+
+The change:
+
+- endCall passes its farewell text to `closing.request`. That sets
+  `closingDeadlineAt` = now + `farewellDurationMs(farewell)`: 1 s latency,
+  0.38 s per word and a 1.5 s buffer, with a 6 s minimum. The standard
+  goodbye comes to about 8.2 s, and the recorded phone goodbye finished
+  4.4 s after endCall. A repeated endCall does not extend the deadline. An
+  endCall that follows a booking or handoff closing request adds the deadline
+  to that request.
+- `finishCallWhenReady` sends `end-call` once the deadline has passed, but
+  only for non-browser calls that have delivered no speech evidence at all.
+  When speech events exist, the original evidence rules still apply. The
+  browser keeps its own local stop.
+- Any tool other than endCall that runs after closing was requested sets
+  `closingResumedAt`, which cancels the pending check because the
+  conversation continued. The check keeps polling until the deadline even if
+  that runs past the usual attempt budget.
+
+Limitation: without speech events the server cannot hear a caller interrupt
+the goodbye itself. A caller who starts a new request is noticed only if it
+leads to another tool call before the deadline.

@@ -7,6 +7,7 @@ import { callInfoOf } from "../src/lib/tools/callerId";
 import { recentAssistantMessages, recentSpeechContext } from "../src/lib/recentSpeech";
 import { appendRecentSpeakerContext } from "./lib/speakerContext";
 import { measureCall, reviewFromOutputs, type ArtifactMessage } from "../src/lib/callMetrics";
+import { conversationLines, inboundAssistantId } from "../src/lib/tools/inboundRouting";
 
 /**
  * Vapi tool webhook, served straight from the Convex deployment at
@@ -84,6 +85,12 @@ http.route({
     if (await ctx.runQuery(internal.calls.isPermanentlyDeleted, { callId }))
       return json({ results: msg.toolCallList.map(tc => ({ toolCallId: tc.id, error: "Call history was permanently deleted" })) });
     if (call.callerNumber) await ctx.runMutation(api.calls.touch, { callId, callType: call.callType, callerNumber: call.callerNumber });
+    // GPT-Live sends no transcript events mid-call, but each tool webhook carries the conversation
+    // so far: keep the mirrored phone transcript current. Browser calls store their own lines.
+    if (msg.call?.id && msg.call.type !== "webCall" && msg.artifact?.messages?.length) {
+      const lines = conversationLines(msg.artifact.messages as ArtifactMessage[]);
+      if (lines.length) await ctx.runMutation(api.calls.syncConversation, { callId, callType: msg.call.type, messages: lines }).catch(() => {});
+    }
     const readRecentSpeech = async () => {
       const fromWebhook = recentAssistantMessages(msg.artifact?.messages ?? []);
       if (fromWebhook.length) return fromWebhook;
@@ -102,6 +109,8 @@ http.route({
           await ctx.runMutation(api.callEvents.log, { callId, kind: "note", label: `Unknown tool: ${name}`, status: "failed", source: "internal", toolCallId: tc.id });
           return { toolCallId: tc.id, error: `Unknown tool ${name}` };
         }
+        // Any other tool after endCall means the conversation continued; that cancels a pending hang-up.
+        if (name !== "endCall") await ctx.runMutation(internal.closing.resume, { callId });
         const started = Date.now();
         await ctx.runMutation(api.callEvents.log, { callId, kind: "tool-start", tool: name, toolCallId: tc.id, label: def.label, status: "running", source: def.source, args: clip(args, 800) });
         try {
@@ -173,6 +182,15 @@ http.route({
     const body = (await request.json().catch(() => ({}))) as { message?: ServerMessage };
     const m = body.message;
     const callId = m?.call?.id;
+    if (m?.type === "assistant-request") {
+      // The phone number asks which assistant answers (scripts/route-phone-number.ts). Mark the
+      // call live first so every open web phone switches to it, but never let that block pickup.
+      const assistantId = inboundAssistantId({ VAPI_INBOUND_ASSISTANT_ID: process.env.VAPI_INBOUND_ASSISTANT_ID, CONVEX_SITE_URL: process.env.CONVEX_SITE_URL });
+      if (callId) await ctx.runMutation(internal.calls.inboundStarted, { callId, callType: m.call?.type, callerNumber: callInfoOf(m.call).callerNumber })
+        .catch(e => console.error(`assistant-request: could not mark call ${callId} live`, e));
+      console.log(`vapi event assistant-request call=${callId ?? "none"} -> ${assistantId ?? "no assistant configured"}`);
+      return assistantId ? json({ assistantId }) : json({ error: "No inbound assistant is configured." });
+    }
     if (!m || !callId) return json({ ok: true });
     if (await ctx.runQuery(internal.calls.isPermanentlyDeleted, { callId })) return json({ ok: true });
     const callerNumber = callInfoOf(m.call).callerNumber;
@@ -212,9 +230,7 @@ http.route({
           callId, callType: m.call?.type, callerNumber, endedReason: m.endedReason, summary: m.analysis?.summary ?? m.summary,
           durationSeconds: m.durationSeconds, startedAt: m.startedAt, endedAt: m.endedAt,
           // Fallback transcript from the report's artifact, used only if no live transcript lines were stored.
-          messages: (m.artifact?.messages ?? [])
-            .filter((x) => (x.role === "user" || x.role === "bot" || x.role === "assistant") && x.message)
-            .map((x) => ({ role: x.role === "user" ? ("user" as const) : ("assistant" as const), text: x.message!, at: x.time ?? 0 })),
+          messages: conversationLines(m.artifact?.messages ?? []),
         });
         {
           const review = reviewFromOutputs(m.artifact?.structuredOutputs);
