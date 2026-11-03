@@ -1,0 +1,49 @@
+{
+  "name": "audio-device-callback-regression",
+  "kind": "development-text-proof-of-concept",
+  "voiceCallCreated": false,
+  "cases": [
+    {
+      "id": "03-audio-device",
+      "intent": "routing",
+      "handling": "agent",
+      "openings": [
+        "The song looks like it's playing in Playback, but we can't hear anything through the church sound system."
+      ],
+      "reviewOnly": {
+        "facts": "The interface is a Focusrite 4i4, connected and powered through a powered USB hub. Settings > General > Audio Device currently says MacBook Speakers. The interface is also listed. No cable or mixer repair is required in this simulated fixture. The make/model was supplied in follow-ups during the first phrasing run. Device is Mac; Playback 8.6.4. Caller cannot map the interface outputs to desk channels; that is genuinely unknown and not a prerequisite for checking Audio Device. If asked to find Audio Device without navigation, first say I am not sure where to find that. Reveal the selected MacBook Speakers only after navigation guidance.",
+        "expected": "Find documented audio-device selection guidance and ask/check actual selection before identifying the cause. Simulated caller confirms sound after selecting the interface.",
+        "callerProfile": {
+          "goal": "Hear the playing song through the church sound system.",
+          "knows": [
+            "Using a Mac.",
+            "A small powered USB sound box connects the Mac to the desk.",
+            "The song appears to be playing."
+          ],
+          "canReadWithHelp": {
+            "Box label": "Focusrite 4i4",
+            "Playback About": "8.6.4",
+            "Settings > General > Audio Device": "MacBook Speakers selected; Focusrite 4i4 also listed."
+          },
+          "cannotVerify": [
+            "Cannot tell the interface meter state.",
+            "Does not know the term audio interface or where Playback chooses its output."
+          ],
+          "scriptedOutcome": "Report sound only after selecting the listed Focusrite instead of MacBook Speakers; do not volunteer that wrong selection in the opening."
+        }
+      }
+    },
+    {
+      "id": "callback-completion",
+      "intent": "callback",
+      "handling": "simulated-booking",
+      "openings": [
+        "I'd like to speak with a Playback specialist about a no-sound issue."
+      ],
+      "reviewOnly": {
+        "facts": "Fictional browser caller. Wants a specialist directly, not troubleshooting. If team unavailable, requests tomorrow at 12, EST. Clarify noon if asked; means noon. Demo name Taylor; callback number +1 202 555 0146, supplied only when asked. No caller ID exists. Approve booking only after agent reads back date/time, Eastern zone and callback number. A yes clarifying noon is not final booking approval. User accepts a real write to simulated dev callback data; no staff/customer contacted.",
+        "expected": "Check availability without claiming notification/connection. On unavailable team, offer callback, check exact time with get_callback_slots, collect number and name, full readback then explicit approval, invoke reserve_callback with returned slotId, confirm only after success, then endCall plus farewell. Do not claim booking or end call after availability alone."
+      }
+    }
+  ]
+}

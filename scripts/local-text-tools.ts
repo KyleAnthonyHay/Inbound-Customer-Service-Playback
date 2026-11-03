@@ -12,7 +12,7 @@ const backend = process.env.NEXT_PUBLIC_CONVEX_SITE_URL;
 if (!incomingSecret || !backendSecret || incomingSecret === backendSecret || backend !== "https://ceaseless-rhinoceros-106.convex.site" || process.env.CONVEX_DEPLOYMENT !== "dev:ceaseless-rhinoceros-106")
   throw Error("Requires development target and a separate temporary text-only secret.");
 
-const forwardable = new Set(["search_playback_docs", "get_planning_center_service_context", "lookup_demo_customer", "check_team_availability", "get_callback_slots", "initiate_handoff"]);
+const forwardable = new Set(["search_playback_docs", "get_planning_center_service_context", "lookup_demo_customer", "check_team_availability", "get_callback_slots", "initiate_handoff", "endCall"]);
 type ToolCall = { id: string; function?: { name?: string; arguments?: unknown }; name?: string; arguments?: unknown };
 const str = (value: unknown) => typeof value === "string" ? value : undefined;
 function argsOf(call: ToolCall): Record<string, unknown> {

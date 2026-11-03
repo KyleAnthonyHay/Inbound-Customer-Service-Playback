@@ -26,7 +26,8 @@ async function main() {
       if (input.trim() === "/exit") break;
       if (!input.trim()) { i--; continue; }
       if (scenario) console.log(`CALLER: ${input}`);
-      const turn = await sendTextTurn(input, { env: process.env, testId, previousChatId });
+      const turn = await sendTextTurn(input, { env: process.env, testId, previousChatId,
+        recentAssistantMessages: turns.slice(-2).map(turn => turn.reply) });
       previousChatId = turn.chatId;
       turns.push({ input, ...turn });
       console.log(`AGENT: ${turn.reply}`);

@@ -1,0 +1,21 @@
+{
+  "name": "regal-playback-ten-scenario-development-suite",
+  "status": "candidate-cases-for-later-manual-voice-testing",
+  "runAutomatically": false,
+  "environment": "development-only",
+  "transport": "vapi.websocket",
+  "createsBillableVapiSessions": true,
+  "realPhoneNumbersDialed": false,
+  "scenarioFiles": [
+    "scripts/scenarios/planning-center-song-loading.json",
+    "scripts/scenarios/planning-center-audio-output.json",
+    "scripts/scenarios/audio-device-selection.json",
+    "scripts/scenarios/output-routing.json",
+    "scripts/scenarios/mac-dante-ethernet-adapter.json",
+    "scripts/scenarios/ambiguous-info.json",
+    "scripts/scenarios/genuinely-expired-subscription.json",
+    "scripts/scenarios/human-request.json",
+    "scripts/scenarios/out-of-scope-refund.json",
+    "scripts/scenarios/off-topic.json"
+  ]
+}

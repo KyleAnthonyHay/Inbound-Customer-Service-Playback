@@ -4,6 +4,20 @@ Updated November 2, 2026 (America/New_York). This is the Regal Playback demo's
 single-organization, read-only Services integration. It supplements the existing
 synthetic customer records and bounded Playback support; it does not replace them.
 
+November 3 conversation-policy update: the fictional support scenario uses a
+real authenticated Planning Center API connection. Treat successful returned
+service/song data as the caller's working service context within the simulation,
+just as in real support. Access through the reasoner counts as the assistant's
+access. A demo label must not become an unsupported “I can't access Planning
+Center” disclaimer. This is stated in the tool description, successful result's
+`contextNote`, reasoner prompt and speaker prompt. Actual lookup failures remain
+failures; the shared read-only organization boundary is unchanged.
+
+The [focused text check](text-tests/2026-11-03T05-06-32-077Z-planning-center-api-access.json)
+made one live lookup and answered the follow-up by affirming access to the
+connected plan, reusing the first result. Reported cost: $0.0399. It validates
+reasoner behavior; the live speaker's wording still needs manual verification.
+
 All synthetic demo customer accounts intentionally share this **one** Planning
 Center organization, PAT owner, upcoming service and song list. This is a shared
 demo context for every test caller, not a separate Planning Center connection

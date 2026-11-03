@@ -1,0 +1,49 @@
+{
+  "name": "routing-output-regression",
+  "kind": "development-text-proof-of-concept",
+  "voiceCallCreated": false,
+  "cases": [
+    {
+      "id": "01-click-guide",
+      "intent": "routing",
+      "handling": "agent",
+      "openings": [
+        "We're getting ready for rehearsal, but when we turn down the spoken guide in our ears, the click gets quieter too."
+      ],
+      "reviewOnly": {
+        "facts": "Mac, Playback 8.6.2, Premium, Focusrite 4i4 connected and powered. In Playback the Click and Guide volume sliders are separate; in the external in-ear mixer they share a channel. Settings > Buses currently shows both Click and Guide on output 1. The caller wants Click 1, Guide 2, music 3/4. Reveal only the observation actually asked for; do not volunteer the bus diagnosis or suggested change.",
+        "expected": "Retrieve documentation, inspect or clarify bus assignments, guide distinct appropriate outputs, obtain simulated caller confirmation. No arbitrary universal channel mapping or legacy bus-creation steps.",
+        "callerProfile": {
+          "goal": "Change the spoken cues without changing the ticking in the in-ear mix.",
+          "knows": [
+            "Using a Mac.",
+            "The problem is what the band hears through the sound desk, not linked volume sliders inside the app.",
+            "The sound box says Focusrite 4i4."
+          ],
+          "canReadWithHelp": {
+            "Playback About": "8.6.2",
+            "Playback plan": "Premium",
+            "Settings > Buses": "Click output 1; Guide output 1; music 3/4. Outputs 1 and 2 feed separate desk channels."
+          },
+          "cannotVerify": [
+            "Does not know the word fader, bus, or why the sounds share a channel.",
+            "Cannot diagnose hardware faults."
+          ],
+          "scriptedOutcome": "Only after applicable guidance separates Click and Guide onto the connected outputs 1 and 2, report independent control; otherwise report what the provided instruction actually changes."
+        }
+      }
+    },
+    {
+      "id": "already-separated",
+      "intent": "routing",
+      "handling": "agent",
+      "openings": [
+        "The click gets quieter when I turn down the guide at our sound desk. We're on a Mac with Playback Premium and a Focusrite 4i4. I checked Settings, Buses: Click is Output 1, Guide is Output 2, and Music is 3/4. Outputs 1 and 2 feed separate desk channels."
+      ],
+      "reviewOnly": {
+        "facts": "All explicit opening facts are true in this fictional control. Caller adjusts the sound desk, not in-app levels. Output assignments are already distinct. No verified Playback setting explains the remaining external symptom. Do not invent a hardware fault.",
+        "expected": "Do not create buses or change working routes. Recognize the remaining external path cannot be diagnosed here and offer specialist review without asserting a verified mixer fault."
+      }
+    }
+  ]
+}

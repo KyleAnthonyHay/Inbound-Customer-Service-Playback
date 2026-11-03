@@ -10,17 +10,17 @@
       "category": "song-loading",
       "title": "Troubleshooting Playback Download Errors",
       "url": "https://helpcenter.multitracks.com/en/articles/13452943-troubleshooting-playback-download-errors",
-      "retrievedAt": "2026-10-30",
-      "summary": "Covers four named download error messages in Playback (Error Authorizing, Audio Files Missing, Insufficient Storage, generic Download Error) plus a catch-all. MultiTracks says download errors are rare and asks users who see the same error repeatedly to report it through the website chat. The article does not name a platform; it refers only to 'the device' and 'the Playback app'.",
+      "retrievedAt": "2026-11-03",
+      "summary": "Covers four named download error messages in Playback (Error Authorizing, Audio Files Missing, Insufficient Storage, generic Download Error) plus a catch-all. MultiTracks says download errors are rare and asks users who see the same error repeatedly to report it through the website chat. The article does not name a platform; it refers only to 'the device' and 'the Playback app'. Each step belongs to its named-error section. The remove/re-add and alternate-key quick fixes are documented under generic Download Error; that section does not establish them as Audio Files Missing recovery.",
       "steps": [
         "'Error Authorizing': the download failed a security check (your network may be blocking Playback from verifying the device). Follow the separate article 'Playback Download Error (Download Unauthorized)'.",
         "'Audio Files Missing': tap Try Again at least three times. On the third attempt Playback runs a different recovery routine automatically.",
         "'Audio Files Missing' (if three attempts fail on a song you recently downloaded in past setlists): open the setlist menu, scroll to the bottom, and select 'Delete All Setlists from Device'. Last resort only: it removes all local downloads and every current setlist must be downloaded again.",
         "'Insufficient Storage': remove past setlists with 'Delete all setlists from device' at the bottom of the setlist menu. If the error persists, check the device's storage; it may be too full. A typical song is roughly 40 MB to 1 GB, so a full setlist can be several GB.",
         "'Download Error' (generic): tap Try Again at least two times. If it continues and you are short on time, use Contact Support in the About tab of Playback Settings, then try the quick fixes.",
-        "Quick fix 1 - remove and re-add the song: tap Edit, tap the red minus icon on the song, tap '+ Add Song', find the song again, and load it.",
-        "Quick fix 2 - download in another key and transpose locally: before loading, change the song's key in song settings to a key close to the one you need; after the download, open song settings in edit mode and change the key back.",
-        "Quick fix 3 - clear local data (last resort): contact support first from the About tab, then open the setlist menu (top-right) and select 'Delete All Setlists from Device' at the bottom. All setlists must be redownloaded afterward.",
+        "'Download Error' (generic section, after retries and contacting support) - Quick fix 1 - remove and re-add the song: tap Edit, tap the red minus icon on the song, tap '+ Add Song', find the song again, and load it.",
+        "'Download Error' (generic section, after retries and contacting support) - Quick fix 2 - download in another key and transpose locally: before loading, change the song's key in song settings to a key close to the one you need; after the download, open song settings in edit mode and change the key back.",
+        "'Download Error' (generic section, after retries and contacting support) - Quick fix 3 - clear local data (last resort): contact support first from the About tab, then open the setlist menu (top-right) and select 'Delete All Setlists from Device' at the bottom. All setlists must be redownloaded afterward.",
         "Any other error: contact MultiTracks.com through the website messenger or 'Contact Support' in the About tab of the Playback app."
       ],
       "appliesTo": [],
@@ -226,6 +226,12 @@
         "in-ear",
         "DI box",
         "splitter"
+      ],
+      "requirements": [
+        {
+          "text": "Using independent bus routing and MultiOuts is a Playback Premium feature. The hardware output count alone does not establish that this feature is unlocked. This condition applies to the MultiOuts method, not every basic two-feed Auto-Pan goal.",
+          "sourceUrl": "https://helpcenter.multitracks.com/en/articles/4439220-how-to-track-bus-routing-in-playback"
+        }
       ]
     },
     {
@@ -262,8 +268,8 @@
       "category": "audio-output",
       "title": "How To | Track & Bus Routing in Playback",
       "url": "https://helpcenter.multitracks.com/en/articles/4439220-how-to-track-bus-routing-in-playback",
-      "retrievedAt": "2026-10-30",
-      "summary": "Bus routing and MultiOuts require a Playback Premium subscription. Playback groups 150+ instruments into 16 buses plus a dedicated SMPTE bus; each bus can go to any available output on the selected audio device, mono or stereo. The Pad bus cannot be re-routed. Track routing is saved per device and applies globally to that track; it is not saved with setlists or named arrangements.",
+      "retrievedAt": "2026-11-03",
+      "summary": "Playback has dedicated Click and Guide buses by default. Bus routing and MultiOuts require a Playback Premium subscription. Playback groups 150+ instruments into 16 buses plus a dedicated SMPTE bus; each bus can go to any available output on the selected audio device, mono or stereo. The Pad bus cannot be re-routed. Track routing is saved per device and applies globally to that track; it is not saved with setlists or named arrangements. Separate buses assigned to the same output still share that hardware feed. For independent external control, use distinct available outputs matching the caller's connected desk channels; example output numbers are not universal assignments.",
       "steps": [
         "Route tracks to buses: Settings > Tracks tab, assign each track to a bus (defaults are preset and can be overwritten).",
         "Route buses to outputs: Settings > Buses tab, tap a bus row and choose an available output.",
@@ -285,7 +291,11 @@
         "assign multiple busses",
         "premium",
         "multiouts",
-        "click to one output"
+        "click to one output",
+        "click guide separate outputs",
+        "independent control",
+        "spoken guide",
+        "same output"
       ]
     },
     {
@@ -402,7 +412,7 @@
       "category": "audio-output",
       "title": "How To | Route Click & Guide to Separate Busses in Playback (legacy, pre-7.6)",
       "url": "https://helpcenter.multitracks.com/en/articles/5224107-how-to-route-click-guide-to-separate-busses-in-playback",
-      "retrievedAt": "2026-10-30",
+      "retrievedAt": "2026-11-03",
       "summary": "The article itself states these steps are no longer relevant for Playback 7.6 and newer, where Click and Guide are separated by default. Kept for the routing pattern: rename a spare bus, move Guide tracks to it in Settings > Tracks, then assign each bus to an interface output in Settings > Buses. Buses require a Playback Pro (Premium) subscription and an interface with more than 2 outputs.",
       "steps": [
         "Free up a bus: swipe left on the Aux bus, tap Edit, rename it to 'Guide'. Then in Settings > Tracks move any instrument parts still routed to it to another bus (tap the cell, choose a bus, tap Done).",
@@ -419,7 +429,10 @@
         "7.6",
         "tracks tab",
         "buses tab"
-      ]
+      ],
+      "versionRange": {
+        "maxExclusive": "7.6"
+      }
     },
     {
       "id": "behringer-u-phoria-no-audio",
@@ -753,6 +766,12 @@
         "powered hub",
         "class compliant",
         "is my interface supported"
+      ],
+      "requirements": [
+        {
+          "text": "Using independent bus routing and MultiOuts is a Playback Premium feature. The hardware output count alone does not establish that this feature is unlocked. This condition applies to the MultiOuts method, not every basic two-feed Auto-Pan goal.",
+          "sourceUrl": "https://helpcenter.multitracks.com/en/articles/4439220-how-to-track-bus-routing-in-playback"
+        }
       ]
     },
     {

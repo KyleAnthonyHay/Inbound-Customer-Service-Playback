@@ -14,6 +14,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import WebSocket from "ws";
 import { FIRST_MESSAGE } from "../src/lib/assistant";
+import { auditAcknowledgments, dialogueFromReport } from "./lib/acknowledgments";
 
 type Scenario = { name: string; expectedIntent: string; lines: string[]; maxTurnWaitMs?: number };
 
@@ -234,7 +235,12 @@ async function main() {
     transcript: (rec.messages ?? []).filter((m) => m.role === "bot" || m.role === "user").map((m) => `${m.role === "bot" ? "AGENT" : "CALLER"}: ${m.message}`),
   };
   const out = join("docs", "voice-tests", `${new Date().toISOString().replace(/[:.]/g, "-")}-${scenario.name}.json`);
-  writeFileSync(out, JSON.stringify(report, null, 2));
+  const acknowledgmentFindings = auditAcknowledgments(dialogueFromReport(report));
+  writeFileSync(out, JSON.stringify({ ...report, acknowledgmentFindings }, null, 2));
+  if (acknowledgmentFindings.length) {
+    console.error("Duplicate acknowledgment openings detected:", acknowledgmentFindings);
+    process.exitCode = 1;
+  }
   console.log("\n=== REPORT ===");
   console.log("endedReason:", report.endedReason);
   console.log("Vapi tool calls:", report.vapiToolCalls);
