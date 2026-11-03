@@ -62,6 +62,22 @@ export const statusUpdate = mutation({
   },
 });
 
+/**
+ * Vapi asked which assistant answers an inbound call (assistant-request): the call is live
+ * from now on. GPT-Live sends no in-progress status-update, so this is the web phone's cue.
+ * An ended row never reopens.
+ */
+export const inboundStarted = internalMutation({
+  args: { callId: v.string(), callType: v.optional(v.string()), callerNumber: v.optional(v.string()) },
+  returns: v.null(),
+  handler: async (ctx, a) => {
+    const id = await ensureCall(ctx, a.callId, { channel: a.callType, callerNumber: a.callerNumber, status: "in-progress" });
+    const row = (await ctx.db.get(id))!;
+    if (row.status === "ringing") await ctx.db.patch(id, { status: "in-progress" });
+    return null;
+  },
+});
+
 export const appendTranscript = mutation({
   args: { callId: v.string(), role: v.union(v.literal("user"), v.literal("assistant")), text: v.string(), callType: v.optional(v.string()) },
   handler: async (ctx, a) => {
@@ -94,9 +110,13 @@ export const endOfCallReport = mutation({
     const call = (await ctx.db.get(id))!;
     let transcriptCount = call.transcriptCount;
     let title = call.title;
-    if (transcriptCount === 0 && a.messages?.length) {
+    // Browser calls store their own lines (they may not line up with the report), so only an empty
+    // history is filled. Phone lines come from the same artifact list, so the missing tail is added.
+    const reported = (a.messages ?? []).filter(m => m.text.trim());
+    const fill = transcriptCount === 0 ? reported : call.channel !== "browser" && reported.length > transcriptCount ? reported.slice(transcriptCount) : [];
+    if (fill.length) {
       const base = call.startedAt;
-      for (const m of a.messages) {
+      for (const m of fill) {
         const text = m.text.trim();
         if (!text) continue;
         await ctx.db.insert("transcripts", { callId: a.callId, at: m.at > 1e12 ? m.at : base + m.at, role: m.role, text });
