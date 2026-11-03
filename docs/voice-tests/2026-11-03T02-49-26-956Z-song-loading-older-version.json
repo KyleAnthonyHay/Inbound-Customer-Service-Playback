@@ -1,0 +1,102 @@
+{
+  "scenario": "song-loading-older-version",
+  "expectedIntent": "song-loading",
+  "callId": "01a19f4e-36cf-7449-ac99-32f1f437e2f6",
+  "endedReason": "assistant-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "delegate",
+    "search_playback_docs",
+    "get_planning_center_service_context",
+    "delegate",
+    "delegate",
+    "endCall"
+  ],
+  "timing": {
+    "turns": [
+      {
+        "caller": "Hi, my song won't download. It keeps saying download error",
+        "silenceS": 0.2,
+        "firstHeard": "Got it.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.6s"
+        ],
+        "summary": "\"Hi, my song won't download. It keeps say\" -> 0.2s silence, then answer: \"Got it.\" [delegate@+0.6s]"
+      },
+      {
+        "caller": "I'm on an iPad, Playback version eight point six point two. We don't play until Sunday, so I have time",
+        "silenceS": 0.6,
+        "firstHeard": "Okay.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s",
+          "search_playback_docs@+0.8s",
+          "get_planning_center_service_context@+0.8s"
+        ],
+        "summary": "\"I'm on an iPad, Playback version eight p\" -> 0.6s silence, then answer: \"Okay.\" [delegate@+0.0s, search_playback_docs@+0.8s, get_planning_center_service_context@+0.8s]"
+      },
+      {
+        "caller": "Okay. I tried that and it still says download error",
+        "silenceS": 0.4,
+        "firstHeard": "Thanks for trying that.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"Okay. I tried that and it still says dow\" -> 0.4s silence, then answer: \"Thanks for trying that.\" [delegate@+0.0s]"
+      },
+      {
+        "caller": "Thanks. That's all I needed. Bye",
+        "silenceS": 0.8,
+        "firstHeard": "Okay.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s",
+          "endCall@+1.0s"
+        ],
+        "summary": "\"Thanks. That's all I needed. Bye\" -> 0.8s silence, then answer: \"Okay.\" [delegate@+0.0s, endCall@+1.0s]"
+      }
+    ],
+    "longestSilenceS": 0.8,
+    "longestGapAfterTransitionS": 0,
+    "repeatedAckTurns": 0
+  },
+  "convexToolEvents": [
+    "get_planning_center_service_context succeeded 617ms 3 demo service song(s) — actual Services API read",
+    "search_playback_docs succeeded 399ms 6 result(s)"
+  ],
+  "liveEvents": [
+    "25.6s TOOL-CALLS delegate({})",
+    "48.6s TOOL-CALLS delegate({})",
+    "52.2s TOOL-CALLS search_playback_docs({\"query\":\"Playback iPad download error song will not download troubleshooting\",\"category\":\"song-loading\",\"platform\":\"iPadOS\"}), get_planning_center_service_context({})",
+    "74.4s TOOL-CALLS delegate({})",
+    "93.3s TOOL-CALLS delegate({})",
+    "95.9s TOOL-CALLS endCall({})",
+    "96.6s STATUS ended assistant-ended-call",
+    "96.6s hangup"
+  ],
+  "transcript": [
+    "AGENT: Hi there! Thank you for calling MultiTracks Playback support. I'm Penny, your virtual AI support assistant. How can I have the pleasure of helping you today?",
+    "CALLER: Hi, my song won't download. It keeps saying download error",
+    "AGENT: Got it.",
+    "AGENT: Quick question: what phone or tablet",
+    "AGENT: are you using, And which song is showing that download error?",
+    "CALLER: I'm on an iPad, Playback version eight point six point two. We don't play until Sunday, so I have time",
+    "AGENT: Okay.",
+    "AGENT: I checked your demo service plan for Sunday and see Graves Into Gardens, Do It Again, and What A Beautiful Name. Which one gives you that download error?",
+    "CALLER: Okay. I tried that and it still says download error",
+    "AGENT: Thanks for trying that.",
+    "AGENT: Which song still shows the error after you retry the download?",
+    "CALLER: Thanks. That's all I needed. Bye",
+    "AGENT: Okay."
+  ]
+}
