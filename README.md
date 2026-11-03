@@ -136,8 +136,8 @@ Audio API in `src/lib/cues.ts`, ported from the portfolio's voice call; no
 audio files or third-party sounds are used. The transfer cue is new.
 
 Idle handling uses Vapi assistant hooks on `customer.speech.timeout`, timed
-from the caller's last speech: a nudge at 120 s ("Hey, are you still there?")
-and, at 150 s, a spoken goodbye followed by `endCall`. Both reset when the
+from the caller's last speech: a nudge at 45 s ("Just checking in, are you still there?")
+and, at 75 s, a spoken goodbye followed by `endCall`. Both reset when the
 caller speaks.
 
 ## Simulation boundaries
