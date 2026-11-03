@@ -15,7 +15,7 @@
  * "did my church buy this song" and "is our Cloud Pro still active". Six
  * digits are easy to say and transcribe on a phone call; an email address
  * ("priya dot n at example dot org") is not. Email stays as the fallback for
- * callers without the app open, and the demo customer ID (DEMO-1001) is kept
+ * callers without the app open, and the primary demo customer ID (111) is supported
  * for the existing scenarios.
  */
 
@@ -50,7 +50,7 @@ export type Membership = {
 };
 
 export type DemoCustomer = {
-  customerId: string; // e.g. "DEMO-1001"
+  customerId: string; // e.g. "111"
   name: string;
   email: string;
   organization: string; // display name of the primary org (legacy field)
@@ -152,9 +152,9 @@ const orgName = (id: string) => organizations.find((o) => o.orgId === id)!.name;
 
 export const customers: DemoCustomer[] = [
   {
-    customerId: "DEMO-1001",
-    name: "Jordan Avery",
-    email: "jordan.avery@example.org",
+    customerId: "111",
+    name: "John Doe",
+    email: "john.doe@example.org",
     organization: orgName("480113"),
     orgId: "480113",
     memberships: [{ orgId: "480113", role: "Org Admin", teamSharing: true, rentals: true }],

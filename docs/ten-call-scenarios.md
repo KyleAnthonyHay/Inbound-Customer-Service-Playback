@@ -42,7 +42,7 @@ The outcomes below are targets to evaluate, not answers to feed the agent. These
 
 **Start:** “We paid for this. Why’s it asking me to pay again?”
 
-**Background:** You use an iPad and paid through the MultiTracks website. Restore Purchases already failed. Your name is **Jordan Avery**.
+**Background:** You use an iPad and paid through the MultiTracks website. Restore Purchases already failed. Your name is **John Doe**.
 
 **Read if guided:** Warning: **Cloud Pro expired**. Organization **480113**, Riverbend Community Church. Playback **8.6.1**; iPad Air 5; iPadOS **18**. You don’t remember versions from memory—let the agent help you find them.
 
@@ -100,7 +100,7 @@ The outcomes below are targets to evaluate, not answers to feed the agent. These
 
 **Background:** You use an iPad. The song is **Graves Into Gardens**. You’ve pressed the retry button **once**, but don’t know the recovery procedure.
 
-**Read if guided:** Error: **Audio Files Missing**. Playback **8.6.4**. Account if relevant: Jordan Avery, organization **480113**.
+**Read if guided:** Error: **Audio Files Missing**. Playback **8.6.4**. Account if relevant: John Doe, organization **480113**.
 
 **Success:** It finds the documented procedure and guides **two more Try Again attempts, three total**. Before the third total attempt it still fails; after the third, report that it opens. It checks the result.
 
@@ -110,7 +110,7 @@ The outcomes below are targets to evaluate, not answers to feed the agent. These
 
 **Background:** You use an iPad. **Graves Into Gardens** has failed after **three retries**. If removing content comes up, explain that service is starting and you can’t risk your ready downloads.
 
-**Read if guided:** Error: **Audio Files Missing**. Playback **8.6.4**; iPadOS **18**. Account if relevant: Jordan Avery, organization **480113**.
+**Read if guided:** Error: **Audio Files Missing**. Playback **8.6.4**; iPadOS **18**. Account if relevant: John Doe, organization **480113**.
 
 **Success:** It respects the failed attempts and your limit, offers a specialist when no suitable supported step remains, and follows your acceptance. Don’t report an invented fix. If offered a callback, use **tomorrow, 11 AM Eastern; +1 202-555-0123** (fictional), then confirm the details.
 

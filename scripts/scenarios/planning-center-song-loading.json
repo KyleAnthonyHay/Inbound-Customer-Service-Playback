@@ -2,10 +2,10 @@
   "name": "planning-center-song-loading",
   "expectedIntent": "song-loading",
   "lines": [
-    "I'm Jordan, demo customer one thousand one. I'm on an iPad and one of my songs won't download.",
+    "I'm John, demo customer one one one. I'm on an iPad and one of my songs won't download.",
     "It's Graves Into Gardens. The message says download error, I'm on Playback 8.6.4, and I have time to troubleshoot before rehearsal.",
     "After following that step, the song is downloading now. Thank you.",
     "That's everything, goodbye."
   ],
-  "expect": "Recognize an opportunity for helpful proactive service/song context without a setlist request. Any Planning Center read uses the shared Regal Playback Demo organization, not Jordan's real church; reuse the result and never infer ownership or download status. Ask one relevant question at a time and ground guidance in retrieved documentation. Caller-reported resolution is simulated input, not verified device telemetry."
+  "expect": "Recognize an opportunity for helpful proactive service/song context without a setlist request. Any Planning Center read uses the shared Regal Playback Demo organization, not John's real church; reuse the result and never infer ownership or download status. Ask one relevant question at a time and ground guidance in retrieved documentation. Caller-reported resolution is simulated input, not verified device telemetry."
 }

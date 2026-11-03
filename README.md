@@ -151,7 +151,7 @@ event as **Live API**, **Docs**, or **Simulated**.
 
 Account data is fictional and lives in `src/lib/demo/accounts.ts`, which both the Convex seed and the unit tests (`scripts/test-accounts.ts`) import, so the diagnosis logic is tested on the same rows that get seeded.
 
-- **Lookup key is the six-digit Organization ID**, which Playback shows in Settings > About. The organization is where MultiTracks content is purchased and subscriptions are shared (User Guide, "Organizations vs. Users"), so it is the record that answers "did we buy this song" and "is our Cloud Pro active". Six digits are easy to say and transcribe on a phone call; a spoken email address is not. Email is the fallback for callers without the app open; the `DEMO-1001` customer IDs still work for the older scenarios.
+- **Lookup key is the six-digit Organization ID**, which Playback shows in Settings > About. The organization is where MultiTracks content is purchased and subscriptions are shared (User Guide, "Organizations vs. Users"), so it is the record that answers "did we buy this song" and "is our Cloud Pro active". Six digits are easy to say and transcribe on a phone call; a spoken email address is not. Email is the fallback for callers without the app open; customer ID `111` identifies John Doe; the other `DEMO-*` customer IDs are unchanged.
 - `organizations` hold the plan (`Cloud Pro`, `Cloud`, `Rentals`, `Intro`, `none`) and status (`active`, `past-due`, `expired`, `none`) with renewal, expiry, grace-period and rental-credit fields. `customers` carry a primary `orgId` and `memberships` (role plus the Playback Team Sharing and Rentals permissions from the org's People page). `orgSongs` is each organization's Library: purchased songs, rentals with expiry dates, uploaded Cloud Songs.
 - `lookup_demo_customer` (by `orgId`, `email`, `customerId` or `name`) returns the organization, the caller's membership, other organizations they belong to, the library, and a `diagnosis` with a `next` hint: `active`, `past-due`, `expired`, `no-subscription`, `missing-team-sharing`, or `wrong-organization`.
 - `check_song_access` (song title plus the same keys) answers whether that organization can load the tracks: `purchased`, `rental-active`, `cloud-song`, `rental-expired`, `click-guide-only` (subscription but never bought), `not-in-library`, or `blocked-permission`.
@@ -159,7 +159,7 @@ Account data is fictional and lives in `src/lib/demo/accounts.ts`, which both th
 
 | Org ID | Organization | Plan / status | Customer | Situation |
 |--------|--------------|---------------|----------|-----------|
-| 480113 | Riverbend Community Church | Cloud Pro, active | DEMO-1001 Jordan Avery (admin), DEMO-1005 Sam Okafor (member, no Team Sharing) | Active subscriber sees "Cloud Pro expired" (software); member blocked by permission; "Living Hope" never purchased |
+| 480113 | Riverbend Community Church | Cloud Pro, active | 111 John Doe (admin), DEMO-1005 Sam Okafor (member, no Team Sharing) | Active subscriber sees "Cloud Pro expired" (software); member blocked by permission; "Living Hope" never purchased |
 | 517204 | Harbor Light Fellowship | Cloud Pro, expired 2026-09-02 | DEMO-1002 Priya Natarajan | Genuinely expired subscription |
 | 362990 | Northgate Worship Collective | Cloud, active | DEMO-1003 Marcus Bell | Healthy; also Olivia's church org |
 | 605781 | Grace Chapel | none | DEMO-1004 Elena Cruz | Purchased songs only; "Way Maker" not in library |

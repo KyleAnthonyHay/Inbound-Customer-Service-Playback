@@ -67,7 +67,7 @@ export function buildToolDefinitions(opts: { serverUrl: string; secret?: string 
       {
         orgId: { type: "string", description: "Six-digit Organization ID from Playback Settings > About, digits only, e.g. 480113." },
         email: { type: "string", description: "Email on the MultiTracks account, if the caller does not have the app open." },
-        customerId: { type: "string", description: "Demo customer ID like DEMO-1001, if the caller gives one." },
+        customerId: { type: "string", description: "Demo customer ID like 111, if the caller gives one." },
         name: { type: "string" },
       },
       [],

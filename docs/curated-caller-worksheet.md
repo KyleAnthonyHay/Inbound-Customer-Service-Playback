@@ -67,7 +67,7 @@ Use [the open-ended test method](open-ended-test-method.md). These private backg
 
 **Opening B:** It says we've run out, but we've already paid for it.
 
-**Known:** Using an iPad. Name Jordan Avery. Purchased through the MultiTracks website, not Apple. Already tried Restore Purchases with no change.
+**Known:** Using an iPad. Name John Doe. Purchased through the MultiTracks website, not Apple. Already tried Restore Purchases with no change.
 
 **Can read with help:**
 - Exact warning: Cloud Pro expired
@@ -167,7 +167,7 @@ Use [the open-ended test method](open-ended-test-method.md). These private backg
 
 **Opening B:** I'm getting the songs ready and this one keeps getting stuck.
 
-**Known:** Using an iPad. Song is Graves Into Gardens. Already pressed the retry button once. Name Jordan Avery if needed.
+**Known:** Using an iPad. Song is Graves Into Gardens. Already pressed the retry button once. Name John Doe if needed.
 
 **Can read with help:**
 - Error dialog: Audio Files Missing
@@ -187,7 +187,7 @@ Use [the open-ended test method](open-ended-test-method.md). These private backg
 
 **Opening B:** It's still not working, even after I tried loading it again.
 
-**Known:** Using an iPad. Song is Graves Into Gardens. Has pressed the retry button three times; all failed. If destructive recovery comes up, explain that service is starting and ready downloads cannot be removed. Name Jordan Avery if needed.
+**Known:** Using an iPad. Song is Graves Into Gardens. Has pressed the retry button three times; all failed. If destructive recovery comes up, explain that service is starting and ready downloads cannot be removed. Name John Doe if needed.
 
 **Can read with help:**
 - Error dialog: Audio Files Missing

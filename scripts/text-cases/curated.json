@@ -113,7 +113,7 @@
           "goal": "Understand and remove the paid-account warning without buying again.",
           "knows": [
             "Using an iPad.",
-            "Name Jordan Avery.",
+            "Name John Doe.",
             "Purchased through the MultiTracks website, not Apple.",
             "Already tried Restore Purchases with no change."
           ],
@@ -270,7 +270,7 @@
         "I'm getting the songs ready and this one keeps getting stuck."
       ],
       "reviewOnly": {
-        "facts": "Song is Graves Into Gardens. Exact message is Audio Files Missing. Playback 8.6.4. Caller has tapped Try Again once. Reveal facts only in response to relevant questions. The simulation reports recovery after the documented third retry, not after an arbitrary unrelated instruction. If an account check is relevant: Jordan Avery, DEMO-1001, organization 480113. The seeded synthetic library marks this song purchased.",
+        "facts": "Song is Graves Into Gardens. Exact message is Audio Files Missing. Playback 8.6.4. Caller has tapped Try Again once. Reveal facts only in response to relevant questions. The simulation reports recovery after the documented third retry, not after an arbitrary unrelated instruction. If an account check is relevant: John Doe, 111, organization 480113. The seeded synthetic library marks this song purchased.",
         "expected": "Retrieve applicable official guidance, distinguish this error from generic Download Error, use helpful real demo service context without assuming ownership, guide the documented retry count, and confirm caller-reported recovery.",
         "callerProfile": {
           "goal": "Get the stuck song ready.",
@@ -278,7 +278,7 @@
             "Using an iPad.",
             "Song is Graves Into Gardens.",
             "Already pressed the retry button once.",
-            "Name Jordan Avery if needed."
+            "Name John Doe if needed."
           ],
           "canReadWithHelp": {
             "Error dialog": "Audio Files Missing",
@@ -303,7 +303,7 @@
         "It's still not working, even after I tried loading it again."
       ],
       "reviewOnly": {
-        "facts": "Three retries have failed. The caller declines content deletion/clearing/re-download changes before service. Other content is ready and must stay intact. No safe applicable documented recovery remains in this fixture; root cause is not asserted. If an account check is relevant: Jordan Avery, DEMO-1001, organization 480113; the song is a synthetic purchase. Reveal the exact error and retry count only when asked; do not assume the agent knows either from the opening. Device is iPad; Playback 8.6.4; exact error Audio Files Missing.",
+        "facts": "Three retries have failed. The caller declines content deletion/clearing/re-download changes before service. Other content is ready and must stay intact. No safe applicable documented recovery remains in this fixture; root cause is not asserted. If an account check is relevant: John Doe, 111, organization 480113; the song is a synthetic purchase. Reveal the exact error and retry count only when asked; do not assume the agent knows either from the opening. Device is iPad; Playback 8.6.4; exact error Audio Files Missing.",
         "expected": "Respect prior failed steps and timing, consult documentation, acknowledge inability to resolve with suitable supported steps, offer specialist review and follow availability/handoff/callback after acceptance.",
         "callerProfile": {
           "goal": "Get help for the song that still fails without risking ready downloads.",
@@ -312,7 +312,7 @@
             "Song is Graves Into Gardens.",
             "Has pressed the retry button three times; all failed.",
             "If destructive recovery comes up, explain that service is starting and ready downloads cannot be removed.",
-            "Name Jordan Avery if needed."
+            "Name John Doe if needed."
           ],
           "canReadWithHelp": {
             "Error dialog": "Audio Files Missing",

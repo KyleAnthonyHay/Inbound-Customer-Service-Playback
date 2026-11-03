@@ -7,7 +7,7 @@
       "intent": "version",
       "handling": "agent",
       "openings": [
-        "I'm Jordan, demo customer DEMO-1001. Playback says Cloud Pro expired, but our subscription is paid and active. Can you help? I'm on an iPad and we're not in a service."
+        "I'm John, demo customer 111. Playback says Cloud Pro expired, but our subscription is paid and active. Can you help? I'm on an iPad and we're not in a service."
       ],
       "reviewOnly": {
         "facts": "Caller reports installed version 8.6.1 when asked; this overrides the synthetic record's last-known 8.6.2 note. Active status is verified through the demo lookup. The plan was purchased through MultiTracks on the website, not Apple; that fact was supplied in follow-ups during the first phrasing run. Version 8.6.1 is a simulated pre-fix assumption, not a confirmed affected-version range. Device: iPad Air 5 with iPadOS 18, revealed only if asked.",
@@ -19,7 +19,7 @@
       "intent": "version",
       "handling": "agent",
       "openings": [
-        "Our demo account DEMO-1001 has an active Cloud Pro plan, but the iPad app keeps showing Cloud Pro expired. I'm Jordan. We have time before rehearsal; why does the app think we've expired?"
+        "Our demo account 111 has an active Cloud Pro plan, but the iPad app keeps showing Cloud Pro expired. I'm John. We have time before rehearsal; why does the app think we've expired?"
       ],
       "reviewOnly": {
         "facts": "Caller reports installed version 8.6.1 when asked; this overrides the synthetic record's last-known 8.6.2 note. Active status is verified through the demo lookup. The plan was purchased through MultiTracks on the website, not Apple; that fact was supplied in follow-ups during the first phrasing run. Version 8.6.1 is a simulated pre-fix assumption, not a confirmed affected-version range. Device: iPad Air 5 with iPadOS 18, revealed only if asked.",
@@ -31,7 +31,7 @@
       "intent": "song-loading-version-investigation",
       "handling": "agent",
       "openings": [
-        "I'm demo customer DEMO-1001. On the iPad, a song's download bar reaches the end and stays there forever, without an error message. Our account is active, there is plenty of storage, retries haven't helped, and it happens on another network too. Rehearsal is tomorrow."
+        "I'm demo customer 111. On the iPad, a song's download bar reaches the end and stays there forever, without an error message. Our account is active, there is plenty of storage, retries haven't helped, and it happens on another network too. Rehearsal is tomorrow."
       ],
       "reviewOnly": {
         "facts": "Playback 8.5.0; iPadOS 18 on iPad Air 5. Both versions are revealed when asked, without naming a fix or update. Caller has time before tomorrow's rehearsal. This is a simulated pre-fix scenario; official release 8.5.2 describes a stuck-at-completion download-bar fix, older than the newest three stored releases. The scenario does not claim every 8.5.0 installation is affected.",
@@ -43,7 +43,7 @@
       "intent": "song-loading-version-investigation",
       "handling": "agent",
       "openings": [
-        "Could you help with a download that looks complete but never finishes? It affects several songs on my iPad: no error, just a full progress bar. Demo account DEMO-1001 is paid, storage is fine and retrying on a different connection didn't help. We're not live."
+        "Could you help with a download that looks complete but never finishes? It affects several songs on my iPad: no error, just a full progress bar. Demo account 111 is paid, storage is fine and retrying on a different connection didn't help. We're not live."
       ],
       "reviewOnly": {
         "facts": "Playback 8.5.0; iPadOS 18 on iPad Air 5. Both versions are revealed when asked, without naming a fix or update. Caller has time before tomorrow's rehearsal. This is a simulated pre-fix scenario; official release 8.5.2 describes a stuck-at-completion download-bar fix, older than the newest three stored releases. The scenario does not claim every 8.5.0 installation is affected.",
@@ -79,7 +79,7 @@
       "intent": "current-version-no-targeted-update-control",
       "handling": "human-review",
       "openings": [
-        "I'm demo customer DEMO-1001. On my iPad, a song's download bar reaches the end and stays there with no error. Storage is fine, retries and another network did not help, and removing and re-adding one song didn't help either. Can you help?"
+        "I'm demo customer 111. On my iPad, a song's download bar reaches the end and stays there with no error. Storage is fine, retries and another network did not help, and removing and re-adding one song didn't help either. Can you help?"
       ],
       "reviewOnly": {
         "facts": "Caller confirms Playback 8.6.4 when asked, iPad Air 5/iPadOS 18 when asked. Account is active. This simulates the same symptom on the current version, not evidence that its historical fix applies. No remaining documented step resolves this fixture; caller reports unchanged results, then accepts specialist review.",
