@@ -1,0 +1,105 @@
+{
+  "scenario": "human-request",
+  "expectedIntent": "human-request",
+  "callId": "01a19f39-cef5-7000-869b-fab050e9805d",
+  "endedReason": "assistant-ended-call",
+  "vapiToolCalls": [
+    "delegate",
+    "check_team_availability",
+    "delegate",
+    "get_callback_slots",
+    "delegate",
+    "delegate",
+    "endCall"
+  ],
+  "timing": {
+    "turns": [
+      {
+        "caller": "I don't want to troubleshoot. I just want to talk to a real person, please",
+        "silenceS": 0,
+        "firstHeard": "Okay.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": true,
+        "tools": [
+          "delegate@+0.2s",
+          "check_team_availability@+1.4s"
+        ],
+        "summary": "\"I don't want to troubleshoot. I just wan\" -> 0s silence, then answer: \"Okay.\" [delegate@+0.2s, check_team_availability@+1.4s] [REPEATED ACK]"
+      },
+      {
+        "caller": "Yes, a callback is fine. Anytime tomorrow afternoon. I'm in Central Time. My number is five five five zero one zero zero one nine nine. And my name is Marcus Bell",
+        "silenceS": 0,
+        "firstHeard": "Okay, thanks, Marcus. I've got your number and tomorrow afternoon works.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+3.6s",
+          "get_callback_slots@+5.2s"
+        ],
+        "summary": "\"Yes, a callback is fine. Anytime tomorro\" -> 0s silence, then answer: \"Okay, thanks, Marcus. I've got your number and tom\" [delegate@+3.6s, get_callback_slots@+5.2s]"
+      },
+      {
+        "caller": "Yes, that time works. Go ahead and book it",
+        "silenceS": 0.8,
+        "firstHeard": "Okay. I'll go ahead and do that",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s"
+        ],
+        "summary": "\"Yes, that time works. Go ahead and book \" -> 0.8s silence, then answer: \"Okay. I'll go ahead and do that\" [delegate@+0.0s]"
+      },
+      {
+        "caller": "Great. Thanks. Bye",
+        "silenceS": 0.4,
+        "firstHeard": "Okay.",
+        "transition": false,
+        "gapAfterTransitionS": null,
+        "repeatedAck": false,
+        "tools": [
+          "delegate@+0.0s",
+          "endCall@+0.6s"
+        ],
+        "summary": "\"Great. Thanks. Bye\" -> 0.4s silence, then answer: \"Okay.\" [delegate@+0.0s, endCall@+0.6s]"
+      }
+    ],
+    "longestSilenceS": 0.8,
+    "longestGapAfterTransitionS": 0,
+    "repeatedAckTurns": 1
+  },
+  "convexToolEvents": [
+    "check_team_availability succeeded 31ms Playback Technical Support: unavailable",
+    "get_callback_slots succeeded 83ms 4 open slot(s)"
+  ],
+  "liveEvents": [
+    "26.5s TOOL-CALLS delegate({})",
+    "27.4s TOOL-CALLS check_team_availability({\"teamId\":\"playback-support\"})",
+    "60.1s TOOL-CALLS delegate({})",
+    "62.1s TOOL-CALLS get_callback_slots({\"teamId\":\"playback-support\",\"preferredDate\":\"tomorrow\",\"timeZone\":\"Central\"})",
+    "83.8s TOOL-CALLS delegate({})",
+    "101.8s TOOL-CALLS delegate({})",
+    "103.8s TOOL-CALLS endCall({})",
+    "104.5s STATUS ended assistant-ended-call",
+    "104.5s hangup"
+  ],
+  "transcript": [
+    "AGENT: Hi, thanks for calling MultiTracks Playback support. I'm an AI assistant. What can I help you with today?",
+    "CALLER: I don't want to troubleshoot. I just want to talk to a real person, please",
+    "AGENT: Okay.",
+    "AGENT: Got it.",
+    "AGENT: I'll check who is available.",
+    "AGENT: No one is available for a transfer right now. I can schedule a callback. When are you next available?",
+    "CALLER: Yes, a callback is fine. Anytime tomorrow afternoon. I'm in Central Time. My number is five five five zero one zero zero one nine nine. And my name is Marcus Bell",
+    "AGENT: Okay, thanks, Marcus. I've got your number and tomorrow afternoon works.",
+    "AGENT: Let me get that set.",
+    "AGENT: For tomorrow, I can offer 9, 9:30, 10, or 10:30 AM Central. Which would you like?",
+    "CALLER: Yes, that time works. Go ahead and book it",
+    "AGENT: Okay. I'll go ahead and do that",
+    "AGENT: . Could you confirm which time you'd like: 9, 9:30, 10, or 10:30 AM Central?",
+    "CALLER: Great. Thanks. Bye",
+    "AGENT: Okay."
+  ]
+}
