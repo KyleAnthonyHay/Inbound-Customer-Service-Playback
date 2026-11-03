@@ -1068,7 +1068,7 @@ function View({ open, onToggle, callId, status: browserStatus, startedAt: browse
             type="button"
             onClick={onToggle}
             aria-expanded={false}
-            className="fixed right-4 z-20 flex min-h-[44px] items-center gap-2 rounded-full border border-white/10 bg-[#111113]/95 px-4 py-2 text-[14px] font-medium text-white/85 shadow-[0_8px_30px_rgba(0,0,0,0.35)] backdrop-blur-xl transition-colors hover:text-white sm:top-4 sm:min-h-0 sm:text-[13px]"
+            className="fixed right-4 z-20 flex min-h-[44px] items-center gap-2 rounded-full bg-[#0a84ff] px-4 py-2 text-[14px] font-medium text-white shadow-[0_8px_30px_rgba(10,132,255,0.35)] transition-colors hover:bg-[#3395ff] sm:top-4 sm:min-h-0 sm:text-[13px]"
             style={{ fontFamily: "var(--font-geist-sans), -apple-system, system-ui, sans-serif", top: "calc(env(safe-area-inset-top) + 8px)" }}
             initial={reduce ? false : BLUR_IN}
             animate={{ ...SHARP, transition: { duration: reduce ? 0 : SWAP_IN, ease: EASE, delay: reduce ? 0 : 0.15 } }}
