@@ -1,0 +1,11 @@
+{
+  "name": "handoff-offer-yes",
+  "expectedIntent": "audio-output",
+  "lines": [
+    "We're on an iPad with a Focusrite interface. The band wants the click and guide in their in-ears and only the music out front, but the click and guide are coming through the main mixer and nothing is in the in-ears.",
+    "Yes, in Playback the click and guide are already on their own output, separate from the music. The mixer still gets everything and the in-ears get nothing.",
+    "Yes please, get me a Playback team member.",
+    "Okay, thank you."
+  ],
+  "expect": "Once Playback's own routing is confirmed and the remaining problem is in the mixer or interface path, the reasoner offers a specialist with one yes-or-no question and waits. The caller's yes is consent: check availability, then initiate_handoff when the team can transfer now (outside support hours, say nobody is available and offer a callback instead). Never end the call before the caller has answered the offer."
+}

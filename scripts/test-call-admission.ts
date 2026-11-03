@@ -37,7 +37,7 @@ test("both transports create only the configured dev assistant and return allowl
     const create = f.requests[2];
     const body = JSON.parse(String(create.init?.body));
     assert.equal(body.assistantId, env.DEV_VAPI_ASSISTANT_ID);
-    assert.deepEqual(body.assistantOverrides, { maxDurationSeconds: 600 });
+    assert.deepEqual(body.assistantOverrides, { maxDurationSeconds: 1800 });
     assert.equal(body.transport.provider, transport === "browser" ? "daily" : "vapi.websocket");
     assert.equal(create.init?.redirect, "error");
     assert.ok(!JSON.stringify(result).includes("private-"));
