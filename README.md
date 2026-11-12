@@ -159,7 +159,7 @@ Data comes from Vapi's assistant-level server messages, not the browser, so phon
 | Web app | `npm run dev` on localhost | https://playback-support.vercel.app (Vercel project `playback-support` (haykyle917 scope)) |
 | Tool secret | dev Convex env `VAPI_TOOL_SECRET` | prod Convex env `VAPI_TOOL_SECRET` (different value) |
 
-Both assistants are built from the same `buildAssistant()`; only the webhook URLs, the secret and the name differ. The phone number, when claimed, attaches to the prod assistant. Local testing (browser calls, `npm run voice:test`, `npm run sync:assistant`) touches only the dev pair, so the demo's call history and prompts stay untouched while you work.
+Both assistants are built from the same `buildAssistant()`; only the webhook URLs, the secret and the name differ. The inbound phone number **+1 (878) 277-9342** attaches to **Playback Support (prod)**. Dev has no separate phone number; use browser calls or the voice harness for dev testing. Local testing (browser calls, `npm run voice:test`, `npm run sync:assistant`) touches only the dev pair, so the demo's call history and prompts stay untouched while you work.
 
 **Releasing to prod is one command and must always be used, so the three parts never drift:**
 
